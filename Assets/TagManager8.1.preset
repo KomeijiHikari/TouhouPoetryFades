@@ -1,0 +1,299 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TagManager8.1
+  m_TargetType:
+    m_NativeTypeID: 78
+    m_ManagedTypePPtr: {fileID: 0}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: tags.Array.size
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: tags.Array.data[0]
+    value: "\u4F20\u9001\u70B9"
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: tags.Array.data[1]
+    value: 'MovePlatform '
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: tags.Array.data[2]
+    value: "\u5267\u60C5\u70B9"
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: tags.Array.data[3]
+    value: MovePlatform
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: tags.Array.data[4]
+    value: Ground
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: tags.Array.data[5]
+    value: One_way
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.size
+    value: 32
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[0]
+    value: Default
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[1]
+    value: TransparentFX
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[2]
+    value: Ignore Raycast
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[3]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[4]
+    value: Water
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[5]
+    value: UI
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[6]
+    value: Ground
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[7]
+    value: Player
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[8]
+    value: Enemy
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[9]
+    value: Build
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[10]
+    value: "\u5C0F\u5730\u56FE"
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[11]
+    value: Ladder
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[12]
+    value: Enemy_hit_collision
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[13]
+    value: M_Ground
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[14]
+    value: Only_Ground
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[15]
+    value: Box_Ground
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[16]
+    value: Air_wall
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[17]
+    value: No_Player
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[18]
+    value: Enemy_Keep
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[19]
+    value: Null
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[20]
+    value: Deb
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[21]
+    value: Only_Player
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[22]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[23]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[24]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[25]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[26]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[27]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[28]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[29]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[30]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: layers.Array.data[31]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.size
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[0].name
+    value: back-1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[0].uniqueID
+    value: 2590993745
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[0].locked
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[1].name
+    value: back0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[1].uniqueID
+    value: 1833092333
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[1].locked
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[2].name
+    value: Default
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[2].uniqueID
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[2].locked
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[3].name
+    value: Enemy
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[3].uniqueID
+    value: 1699931819
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[3].locked
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[4].name
+    value: "\u7279\u6548"
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[4].uniqueID
+    value: 534331999
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[4].locked
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[5].name
+    value: player
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[5].uniqueID
+    value: 389492753
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[5].locked
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[6].name
+    value: back2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[6].uniqueID
+    value: 2860567129
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[6].locked
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[7].name
+    value: ui
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[7].uniqueID
+    value: 551491935
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[7].locked
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[8].name
+    value: "\u5C0F\u5730\u56FE"
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[8].uniqueID
+    value: 2959899073
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[8].locked
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[9].name
+    value: CameraSortingLayer
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[9].uniqueID
+    value: 3982690099
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SortingLayers.Array.data[9].locked
+    value: 0
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []

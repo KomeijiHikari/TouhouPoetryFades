@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - "\u4F20\u9001\u70B9"
+  - 'MovePlatform '
+  - "\u5267\u60C5\u70B9"
+  - MovePlatform
+  - Ground
+  - One_way
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Player
+  - Enemy
+  - Build
+  - "\u5C0F\u5730\u56FE"
+  - Ladder
+  - Enemy_hit_collision
+  - M_Ground
+  - Only_Ground
+  - Box_Ground
+  - Air_wall
+  - No_Player
+  - Enemy_Keep
+  - Null
+  - Deb
+  - Only_Player
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: back-1
+    uniqueID: 2590993745
+    locked: 0
+  - name: back0
+    uniqueID: 1833092333
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Enemy
+    uniqueID: 1699931819
+    locked: 0
+  - name: "\u7279\u6548"
+    uniqueID: 534331999
+    locked: 0
+  - name: player
+    uniqueID: 389492753
+    locked: 0
+  - name: back2
+    uniqueID: 2860567129
+    locked: 0
+  - name: ui
+    uniqueID: 551491935
+    locked: 0
+  - name: "\u5C0F\u5730\u56FE"
+    uniqueID: 2959899073
+    locked: 0
+  - name: CameraSortingLayer
+    uniqueID: 3982690099
+    locked: 0

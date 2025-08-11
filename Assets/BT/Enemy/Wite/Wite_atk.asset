@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23f08d2ae4cba14087c1ed36193d82b, type: 3}
+  m_Name: Wite_atk
+  m_EditorClassIdentifier: 
+  mBehaviorSource:
+    behaviorName: Behavior
+    behaviorDescription: 
+    mTaskData:
+      types: []
+      parentIndex: 
+      startIndex: 
+      variableStartIndex: 
+      JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(63.7832031,-456.533051)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(3.85082817,99.69882)"},"ID":1,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"Tree_.PlayerAnimWaiteOver","NodeData":{"Offset":"(-347.19696,288.409058)"},"ID":2,"Name":"Player
+        Anim Waite Over","Instant":true,"Boolean\u7b49\u5f85\u64ad\u653e\u5b8c\u6bd5":true,"SharedStringname":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"ready"}},{"Type":"\u78b0\u649e\u4f24\u5bb3\u5f00\u5173","NodeData":{"Offset":"(-302.500061,390.000031)"},"ID":3,"Name":"\u78b0\u649e\u4f24\u5bb3\u5f00\u5173","Instant":true,"Boolean\u5f00\u5173":true},{"Type":"Tree_.PlayerAnimWaiteOver","NodeData":{"Offset":"(-184.8485,280.909058)"},"ID":4,"Name":"Player
+        Anim Waite Over","Instant":true,"Boolean\u7b49\u5f85\u64ad\u653e\u5b8c\u6bd5":false,"SharedStringname":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"atk"}},{"Type":"Set\u6b63\u9762\u901f\u5ea6","NodeData":{"Offset":"(-164.081635,189.000412)"},"ID":5,"Name":"Set
+        \u6b63\u9762\u901f\u5ea6","Instant":true,"Boolean\u53cd\u5411":false,"BooleanSafe":false,"BooleanAdd":false,"SharedVector2Speed":{"Type":"BehaviorDesigner.Runtime.SharedVector2","Name":"BoomSpeed_","IsShared":true,"Vector2mValue":"(0,0)"}},{"Type":"\u76ee\u6807\u662f\u7a7a","NodeData":{"Offset":"(-36.5493774,302.286163)"},"ID":6,"Name":"\u76ee\u6807\u662f\u7a7a","Instant":true,"SharedVector2tagert":{"Type":"BehaviorDesigner.Runtime.SharedVector2","Name":null,"Vector2mValue":"(0,0)"},"Boolean\u52a8\u6001\u7ffb\u8f6c":false,"Boolean\u76ee\u6807\u5728\u8eab\u540e":false,"E_\u68c0\u6d4b\u7c7b\u578b\u68c0\u6d4b\u7c7b\u578b":"\u5730\u9762","Boolean\u4e0d\u7a7a\u5219\u8fd4\u56de\u5931\u8d25":false,"Boolean\u53cd\u8f6c":true},{"Type":"Tree_.PlayerAnimWaiteOver","NodeData":{"Offset":"(29.9035053,181.364914)","Comment":"atk_1"},"ID":7,"Name":"Player
+        Anim Waite Over","Instant":true,"Boolean\u7b49\u5f85\u64ad\u653e\u5b8c\u6bd5":true,"SharedStringname":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"atk_1"}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(74.5454941,301.212067)","Comment":"\u540e\u6447"},"ID":8,"Name":"Wait","Instant":true,"BooleanChange_":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1.5},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}},{"Type":"\u78b0\u649e\u4f24\u5bb3\u5f00\u5173","NodeData":{"Offset":"(152.050644,180.019058)"},"ID":9,"Name":"\u78b0\u649e\u4f24\u5bb3\u5f00\u5173","Instant":true,"Boolean\u5f00\u5173":false},{"Type":"Tree_.PlayerAnimWaiteOver","NodeData":{"Offset":"(220.94696,282.537842)"},"ID":10,"Name":"Player
+        Anim Waite Over","Instant":true,"Boolean\u7b49\u5f85\u64ad\u653e\u5b8c\u6bd5":true,"SharedStringname":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"atk_toidle"}},{"Type":"Tree_.PlayerAnimWaiteOver","NodeData":{"Offset":"(311.72348,207.935608)"},"ID":11,"Name":"Player
+        Anim Waite Over","Instant":true,"Boolean\u7b49\u5f85\u64ad\u653e\u5b8c\u6bd5":false,"SharedStringname":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"idle"}}]},"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedVector2","Name":"BoomSpeed_","IsShared":true,"Vector2mValue":"(0,0)"}]}'
+      fieldSerializationData:
+        typeName: []
+        fieldNameHash: 
+        startIndex: 
+        dataPosition: 
+        unityObjects: []
+        byteData: 
+        byteDataArray: 
+      Version: 1.7.7
