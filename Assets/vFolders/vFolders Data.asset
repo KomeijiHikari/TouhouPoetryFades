@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb9c12a8c6c949f7af83a3d238359d0, type: 3}
+  m_Name: vFolders Data
+  m_EditorClassIdentifier: 
+  folderDatas_byGuid:
+    keys:
+    - 3864080ba3860fb44bbb8c3d044d5e26
+    - 46e4ff8a4ba49914cb0fd822e01525be
+    - 7c3a0e65a7891e449b980332ddb303c9
+    - 2738507dd883f0e4d8cbbb5bdce5f363
+    - 109e9bdd0fcc649c5bc59085c35bdc83
+    - 14987a2623e7f714a9baaca2601a23e2
+    values:
+    - colorIndex: 1
+      iconNameOrGuid: 
+    - colorIndex: 0
+      iconNameOrGuid: cs Script Icon
+    - colorIndex: 0
+      iconNameOrGuid: Font Icon
+    - colorIndex: 0
+      iconNameOrGuid: Prefab Icon
+    - colorIndex: 0
+      iconNameOrGuid: SceneAsset Icon
+    - colorIndex: 7
+      iconNameOrGuid: 
