@@ -16,7 +16,7 @@ namespace  SampleFSM
         protected void to_state(state a)
         {
             if (当前 == a || !a.激活) return;
-            if (DeBuG) Debug.LogError("   前一个名字： " + 当前.StateName + "  下一个名字：  " + a.StateName);
+            if (DeBuG) Debug.LogError("   前一个名字： " + 当前.StateName + "  下一个名字：  " + a.StateName); 
  
             当前?.Exite?.Invoke();
             当前.活动 = false;

@@ -15,9 +15,9 @@ namespace 发射器空间
     }
     public class 发射器 : MonoBehaviour
     {
-        public 播放类型 当前播放类型_;
-        [SerializeField ][DisplayOnly]
-         播放类型 原播放类型_; 
+ 
+        public 播放类型 当前播放类型_; 
+        public 播放类型 原播放类型_; 
         public bool 监控子弹=false; 
         public bool 按照方向来 = true;
         [SerializeField]
@@ -53,12 +53,14 @@ namespace 发射器空间
         }
         private void OnEnable()
         {
+            Debug.LogError("调用调用调用调用调用调用调用调用调用调用");
             switch (原播放类型_)
             {
                 case 播放类型.启动持续播放:
                     当前播放类型_ = 播放类型.持续播放;
                     break;
                 case 播放类型.启动短暂播放:
+                    重制();
                     发射一下();
                     break; 
             }
@@ -82,9 +84,9 @@ namespace 发射器空间
         private void FixedUpdate()
         {
 
-            if (按照方向来) 朝向_ = 朝向 == 1 ? 0 : 180;
+            //if (按照方向来) 朝向_ = 朝向 == 1 ? 0 : 180;
             //if (!持续发射) return;
-
+           
             bool 可以 = false;
             switch (当前播放类型_)
             { 
