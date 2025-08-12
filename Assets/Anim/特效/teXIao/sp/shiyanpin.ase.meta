@@ -117,7 +117,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: ' shiyanpin_Frame_0'
+  - name: shiyanpin_Frame_0
     originalName: 
     pivot: {x: 0.50000006, y: 0}
     alignment: 9
@@ -128,7 +128,7 @@ ScriptedImporter:
       y: 4
       width: 14
       height: 26
-    spriteID: 079f87df53fb5e64599d2570d6ae8abb
+    spriteID: b4960c8f3f4280e4a8f8358a5269a029
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -137,7 +137,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: ' shiyanpin_Frame_1'
+  - name: shiyanpin_Frame_1
     originalName: 
     pivot: {x: 0.42857137, y: 0}
     alignment: 9
@@ -148,7 +148,7 @@ ScriptedImporter:
       y: 38
       width: 7
       height: 34
-    spriteID: 31683c3201d1bb0458fadd64db3ef2fa
+    spriteID: 09b78dc23f10b6841a0b1e8e67d7e929
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -157,7 +157,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 38}
-  - name: ' shiyanpin_Frame_2'
+  - name: shiyanpin_Frame_2
     originalName: 
     pivot: {x: 0.4999999, y: 0}
     alignment: 9
@@ -168,7 +168,7 @@ ScriptedImporter:
       y: 4
       width: 6
       height: 35
-    spriteID: 77c3071f00823ee49900681bf012f080
+    spriteID: 9380062f3738a5247bb246012d0bb446
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -177,7 +177,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 26, y: 4}
-  - name: ' shiyanpin_Frame_3'
+  - name: shiyanpin_Frame_3
     originalName: 
     pivot: {x: 0.5000001, y: -0.1724138}
     alignment: 9
@@ -188,7 +188,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 29
-    spriteID: 6183fc5ad4d6bd7499c0608021881b6f
+    spriteID: c576c04d14dc0cb46b83a8b88e74d400
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -197,7 +197,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 80}
-  - name: ' shiyanpin_Frame_4'
+  - name: shiyanpin_Frame_4
     originalName: 
     pivot: {x: 0.5000001, y: -0.54545456}
     alignment: 9
@@ -208,7 +208,7 @@ ScriptedImporter:
       y: 4
       width: 8
       height: 22
-    spriteID: 4d0315fbfa398594b9674f4f5b1ae3e1
+    spriteID: c00153e668cb5de4aa90f9773c75c5c2
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -217,7 +217,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 40, y: 4}
-  - name: ' shiyanpin_Frame_5'
+  - name: shiyanpin_Frame_5
     originalName: 
     pivot: {x: 0.5714287, y: -1.0000001}
     alignment: 9
@@ -228,7 +228,7 @@ ScriptedImporter:
       y: 34
       width: 7
       height: 17
-    spriteID: d217fbb6e72ed7b448a68f06aedfe4f4
+    spriteID: 648979346af96e04f81cbf579daa7832
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -240,60 +240,60 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -174648873
-    name: ' shiyanpin'
+    guid: -995990701
+    name: shiyanpin
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: ' shiyanpin_Frame_0'
+    - name: shiyanpin_Frame_0
       frameIndex: 0
       cellRect:
         x: 33
         y: 0
         width: 14
         height: 26
-      spriteId: 079f87df53fb5e64599d2570d6ae8abb
-    - name: ' shiyanpin_Frame_1'
+      spriteId: b4960c8f3f4280e4a8f8358a5269a029
+    - name: shiyanpin_Frame_1
       frameIndex: 1
       cellRect:
         x: 37
         y: 0
         width: 7
         height: 34
-      spriteId: 31683c3201d1bb0458fadd64db3ef2fa
-    - name: ' shiyanpin_Frame_2'
+      spriteId: 09b78dc23f10b6841a0b1e8e67d7e929
+    - name: shiyanpin_Frame_2
       frameIndex: 2
       cellRect:
         x: 37
         y: 0
         width: 6
         height: 35
-      spriteId: 77c3071f00823ee49900681bf012f080
-    - name: ' shiyanpin_Frame_3'
+      spriteId: 9380062f3738a5247bb246012d0bb446
+    - name: shiyanpin_Frame_3
       frameIndex: 3
       cellRect:
         x: 36
         y: 5
         width: 8
         height: 29
-      spriteId: 6183fc5ad4d6bd7499c0608021881b6f
-    - name: ' shiyanpin_Frame_4'
+      spriteId: c576c04d14dc0cb46b83a8b88e74d400
+    - name: shiyanpin_Frame_4
       frameIndex: 4
       cellRect:
         x: 36
         y: 12
         width: 8
         height: 22
-      spriteId: 4d0315fbfa398594b9674f4f5b1ae3e1
-    - name: ' shiyanpin_Frame_5'
+      spriteId: c00153e668cb5de4aa90f9773c75c5c2
+    - name: shiyanpin_Frame_5
       frameIndex: 5
       cellRect:
         x: 36
         y: 17
         width: 7
         height: 17
-      spriteId: d217fbb6e72ed7b448a68f06aedfe4f4
+      spriteId: 648979346af96e04f81cbf579daa7832
     linkedCells: []
     parentIndex: -1
   platformSettings: []

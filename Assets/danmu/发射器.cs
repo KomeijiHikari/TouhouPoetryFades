@@ -53,14 +53,14 @@ namespace 发射器空间
         }
         private void OnEnable()
         { 
-            if (启动就)
-            {
-                if (Time.time > 0.2f)
-                {
-                    重制();
-                    if (!持续发射) 发射一下();
-                }
-            }  
+            //if (启动就)
+            //{
+            //    if (Time.time > 0.2f)
+            //    {
+            //        重制();
+            //        if (!持续发射) 发射一下();
+            //    }
+            //}  
         }
         private void Start()
         {
@@ -87,14 +87,9 @@ namespace 发射器空间
             bool 可以 = false;
             switch (播放类型_)
             {
-                case 播放类型.启动持续播放:
-                    可以 = true;
-                    break;
-                case 播放类型.启动短暂播放:
-                    break;
+                case 播放类型.启动持续播放: 
                 case 播放类型.持续播放:
-                    break;
-                case 播放类型.不播放:
+                    可以 = true;
                     break; 
             }
             if (!可以) return;
