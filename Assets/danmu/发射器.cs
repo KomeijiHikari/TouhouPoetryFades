@@ -7,15 +7,15 @@ namespace 发射器空间
 { 
     public enum 播放类型
     {
-        启动持续播放,
         启动短暂播放,
+        启动持续播放,
         持续待播放,
         持续播放,
         不播放
     }
     public class 发射器 : MonoBehaviour
     {
-        public 播放类型 播放类型_;
+        public 播放类型 当前播放类型_;
         [SerializeField ][DisplayOnly]
          播放类型 原播放类型_; 
         public bool 监控子弹=false; 
@@ -52,15 +52,16 @@ namespace 发射器空间
 
         }
         private void OnEnable()
-        { 
-            //if (启动就)
-            //{
-            //    if (Time.time > 0.2f)
-            //    {
-            //        重制();
-            //        if (!持续发射) 发射一下();
-            //    }
-            //}  
+        {
+            switch (原播放类型_)
+            {
+                case 播放类型.启动持续播放:
+                    当前播放类型_ = 播放类型.持续播放;
+                    break;
+                case 播放类型.启动短暂播放:
+                    发射一下();
+                    break; 
+            }
         }
         private void Start()
         {
@@ -85,14 +86,14 @@ namespace 发射器空间
             //if (!持续发射) return;
 
             bool 可以 = false;
-            switch (播放类型_)
-            {
-                case 播放类型.启动持续播放: 
+            switch (当前播放类型_)
+            { 
                 case 播放类型.持续播放:
                     可以 = true;
                     break; 
             }
             if (!可以) return;
+
             玩家角度_ = 玩家角度;
             currentAngularVelocity = Mathf.Clamp(currentAngularVelocity + B.SenderAcceleration * Time.fixedDeltaTime * Spee, -B.发射器Max角速度, B.发射器Max角速度);
             currentAngle += currentAngularVelocity * Time.fixedDeltaTime * Spee;
@@ -113,6 +114,10 @@ namespace 发射器空间
         int TimeF;
         public void 发射一下()
         {
+            if (原播放类型_==播放类型.持续待播放)
+            {
+                当前播放类型_ = 播放类型.持续播放;
+            }
             if (TimeF != Time.frameCount)
             {
                 TimeF = Time.frameCount;
