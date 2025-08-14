@@ -28,11 +28,11 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     public float L_Acc线加速度;
     public float A_Acc角加速度; 
     public float Max速度 = int.MaxValue; 
-    public float 生命周期 = 5; 
-    public Vector2 方向; 
+    public float 生命周期 = 5;
+
+[SerializeField] Vector2 方向1;
     public Vector3 eulerAngles; 
-    public bool 自身旋转;
-    public Vector2 Set_方向;
+    public bool 自身旋转; 
     public new Transform transform => base.transform; 
     public GameObject 对象 => base.gameObject;
 
@@ -57,15 +57,24 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
 
 
     public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
-
+    public Vector2 方向 { get => 方向1; set {
+            if (方向1 != value )
+            {
+                Debug.LogError(value );
+            }
+            方向1 = value; } }
 
     float speed_Lv = 1f;
     [Range(0, 1)]
     public  float 追踪玩家=0;
 
-    public Vector2 返回当前指向玩家的方向()
+    public Vector2 返回当前指向玩家的方向(Vector2 v=default)
     {
-        Vector2 玩家方向 = (Vector2)(Player3.I.transform.position - transform.position);
+        if (v==default )
+        {
+            v = transform.position;
+        }
+        Vector2 玩家方向 = (Vector2)(Player3.I.transform.position - (Vector3 )v);
         玩家方向.Normalize();
         return 玩家方向;
     }
@@ -76,22 +85,20 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
         A角速度 += A_Acc角加速度 * Time.fixedDeltaTime * I_S.固定等级差; 
         if (!自身旋转)
         {
-            if (Set_方向 == Vector2.zero)
-            {
+  
                 Vector2 玩家方向 = 返回当前指向玩家的方向();
 
-                if (A角速度!=0)
-                {
-                    方向 = Vector2.Lerp(Initialize.To_角度到方向(A角速度 * Time.fixedDeltaTime), 玩家方向, 追踪玩家);
-                }
+ 
   
-            }
-            else
-            {
-                Set_方向 = Vector2.zero;
-                方向 = Set_方向;
-            } 
-            transform.position += L线速度 * (Vector3)方向* Time.fixedDeltaTime * I_S.固定等级差;
+                方向 = Vector2.Lerp(Initialize.To_角度到方向(A角速度 * Time.fixedDeltaTime), 玩家方向, 追踪玩家);
+
+            var 下一目标 = transform.position + L线速度 * (Vector3)方向 * Time.fixedDeltaTime * I_S.固定等级差;
+        var a=    Initialize.碰撞射线(transform.position, 下一目标, Initialize_Mono .I.能量子弹碰撞);
+
+            if (a==Vector2 .zero)  transform.position = 下一目标; 
+            else   transform.position = a;
+       
+
         }
         else
         {

@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u8FFD\u8E2A\u73A9\u5BB6": 0
   "\u81EA\u8EAB\u65CB\u8F6C": 0
-  "\u751F\u547D\u5468\u671F": 20
+  "\u751F\u547D\u5468\u671F": 5
   LinearVelocity: 6
   Acceleration: 0
   AngularVelocity: 0
   AngularAcceleration: 0
   "Max\u901F\u5EA6": 2.1474836e+9
   InitRotation: 270
-  SenderAngularVelocity: 0
+  SenderAngularVelocity: 100
   "\u53D1\u5C04\u5668Max\u89D2\u901F\u5EA6": 2.1474836e+9
-  SenderAcceleration: 0
-  Count: 15
+  SenderAcceleration: 1800
+  Count: 10
   LineAnle: 20
-  "\u53D1\u5C04\u95F4\u9694": 1.5
+  "\u53D1\u5C04\u95F4\u9694": 1
   "\u6CE2\u6B21": 0
   "\u53D1\u5C04\u65F6\u95F4": 0
   pre: {fileID: 3523587353952303650, guid: 1b1062d39cd5c9c4898b9f1bcf481416, type: 3}

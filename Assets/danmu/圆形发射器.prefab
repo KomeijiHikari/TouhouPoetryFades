@@ -44,12 +44,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f06f45de2af96c4b834b907d6ac58d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  "\u5F53\u524D\u64AD\u653E\u7C7B\u578B_": 0
+  "\u539F\u64AD\u653E\u7C7B\u578B_": 0
+  "\u76D1\u63A7\u5B50\u5F39": 0
+  "\u6309\u7167\u65B9\u5411\u6765": 1
   "\u671D\u5411_": 0
-  "\u6301\u7EED\u53D1\u5C04": 0
   B: {fileID: 11400000, guid: f1f12c88e256925418e9ac44391e8254, type: 2}
+  currentAngle: 0
   "\u5F53\u524D\u65F6\u95F4": 0
   Speed_Lv: 2
   "\u73A9\u5BB6\u89D2\u5EA6_": 0
   "\u53D1\u5C04\u65F6\u95F4": 0
+  "\u53D1\u5C04":
+    m_PersistentCalls:
+      m_Calls: []
   "\u521D\u59CB\u8DDD\u79BB": 3
+  "\u8BD5\u4E00\u4E0B": 0
+  "\u5B50\u5F39\u5217\u8868": []
   "\u968F\u673A\u53D1\u5C04\u65E0\u6CD5\u6D88\u5F39\u5B50\u5F39": 0

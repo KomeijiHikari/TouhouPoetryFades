@@ -458,7 +458,49 @@ public class No_Re
 
  
 public static class Initialize
-{ 
+{
+    /// <summary>
+    /// 在线段上均匀插入点
+    /// </summary>
+    /// <param name="points">原始点列表（至少2个点）</param>
+    /// <param name="I">每段线段插入的点数</param>
+    /// <returns>插值后的点列表</returns>
+    public static List<Vector2> 线段均匀插点(List<Vector2> points, int I)
+    {
+        // 验证输入
+        if (points == null || points.Count < 2)
+        {
+            Debug.LogError("需要至少2个点才能构成线段");
+            return points ?? new List<Vector2>();
+        }
+
+        List<Vector2> result = new List<Vector2>();
+
+        // 添加第一个点
+        result.Add(points[0]);
+
+        // 处理每条线段
+        for (int i = 0; i < points.Count - 1; i++)
+        {
+            // 在当前线段上插入点
+            for (int j = 1; j <= I; j++)
+            {
+                // 计算插值比例
+                float t = j / (float)(I + 1);
+                // 线性插值
+                Vector2 newPoint = Vector2.Lerp(points[i], points[i + 1], t);
+                result.Add(newPoint);
+            }
+            // 添加下一个原始点
+            result.Add(points[i + 1]);
+        }
+        return result;
+    }
+    public  static  Vector2 碰撞射线(Vector2 v1,Vector2 v2,LayerMask l )
+    {
+  var a=      Physics2D.Linecast(v1,v2,l);
+        return a.point;
+    }
     public  static E_方向 Get_盒子八方向(   Bounds bounds, Vector2 point)
     {
         // 检查点是否在Bounds内部  
@@ -528,6 +570,36 @@ public static class Initialize
         }
       
             return TargetPO - C;
+    }
+    public static List<Vector2> Get_v2(Vector2 center, float distance)
+    {
+        List<Vector2> points = new List<Vector2>(9);
+
+        // 添加中心点（索引0）
+        points.Add(center);
+
+        // 8个方向向量（已归一化）
+        Vector2[] directions = new Vector2[8]
+        {
+            new Vector2(0, 1),      // 上
+            new Vector2(1, 1),      // 右上
+            new Vector2(1, 0),      // 右
+            new Vector2(1, -1),     // 右下
+            new Vector2(0, -1),     // 下
+            new Vector2(-1, -1),    // 左下
+            new Vector2(-1, 0),     // 左
+            new Vector2(-1, 1)      // 左上
+        };
+
+        // 生成8个方向点
+        for (int i = 0; i < 8; i++)
+        {
+            // 计算方向点位置：中心点 + 方向 * 距离
+            Vector2 dirPoint = center + directions[i].normalized * distance;
+            points.Add(dirPoint);
+        }
+
+        return points;
     }
     public static Vector2Int[] Get_v2_IntArry( this  Vector2Int  vI )
     {

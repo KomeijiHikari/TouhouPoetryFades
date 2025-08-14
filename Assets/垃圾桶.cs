@@ -25,6 +25,7 @@ namespace  SampleFSM
             当前 = a;
 
             当前.活动 = true;
+            当前.timeCount = Time.frameCount;
             当前.time = Time.time; 
             当前?.Enter?.Invoke();
         }
@@ -71,6 +72,8 @@ namespace  SampleFSM
 
         [DisplayOnly]
         public float time;
+        [DisplayOnly]
+        public int timeCount;
 
         public Action Enter;
         public Action FixStay;
@@ -153,7 +156,7 @@ namespace  SampleFSM
 
             a.活动 = true;
             a.time = Time.time;
-
+            a.timeCount = Time.frameCount;
             if (v.y >= 0) a.Down(v.y);
             return a;
         } 

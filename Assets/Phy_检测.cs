@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Sirenix.OdinInspector;
 public class Phy_检测 : MonoBehaviour 
 {
     [SerializeField ]
@@ -33,11 +33,15 @@ public class Phy_检测 : MonoBehaviour
     }
     public Action Exite;
     public Action Enter;
+    public bool 列表监控=false ;
+[SerializeField]
+    public RaycastHit2D[] Rs;
     [SerializeField ]
     LayerMask L;
     //List<Collider2D> CL;
     [SerializeField]
     bool 遇见了_;
+    public bool PoinDeb;
     public bool 遇见了 { get=> 遇见了_; set {
             if (遇见了_ !=value)
             {
@@ -70,15 +74,23 @@ public class Phy_检测 : MonoBehaviour
     private void Update()
     {
         if (暂停) return;
-   var a=     Physics2D.BoxCastAll(B.center,
+   Rs =     Physics2D.BoxCastAll(B.center,
             B.size,
             0,
             Vector2.zero,
            0,
            L);
 
-  
-        遇见了 = (a != null)&&a.Length>0; 
+
+ 
+        遇见了 = (Rs != null)&& Rs.Length>0;
+        if (PoinDeb)
+        {
+            foreach (var item in Rs)
+            {
+                item.point.DraClirl();
+            }
+        }
     }
     
 }

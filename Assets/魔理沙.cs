@@ -12,7 +12,8 @@ namespace Boss
 {   
     public partial class 魔理沙
     {
-        public 发射器 星星; 
+        public 发射器 普通星;
+        public 发射器 坠星; 
 
         随机执行 远距离j;
 
@@ -331,7 +332,7 @@ namespace Boss
         //{
         //    星星.监控子弹 = true;
         //    星星.
-        //}
+        //} 
         private void Awake()
         {
             if (I != null && I != this) Destroy(this);
@@ -346,55 +347,9 @@ namespace Boss
             idle_s = new state("idle_s", Air);
             atk_g = new state("atk_g", 地面);
             atk_s = new state("atk_s", Air);
-                星辉 = new state("星辉", atk_s);
+            星辉 = new state("星辉", atk_s);
 
-            星辉.Enter += () => {
-                星星.监控子弹 = true;
-                星星.gameObject.SetActive(true);
-                P.Stop_Velo();
-            };
-            星辉.FixStay += () => {
-                if (星星.子弹列表.Count > 0)
-                { 
-                    for (int i = 0; i < 星星.子弹列表.Count; i++)
-                    {
-                        if (Time.time - 当前.time < 0.1f) {
-                            星星.子弹列表[i].L线速度 = 0;
-                            星星.子弹列表[i].生命周期 = 2 + i;
-                        }
-               
-                        Bullet_base a = 星星.子弹列表[i];
-                        if (a.生命周期 > 9)
-                        {
-
-                            a.生命周期 = 10;
-                        }
-
-                        Bullet Target1 = (Bullet)星星.子弹列表[i]; 
-                        if (i== 0  )
-                        { 
-                            if (Target1.L线速度 == 0)
-                            {
-                                Target1.生命周期 =1;
-                                Target1.追踪玩家 = 0f;
-                                Target1.L_Acc线加速度 = 0;
-                            
-                                Target1.L线速度 = 100;
-                                Target1.A角速度 = 0;
-                                Target1.方向 = Target1.返回当前指向玩家的方向();
-                                //Initialize_Mono.I.Waite( ()=> {
-                                //    Target1.方向 = Target1.返回当前指向玩家的方向(); 
-                                //} 
-                                //,0.1f);
-                            } 
-                        }
-                    } 
-                } 
-                if (星星.子弹列表.Count==0&&Time.time-当前.time>2f)
-                {
-                    to_state(idle_s);
-                }
-            };
+            星辉_();
             圆劈.Enter += () =>
             {
                 伤害玩家一下("圆劈");
@@ -529,9 +484,110 @@ namespace Boss
                     {
                         Down(true);
                     }
-            
+
                 }
             };
+            过渡_();
+            atk_s.FixStay += () =>
+            {
+                if (追人)
+                {
+                    Move();
+                    if (Mathf.Abs(距离) < 1f)
+                    {
+                        Down(true);
+                    }
+                }
+            };
+            idle_s_();
+            Air.Enter += () =>
+            {
+                刷新翻转();
+                P.Stop_Velo();
+                A.Playanim(A_idle_sky);
+                P.浮空 = true;
+            };
+            地面.Enter += () =>
+            {
+                P.Stop_Velo();
+                P.浮空 = false;
+            };
+
+            idle_g_();
+
+        }
+
+        private void 星辉_()
+        { 
+            星辉.Enter += () =>
+            {
+                坠星.监控子弹 = true;
+                普通星.gameObject.SetActive(true);
+                坠星.gameObject.SetActive(true);
+                P.Stop_Velo();
+            };
+            星辉.FixStay += () =>
+            {
+                if (普通星.子弹列表.Count > 0)
+                {
+                    for (int i = 0; i < 普通星.子弹列表.Count; i++)
+                    {
+                        var axx = 普通星.子弹列表[i];
+                        if (axx.生命周期>9.5&& axx.生命周期< 9.7)
+                        {
+                            var a = axx.返回当前指向玩家的方向(transform.position);
+                            axx.A角速度 = Initialize.To_方向到角度 (  a) / Time.fixedDeltaTime;
+                        }
+                    }
+                }
+                if (坠星.子弹列表.Count > 0)
+                {
+                    for (int i = 0; i < 坠星.子弹列表.Count; i++)
+                    {
+                        if (Time.frameCount - 当前.timeCount < 2 )
+                        {
+                            坠星.子弹列表[i].L线速度 = 0;
+                            坠星.子弹列表[i].生命周期 = 2 + i;
+                        }
+
+                        Bullet_base a = 坠星.子弹列表[i];
+                        if (a.生命周期 > 9)
+                        {
+
+                            a.生命周期 = 10;
+                        }
+
+                        Bullet Target1 = (Bullet)坠星.子弹列表[i];
+                        if (i == 0)
+                        {
+                            if (Target1.L线速度 == 0)
+                            {
+                                Target1.生命周期 = 1;
+                                Target1.追踪玩家 = 0f;
+                                Target1.L_Acc线加速度 = 0;
+
+                                Target1.L线速度 = 100;
+                                Target1.A角速度 = Initialize.To_方向到角度(Target1.返回当前指向玩家的方向()) / Time.fixedDeltaTime ;
+                                //Target1.方向 = Target1.返回当前指向玩家的方向();
+                                //Initialize_Mono.I.Waite( ()=> {
+                                //    Target1.方向 = Target1.返回当前指向玩家的方向(); 
+                                //} 
+                                //,0.1f);
+                            }
+                        }
+                    }
+                }
+                if (坠星.子弹列表.Count == 0 && Time.time - 当前.time > 2f)
+                {
+                    普通星.gameObject.SetActive(false );
+                    坠星.gameObject.SetActive(false );
+                    to_state(idle_s);
+                }
+            };
+        }
+
+        private void 过渡_()
+        {
             过渡.Exite += () =>
             {
                 foreach (var item in 两边)
@@ -563,55 +619,16 @@ namespace Boss
                     }
                 }
             };
-            atk_s.FixStay += () =>
-            {
-                if (追人)
-                {
-                    Move();
-                    if (Mathf.Abs(距离) < 1f)
-                    {
-                        Down(true);
-                    }
-                }
-            };
-            idle_s.FixStay += () =>
-            {
-                switch (阶段)
-                {
-                    case E阶段.宝宝:
-                        追人 = true;
-                        to_state(atk_s);
-                        break;
-                    case E阶段.一阶段:
-                        to_state(星辉);
-                        break;
-                    case E阶段.二阶段:
-                        break;
-                    case E阶段.三阶段:
-                        break;
-                    default:
-                        break;
-                }
-            };
-            Air.Enter += () =>
-            {
-                刷新翻转();
-                P.Stop_Velo();
-                A.Playanim(A_idle_sky);
-                P.浮空 = true;
-            };
-            地面.Enter += () =>
-            {
-                P.Stop_Velo();
-                P.浮空 = false;
-            };
+        }
 
+        private void idle_g_()
+        {
             idle_g.Enter += () =>
             {
                 if (Time.time - E.被打时间 < 0.6f && !上一是屁股)
                 {
-                        ///上次是屁股就不触发
-                        上一是屁股 = true;
+                    ///上次是屁股就不触发
+                    上一是屁股 = true;
                     to_state(atk_g);
                     A.Playanim(A_屁股);
                     刷新翻转();
@@ -631,17 +648,17 @@ namespace Boss
                     {
                         case 情况.远距离:
                         case 情况.中距离:
-                                /// 星星和魔炮 
-                                ///当有蘑菇在场就放  超大 光炮 
-                                ///或者    远距离
-                                远距离();
+                            /// 星星和魔炮 
+                            ///当有蘑菇在场就放  超大 光炮 
+                            ///或者    远距离
+                            远距离();
                             to_state(atk_g);
                             break;
                         case 情况.近距离:
                             if (方向对着玩家)
                             {
-                                    ///或者起飞  
-                                    if (阶段 != E阶段.宝宝 && Initialize.RandomInt(1, 5) == 1)
+                                ///或者起飞  
+                                if (阶段 != E阶段.宝宝 && Initialize.RandomInt(1, 5) == 1)
                                 {
                                     Down(false);
                                     普通攻击次数++;
@@ -669,9 +686,38 @@ namespace Boss
 
                 }
             };
-
         }
 
+        private void idle_s_()
+        {
+            idle_s.FixStay += () =>
+            {
+                switch (阶段)
+                {
+                    case E阶段.宝宝:
+                        追人 = true;
+                        to_state(atk_s);
+                        break;
+                    case E阶段.一阶段:
+                        if (上一个 == 星辉)
+                        {
+                            Down(true);
+                        }
+                        else
+                        {
+                            to_state(星辉);
+                        }
+
+                        break;
+                    case E阶段.二阶段:
+                        break;
+                    case E阶段.三阶段:
+                        break;
+                    default:
+                        break;
+                }
+            };
+        }
 
         new private void FixedUpdate()
         {
