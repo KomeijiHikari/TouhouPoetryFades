@@ -6,6 +6,10 @@ using Sirenix.OdinInspector;
 public class Tli触发 : MonoBehaviour
 {
     [SerializeField]
+    TileBase Ti;
+
+
+    [SerializeField]
     Tilemap T;
 
     Phy_检测 P;
@@ -20,6 +24,7 @@ public class Tli触发 : MonoBehaviour
         触发();
     }
 
+ 
     [Button("Play_", ButtonSizes.Large)]
     public void 触发()
     {
@@ -40,7 +45,7 @@ public class Tli触发 : MonoBehaviour
         {
             if (T.HasTile(poi))
             { 
-                T.SetTile(poi, null);
+                T.SetTile(poi, Ti);
                 特效_pool_2.I.GetPool(T.CellToWorld(poi), T_N.特效砖块爆炸);
                 return true;
             }

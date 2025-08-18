@@ -125,14 +125,20 @@ public partial class 被打消失 : MonoBehaviour, I_生命, I_Dead, I_Revive
                 销毁触发?.Invoke();
             }
         }
-    } 
+    }
+    float TT;
     public void 被扣血(float i, GameObject obj, int SKey)
     {
+        if (Time.time-TT> 最小收击时间间隔)
+        {
+            TT = Time.time;
 
-        var a = 当前方向.方向To_v2().is_四方向比较(transform.你在我的哪里(obj.transform));
-        if (a) 扣血效果(i, obj);
+            var a = 当前方向.方向To_v2().is_四方向比较(transform.你在我的哪里(obj.transform));
+            if (a) 扣血效果(i, obj);
+        }
 
     }
+    public float 最小收击时间间隔 = 0.1f;
     public void 扣最大上限(float i)
     {
     }

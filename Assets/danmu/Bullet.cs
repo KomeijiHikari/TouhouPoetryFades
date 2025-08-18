@@ -2,8 +2,42 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using Sirenix.OdinInspector;
 public class Bullet_base : MonoBehaviour, I_Speed_Change
 {
+
+    /// <summary>
+    ///  应该是一个列表
+    ///  
+    /// 时间达到？时，invok 并且移除方法
+    /// 
+    /// </summary>
+    //[DictionaryDrawerSettings]
+    public Dictionary<float, Action> 字典=new Dictionary<float, Action> ();
+
+    private void OnEnable()
+    {
+        字典.Clear();
+    }
+    void 字典刷新()
+    {
+        foreach (var item in 字典)
+        {
+            if (生命周期 < item.Key)
+            {
+                item.Value.Invoke();
+                字典.Remove(item.Key);
+            }
+        
+        }
+    }
+    public static float 方向转角度(Vector2 a,Vector2 b)
+    {
+        var t =  a-b;
+        t.Normalize();
+          Debug.LogError(t);
+        return Initialize.To_方向到角度(t) / Time.fixedDeltaTime;
+    }
     public bool Deb;
     private void Awake()
     {
@@ -60,7 +94,10 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     public Vector2 方向 { get => 方向1; set {
             if (方向1 != value )
             {
-                Debug.LogError(value );
+                if (Deb)
+                {
+                    Debug.LogError(value);
+                } 
             }
             方向1 = value; } }
 
@@ -108,6 +145,9 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
         }
 
         生命周期 -= Time.fixedDeltaTime * I_S.固定等级差;
+
+        字典刷新(); 
+
         if (生命周期 <= 0)
         {
             我死了();

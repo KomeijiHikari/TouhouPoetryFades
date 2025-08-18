@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u8FFD\u8E2A\u73A9\u5BB6": 0
   "\u81EA\u8EAB\u65CB\u8F6C": 0
-  "\u751F\u547D\u5468\u671F": 5
-  LinearVelocity: 6
+  "\u751F\u547D\u5468\u671F": 10
+  LinearVelocity: 10
   Acceleration: 0
   AngularVelocity: 0
   AngularAcceleration: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
   SenderAngularVelocity: 100
   "\u53D1\u5C04\u5668Max\u89D2\u901F\u5EA6": 2.1474836e+9
   SenderAcceleration: 1800
-  Count: 10
+  Count: 7
   LineAnle: 20
   "\u53D1\u5C04\u95F4\u9694": 1
   "\u6CE2\u6B21": 0

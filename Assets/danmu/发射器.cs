@@ -174,7 +174,7 @@ namespace 发射器空间
             } 
         }
 
-        public static List<Vector2>平均点(Bounds bounds, int count)
+        public static List<Vector2> 平均点(Bounds bounds, int count)
         {
             List<Vector2> points = new List<Vector2>(count);
 
@@ -193,14 +193,20 @@ namespace 发射器空间
                 bounds.min.y + cellHeight / 2f
             );
 
-            // 生成网格点
+            // 生成蛇形网格点
             for (int y = 0; y < rows; y++)
             {
+                // 判断当前行是正向还是反向
+                bool reverse = y % 2 == 1; // 奇数行反向
+
                 for (int x = 0; x < columns; x++)
                 {
+                    // 计算实际列索引（蛇形顺序）
+                    int actualX = reverse ? (columns - 1 - x) : x;
+
                     // 计算当前点位置
                     Vector2 point = new Vector2(
-                        startPos.x + x * cellWidth,
+                        startPos.x + actualX * cellWidth,
                         startPos.y + y * cellHeight
                     );
 
@@ -217,7 +223,7 @@ namespace 发射器空间
             return points;
         }
 
- 
+
         public static void 平均点Debug(List<Vector2> points, float pointSize = 0.1f)
         {
 #if UNITY_EDITOR
@@ -237,10 +243,20 @@ namespace 发射器空间
             var a =  平均点(sp.bounds, B.Count); 
             for (int i = 0; i < a.Count; i++)
             {
-                var B = Send();
+                a[i].DraClirl();
+                var Bb = Send();
+                Bb.A角速度 = Bullet_base.方向转角度(a[i], Boss.魔理沙.I.transform.position);
+                Bb.transform.position = Boss.魔理沙.I.transform.position;
+                Bb.L线速度 = 10;
+                var 距离 = Mathf.Abs(((Vector2)Bb.transform.position - a[i]).magnitude);
 
-                B.transform.position = a[i];
-                Debug.LogError(B.transform.position);
+                Bb.L线速度 = 距离 / 0.2f;
+
+                Bb.字典.Add(Bb.生命周期 - 0.2f, () =>
+                {
+                    Bb.L线速度 = 0;
+                }); 
+                //Bb.transform.position = a[i]; 
             } 
         }
         public  void  发射盒子随机点(SpriteRenderer sp)

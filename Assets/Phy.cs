@@ -238,8 +238,9 @@ public class Phy : MonoBehaviour, I_暂停
 
     int LastF;
     public void Stop_Velo()
-    {
-        当前 = Vector2.zero ;
+    { 
+        Velocity = Vector2.zero;
+        当前 = Vector2.zero ; 
     }
  
     void 模拟()

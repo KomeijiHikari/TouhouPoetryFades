@@ -4,7 +4,7 @@ using UnityEngine;
 using SampleFSM;
 using BehaviorDesigner.Runtime;
 using UnityEditor.Timeline;
-using UnityEngine.Playables;
+using UnityEngine.Playables; 
 using System;
 using UnityEngine.Events;
 using 发射器空间;
@@ -80,13 +80,14 @@ namespace Boss
             }
 
         }
+       int 普通攻击最大次数=2;
         public int 普通攻击次数;
         void 远距离()
         {
             ///四分之二几率触发  失败触发 几率上升
             if (!蘑菇管理.I.有蘑菇在场)
             {
-                if (Initialize.RandomInt(1, 蘑菇几率) < 蘑菇几率 - 2 && 普通攻击次数 >=2)
+                if (Initialize.RandomInt(1, 蘑菇几率) < 蘑菇几率 - 2 && 普通攻击次数 >= 普通攻击最大次数)
                 {
                     if (DeBuG )  Debug.LogError("ndomInt(1, 蘑菇几率) < 蘑菇几率 ");
                     蘑菇几率 = 5;
@@ -104,7 +105,7 @@ namespace Boss
                 //大魔炮
                 //有蘑菇 
                 ///四分之二几率触发  失败触发 几率上升
-                if (Initialize.RandomInt(1, 几率) < 几率 - 2 && 普通攻击次数 >= 2)
+                if (Initialize.RandomInt(1, 几率) < 几率 - 2 && 普通攻击次数 >= 普通攻击最大次数)
                 {
                     几率 = 5;
                     ///成功 
@@ -124,7 +125,7 @@ namespace Boss
             }
 
  
-            if (广播体操 == 1|| 笨蛋玩家大炮 >=2 && 普通攻击次数 >= 2)
+            if (广播体操 == 1|| 笨蛋玩家大炮 >=2 && 普通攻击次数 >= 普通攻击最大次数)
             {
                 if (!扫把.isActiveAndEnabled)
                 {
@@ -267,7 +268,7 @@ namespace Boss
             A.Playanim(A_idle_sky);
 
 
-            foreach (var item in 两边) item.SetActive(false);
+            foreach (var item in 两边) item.gameObject .SetActive(false);
         }
         bool 上一是屁股;
 
@@ -294,6 +295,21 @@ namespace Boss
                 to_state(过渡);
             }
         }
+       bool  Move_to(Transform target)
+        { 
+          var TT=  target.position - transform.position;
+            var a= TT;
+            a.Normalize();
+            P.Velocity = a * E.Move_speed ;
+            if (TT.sqrMagnitude<4)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         void Move()
         {
             P.Velocity = Vector2.right * E.Move_speed * 刷新翻转();
@@ -312,6 +328,9 @@ namespace Boss
         Phy_检测 下蹲;
         [SerializeField]
         [DisableOnPlay]
+        Phy_检测 地形炮;
+        [SerializeField]
+        [DisableOnPlay]
         Phy_检测 圆劈;
         [SerializeField]
         [DisableOnPlay]
@@ -319,7 +338,7 @@ namespace Boss
 
         [SerializeField]
         [DisableOnPlay]
-        List<GameObject> 两边;
+        List<发射器> 两边;
         public void 登场()
         {
             半灵.I.初始化(E);
@@ -333,6 +352,7 @@ namespace Boss
         //    星星.监控子弹 = true;
         //    星星.
         //} 
+        bool 地形破坏=false ;
         private void Awake()
         {
             if (I != null && I != this) Destroy(this);
@@ -349,7 +369,7 @@ namespace Boss
             atk_s = new state("atk_s", Air);
             星辉 = new state("星辉", atk_s);
 
-            星辉_();
+            星辉_(); 
             圆劈.Enter += () =>
             {
                 伤害玩家一下("圆劈");
@@ -465,6 +485,10 @@ namespace Boss
             T.pause += () => { };
             T.stopp += () =>
             {
+                if (当前 == atk_s)
+                {
+                    to_state(idle_s);
+                }
                 if (当前 == atk_g)
                 {
                     to_state(idle_g);
@@ -476,15 +500,18 @@ namespace Boss
                 P.Velocity = E.Move_speed * Vector2.up;
                 if (天空检测.遇见了)
                 {
-                    if (阶段 == E阶段.一阶段)
+                    if (阶段 == E阶段.二阶段)
+                    {
+                        to_state(idle_s);
+                    }
+                    else    if (阶段 == E阶段.一阶段)
                     {
                         to_state(idle_s);
                     }
                     else
                     {
                         Down(true);
-                    }
-
+                    } 
                 }
             };
             过渡_();
@@ -498,6 +525,32 @@ namespace Boss
                         Down(true);
                     }
                 }
+                if (!地形破坏)
+                {
+                    if (T.PD.playableAsset.name == "地形炮" &&
+   地形炮.Rs != null)
+                    {
+                        for (int i = 0; i < 地形炮.Rs.Length; i++)
+                        {
+                            var a = 地形炮.Rs[i];
+                            if (a.collider.gameObject.layer == Initialize.L_Ground)
+                            {
+                                Debug.LogError("    if (a.collider.gameObject.layer == Initialize.L_Ground)");
+                                var G = a.collider.gameObject.GetComponent<被打消失>();
+                                if (G != null)
+                                {
+                                    Debug.LogError("    = a.collider.gameObject.GetComponent<被打消失>();");
+                                    G.被扣血(9, gameObject, 0);
+                                }
+                            }
+                            if (a.collider.gameObject.layer == Initialize.L_Player)
+                            {
+                                伤害玩家一下("魔炮");
+                            }
+                        }
+                    }
+                }
+   
             };
             idle_s_();
             Air.Enter += () =>
@@ -533,10 +586,10 @@ namespace Boss
                     for (int i = 0; i < 普通星.子弹列表.Count; i++)
                     {
                         var axx = 普通星.子弹列表[i];
-                        if (axx.生命周期>9.5&& axx.生命周期< 9.7)
+                        if (axx.生命周期 > 9.5 && axx.生命周期 < 9.7)
                         {
                             var a = axx.返回当前指向玩家的方向(transform.position);
-                            axx.A角速度 = Initialize.To_方向到角度 (  a) / Time.fixedDeltaTime;
+                            axx.A角速度 = Initialize.To_方向到角度(a) / Time.fixedDeltaTime;
                         }
                     }
                 }
@@ -544,19 +597,12 @@ namespace Boss
                 {
                     for (int i = 0; i < 坠星.子弹列表.Count; i++)
                     {
-                        if (Time.frameCount - 当前.timeCount < 2 )
-                        {
-                            坠星.子弹列表[i].L线速度 = 0;
-                            坠星.子弹列表[i].生命周期 = 2 + i;
-                        }
-
-                        Bullet_base a = 坠星.子弹列表[i];
-                        if (a.生命周期 > 9)
-                        {
-
-                            a.生命周期 = 10;
-                        }
-
+                        //if (Time.frameCount - 当前.timeCount < 2 )
+                        //{
+                        //    坠星.子弹列表[i].L线速度 = 0;
+                        //    坠星.子弹列表[i].生命周期 = 2 + i;
+                        //}
+                          
                         Bullet Target1 = (Bullet)坠星.子弹列表[i];
                         if (i == 0)
                         {
@@ -567,12 +613,14 @@ namespace Boss
                                 Target1.L_Acc线加速度 = 0;
 
                                 Target1.L线速度 = 100;
-                                Target1.A角速度 = Initialize.To_方向到角度(Target1.返回当前指向玩家的方向()) / Time.fixedDeltaTime ;
-                                //Target1.方向 = Target1.返回当前指向玩家的方向();
-                                //Initialize_Mono.I.Waite( ()=> {
-                                //    Target1.方向 = Target1.返回当前指向玩家的方向(); 
-                                //} 
-                                //,0.1f);
+                                Vector2 方向 = new Vector2(-1, -5);
+                                Target1.A角速度 = Initialize.To_方向到角度(方向) / Time.fixedDeltaTime; 
+ 
+                                Initialize_Mono.I.Waite(() =>
+                                {
+                                    Target1.方向 = 方向;
+                                }
+                                , 0.1f);
                             }
                         }
                     }
@@ -592,18 +640,25 @@ namespace Boss
             {
                 foreach (var item in 两边)
                 {
-                    item.SetActive(false);
+                    if (item.子弹列表 != null)
+                        for (int i = 0; i < item.子弹列表.Count; i++)
+                    {
+                        var 子弹 = item.子弹列表[i];
+                        子弹.L线速度 = 10;
+                    }
+                    item.gameObject.SetActive(false);
                 }
             };
             过渡.Enter += () =>
             {
                 foreach (var item in 两边)
                 {
-                    item.SetActive(true);
+                    item.gameObject.SetActive(true);
                 }
             };
             过渡.Stay += () =>
             {
+ 
                 if (Time.time - 当前.time > 0.2f)
                 {
                     if (地面检测.遇见了)
@@ -695,6 +750,7 @@ namespace Boss
                 switch (阶段)
                 {
                     case E阶段.宝宝:
+                        ///预备下砸
                         追人 = true;
                         to_state(atk_s);
                         break;
@@ -710,6 +766,20 @@ namespace Boss
 
                         break;
                     case E阶段.二阶段:
+                        if (!地形破坏)
+                        {
+                            if (Move_to(中心点))
+                            {
+                                to_state(atk_s);
+                                P.Stop_Velo();
+                                T.Play("地形炮");
+                            }
+                        }
+                        else
+                        {
+
+                        }
+        
                         break;
                     case E阶段.三阶段:
                         break;
@@ -745,6 +815,7 @@ namespace Boss
             情况_ = 条件判断();
         }
         public bool 方向对着玩家;
+
 
         protected state idle_s;
         protected state idle_g;
@@ -812,6 +883,7 @@ namespace Boss
                 ///近距离
             }
         }
+        [SerializeField]
         Transform 中心点;
         [SerializeField]
         private List<GameObject > ms;
