@@ -51,9 +51,12 @@ MonoBehaviour:
   "\u671D\u5411_": 0
   B: {fileID: 11400000, guid: f1f12c88e256925418e9ac44391e8254, type: 2}
   currentAngle: 0
+  ResultAngle: 0
+  currentAngularVelocity: 0
   "\u5F53\u524D\u65F6\u95F4": 0
   Speed_Lv: 2
   "\u73A9\u5BB6\u89D2\u5EA6_": 0
+  Deb: 0
   "\u53D1\u5C04\u65F6\u95F4": 0
   "\u53D1\u5C04":
     m_PersistentCalls:

@@ -1,20 +1,40 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+using System;
 
-
-public class Phy : MonoBehaviour, I_ÔİÍ£
-{ 
+public class Phy : MonoBehaviour, I_æš‚åœ, I_Speed_Change, I_M_Ridbody2D
+{
     [SerializeField]
-    public bool ¸¡¿Õ   = false; 
+    public bool æµ®ç©º = false;
 
-    [SerializeField ] 
-  Vector2 ËÙ¶ÈÏŞÖÆ; 
-    [SerializeField ]
+    [SerializeField]
+    Vector2 é€Ÿåº¦é™åˆ¶;
+    [SerializeField]
     [DisplayOnly]
-    Enemy_base b;
-    [SerializeField ][DisplayOnly  ]
+    I_M_Ridbody2D b;
+    [SerializeField]
+    [DisplayOnly]
     Vector2 Velocity_;
+    /// <summary>
+  //  è¿™æ˜¯æˆ‘çš„ç‰©ç†è„šæœ¬ è¯¥è„šæœ¬å®Œå…¨æ›¿æ¢æ‰unityè‡ªå¸¦çš„Ridbody2Dç»„ä»¶
+  //  æ˜¯é€šè¿‡å¤–éƒ¨èµ‹å€¼ Velocity è®©ç‰©ä½“è¿åŠ¨ ç°åœ¨æˆ‘æƒ³è¦åœ¨ä¸€ä¸ªæœ‰é‡åŠ›çš„ç‰©ä½“ä¸Šç»‘å®šè¿™ä¸ªè„šæœ¬
+  //     æˆ‘æƒ³è¦é‚£ä¸ªç‰©ä½“ æ˜¯ç”±å°æ€ªæˆ–è€…BOSSå‘å°„ç”Ÿæˆè¯¥ç‰©ä½“åç»™è¯¥ç‰©ä½“Velocity ä¸€ä¸ªå€¼
+  //     è®©è¯¥ç‰©ä½“ç±»ä¼¼æŠ›ç‰©çº¿çš„å½¢å¼æ”»å‡»åˆ°æŒ‡å®šä½ç½®
+  //   åŒæ—¶åªç»™å‡ºåˆå§‹åŠ› è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬    åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+  //è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬    åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+  //    ä¸è¦è‡ªåˆ›è„šæœ¬ï¼Œ è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬ åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+  //       ä¸è¦è‡ªåˆ›è„šæœ¬ï¼Œ è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬ åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+  //       ä¸è¦è‡ªåˆ›è„šæœ¬ï¼Œ è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬ åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+  //       ä¸è¦è‡ªåˆ›è„šæœ¬ï¼Œ è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬ åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+  //       ä¸è¦è‡ªåˆ›è„šæœ¬ï¼Œ è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬ åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+  //       ä¸è¦è‡ªåˆ›è„šæœ¬ï¼Œ è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬ åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+  //       ä¸è¦è‡ªåˆ›è„šæœ¬ï¼Œ è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬ åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+  //       ä¸è¦è‡ªåˆ›è„šæœ¬ï¼Œ è¯·å¥½å¥½ç ”ç©¶æˆ‘çš„è„šæœ¬ åœ¨æˆ‘çš„è„šæœ¬ä¸­ç”Ÿæˆæ–¹æ³•
+    /// </summary>
+
+
     public Vector2 Velocity
     {
         get
@@ -22,71 +42,75 @@ public class Phy : MonoBehaviour, I_ÔİÍ£
             return Velocity_;
         }
         set
-        { 
+        {
             if (Velocity_ != value)
             {
-                if (Deb )    Debug.LogError(value + "                               "+transform .position+"     "+gameObject  );
-                Velocity_ = value; 
+                if (Deb) Debug.LogError(value + "                               " + transform.position + "     " + gameObject);
+                Velocity_ = value;
             }
         }
     }
     [DisplayOnly]
     [SerializeField]
-    Vector2 µ±Ç°_;
-    public Vector2 µ±Ç°
+    Vector2 å½“å‰_;
+    public Vector2 å½“å‰
     {
-        get { return µ±Ç°_; }
+        get { return å½“å‰_; }
         private set
         {
-            if (µ±Ç°_ != value)
-            {
-                //Debug.LogError(µ±Ç° + "          BUUGGGGGBBBBBBBB " + value + gameObject);
-            }
-
-            µ±Ç°_ = value;
+            if (å½“å‰_ != value&&Deb)     Debug.LogError(å½“å‰ + "          BUUGGGGGBBBBBBBB " + value + gameObject); 
+            å½“å‰_ = value;
         }
     }
     public void Goto_thisWay(Vector2 WoldPosition)
     {
-        var Ïà¶Ô×ø±ê = WoldPosition - (Vector2)transform.position;
-        Velocity = Ïà¶Ô×ø±ê;
+        var ç›¸å¯¹åæ ‡ = WoldPosition - (Vector2)transform.position;
+        Velocity = ç›¸å¯¹åæ ‡;
         if (Deb)
         {
-            Debug.LogError("Goto_thisWay        " + Ïà¶Ô×ø±ê);
+            Debug.LogError("Goto_thisWay        " + ç›¸å¯¹åæ ‡);
         }
     }
-    float ËãÁ¦(float ×ÜÖµ)
+
+    ///ä¸€ç§’å ä¸€å…±ç§»åŠ¨â€œæ€»å€¼â€  è¿”å›åˆå§‹é€Ÿåº¦
+    float åå‘Y(float æ€»å€¼,float tim=1)
     {
-        return Mathf.Sqrt(×ÜÖµ * 2 * G);
+        //   æ€»ä½ç§» = åˆå§‹é€Ÿåº¦ * ti - 0.5XGXtiXti
+        //   (æ€»ä½ç§»+0.5XGXtiXti)/ti=åˆå§‹é€Ÿåº¦ 
+        return æ€»å€¼ / tim + 0.5f * G* tim;
+        //return Mathf.Sqrt(æ€»å€¼ * 2 * G);
     }
     float DeltaTime
     {
         get
         {
-            return Time.fixedDeltaTime * b.I_S.¹Ì¶¨µÈ¼¶²î;
+            return Time.fixedDeltaTime * b.I_S.å›ºå®šç­‰çº§å·®;
         }
     }
     private void Awake()
     {
 
         b = GetComponent<Enemy_base>();
-        b.GravityScale = 0;
+        if (b==null)
+        {
+            b = (I_M_Ridbody2D )this;
+           }
 
         Velocity = Vector2.zero;
-        if (ËÙ¶ÈÏŞÖÆ==Vector2 .zero )   ËÙ¶ÈÏŞÖÆ = new Vector2(30, 10);
+        if (é€Ÿåº¦é™åˆ¶ == Vector2.zero) é€Ÿåº¦é™åˆ¶ = new Vector2(30, 10);
     }
-    float G
+  public   float G
     {
         get
         {
-            if (¸¡¿Õ) return 0;
-            if (b.ÖØÁ¦Ôö·ù == 0)
+            if (æµ®ç©º) return 0;
+            if (b.é‡åŠ›å¢å¹… == 0)
             {
-                return Initialize_Mono.I.¼ÙÎïÀíÖØÁ¦;
+                return Initialize_Mono.I.å‡ç‰©ç†é‡åŠ›;
             }
             else
-            { 
-                return Initialize_Mono  .I.¼ÙÎïÀíÖØÁ¦* b.ÖØÁ¦Ôö·ù;
+            {
+                return Initialize_Mono.I.å‡ç‰©ç†é‡åŠ› * b.é‡åŠ›å¢å¹…;
             }
 
         }
@@ -94,96 +118,97 @@ public class Phy : MonoBehaviour, I_ÔİÍ£
 
     public bool Stop;
     [SerializeField]
-    float Ä¦²ÁÁ¦ = 0.5f;
-    public float Set_Ä¦²ÁÁ¦(float value=-1f)
+    float æ‘©æ“¦åŠ› = 0.5f;
+    public float Set_æ‘©æ“¦åŠ›(float value = -1f)
     {
-        if (value>=0)
+        if (value >= 0)
         {
-            Ä¦²ÁÁ¦ = value;
+            æ‘©æ“¦åŠ› = value;
         }
-        return Ä¦²ÁÁ¦;
+        return æ‘©æ“¦åŠ›;
     }
 
     No_Re RR = new No_Re();
     int II;
-    public Vector2 Åö×²Ô¤²â(Vector2 target)
-    ///Åö×²µã£¬ Ö®¼ä µÄ¾àÀë   ·µ»Ø·½Ïò*¾àÀë
+    public Vector2 ç¢°æ’é¢„æµ‹(Vector2 target)
+    ///ç¢°æ’ç‚¹ï¼Œ ä¹‹é—´ çš„è·ç¦»   è¿”å›æ–¹å‘*è·ç¦»
     {
-        if (!RR.Note_Re() )
+        if (!RR.Note_Re())
         {
             II++;
-            Debug.LogError("Ñ­»· ´ÎÊı   " +II+ target);
-            if (II>5)
+            Debug.LogError("å¾ªç¯ æ¬¡æ•°   " + II + target);
+            if (II > 5)
             {
-                Debug.LogError("  Ñ­»·´ÎÊı    ´óÓÚ5"+target);
+                Debug.LogError("  å¾ªç¯æ¬¡æ•°    å¤§äº5" + target);
 
                 return Vector2.zero;
             }
         }
         if (target == Vector2.zero) return target;
-        var ÖĞĞÄµã = b.Bounds.center;
-        //var ·½Ïò = (ÖĞĞÄµã - ÖĞĞÄµã + (Vector3)target).normalized;
-        var ·½Ïò = (ÖĞĞÄµã - ÖĞĞÄµã + (Vector3)target) ;
-        ·½Ïò.Normalize();
+        Vector3 ä¸­å¿ƒç‚¹ = b.Bounds.center;
+        //var æ–¹å‘ = (ä¸­å¿ƒç‚¹ - ä¸­å¿ƒç‚¹ + (Vector3)target).normalized;
+        var æ–¹å‘ = (ä¸­å¿ƒç‚¹ - ä¸­å¿ƒç‚¹ + (Vector3)target);
+        æ–¹å‘.Normalize();
 
         var a = Physics2D.BoxCast(
-            ÖĞĞÄµã,
+            ä¸­å¿ƒç‚¹,
             b.Bounds.size - new Vector3(0.05f, 0.05f),
             0,
-            ·½Ïò,
+            æ–¹å‘,
             target.magnitude * DeltaTime,
-            b.Åö×²¼ì²â²ã
+            b.ç¢°æ’æ£€æµ‹å±‚
             );
         if (a.collider != null)
-        {///ÓĞÅö×²
+        {///æœ‰ç¢°æ’
 
-            if (Deb) {
-                Debug.LogError(a.collider.gameObject.name);
-                a.point.DraClirl(1,Color.blue ,1f);
-            }
-         ///·ÖÎöÓĞÅö×²ºóÓ¦¸ÃÍùÄÄÀï×ß
-            Vector2 Åö×²µãÏà¶ÔÎ»ÖÃ = Initialize. Get_»ñÈ¡Åö×²¾àÀë(b.Bounds,a.point); ;
-            if (Åö×²µãÏà¶ÔÎ»ÖÃ.magnitude <= 0.08f)
+            if (Deb)
             {
-                Åö×²µãÏà¶ÔÎ»ÖÃ = Vector2.zero;
+                Debug.LogError(a.collider.gameObject.name);
+                a.point.DraClirl(1, Color.blue, 1f);
+            }
+            ///åˆ†ææœ‰ç¢°æ’ååº”è¯¥å¾€å“ªé‡Œèµ°
+            Vector2 ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½® = Initialize.Get_è·å–ç¢°æ’è·ç¦»(b.Bounds, a.point); ;
+            if (ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½®.magnitude <= 0.08f)
+            {
+                ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½® = Vector2.zero;
             }
 
             if (target.x == target.y)
             {
-                var ¾àÀë = (a.point - (Vector2)ÖĞĞÄµã).magnitude - 0.3f;
-                Debug.LogError("×ßÕâÀï");
-                return ·½Ïò * ¾àÀë;
+                var è·ç¦» = (a.point - (Vector2)ä¸­å¿ƒç‚¹).magnitude - 0.3f;
+                Debug.LogError("èµ°è¿™é‡Œ");
+                return æ–¹å‘ * è·ç¦»;
             }
             else if (target.x > target.y)
             {
-                Debug.LogError("×ßÕâÀï");
-                return Åö×²Ô¤²â( new Vector2 (target.x, Åö×²µãÏà¶ÔÎ»ÖÃ.y)    );
+                Debug.LogError("èµ°è¿™é‡Œ");
+                return ç¢°æ’é¢„æµ‹(new Vector2(target.x, ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½®.y));
             }
             else if (target.y > target.x)
             {
-                Debug.LogError("×ßÕâÀï");
-                return Åö×²Ô¤²â(new Vector2(Åö×²µãÏà¶ÔÎ»ÖÃ.x, target.y));
+                Debug.LogError("èµ°è¿™é‡Œ");
+                return ç¢°æ’é¢„æµ‹(new Vector2(ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½®.x, target.y));
             }
             else
             {
-                Debug.LogError("×ßÕâÀï");
+                Debug.LogError("èµ°è¿™é‡Œ");
                 return Vector2.zero;
             }
 
-            //if (Åö×²µãÏà¶ÔÎ»ÖÃ.magnitude <= 0.08f)
-            //{ //   Áã¾àÀë  
+            //if (ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½®.magnitude <= 0.08f)
+            //{ //   é›¶è·ç¦»  
             //    if (v.x == v.y)
             //    {
-            //        var ¾àÀë = (a.point - (Vector2)ÖĞĞÄµã).magnitude - 0.3f;
-            //        return ·½Ïò * ¾àÀë;
+            //        var è·ç¦» = (a.point - (Vector2)ä¸­å¿ƒç‚¹).magnitude - 0.3f;
+            //        return æ–¹å‘ * è·ç¦»;
             //    }
             //    else if (v.x > v.y)
             //    {
-            //        return new Vector2(Åö×²µãÏà¶ÔÎ»ÖÃ.x, v.y);
+            //        return new Vector2(ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½®.x, v.y);
             //    }
             //    else if (v.y > v.x)
             //    {
-            //        return new Vector2(v.x, Åö×²µãÏà¶ÔÎ»ÖÃ.y);
+            //        return new Vector2(v.x, ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½®.y);
             //    }
             //    else
             //    {
@@ -191,20 +216,20 @@ public class Phy : MonoBehaviour, I_ÔİÍ£
             //    } 
             //}
             //else
-            //{ //   ÓĞ¾àÀë
+            //{ //   æœ‰è·ç¦»
 
             //    if (v.x==v.y)
             //    {
-            //        var ¾àÀë = (a.point - (Vector2)ÖĞĞÄµã).magnitude - 0.3f;
-            //        return ·½Ïò * ¾àÀë;
+            //        var è·ç¦» = (a.point - (Vector2)ä¸­å¿ƒç‚¹).magnitude - 0.3f;
+            //        return æ–¹å‘ * è·ç¦»;
             //    }
             //    else if (v.x > v.y)
             //    { 
-            //        return new Vector2(Åö×²µãÏà¶ÔÎ»ÖÃ.x, v.y);
+            //        return new Vector2(ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½®.x, v.y);
             //    }
             //    else if (v.y > v.x)
             //    {
-            //        return new Vector2(v.x, Åö×²µãÏà¶ÔÎ»ÖÃ.y);
+            //        return new Vector2(v.x, ç¢°æ’ç‚¹ç›¸å¯¹ä½ç½®.y);
             //    }
             //    else
             //    {
@@ -214,100 +239,102 @@ public class Phy : MonoBehaviour, I_ÔİÍ£
         }
         else
         {
-            ///Ã»Åöµ½
-            Debug.LogError("ÀëÆ×Çé¿ö³öÏÖÁË");
+            ///æ²¡ç¢°åˆ°
+            Debug.LogError("ç¦»è°±æƒ…å†µå‡ºç°äº†");
             return target;
         }
     }
 
-    public float  Get_Ê¸Á¿³¤¶È()
-    { 
-        return µ±Ç°.magnitude ;
+    public float Get_çŸ¢é‡é•¿åº¦()
+    {
+        return å½“å‰.magnitude;
     }
     public Vector2 SafeVelocity
     {
         get => Velocity;
         set
         {
-            if (Deb) if (value != Vector2.zero) Debug.LogError("Safe:       "+value + "                               ");
-            Velocity = Åö×²Ô¤²â(value);
+            if (Deb) if (value != Vector2.zero) Debug.LogError("Safe:       " + value + "                               ");
+            Velocity = ç¢°æ’é¢„æµ‹(value);
         }
     }
 
-    public bool ÔİÍ£ { get => ¹Ø±Õ1; set => ¹Ø±Õ1 = value; }
+    public bool æš‚åœ { get => å…³é—­1; set => å…³é—­1 = value; }
 
     int LastF;
     public void Stop_Velo()
-    { 
-        Velocity = Vector2.zero;
-        µ±Ç° = Vector2.zero ; 
-    }
- 
-    void Ä£Äâ()
     {
-
+        Velocity = Vector2.zero;
+        å½“å‰ = Vector2.zero;
+    }
+    private void OnEnable()
+    {
+        Stop_Velo();
+    }
+    void æ¨¡æ‹Ÿ()
+    { 
         if (Stop) return;
         if (Velocity != Vector2.zero)
-        { ///Íâ²¿½øÈë   
+        { ///å¤–éƒ¨è¿›å…¥   
             LastF = Time.frameCount;
             if (Velocity.y > 0)
-            {///·´Ïò¼ÆËãÁ¦¶È
-               if(!¸¡¿Õ) Velocity = new Vector2(Velocity.x, ËãÁ¦(Velocity.y));
+            {///åå‘è®¡ç®—åŠ›åº¦
+                if (!æµ®ç©º) Velocity = new Vector2(Velocity.x, åå‘Y(Velocity.y));
             }
 
-            if (Velocity.x == 0 && Velocity.y != 0 && µ±Ç°.x != 0)
-            {///ÆğÌøºó±£Áô¹ßĞÔ
-                Velocity = new Vector2(µ±Ç°.x, Velocity.y);
-            }
-
-            //µ±Ç° = ¶¯Ì¬ËÙ¶ÈÏŞÖÆ ? Åö×²Ô¤²â(Velocity) : Velocity;
-            µ±Ç° = Velocity;
+            if (Velocity.x == 0 && Velocity.y != 0 && å½“å‰.x != 0)
+            {///èµ·è·³åä¿ç•™æƒ¯æ€§
+                Velocity = new Vector2(å½“å‰.x, Velocity.y);
+            } 
+            //å½“å‰ = åŠ¨æ€é€Ÿåº¦é™åˆ¶ ? ç¢°æ’é¢„æµ‹(Velocity) : Velocity;
+            å½“å‰ = Velocity;
 
             //Initialize_Mono.I.Waite(() => De(), 1f);
         }
+         
 
+        //if (b.I_S.Speed > 8||  Mathf .Abs(b.I_S.Speed * å½“å‰.y)>=40)
+        //å½“å‰ = ç¢°æ’é¢„æµ‹(å½“å‰);   
 
-        //if (b.I_S.Speed > 8||  Mathf .Abs(b.I_S.Speed * µ±Ç°.y)>=40)
-        //µ±Ç° = Åö×²Ô¤²â(µ±Ç°);   
+        var V = (Vector3)å½“å‰ * b.I_S.å›ºå®šç­‰çº§å·®;
+        //if (é€Ÿåº¦é™åˆ¶ != Vector2.zero)
+        //{
+        //    if (é€Ÿåº¦é™åˆ¶.x != 0) V.x = Mathf.Clamp(V.x, -é€Ÿåº¦é™åˆ¶.x, é€Ÿåº¦é™åˆ¶.x);
+        //    if (é€Ÿåº¦é™åˆ¶.y != 0) V.y = Mathf.Clamp(V.y, -é€Ÿåº¦é™åˆ¶.y, é€Ÿåº¦é™åˆ¶.y);
+        //}
 
-        var V = (Vector3)µ±Ç°*b.I_S .¹Ì¶¨µÈ¼¶²î ;
-        if (ËÙ¶ÈÏŞÖÆ != Vector2.zero)
-        { 
-            if (ËÙ¶ÈÏŞÖÆ.x != 0) V .x = Mathf.Clamp(V.x, -ËÙ¶ÈÏŞÖÆ.x, ËÙ¶ÈÏŞÖÆ.x);
-            if (ËÙ¶ÈÏŞÖÆ.y != 0) V.y = Mathf.Clamp(V.y, -ËÙ¶ÈÏŞÖÆ.y, ËÙ¶ÈÏŞÖÆ.y);
-        }
+        b.transform.position += V * Time.fixedDeltaTime;
 
-        b.transform.position += V*Time.fixedDeltaTime  ;
+        if (Deb) Debug.LogError("aaaaaaaaa               a");
+        ///é‡åŠ›ä¸ªæƒ¯æ€§
+        var X = å½“å‰.x;
+        var Y = å½“å‰.y;
 
-        ///ÖØÁ¦¸ö¹ßĞÔ
-        var X = µ±Ç°.x;
-        var Y = µ±Ç°.y;
-
-        //Ã»ÓĞ·ÉĞĞÄÜÁ¦
-        if (!¸¡¿Õ)
-        { 
+        //æ²¡æœ‰é£è¡Œèƒ½åŠ›
+        if (!æµ®ç©º)
+        {
             if (!b.Ground || Y > 0)
             {
-                ///¿ÕÖĞÆğÌø   ¼ÓËÙ¶È
-                Y -= G * DeltaTime;
+                ///ç©ºä¸­èµ·è·³   åŠ é€Ÿåº¦
+                Y  = Y - G * DeltaTime;
             }
             else if (Y < 0 && b.Ground)
             {
 
                 Y = 0;
-                //ÂäµØÒ»Ë²¼ä¹éÁã 
+                //è½åœ°ä¸€ç¬é—´å½’é›¶ 
             }
-            else if (Velocity == Vector2.zero && b.Ground)           ///Fix  Í¬Ò»Ö¡ÄÚÔËĞĞµÚ¶ş´Îºó    ËÙ¶ÈÒÑ¾­¸³ÖµÎª0  ÅĞ¶Ï¿ªÊ¼¼õËÙ      
-            { ///he V eloÖØµşÖ¡²»ÔËĞĞ
+            else if (Velocity == Vector2.zero && b.Ground)           ///Fix  åŒä¸€å¸§å†…è¿è¡Œç¬¬äºŒæ¬¡å    é€Ÿåº¦å·²ç»èµ‹å€¼ä¸º0  åˆ¤æ–­å¼€å§‹å‡é€Ÿ      
+            { ///he V eloé‡å å¸§ä¸è¿è¡Œ
 
                 if (LastF != Time.frameCount)
                 {
                     if (Y == 0)
                     {
-                        ///Ä¦²ÁÁ¦
-                        if (Mathf.Abs(X) > 0.8f * b.I_S.¹Ì¶¨µÈ¼¶²î)
+                        ///æ‘©æ“¦åŠ›
+                        if (Mathf.Abs(X) > 0.8f * b.I_S.å›ºå®šç­‰çº§å·®)
                         {
-                            X -= Mathf.Sign(X) * DeltaTime * Ä¦²ÁÁ¦;
+                            X -= Mathf.Sign(X) * DeltaTime * æ‘©æ“¦åŠ›;
                         }
                         else
                         {
@@ -315,7 +342,7 @@ public class Phy : MonoBehaviour, I_ÔİÍ£
                         }
                     }
                 }
-                //ÔÚµØÉÏ²¢ÇÒµ±Ç°FIXÃ»ÓĞÍâ²¿Á¦
+                //åœ¨åœ°ä¸Šå¹¶ä¸”å½“å‰FIXæ²¡æœ‰å¤–éƒ¨åŠ›
             }
         }
         else
@@ -326,80 +353,164 @@ public class Phy : MonoBehaviour, I_ÔİÍ£
             }
             else if (LastF != Time.frameCount)
             {
-                if (Mathf.Abs(X) > 0.8f * b.I_S.¹Ì¶¨µÈ¼¶²î) X -= Mathf.Sign(X) * DeltaTime ; else X = 0;
-                if (Mathf.Abs(Y) > 0.8f * b.I_S.¹Ì¶¨µÈ¼¶²î) Y -= Mathf.Sign(Y) * DeltaTime  ; else Y = 0;
+                if (Mathf.Abs(X) > 0.8f * b.I_S.å›ºå®šç­‰çº§å·®) X -= Mathf.Sign(X) * DeltaTime; else X = 0;
+                if (Mathf.Abs(Y) > 0.8f * b.I_S.å›ºå®šç­‰çº§å·®) Y -= Mathf.Sign(Y) * DeltaTime; else Y = 0;
 
-                //if (Mathf.Abs(X) > 0.8f * b.I_S.¹Ì¶¨µÈ¼¶²î)  X -= Mathf.Sign(X) * DeltaTime * Ä¦²ÁÁ¦;  else    X = 0;
-                //if (Mathf.Abs(Y) > 0.8f * b.I_S.¹Ì¶¨µÈ¼¶²î) Y -= Mathf.Sign(Y) * DeltaTime * Ä¦²ÁÁ¦; else Y = 0; 
-            } 
-        }        // ÓĞ·ÉĞĞÄÜÁ¦£¨ÎŞÖØÁ¦£©
-
-
-
-
+                //if (Mathf.Abs(X) > 0.8f * b.I_S.å›ºå®šç­‰çº§å·®)  X -= Mathf.Sign(X) * DeltaTime * æ‘©æ“¦åŠ›;  else    X = 0;
+                //if (Mathf.Abs(Y) > 0.8f * b.I_S.å›ºå®šç­‰çº§å·®) Y -= Mathf.Sign(Y) * DeltaTime * æ‘©æ“¦åŠ›; else Y = 0; 
+            }
+        }       
+        // æœ‰é£è¡Œèƒ½åŠ›ï¼ˆæ— é‡åŠ›ï¼‰
+         
         //if (!b.Ground && Y < 0 && Y > -0.1f)
-        {  ///²âÁ¿×î¸ßµã
+        {  ///æµ‹é‡æœ€é«˜ç‚¹
             //De();
         }
- 
-        µ±Ç° = new Vector2(X, Y);
+
+        å½“å‰ = new Vector2(X, Y);
         var a = b.Get_rb();
-        if (a!=null)a.velocity = Vector2.zero;
+        if (a != null) a.velocity = Vector2.zero;
 
-        Velocity = Vector2.zero;
-    }
-
- 
-
-  public   bool Deb;
+        Velocity = Vector2.zero; 
+    } 
+    public bool Deb; 
     private void FixedUpdate()
-    {
- 
-        if (¹Ø±Õ1 || b.I_S.ÏŞÖÆ)
-        {
-
+    { 
+        if (å…³é—­1 || b.I_S.é™åˆ¶)
+        { 
             return;
-        }
-        ///½Åµ×ÔÚµØÃæÏÂÃæ
+        } 
+       
+        ///è„šåº•åœ¨åœ°é¢ä¸‹é¢
         var a = Physics2D.Raycast(
             new Vector2(b.Bounds.min.x + 0.01f, b.Bounds.min.y + 0.01f),
-            Vector2.right, 
+            Vector2.right,
             b.Bounds.size.x - 0.02f,
-            b.Åö×²¼ì²â²ã
+            b.ç¢°æ’æ£€æµ‹å±‚
             ).collider != null;
         if (a)
         {
-            transform.position =new Vector2(transform.position.x, transform.position.y+0.1f);
-        }
- 
-        else
-        {
-            Ä£Äâ();
+            transform.position = new Vector2(transform.position.x, transform.position.y + 0.1f);
         } 
+        else
+        { 
+            æ¨¡æ‹Ÿ();
+        } 
+        if (b==(I_M_Ridbody2D)this&&åœ°é¢!=null)
+        {
+            //ground = åœ°é¢.é‡è§äº†;
+        }
+    }
+    [Button("æµ‹ä¸€ä¸‹", ButtonSizes.Large)]
+    public void ç›®æ ‡ç‚®(Transform T,float tim)
+    {
+        if (Ground) Ground = false;
+        var a= Initialize.æŠ›ç‰©çº¿_GetçŸ¢é‡( T.transform .position - transform .position,tim,G );
+        Initialize_Mono.I.Waite_åŒé€Ÿ(
+            () => { transform.position.DraClirl(); }
+            , tim
+            );
+        transform.position.DraClirl();
+        Set_RealVelo(a);
+    }
+    [Button("æµ‹ä¸€ä¸‹", ButtonSizes.Large)]
+    public void æµ‹ä¸€ä¸‹(Vector2 æµ‹è¯•é€Ÿåº¦)
+    {
+        if (Ground)  Ground = false;
+ 
+        var Ti = 1;
+        Velocity = æµ‹è¯•é€Ÿåº¦; 
+
+        Vector2 é¢„æµ‹ = transform.position + (Vector3)æµ‹è¯•é€Ÿåº¦;
+        é¢„æµ‹.DraClirl(0.5f,Color .blue, Ti+1); 
+        Initialize_Mono.I.Waite(
+            () => { ((Vector2)transform.position).DraClirl(1,Color .red ,1f); },Ti
+            );
+    } 
+    [Button("æŠ›ç‰©çº¿", ButtonSizes.Large)]
+    public void æŠ›ç‰©çº¿(Vector2 å‘å°„æ–¹å‘, Transform t)
+    {  
+        å‘å°„æ–¹å‘.Normalize();
+        var å·® = transform.position - t.position;
+       å½“å‰= å‘å°„æ–¹å‘*  Initialize . æŠ›ç‰©çº¿_GetåŠ›(å‘å°„æ–¹å‘, t.position,G );
+    }
+    public void æŠ›ç‰©çº¿(Vector2 å‘å°„æ–¹å‘, Vector3 t)
+    {
+        å‘å°„æ–¹å‘.Normalize();
+        var å·® = t-transform.position    ;
+        Stop_Velo(); 
+
+        if (å‘å°„æ–¹å‘.x! * å·®.x < 0) å‘å°„æ–¹å‘ = new Vector2(-å‘å°„æ–¹å‘.x, å‘å°„æ–¹å‘.y);
+
+        å½“å‰ =  å‘å°„æ–¹å‘  * Initialize.æŠ›ç‰©çº¿_GetåŠ›(å‘å°„æ–¹å‘, å·®, G); 
+
+    }
+    public void Set_RealVelo(Vector2 V)
+    {
+        Stop_Velo();
+        å½“å‰ = V;
     }
     private void Update()
-    {
-        if (Key != KeyCode.None)
-        {
-            if (Input.GetKeyDown(Key))
-            {
-                Velocity = ²âÊÔËÙ¶È;
-            }
-        }
-        Speedd = b.I_S.¹Ì¶¨µÈ¼¶²î;
+    { 
+        Speedd = b.I_S.å›ºå®šç­‰çº§å·®;
     }
-    [SerializeField ][DisplayOnly ]
+    [SerializeField]
+    [DisplayOnly]
     float Speedd;
     private void OnDisable()
     {
-        µ±Ç° = Vector2.zero;
+        å½“å‰ = Vector2.zero;
         Velocity = Vector2.zero;
     }
 
-
-    [SerializeField] KeyCode Key;
-    [SerializeField] Vector2 ²âÊÔËÙ¶È;
-    [SerializeField]
+     [SerializeField]
     [DisplayOnly]
-    private bool ¹Ø±Õ1;
+    private bool å…³é—­1; 
+
+     
+    [Space( )] 
+    [Header("å‡è£…ç‰©ç†")]
+    public float é‡åŠ›å¢å¹…1;
+    public  bool ground;
+    public I_Speed_Change i_S;
+
+    [Header("ç¢°æ’è®¡ç®—")]
+    public LayerMask ç¢°æ’æ£€æµ‹å±‚1;
+    [SerializeField]
+    float current_Speed_LV;
+    [SerializeField]
+    float speed_Lv;
+
+    public I_Speed_Change I_S { get => (I_Speed_Change)this; }
+    public LayerMask ç¢°æ’æ£€æµ‹å±‚ => ç¢°æ’æ£€æµ‹å±‚1;
+   public new Transform transform => base.transform ;
+  public   bool Ground { get => ground; set => ground = value; }
+    [SerializeField] Phy_æ£€æµ‹ åœ°é¢;
+    public GameObject å¯¹è±¡ => gameObject ;
+    public float é‡åŠ›å¢å¹… { get => é‡åŠ›å¢å¹…1; set => é‡åŠ›å¢å¹…1 = value; }
+    public System.Action å˜é€Ÿè§¦å‘ { get ; set ; }
+
+  public Bounds Bounds { 
+        get {
+            if (s != null) return s.bounds;
+            else return bc.bounds; 
+        }
+    } 
+
+    [SerializeField] SpriteRenderer s;
+    [SerializeField] BoxCollider2D bc;
+
+    public float Current_Speed_LV => current_Speed_LV; 
+    public float Speed_Lv { get => speed_Lv; set => speed_Lv=value; } 
+  public   Rigidbody2D Get_rb() { return null; }
+}
+interface I_M_Ridbody2D
+{
+    I_Speed_Change I_S { get; }
+    LayerMask ç¢°æ’æ£€æµ‹å±‚ { get; }
+    Bounds Bounds { get; }
+    float é‡åŠ›å¢å¹… { get; set; }
+    Transform transform { get; }
+    bool Ground { get; set; }
+    Rigidbody2D Get_rb();
 }

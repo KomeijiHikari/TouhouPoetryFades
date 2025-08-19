@@ -15,6 +15,9 @@ namespace 发射器空间
         持续播放,
         不播放
     }
+    /// <summary>
+    ///  只释放形状
+    /// </summary>
     public class 发射器 : MonoBehaviour
     {
         CinemachineDollyCart C;
@@ -38,7 +41,9 @@ namespace 发射器空间
  
         [SerializeField]
         float currentAngle; //发射角度
-        float currentAngularVelocity; //容器
+        [SerializeField][DisplayOnly]
+        float ResultAngle; //发射角度
+        [SerializeField] float currentAngularVelocity; //容器
 
         public float 当前时间;
 
@@ -52,10 +57,15 @@ namespace 发射器空间
             get => Initialize.To_方向到角度(Player3.I.transform.position - transform.position);
 
         }
+        public float ResultAngle1 { get => ResultAngle; set {
+                if (Deb)           if (value != ResultAngle)     Debug.LogError(ResultAngle); 
+                ResultAngle  = value;
+            }  }
+        public bool Deb;
+        public int 次数;
         private void OnEnable()
         {
-            //P.m_Waypoints.
-            Debug.LogError("调用调用调用调用调用调用调用调用调用调用");
+            次数 = 0;
             switch (原播放类型_)
             {
                 case 播放类型.启动持续播放:
@@ -65,6 +75,7 @@ namespace 发射器空间
                     break;
                 case 播放类型.启动短暂播放:
                     重制();
+                    次数++;
                     发射?.Invoke();
                     break; 
             }
@@ -75,8 +86,9 @@ namespace 发射器空间
         }
         private void Start()
         {
-            重制();
-
+            if (B.pre.GetComponent<Bullet_base>() == null)
+                应用重力子弹 = true;
+                重制(); 
         }
         public float 发射时间;
 
@@ -87,7 +99,7 @@ namespace 发射器空间
             if (按照方向来) 朝向_ = 朝向 == 1 ? 0 : 180;
             if (B!=null)
             {
-                currentAngle = 朝向_ - B.InitRotation;
+                currentAngle =  B.InitRotation;
                 currentAngularVelocity = B.SenderAngularVelocity;
             }
 
@@ -110,21 +122,22 @@ namespace 发射器空间
             }
             if (!可以) return;
  
-                currentAngle = 朝向_ - B.InitRotation;
+                //currentAngle = 朝向_ - B.InitRotation;
                 玩家角度_ = 玩家角度;
-                currentAngularVelocity = Mathf.Clamp(currentAngularVelocity + B.SenderAcceleration * Time.fixedDeltaTime * Spee, -B.发射器Max角速度, B.发射器Max角速度);
+                currentAngularVelocity = Mathf.Clamp( currentAngularVelocity +(B.SenderAcceleration * Time.fixedDeltaTime * Spee) , -B.发射器Max角速度, B.发射器Max角速度);
                 currentAngle += currentAngularVelocity * Time.fixedDeltaTime * Spee;
-
-                if (Mathf.Abs(currentAngle) > 720) currentAngle -= Mathf.Sign(currentAngle) * 360f;
  
-      
+                if (Mathf.Abs(ResultAngle1) > 720)currentAngle -= Mathf.Sign(currentAngle) * 360f;
+            ResultAngle1 = 朝向_ - currentAngle; 
+
             当前时间 += Time.fixedDeltaTime * Spee;
             if (当前时间 > B.发射间隔)
             {
                 当前时间 -= B.发射间隔;
 
+                次数++;
                 发射?.Invoke();
-            }
+            } 
         }
 
 
@@ -141,7 +154,7 @@ namespace 发射器空间
             if (TimeF != Time.frameCount)
             {
                 TimeF = Time.frameCount;
-                发射组(B.Count, currentAngle);
+                发射组(B.Count, ResultAngle1);
             }
         }
         public void 轨迹发射(CinemachineSmoothPath c  )
@@ -156,7 +169,7 @@ namespace 发射器空间
                 列表.Add(TT);
             }
 
-            var R = Initialize.线段均匀插点(列表, B.Count);
+            var R = Initialize.多线段均匀插点(列表, B.Count);
             foreach (var i in R)
             {
                 Send().transform.position = i;
@@ -166,14 +179,16 @@ namespace 发射器空间
         void 发射组(int count, float angle)
         { 
             float temp = count % 2 == 0 ? angle + B.LineAnle / 2 : angle;
-
+        
             for (int i = 0; i < count; ++i)
             {
                 temp += Mathf.Pow(-1, i) * i * B.LineAnle;
-                Send(temp);
+                if (应用重力子弹) SendP(temp);
+
+                else  Send(temp);
             } 
         }
-
+      [SerializeField ][DisplayOnly]    bool 应用重力子弹;
         public static List<Vector2> 平均点(Bounds bounds, int count)
         {
             List<Vector2> points = new List<Vector2>(count);
@@ -219,7 +234,7 @@ namespace 发射器空间
                 // 达到所需点数时停止
                 if (points.Count >= count) break;
             }
-
+        
             return points;
         }
 
@@ -234,29 +249,44 @@ namespace 发射器空间
             }
 #endif
         }
+        float 返回不变形速度(Vector2 m,Vector2 y, float Tim=1)
+        {
+            var 距离 = Mathf.Abs(((Vector2)m - y).magnitude);
+ return   距离 / Tim ;
+        }
+        public void 发射盒子平均点_重力(SpriteRenderer sp)
+        {
+            var a = 平均点(sp.bounds, B.Count);
+            for (int i = 0; i < a.Count; i++)
+            { 
+                a[i].DraClirl();
+                var S = SendP();
+                S.transform.position = Boss.魔理沙.I.transform.position;
+                var aaa = Initialize.抛物线_Get矢量(a[i] - (Vector2)S.transform.position, 2f, S.G);
+                S.Set_RealVelo(aaa);
+                Initialize_Mono.I.Waite_同速(() => { S.transform.position.DraClirl(); }, 2); 
+            }
+        }
         /// <summary>
         /// 盒子太小就不会发射
         /// </summary>
         /// <param name="sp"></param>
         public void 发射盒子平均点(SpriteRenderer sp)
-        { 
-            var a =  平均点(sp.bounds, B.Count); 
+        {
+            var a =  平均点(sp.bounds, B.Count);  
             for (int i = 0; i < a.Count; i++)
-            {
+            {  
                 a[i].DraClirl();
                 var Bb = Send();
                 Bb.A角速度 = Bullet_base.方向转角度(a[i], Boss.魔理沙.I.transform.position);
-                Bb.transform.position = Boss.魔理沙.I.transform.position;
-                Bb.L线速度 = 10;
-                var 距离 = Mathf.Abs(((Vector2)Bb.transform.position - a[i]).magnitude);
+                Bb.transform.position = Boss.魔理沙.I.transform.position; 
 
-                Bb.L线速度 = 距离 / 0.2f;
+                Bb.L线速度 = 返回不变形速度(Bb.transform.position, a[i],  0.8f);
 
-                Bb.字典.Add(Bb.生命周期 - 0.2f, () =>
-                {
-                    Bb.L线速度 = 0;
-                }); 
-                //Bb.transform.position = a[i]; 
+                Bb.Add(0.8f, () =>
+              {
+                  Bb.L线速度 = 0;
+              });
             } 
         }
         public  void  发射盒子随机点(SpriteRenderer sp)
@@ -329,81 +359,162 @@ namespace 发射器空间
         [Button("星星弹幕_", ButtonSizes.Large)]
         public void 发射星星弹幕()
         {
-            var a = 星星弹幕_(初始距离, B.Count, currentAngle);
+            var a = 星星弹幕_(初始距离, B.Count, ResultAngle1, 1, true ,false ,0.5f );
             foreach (var item in a)
             {
                 var S = Send(Initialize.To_方向到角度(item - transform.position));
-                S.transform.position = item;
+                S.transform.position = transform.position;
+                S.L线速度 = 返回不变形速度(S.transform .position ,item, S.L线速度);
                 //S.L线速度 += (item - transform.position).magnitude/2; 
             }
         }
-       
-        List<Vector3> 星星弹幕_(float 半径, int 顶点内点数量,float 第一个点角度=0)
-        {
+        List<Vector3> 星星弹幕_(
+   float 半径,
+   int 均匀点数,
+   float 第一个点角度 = 0,
+   int N = 0,
+   bool 连接非相邻内点 = false,
+   bool 连接相邻内点 = false,
+   float 内半径比例 = 0.5f)
+        { 
+            N += 4;  // 实际顶点数 = N + 4
+
             Vector3 center = transform.position;
             List<Vector3> points = new List<Vector3>();
 
-            // 计算内圆半径（黄金分割比例）
-            float innerRadius = 半径 * 0.382f;
+            // 计算内圆半径（限制在10%-90%之间）
+            float innerRadius = 半径 * Mathf.Clamp(内半径比例, 0.1f, 0.9f);
 
-            // 五角星有5个顶点和5个内点
-            int totalPoints = 10;
+            // 总关键点数 = 2N (N个外点 + N个内点)
+            int totalKeyPoints = 2 * N;
 
-            // 生成所有关键点（5个外点 + 5个内点）
-            Vector3[] keyPoints = new Vector3[totalPoints];
+            // 生成所有关键点
+            Vector3[] keyPoints = new Vector3[totalKeyPoints];
+            float angleStep = 360f / totalKeyPoints;
 
-            for (int i = 0; i < totalPoints; i++)
+            for (int i = 0; i < totalKeyPoints; i++)
             {
-                // 计算当前角度（五角星需要每72度一个顶点，但交错放置）
-                float angleDeg = 第一个点角度+(i * 36f); // 36度一个点（10个点 * 36 = 360度）
-
-                // 区分外点和内点（奇数索引为内点，偶数索引为外点）
+                float angleDeg = 第一个点角度 + (i * angleStep);
                 bool isOuterPoint = (i % 2 == 0);
                 float currentRadius = isOuterPoint ? 半径 : innerRadius;
-
-                // 转换为弧度
                 float angleRad = angleDeg * Mathf.Deg2Rad;
 
-                // 计算点位置（在XY平面）
-                Vector3 point = center + new Vector3(
+                keyPoints[i] = center + new Vector3(
                     Mathf.Cos(angleRad) * currentRadius,
                     Mathf.Sin(angleRad) * currentRadius,
                     0
                 );
-
-                keyPoints[i] = point;
             }
 
-            // 连接点形成五角星
-            for (int i = 0; i < totalPoints; i++)
+            // 连接外点形成星形主体
+            for (int i = 0; i < totalKeyPoints; i++)
             {
-                int nextIndex = (i + 1) % totalPoints;
+                int nextIndex = (i + 1) % totalKeyPoints;
                 Vector3 startPoint = keyPoints[i];
                 Vector3 endPoint = keyPoints[nextIndex];
 
-                // 添加起点
                 points.Add(startPoint);
-
-                // 在两点之间插值生成中间点
-                for (int j = 1; j < 顶点内点数量; j++)
+                for (int j = 1; j < 均匀点数; j++)
                 {
-                    float t = (float)j / 顶点内点数量;
-                    Vector3 midPoint = Vector3.Lerp(startPoint, endPoint, t);
-                    points.Add(midPoint);
+                    float t = (float)j / 均匀点数;
+                    points.Add(Vector3.Lerp(startPoint, endPoint, t));
                 }
             }
 
+            // 收集所有内点（索引为奇数的点）
+            List<Vector3> innerPoints = new List<Vector3>();
+            for (int i = 1; i < totalKeyPoints; i += 2)
+            {
+                innerPoints.Add(keyPoints[i]);
+            }
+            // 连接非相邻内点（形成星形图案）[核心修改]
+            if (连接非相邻内点)
+            {    
+                for (int i = 0; i < innerPoints.Count; i++)
+                { 
+                    List<Vector3> AA = new List<Vector3>();
+                    List<int> UnI = new List<int>();
+ 
+                    ///三个不相邻的点
+                    
+                    UnI.Add(i);
+                    UnI.Add(Initialize.头尾(N,i,1));
+                    UnI.Add(Initialize.头尾(N, i, -1)); 
+                    if (N!=4&&!Initialize.是奇数(N)) UnI.Add(Initialize.头尾(N, i, N/2)); 
+
+                    for (int iq = 0; iq < innerPoints.Count; iq++)
+                    { 
+                        if (UnI.Contains(iq)) continue;
+                        AA.AddRange(Initialize.单线段插值(innerPoints[i], innerPoints[iq], 均匀点数)); 
+                    }
+                    Vector3 startPoint = innerPoints[i];
+                    points.AddRange(AA); 
+                }
+            } 
+            // 连接相邻内点（形成内多边形）
+            if (连接相邻内点)
+            { 
+                for (int i = 0; i < innerPoints.Count; i++)
+                {
+                    int nextIndex = (i + 1) % innerPoints.Count;
+                    Vector3 startPoint = innerPoints[i];
+                    Vector3 endPoint = innerPoints[nextIndex];
+
+                    points.Add(startPoint);
+                    for (int j = 1; j < 均匀点数; j++)
+                    {
+                        float t = (float)j / 均匀点数;
+                        points.Add(Vector3.Lerp(startPoint, endPoint, t));
+                    }
+                }
+            } 
+            // 闭合图形：添加第一个点
+            points.Add(keyPoints[0]); 
             return points;
-        }
+        } 
         public List<Bullet_base> 子弹列表; 
       void   子弹周期更新(Bullet_base a)
         {
             子弹列表.Remove (a);
             a.结束-= 子弹周期更新;
         }
+        Phy SendP(float 角度 = 0)
+        {
+            var Bb = Surp_Pool.I.GetPool(B.pre.name).GetComponent<Phy>();
+            var B_ = Bb.GetComponent<Phy_检测>();
+            Bb.transform.position = transform.position;
+            B_.Enter +=()=>{
+                for (int i = 0; i < B_.Rs.Length; i++)
+                {
+                    var aa = B_.Rs[i];
+                    if (aa.collider.gameObject.layer == Initialize.L_Ground)
+                    {
+                        特效_pool_2.I.GetPool(B_.transform.position, T_N.特效闪光爆炸);
+                        Surp_Pool.I.ReturnPool(B_.gameObject, B.pre.name);
+                    }
+                    else if (aa.collider.gameObject.layer == Initialize.L_Player)
+                    {
+                        Initialize_Mono.I.Waite_同速(() =>
+                        {
+                            特效_pool_2.I.GetPool(B_.transform.position, T_N.特效闪光爆炸);
+                            Surp_Pool.I.ReturnPool(B_.gameObject, B.pre.name);
+                        }, 0.1f);
+                    }
+                } 
+            };
+
+            var 方向 = (Vector3)Initialize.To_角度到方向(角度);
+            Bb.transform.position = transform.position + 方向 * 初始距离;
+
+
+
+            Bb.Velocity = 方向 * B.LinearVelocity;
+            return Bb;
+        }
         Bullet_base Send(float 角度=0  )
         { 
-            var Bb = Surp_Pool.I.GetPool(Surp_Pool.能量子弹).GetComponent<Bullet_base>();
+
+            var Bb = Surp_Pool.I.GetPool( B.pre .name).GetComponent<Bullet_base>();
 
             初始化子弹(Bb);
 
@@ -417,16 +528,15 @@ namespace 发射器空间
                 子弹列表.Add(Bb);
                 Bb.结束 += 子弹周期更新 ;
             }
-            return Bb;
-            //((Vector2)obj.transform.position).DraClirl(1, Color.cyan, 0.1f);
 
-            //StartCoroutine(Initialize .Waite( ()=>{
-            //    Debug.LogError("我出生了喵我出生了喵我        出生了喵我出生了喵  出生了喵我出生了喵  出生了喵我死了喵    " + obj.activeInHierarchy + obj.transform.position);
-            //}));
-            //obj.transform.position += transform.position + (Vector3)Initialize.To_角度到方向(角度) * 初始距离;
+            初始化?.Invoke(Bb);
+            return Bb;
+ 
         }
+
+        public Action<Bullet_base> 初始化;
         void 初始化子弹(Bullet_base Bb)
-        {
+        { 
             if (随机发射无法消弹子弹)
             {
                 var a = ((Bullet)Bb);
@@ -443,6 +553,7 @@ namespace 发射器空间
                     } 
                 }
             }
+
             Bb.追踪玩家 = B.追踪玩家;
 
             Bb.Speed_Lv = Speed_Lv;
@@ -458,6 +569,7 @@ namespace 发射器空间
 
             Bb.Max速度 = B.Max速度;
             Bb.自身旋转 = B.自身旋转;
+
         }
         public bool 随机发射无法消弹子弹;
 

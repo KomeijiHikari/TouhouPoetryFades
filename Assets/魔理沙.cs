@@ -12,8 +12,10 @@ namespace Boss
 {   
     public partial class 魔理沙
     {
-        public 发射器 普通星;
-        public 发射器 坠星; 
+        public 发射器 星辉发射器;
+        public 发射器 坠星发射器;
+        public 发射器 雷击发射器;
+        public 发射器 雷击发射器1;
 
         随机执行 远距离j;
 
@@ -190,8 +192,26 @@ namespace Boss
                     扫把计时_ = value;
             }
         }
+     public   Transform Ta, Tb;
         void 发射扫把()
         {
+            if (地形破坏)
+            {
+                T扫把.gameObject.SetActive(true);
+                扫把.重制();
+                T扫把.position = Tb.position ;
+
+                if (transform.lossyScale.x==1)    T扫把.position = Tb.position; 
+                else  T扫把.position = Ta.position; 
+                扫把.方向 = new Vector2(-transform.lossyScale.x, 0);
+                  A.Playanim(A_fashe);
+                
+                扫把.self_speed = 5f;
+
+                广播体操 = -1;
+                扫把计时 = 0;
+                return;
+            }
             A.Playanim(A_fashe);
             T扫把.gameObject.SetActive(true);
             扫把.重制();
@@ -352,7 +372,7 @@ namespace Boss
         //    星星.监控子弹 = true;
         //    星星.
         //} 
-        bool 地形破坏=false ;
+    public     bool 地形破坏=false ;
         private void Awake()
         {
             if (I != null && I != this) Destroy(this);
@@ -368,8 +388,220 @@ namespace Boss
             atk_g = new state("atk_g", 地面);
             atk_s = new state("atk_s", Air);
             星辉 = new state("星辉", atk_s);
+            星坠 = new state("星坠", atk_s);
+            雷击 = new state("雷击", atk_s);
+            星坠_();
+            星辉_();
+            雷击_();
+            Start_();
 
-            星辉_(); 
+            A_Awake();
+            倒地.Enter += () =>
+            {
+                if (阶段 == E阶段.宝宝)
+                {
+                    阶段 = E阶段.一阶段;
+                    foreach (var item in 发射器S)
+                    {
+                        item.随机发射无法消弹子弹 = true;
+                    }
+                }
+                A.Playanim(A_倒地);
+            };
+            A.当前动画为百分之99 += () =>
+            {
+                if (当前 == atk_g)
+                {
+                    if (A.当前名字 == A_屁股) to_state(idle_g);
+
+                    Debug.LogError(A.当前名字 + "  A.当前动画为百分                             动画结束");
+                }
+
+            };
+            T.pause += () => { };
+            T.stopp += () =>
+            {
+                if (当前 == atk_s)
+                {
+                    to_state(idle_s);
+                }
+                if (当前 == atk_g)
+                {
+                    to_state(idle_g);
+                }
+            };
+
+            开场.Stay += () =>
+            {
+                P.Velocity = E.Move_speed * Vector2.up;
+                if (天空检测.遇见了)
+                {
+                    if (阶段 == E阶段.二阶段)
+                    {
+                        to_state(idle_s);
+                    }
+                    else if (阶段 == E阶段.一阶段)
+                    {
+                        to_state(idle_s);
+                    }
+                    else
+                    {
+                        Down(true);
+                    }
+                }
+            };
+            过渡_();
+            atk_s.FixStay += () =>
+            {
+                if (追人)
+                {
+                    Move();
+                    if (Mathf.Abs(距离) < 1f)
+                    {
+                        Down(true);
+                    }
+                }
+                if (!地形破坏)
+                {
+                    if (T.PD.playableAsset.name == "地形炮" &&
+   地形炮.Rs != null)
+                    {
+                        for (int i = 0; i < 地形炮.Rs.Length; i++)
+                        {
+                            var a = 地形炮.Rs[i];
+                            if (a.collider.gameObject.layer == Initialize.L_Ground)
+                            {
+                                Debug.LogError("    if (a.collider.gameObject.layer == Initialize.L_Ground)");
+                                var G = a.collider.gameObject.GetComponent<被打消失>();
+                                if (G != null)
+                                {
+                                    Debug.LogError("    = a.collider.gameObject.GetComponent<被打消失>();");
+                                    G.被扣血(9, gameObject, 0);
+                                }
+                            }
+                            if (a.collider.gameObject.layer == Initialize.L_Player)
+                            {
+                                伤害玩家一下("魔炮");
+                            }
+                        }
+                    }
+                }
+
+            };
+            idle_s_();
+            Air.Enter += () =>
+            {
+                刷新翻转();
+                P.Stop_Velo();
+                A.Playanim(A_idle_sky);
+                P.浮空 = true;
+            };
+            地面.Enter += () =>
+            {
+                P.Stop_Velo();
+                P.浮空 = false;
+            };
+
+            idle_g_();
+
+        }
+
+        void 顺序(发射器 F)
+        {
+            if (F.子弹列表.Count > 0)
+                for (int IA = 0; IA < F.子弹列表.Count; IA++)
+                {
+                    Bullet T = (Bullet)F.子弹列表[IA];
+                    float 间隔 = IA * 0.5f;
+                    //T.生命周期 = 20 + 间隔;
+                    T.Add(间隔, () => {
+                        T.L线速度 = 100;
+                        Vector2 方向 = new Vector2(-1, -5);
+                        T.A角速度 = Initialize.To_方向到角度(方向) / Time.fixedDeltaTime;
+
+                        Initialize_Mono.I.Waite(() => { T.方向 = 方向; }, 0.1f);
+                    });
+                }
+        }
+        private void 雷击_()
+        {
+            雷击 .Enter += () =>
+            {
+                雷击发射器 .监控子弹 = true;
+                雷击发射器 .gameObject.SetActive(true);
+                雷击发射器1.监控子弹 = true;
+                雷击发射器1.gameObject.SetActive(true);
+                P.Stop_Velo();
+            };
+            
+            ///
+            雷击 .FixStay += () =>
+         {
+             if (Time.frameCount - 当前.timeCount<1 )
+             {
+                 顺序(雷击发射器1);
+                 顺序(雷击发射器 );
+             }
+             //if (雷击发射器1.子弹列表.Count > 0)
+             //{
+             //    for (int IA = 0; IA < 雷击发射器1.子弹列表.Count; IA++)
+             //    {
+             //        Bullet Target1 = (Bullet)雷击发射器1.子弹列表[IA];
+             //        if (IA == 0)
+             //        {
+             //            if (Target1.L线速度 == 0)
+             //            {
+             //                Target1.生命周期 = 1;
+             //                Target1.追踪玩家 = 0f;
+             //                Target1.L_Acc线加速度 = 0;
+
+             //                Target1.L线速度 = 100;
+             //                Vector2 方向 = new Vector2(-1, -5);
+             //                Target1.A角速度 = Initialize.To_方向到角度(方向) / Time.fixedDeltaTime;
+
+             //                Initialize_Mono.I.Waite(() =>    {   Target1.方向 = 方向;   }    , 0.1f);
+             //            }
+             //        }
+             //    }
+             //}  
+             //if (雷击发射器.子弹列表.Count > 0)
+             //{
+             //    for (int i = 0; i < 雷击发射器.子弹列表.Count; i++)
+             //    { 
+             //        Bullet Target1 = (Bullet)雷击发射器.子弹列表[i];
+             //        if (i == 0)
+             //        {
+             //            if (Target1.L线速度 == 0)
+             //            {
+             //                Target1.生命周期 = 1;
+             //                Target1.追踪玩家 = 0f;
+             //                Target1.L_Acc线加速度 = 0;
+
+             //                Target1.L线速度 =  100;
+             //                Vector2 方向 = new Vector2(-1, -5);
+             //                Target1.A角速度 = Initialize.To_方向到角度(方向) / Time.fixedDeltaTime;
+
+             //                Initialize_Mono.I.Waite(() =>
+             //                {
+             //                    Target1.方向 = 方向;
+             //                }
+             //                , 0.1f);
+             //            }
+             //        }
+             //    }
+             //}
+              
+             if (雷击发射器.子弹列表.Count == 0 && Time.time - 当前.time > 2f)
+             {
+                 雷击发射器1.gameObject.SetActive(false);
+                 雷击发射器.gameObject.SetActive(false);
+                 to_state(idle_s);
+             }
+         };
+        }
+
+        private void Start_()
+        {
             圆劈.Enter += () =>
             {
                 伤害玩家一下("圆劈");
@@ -446,8 +678,7 @@ namespace Boss
                 }
                 ///时间外
                 扫把计时 = -1;
-                扫把.gameObject.SetActive(false);
-
+                扫把.gameObject.SetActive(false); 
             };
 
             //E.被打 += () =>
@@ -459,177 +690,89 @@ namespace Boss
             //      }
             //  };
 
-            A_Awake();
-            倒地.Enter += () =>
+            坠星发射器.发射.AddListener(() =>
             {
-                if (阶段 == E阶段.宝宝)
-                {
-                    阶段 = E阶段.一阶段;
-                    foreach (var item in 发射器S)
-                    {
-                        item.随机发射无法消弹子弹 = true;
-                    }
-                }
-                A.Playanim(A_倒地);
-            };
-            A.当前动画为百分之99 += () =>
-            {
-                if (当前 == atk_g)
-                {
-                    if (A.当前名字 == A_屁股) to_state(idle_g);
 
-                    Debug.LogError(A.当前名字 + "  A.当前动画为百分                             动画结束");
-                }
-
-            };
-            T.pause += () => { };
-            T.stopp += () =>
-            {
-                if (当前 == atk_s)
-                {
-                    to_state(idle_s);
-                }
-                if (当前 == atk_g)
-                {
-                    to_state(idle_g);
-                }
-            };
-
-            开场.Stay += () =>
-            {
-                P.Velocity = E.Move_speed * Vector2.up;
-                if (天空检测.遇见了)
-                {
-                    if (阶段 == E阶段.二阶段)
-                    {
-                        to_state(idle_s);
-                    }
-                    else    if (阶段 == E阶段.一阶段)
-                    {
-                        to_state(idle_s);
-                    }
-                    else
-                    {
-                        Down(true);
-                    } 
-                }
-            };
-            过渡_();
-            atk_s.FixStay += () =>
-            {
-                if (追人)
-                {
-                    Move();
-                    if (Mathf.Abs(距离) < 1f)
-                    {
-                        Down(true);
-                    }
-                }
-                if (!地形破坏)
-                {
-                    if (T.PD.playableAsset.name == "地形炮" &&
-   地形炮.Rs != null)
-                    {
-                        for (int i = 0; i < 地形炮.Rs.Length; i++)
-                        {
-                            var a = 地形炮.Rs[i];
-                            if (a.collider.gameObject.layer == Initialize.L_Ground)
-                            {
-                                Debug.LogError("    if (a.collider.gameObject.layer == Initialize.L_Ground)");
-                                var G = a.collider.gameObject.GetComponent<被打消失>();
-                                if (G != null)
-                                {
-                                    Debug.LogError("    = a.collider.gameObject.GetComponent<被打消失>();");
-                                    G.被扣血(9, gameObject, 0);
-                                }
-                            }
-                            if (a.collider.gameObject.layer == Initialize.L_Player)
-                            {
-                                伤害玩家一下("魔炮");
-                            }
-                        }
-                    }
-                }
-   
-            };
-            idle_s_();
-            Air.Enter += () =>
-            {
-                刷新翻转();
-                P.Stop_Velo();
-                A.Playanim(A_idle_sky);
-                P.浮空 = true;
-            };
-            地面.Enter += () =>
-            {
-                P.Stop_Velo();
-                P.浮空 = false;
-            };
-
-            idle_g_();
-
+                int I = 1;
+                if (坠星发射器.次数 > 1 && Initialize.是奇数(坠星发射器.次数)) I = -1;
+                坠星发射器.transform.position = 坠星发射器.transform.position + (I * 3 * Vector3.one);
+            });
         }
 
+        void 星坠_()
+        {
+            星坠.Enter += () =>
+            { 
+                坠星发射器.监控子弹 = true;
+                坠星发射器.gameObject.SetActive(true);
+                P.Stop_Velo();
+            }; 
+            //星坠    .FixStay += () =>
+            // {
+            //     if (坠星.子弹列表.Count > 0)
+            //     {
+            //         for (int i = 0; i < 坠星.子弹列表.Count; i++)
+            //         { 
+
+            //             Bullet Target1 = (Bullet)坠星.子弹列表[i];
+            //             if (i == 0)
+            //             {
+            //                 if (Target1.L线速度 == 0)
+            //                 {
+            //                     Target1.生命周期 = 1;
+            //                     Target1.追踪玩家 = 0f;
+            //                     Target1.L_Acc线加速度 = 0;
+
+            //                     Target1.L线速度 = 100;
+            //                     Vector2 方向 = new Vector2(-1, -5);
+            //                     Target1.A角速度 = Initialize.To_方向到角度(方向) / Time.fixedDeltaTime;
+
+            //                     Initialize_Mono.I.Waite(() =>
+            //                     {
+            //                         Target1.方向 = 方向;
+            //                     }
+            //                     , 0.1f);
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     if (坠星.子弹列表.Count == 0 && Time.time - 当前.time > 2f)
+            //     {
+            //         普通星.gameObject.SetActive(false);
+            //         坠星.gameObject.SetActive(false);
+            //         to_state(idle_s);
+            //     }
+            // }; 
+        }
         private void 星辉_()
-        { 
+        {
+
             星辉.Enter += () =>
             {
-                坠星.监控子弹 = true;
-                普通星.gameObject.SetActive(true);
-                坠星.gameObject.SetActive(true);
+                星辉发射器.监控子弹 = true;
+                星辉发射器.gameObject.SetActive(true);
+
+                星辉发射器.初始化 += (Bullet_base B) => {
+                    B .Add( 0.5f, () => {
+                        B.A角速度 = Initialize.To_方向到角度(B.返回当前指向玩家的方向(transform.position)) / Time.fixedDeltaTime;
+                        B.L线速度 = 10;
+                    });
+                };
                 P.Stop_Velo();
             };
             星辉.FixStay += () =>
             {
-                if (普通星.子弹列表.Count > 0)
+                if (星辉发射器.子弹列表.Count > 0)
                 {
-                    for (int i = 0; i < 普通星.子弹列表.Count; i++)
+                    for (int i = 0; i < 星辉发射器.子弹列表.Count; i++)
                     {
-                        var axx = 普通星.子弹列表[i];
+                        var axx = 星辉发射器.子弹列表[i];
                         if (axx.生命周期 > 9.5 && axx.生命周期 < 9.7)
                         {
                             var a = axx.返回当前指向玩家的方向(transform.position);
                             axx.A角速度 = Initialize.To_方向到角度(a) / Time.fixedDeltaTime;
                         }
                     }
-                }
-                if (坠星.子弹列表.Count > 0)
-                {
-                    for (int i = 0; i < 坠星.子弹列表.Count; i++)
-                    {
-                        //if (Time.frameCount - 当前.timeCount < 2 )
-                        //{
-                        //    坠星.子弹列表[i].L线速度 = 0;
-                        //    坠星.子弹列表[i].生命周期 = 2 + i;
-                        //}
-                          
-                        Bullet Target1 = (Bullet)坠星.子弹列表[i];
-                        if (i == 0)
-                        {
-                            if (Target1.L线速度 == 0)
-                            {
-                                Target1.生命周期 = 1;
-                                Target1.追踪玩家 = 0f;
-                                Target1.L_Acc线加速度 = 0;
-
-                                Target1.L线速度 = 100;
-                                Vector2 方向 = new Vector2(-1, -5);
-                                Target1.A角速度 = Initialize.To_方向到角度(方向) / Time.fixedDeltaTime; 
- 
-                                Initialize_Mono.I.Waite(() =>
-                                {
-                                    Target1.方向 = 方向;
-                                }
-                                , 0.1f);
-                            }
-                        }
-                    }
-                }
-                if (坠星.子弹列表.Count == 0 && Time.time - 当前.time > 2f)
-                {
-                    普通星.gameObject.SetActive(false );
-                    坠星.gameObject.SetActive(false );
-                    to_state(idle_s);
                 }
             };
         }
@@ -761,7 +904,8 @@ namespace Boss
                         }
                         else
                         {
-                            to_state(星辉);
+                            to_state(雷击);
+                            //to_state(星辉);
                         }
 
                         break;
@@ -770,6 +914,7 @@ namespace Boss
                         {
                             if (Move_to(中心点))
                             {
+                                地形破坏 = true;
                                 to_state(atk_s);
                                 P.Stop_Velo();
                                 T.Play("地形炮");
@@ -792,8 +937,17 @@ namespace Boss
         new private void FixedUpdate()
         {
             base.FixedUpdate();
+            if (地形破坏)
+                if ( (扫把.transform.position - transform.position) .sqrMagnitude  <4)
+                {
+                    ///扫把过来攻击 一次动作
+                    扫把计时 = -1;
+                    扫把.gameObject.SetActive(false);
+                    //to_state(atk_g);
+                    //A.Playanim(A_转圈);
+                }
 
-            if (扫把计时 >= 0)
+                if (扫把计时 >= 0)
             {
                 扫把计时 += Time.fixedDeltaTime * E.I_S.固定等级差;
             }
@@ -826,7 +980,11 @@ namespace Boss
         protected state Air = new state("Air");
 
         protected state 开场;
+
+        protected state 持续弹幕;
         protected state 星辉;
+        protected state 星坠;
+        protected state 雷击;
 
         protected state 地面 = new state("地面");
         protected state 倒地 = new state("倒地");

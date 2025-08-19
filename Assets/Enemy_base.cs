@@ -81,7 +81,7 @@ interface I_暂停
 /// <summary>
 /// 攻击行为和动画由行为树编辑。，攻击实际伤害 数值发生由碰撞箱触发
 /// </summary>
-public partial class Enemy_base : BiologyBase, I_Speed_Change, I_暂停
+public partial class Enemy_base : BiologyBase, I_Speed_Change, I_暂停, I_M_Ridbody2D
 {
  
     public bool 根性=false ;
@@ -430,7 +430,7 @@ public  float Max韧性;
  
         开箱();
 
-
+       GravityScale = 0;
         sp.material = 材质管理.Get_Material("Other");
         //边缘颜色更新();
         //Color .blue 

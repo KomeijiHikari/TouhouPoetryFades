@@ -1,8 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-//using Sirenix.OdinInspector;
+using UnityEngine; 
 public class Bullet_base : MonoBehaviour, I_Speed_Change
 {
 
@@ -13,22 +12,31 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     /// 
     /// </summary>
     //[DictionaryDrawerSettings]
-    public Dictionary<float, Action> 字典=new Dictionary<float, Action> ();
 
+    public List<float> Times=new List<float> ();
+    public List<Action> Actions=new List<Action> ();
     private void OnEnable()
     {
-        字典.Clear();
+        Times.Clear();
+        Actions.Clear();
+    }
+    public void Add(float T,Action A)
+    {
+        if (!Times.Contains(T))
+        { 
+            Times.Add(生命周期-T);
+            Actions.Add(A);
+        }
     }
     void 字典刷新()
     {
-        foreach (var item in 字典)
+        for (int i = 0; i < Times.Count; i++)
         {
-            if (生命周期 < item.Key)
+            if (生命周期<Times[i])
             {
-                item.Value.Invoke();
-                字典.Remove(item.Key);
+                Actions[i]?.Invoke();
+                Times[i] = -999;
             }
-        
         }
     }
     public static float 方向转角度(Vector2 a,Vector2 b)
@@ -115,6 +123,11 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
         玩家方向.Normalize();
         return 玩家方向;
     }
+
+    /// <summary>
+    /// 碰到  地面  玩家
+    /// 申明周期无
+    /// </summary>
     protected virtual    void FixedUpdate()
     {
 
@@ -168,12 +181,17 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool
     [SerializeField]
     float deadtime = -1;
 
+    /// <summary>
+    ///    难崩
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == Initialize.L_Player && deadtime == -1f)
         {
-            if (collision.collider.gameObject == Player3.I.gameObject) deadtime = 0;
+            if (collision.collider.gameObject == Player3.I.gameObject) 
 
+                deadtime = 0; 
         }
     }
     protected override void FixedUpdate()
@@ -185,16 +203,17 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool
         {
             if (a.transform.gameObject.layer == Initialize.L_Player && deadtime == -1f)
             {
-                if (a.collider.gameObject == Player3.I.gameObject) deadtime = 0;
+                if (a.collider.gameObject == Player3.I.gameObject) {
+                    结束?.Invoke(this);
+                deadtime = 0;
+                }
             }
             else if (a.transform.gameObject.layer == Initialize.L_Ground)
             {
                 我死了();
             }
         }
-
-
-
+         
         if (deadtime >= 0)
         {
             deadtime += Time.fixedDeltaTime * I_S.固定等级差;

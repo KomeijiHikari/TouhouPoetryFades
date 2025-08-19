@@ -277,6 +277,20 @@ public class Initialize_Mono:MonoBehaviour
     //    yield return new WaitForSecondsRealtime(time);
     //    a.Invoke();
     //}
+    IEnumerator 等待变速时间执行方法_同速(Action a, float time )
+    {
+        float TT = 0;
+        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAA           " );
+        while (TT < time)//false执行
+        {
+
+            yield return new WaitForFixedUpdate();
+            Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAA           "+ TT);
+            TT += Time.fixedDeltaTime;
+        }
+        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAA           " + TT);
+        a.Invoke();
+    }
     IEnumerator 等待时间执行方法(Action a, float time,bool b=false)
     { 
         if (b)
@@ -289,6 +303,12 @@ public class Initialize_Mono:MonoBehaviour
         } 
         a.Invoke();
     } 
+
+    public void Waite_同速(Action a, float time)
+    {
+        StartCoroutine(等待变速时间执行方法_同速(a, time));
+        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAA           "  ); 
+    }
     /// <summary>
     /// 
     /// </summary>
@@ -460,12 +480,94 @@ public class No_Re
 public static class Initialize
 {
     /// <summary>
+    ///  X总位移 = 初始X*力 * ti 
+    ///  Y总位移 = 初始Y*力 * ti - 0.5 * G*ti*ti
+    ///  
+    /// ti= 总位移x/初始X /力         代入  后者方程
+    /// </summary> 
+    /// 固定力求方向？
+    public static  float 抛物线_Get力(Vector2 发射方向, Vector3 坐标差,float  重力)
+    { 
+        var Cx = 发射方向.x;
+        var Cy = 发射方向.y;
+        var Mx = 坐标差.x;
+        var My = 坐标差.y;
+        float VValue = (0.5f * 重力 * Mx * Mx) / ((Cy * Mx / Cx - My) * Cx * Cx);
+        if (VValue<0)
+        {
+            /// 0.45 0.89   0.34 2.8           角度超出上限
+            Debug.LogError("atic  float 抛物线(Vector2 发射方向, Vector3 坐标差,float  重力)"+发射方向 +"   "+坐标差+"         "+重力);
+            return 0;
+        }
+        return (float)Math.Sqrt(VValue);
+    }
+
+    /// <summary>
+    ///  一排 点  高度相同  X不同    结果出来的Y速度一致
+    /// </summary> 
+    public static Vector2     抛物线_Get矢量(  Vector3  差,float tim, float g)
+    {
+        var X = 差 .x/ tim;
+        var Y  = 差.y / tim+g*tim/2;
+        return new Vector2 (X,Y);
+    }
+
+
+    public static int 头尾(int 总数, int 索引, int 步)
+    {
+        if (总数 <= 0)
+            throw new ArgumentException("总数必须大于0");
+
+        // 使用 long 避免整数溢出
+        long 临时 = (long)索引 + 步;
+        long 模 = 临时 % 总数;
+
+        // 处理负数结果
+        if (模 < 0)
+        {
+            模 += 总数;
+        }
+
+        return (int)模;
+    }
+    public static bool 是奇数(int num)
+    {
+        return num % 2 == 0 ? false  :true;
+    }
+
+    /// <summary>
+    /// 在两点之间生成均匀分布的插值点
+    /// </summary>
+    /// <param name="a">起点坐标</param>
+    /// <param name="b">终点坐标</param>
+    /// <param name="I">插入的点数（不包括端点）</param>
+    /// <returns>生成的插值点列表</returns>
+    public static List<Vector3> 单线段插值(Vector2 a, Vector2 b, int I)
+    {
+        List<Vector3> points = new List<Vector3>();
+
+        // 数学原理：线性插值公式
+        // $P(t) = (1-t) \cdot \mathbf{a} + t \cdot \mathbf{b}, \quad t \in [0,1]$
+        for (int i = 1; i <= I; i++)
+        {
+            // 计算插值比例 t = i/(I+1)
+            // 确保点在 a 和 b 之间，不包括端点
+            float t = (float)i / (I + 1);
+
+            // 应用线性插值公式
+            Vector2 point = (1 - t) * a + t * b;
+            points.Add(point);
+        }
+
+        return points;
+    }
+    /// <summary>
     /// 在线段上均匀插入点
     /// </summary>
     /// <param name="points">原始点列表（至少2个点）</param>
     /// <param name="I">每段线段插入的点数</param>
     /// <returns>插值后的点列表</returns>
-    public static List<Vector2> 线段均匀插点(List<Vector2> points, int I)
+    public static List<Vector2> 多线段均匀插点(List<Vector2> points, int I)
     {
         // 验证输入
         if (points == null || points.Count < 2)
@@ -898,6 +1000,10 @@ public static    System.Random Get_随机种子()
         Debug.DrawLine(  B.九个点(E_方向.左上), B.max);
         Debug.DrawLine(B.max, B.九个点(E_方向.右下));
         Debug.DrawLine(B.九个点(E_方向.右下), B.min);
+    }
+    public static void DraClirl(this Vector3 o, float 距离 = 0.1f, Color C = default, float time = 0.1f)
+    {
+        DraClirl( (Vector2)o, 距离  ,   C ,   time );
     }
     public static void DraClirl(this    Vector2 o, float 距离=0.1f,Color C=default,float time=0.1f )
     {

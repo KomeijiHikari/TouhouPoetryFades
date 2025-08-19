@@ -10,8 +10,7 @@ public class Bullet数据 : ScriptableObject
     public float 追踪玩家=0;
     public bool 自身旋转 = false;
 
-    [Header("子弹初始配置")]
-
+    [Header("子弹初始配置")] 
     public float 生命周期=3;
 
     public float LinearVelocity=1;
@@ -29,9 +28,12 @@ public class Bullet数据 : ScriptableObject
     ///awake后  初始加速度
     public float SenderAngularVelocity = 1;
     public float 发射器Max角速度 = int.MaxValue;
+    [Tooltip("发射角的旋转速度")]
     public float SenderAcceleration=  1;
 
+    [Tooltip("一组几个子弹")]
     public int Count=1;
+    [Tooltip("一组子弹间隔角度")]
     public int LineAnle=30;
 
     

@@ -31,9 +31,13 @@ public class Phy_检测 : MonoBehaviour
             if (boo) return sp.bounds;
             return b.bounds; }
     }
+    private void OnEnable()
+    {
+        Enter = null;
+        Exite = null;
+    }
     public Action Exite;
-    public Action Enter;
-    public bool 列表监控=false ;
+    public Action Enter; 
 [SerializeField]
     public RaycastHit2D[] Rs;
     [SerializeField ]
@@ -55,11 +59,7 @@ public class Phy_检测 : MonoBehaviour
                 }
             }
             遇见了_ = value;
-        } }
-    private void OnEnable()
-    {
-        //Debug.LogError("开启");
-    }
+        } } 
     private void OnDisable()
     {
         遇见了 = false;

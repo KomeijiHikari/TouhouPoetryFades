@@ -67,14 +67,14 @@ public  GameObject GetPool(string 哪一个池子)
         {
             BB = true;
             初始化池子(哪一个池子); 
-        } 
+        }
 
         GameObject outobj = 池子字典_[哪一个池子].Dequeue(); 
         if (outobj.activeInHierarchy)
         {
             ///出来的OBJ有几率 是 已经出来的（API：Dequeue 出来并且删除  没删除）
             return GetPool( 哪一个池子);
-        }        
+        } 
         outobj.SetActive(true); 
         return outobj;
     } 
