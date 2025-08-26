@@ -47,7 +47,7 @@ public class Timeline管理 : MonoBehaviour
     public Action pause;
     private void played(PlayableDirector obj)
     {
-        Debug.LogError("    private void played(PlayableDirector obj)");
+        //Debug.LogError("    private void played(PlayableDirector obj)");
     }
 
     private void stopped(PlayableDirector obj)

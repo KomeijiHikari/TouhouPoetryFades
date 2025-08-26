@@ -19,23 +19,14 @@ public class Phy_检测 : MonoBehaviour
             }
         } }
     [SerializeField]
-    SpriteRenderer sp;
-    [SerializeField]
-    BoxCollider2D b;
+    SpriteRenderer sp; 
 
-    bool boo;
-    Bounds B
-
-    {
-        get {
-            if (boo) return sp.bounds;
-            return b.bounds; }
-    }
-    private void OnEnable()
-    {
-        Enter = null;
-        Exite = null;
-    }
+    bool boo; 
+    //private void OnEnable()
+    //{
+    //    Enter = null;
+    //    Exite = null;
+    //}
     public Action Exite;
     public Action Enter; 
 [SerializeField]
@@ -51,6 +42,10 @@ public class Phy_检测 : MonoBehaviour
             {
                 if (value)
                 {
+                    if (Deb)
+                    {
+                        Debug.LogError(gameObject .name+"触发              触发");
+                    }
                     Enter?.Invoke(); 
                 }
                 else
@@ -66,29 +61,39 @@ public class Phy_检测 : MonoBehaviour
         //Debug.LogError("关掉");
     }
     private void Awake()
-    {
-        boo = b == null; 
+    { 
 
         if (I_暂停的OBJ!=null) I_ = I_暂停的OBJ.GetComponent<I_暂停>();
     }
+    public bool   Deb;
+    //public float 角度;
     private void Update()
-    {
+    { 
         if (暂停) return;
-   Rs =     Physics2D.BoxCastAll(B.center,
-            B.size,
-            0,
-            Vector2.zero,
-           0,
-           L);
+        ///原先Bouns 会跟着变换改变Bouns大小
+        ///之后 的话 保持transform   比例正常
 
 
- 
+        //Rs =     Physics2D.BoxCastAll(B.center,
+        //         B.size,
+        //         0,
+        //         Vector2.zero,
+        //        0,
+        //        L);    transform.rotation.eulerAngles.z
+
+        ///size 值不能有负数
+        Rs = Physics2D.BoxCastAll(sp .bounds .center, 
+             new Vector2(MathF.Abs(transform.lossyScale.x)  , transform.lossyScale.y)   ,
+              transform.rotation.eulerAngles.z,
+               Vector2.zero,
+              0,
+              L); 
         遇见了 = (Rs != null)&& Rs.Length>0;
         if (PoinDeb)
         {
             foreach (var item in Rs)
             {
-                item.point.DraClirl();
+                item.point.DraClirl(1, Color.blue);
             }
         }
     }

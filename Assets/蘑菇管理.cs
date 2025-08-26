@@ -29,6 +29,35 @@ public class 蘑菇管理 : MonoBehaviour
     List<Vector2 > StartWay=new List<Vector2> ();
 
     public static 蘑菇管理 I;
+
+        [Button("Play_", ButtonSizes.Large)]
+        public void  从这里升起蘑菇(float X)
+        {
+            for (int i = 0; i < Os.Count; i++)
+            {
+                var  O= Os[i];
+                if (!升起来.Contains (i))
+                {
+                    //Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                    //拿出来一个
+                    sps[i].sprite = sp红;
+
+                    if (
+                       安全序号 == -1 &&
+                        (Initialize.RandomInt(1, 3) != 1 || i + 1 == Os.Count)
+                        )
+                    {
+                        安全序号 = i;
+                        sps[i].sprite = sp蓝;
+                    }
+
+                    O.gameObject.SetActive(true);
+                    O.transform.position = new Vector3(X, O.transform.position.y,0);
+                    升起来.Add(i);
+                    break;
+                }
+            } 
+        }
     public void 全部销毁()
     {
         for (int i = 0; i < Os.Count; i++)
@@ -89,7 +118,7 @@ public class 蘑菇管理 : MonoBehaviour
             return e.I_S.固定等级差;
         }
     }
-    public bool BBBB;
+    public bool B有蘑菇在场;
     public bool 有蘑菇在场
     {
         get
@@ -108,10 +137,11 @@ public class 蘑菇管理 : MonoBehaviour
     }
     private void Update()
     {
-        BBBB = 有蘑菇在场;
+        B有蘑菇在场 = 有蘑菇在场;
     }
     private void FixedUpdate()
     {
+   
         for (int i = 0; i < Os.Count; i++)
         {
             if (Os[i].有人)
@@ -150,6 +180,8 @@ public class 蘑菇管理 : MonoBehaviour
               
             } 
         }
+
+      
             ///上升de
             for (int i = 0; i < 升起来.Count; i++)
         {
@@ -163,50 +195,52 @@ public class 蘑菇管理 : MonoBehaviour
 
                 Os[a].transform.localPosition = new Vector2(x, y);
 
-                var fff = 1 - (y / StartWay[a].y) ; 
-                if (fff < 阀) break; 
+                var fff = 1 - (y / StartWay[a].y) ;
+                  
+                    if (fff < 阀) break; 
             }
             else
             {
-                升起来.RemoveAt(i);
-            }
+                    升起来.RemoveAt(i);
+                }
           
         }
     }
 
     public int 安全序号=-1;
 
-    [Button("Play_", ButtonSizes.Large)]
-    public void Play_()
-    {
-
-        transform.position = 跟随点.position;
-        transform.localScale = 跟随点.localScale; 
-
-        var Y = sp.bounds.min.y;
-
- 
-        for (int i = 0; i < Os.Count; i++)
+        [Button("Play_", ButtonSizes.Large)]
+        public void Play_()
         {
-         
-               var vv = new Vector2(Os[i].transform.position.x,Y );  
-            var a=     Physics2D.CircleCast(vv, 0.1f, Vector2.zero, 0, 1 << Initialize.L_Ground).point; 
-            if (a==Vector2 .zero )
-            {
-                sps[i].sprite = sp红; 
 
-                if (
-                   安全序号 == -1&&
-                    (Initialize.RandomInt(1, 3) != 1 || i + 1 == Os.Count)
-                    )
+            transform.position = 跟随点.position;
+            transform.localScale = 跟随点.localScale;
+
+            var Y = sp.bounds.min.y;
+
+
+            for (int i = 0; i < Os.Count; i++)
+            {
+
+                var vv = new Vector2(Os[i].transform.position.x, Y);
+                var a = Physics2D.CircleCast(vv, 0.1f, Vector2.zero, 0, 1 << Initialize.L_Ground).point;
+                if (a == Vector2.zero)
                 {
-                    安全序号 = i;
-                    sps[i].sprite = sp蓝;
+                    sps[i].sprite = sp红;
+
+                    if (
+                       安全序号 == -1 &&
+                        (Initialize.RandomInt(1, 3) != 1 || i + 1 == Os.Count)
+                        )
+                    {
+                        安全序号 = i;
+                        sps[i].sprite = sp蓝;
+                    }
+                    Os[i].gameObject.SetActive(true);
+                    升起来.Add(i);
                 }
-                Os[i].gameObject.SetActive(true);
-                升起来.Add(i);
-            } 
-        } 
+            }
+        }
+
     }
-}
 }

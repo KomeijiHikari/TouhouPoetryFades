@@ -217,37 +217,45 @@ public  float Max韧性;
     {
         transform.position = p.碰撞预测(v);
     }
+    [SerializeField ]
+    float 韧性增幅=0;
+
+    [SerializeField]
+    bool 回复到满;
     /// <summary>
     /// 输入正  加韧性
     /// </summary>
     /// <param name="v"></param>
-    public int   韧性(float v, int 方向 = 0)
+    public int   韧性(float v )
     {
         ///满    加速度归零  破防为flase;
         ///大于零，每帧回韧性，砍一刀扣韧性
-        ///小于零   破防为true  每帧回韧性；        v<0发射  砍一刀扣韧性   
- 
+        ///小于零   破防为true  每帧回韧性；        v<0发射  砍一刀扣韧性    
         韧性_ += v;
         if (韧性_ == Max韧性)
         {
-            加速度 = 0;
+            回复到满 = false;
+              加速度 = 0;
             破防 = false;
            return -99;
         }
         else
-        {//恢复
-            加速度 += Time.deltaTime * Initialize_Mono.I.敌人回耐久速度;
+        {//恢复  
+            if (回复到满) {
+                加速度 += Time.deltaTime * (Initialize_Mono.I.敌人回耐久速度 + 韧性增幅);
+            }   
+
             if (韧性_<0&& 韧性_+加速度 > 0)
             {
-                韧性_ += 加速度 * Time.deltaTime;
                 恢复了();
-                return  1;
+                //return  1;
             }
-            韧性_ += 加速度 * Time.deltaTime; 
 
-            if (v==0) return -99;
+            韧性_ += 加速度 * Time.deltaTime;
+
+            //if (v==0) return -99;
             if (韧性_ > 0)
-            {  ///大于
+            {  ///大于  
                 破防 = false;
                 if (v < 0)
                 {
@@ -256,9 +264,11 @@ public  float Max韧性;
                 }
             }
             else
-            {  ///韧性低于0了
+            {  ///韧性低于0了 
+                 
                 if (!破防)
                 {
+                    回复到满 = true;
                     /// 击破一瞬间 
                     if (韧性_>-160)
                     {
@@ -274,9 +284,11 @@ public  float Max韧性;
                     打断();
                     return -1;
                 }
-            } 
+            }
         }
-        Debug.LogError("奇怪，不可能"+v);
+        if (v != 0)
+            Debug.LogError("奇怪，不可能"+v);
+
         return -99;
     }
 

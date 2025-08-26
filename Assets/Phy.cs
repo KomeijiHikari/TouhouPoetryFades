@@ -136,7 +136,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         if (!RR.Note_Re())
         {
             II++;
-            Debug.LogError("循环 次数   " + II + target);
+            //Debug.LogError("循环 次数   " + II + target);
             if (II > 5)
             {
                 Debug.LogError("  循环次数    大于5" + target);
@@ -305,7 +305,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
 
         b.transform.position += V * Time.fixedDeltaTime;
 
-        if (Deb) Debug.LogError("aaaaaaaaa               a");
+        //if (Deb) Debug.LogError("aaaaaaaaa               a");
         ///重力个惯性
         var X = 当前.x;
         var Y = 当前.y;
@@ -373,14 +373,20 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
 
         Velocity = Vector2.zero; 
     } 
-    public bool Deb; 
+    public bool Deb;
+    [SerializeField]
+    SpriteRenderer Sp; 
     private void FixedUpdate()
     { 
         if (关闭1 || b.I_S.限制)
         { 
             return;
-        } 
-       
+        }
+
+        if (Sp!=null )
+        {
+            Sp.transform.rotation = Quaternion.Euler( Initialize .Z1*Time.fixedTime*1000f);
+        }
         ///脚底在地面下面
         var a = Physics2D.Raycast(
             new Vector2(b.Bounds.min.x + 0.01f, b.Bounds.min.y + 0.01f),
@@ -402,10 +408,10 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         }
     }
     [Button("测一下", ButtonSizes.Large)]
-    public void 目标炮(Transform T,float tim)
+    public void 目标炮(Vector3 Target,float tim)
     {
         if (Ground) Ground = false;
-        var a= Initialize.抛物线_Get矢量( T.transform .position - transform .position,tim,G );
+        var a= Initialize.抛物线_Get矢量(Target - transform .position,tim,G );
         Initialize_Mono.I.Waite_同速(
             () => { transform.position.DraClirl(); }
             , tim
@@ -485,6 +491,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     public LayerMask 碰撞检测层 => 碰撞检测层1;
    public new Transform transform => base.transform ;
   public   bool Ground { get => ground; set => ground = value; }
+
     [SerializeField] Phy_检测 地面;
     public GameObject 对象 => gameObject ;
     public float 重力增幅 { get => 重力增幅1; set => 重力增幅1 = value; }

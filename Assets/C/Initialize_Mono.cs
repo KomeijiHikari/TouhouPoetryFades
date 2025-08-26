@@ -279,16 +279,13 @@ public class Initialize_Mono:MonoBehaviour
     //}
     IEnumerator 等待变速时间执行方法_同速(Action a, float time )
     {
-        float TT = 0;
-        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAA           " );
+        float TT = 0; 
         while (TT < time)//false执行
         {
 
-            yield return new WaitForFixedUpdate();
-            Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAA           "+ TT);
+            yield return new WaitForFixedUpdate(); 
             TT += Time.fixedDeltaTime;
-        }
-        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAA           " + TT);
+        } 
         a.Invoke();
     }
     IEnumerator 等待时间执行方法(Action a, float time,bool b=false)
@@ -306,8 +303,7 @@ public class Initialize_Mono:MonoBehaviour
 
     public void Waite_同速(Action a, float time)
     {
-        StartCoroutine(等待变速时间执行方法_同速(a, time));
-        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAA           "  ); 
+        StartCoroutine(等待变速时间执行方法_同速(a, time)); 
     }
     /// <summary>
     /// 
@@ -479,6 +475,54 @@ public class No_Re
  
 public static class Initialize
 {
+
+    public static List<T> 随机列表<T>(this List<T> list)
+    {
+        // 创建列表的副本以避免修改原始列表
+        var shuffledList = new List<T>(list);
+        int n = shuffledList.Count;
+
+        // Fisher-Yates 洗牌算法
+        while (n > 1)
+        {
+            n--;
+            var rng = new System.Random();
+            int k = rng.Next(n + 1);
+            T value = shuffledList[k];
+            shuffledList[k] = shuffledList[n];
+            shuffledList[n] = value;
+        }
+
+        return shuffledList;
+    }
+    public static List<Vector2> 中间并列点(Vector2 target, int count, float offset)
+    {
+        // 检查count是否为正奇数
+        if (count <= 0 || count % 2 == 0)
+        {
+            Debug.LogError("参数count必须是正奇数");
+            return null;
+        }
+
+        // 计算中心点索引
+        int centerIndex = count / 2;
+
+        // 初始化结果列表
+        List<Vector2> points = new List<Vector2>(count);
+
+        // 生成点列表
+        for (int i = 0; i < count; i++)
+        {
+            // 计算当前点相对于中心点的偏移量
+            float xOffset = (i - centerIndex) * offset;
+            // 创建新点，Y坐标与target相同，X坐标按偏移量计算
+            Vector2 newPoint = new Vector2(target.x + xOffset, target.y);
+            points.Add(newPoint);
+        }
+
+        return points;
+    }
+    public static Vector3 Z1 { get => new Vector3(0, 0, 1); }
     /// <summary>
     ///  X总位移 = 初始X*力 * ti 
     ///  Y总位移 = 初始Y*力 * ti - 0.5 * G*ti*ti

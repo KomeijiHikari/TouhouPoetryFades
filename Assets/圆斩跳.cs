@@ -87,8 +87,7 @@ public class 圆斩跳 : MonoBehaviour
             var a = Physics2D.OverlapCircle(point, 0.01f , LM);
  
             if (a!=null)
-            {
-                Debug.LogError("pengdaolepengdaolepengdaolepengdaolepengdaole");
+            { 
                 point.DraClirl(0.1f, Color.blue, 3f);
      
                 results[i] = -1;
@@ -129,7 +128,7 @@ public class 圆斩跳 : MonoBehaviour
         {
             //打到了
             特效_pool_2.I.GetPool(startPoints[da], T_N.特效圆跳);
-            Debug.LogError(startPoints[da]);
+            //Debug.LogError(startPoints[da]);
             return startPoints[da].y;
         }
         //没打到

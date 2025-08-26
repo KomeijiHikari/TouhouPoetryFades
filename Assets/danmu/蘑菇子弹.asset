@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u8FFD\u8E2A\u73A9\u5BB6": 0
   "\u81EA\u8EAB\u65CB\u8F6C": 0
-  "\u751F\u547D\u5468\u671F": 10
+  "\u751F\u547D\u5468\u671F": 1.5
   LinearVelocity: 7
   Acceleration: 0
   AngularVelocity: 0
@@ -24,9 +24,9 @@ MonoBehaviour:
   SenderAngularVelocity: 0
   "\u53D1\u5C04\u5668Max\u89D2\u901F\u5EA6": 2.1474836e+9
   SenderAcceleration: 0
-  Count: 3
-  LineAnle: 5
+  Count: 5
+  LineAnle: 13
   "\u53D1\u5C04\u95F4\u9694": 100
   "\u6CE2\u6B21": 0
-  "\u53D1\u5C04\u65F6\u95F4": 0
-  pre: {fileID: 3523587353952303650, guid: c44db543418428747a4347fd38e78a22, type: 3}
+  "\u53D1\u5C04\u65F6\u95F4": 1
+  pre: {fileID: 3523587353952303650, guid: 8736d8107f80d0e408b84a7c5f5c0116, type: 3}

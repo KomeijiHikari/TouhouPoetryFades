@@ -57,10 +57,13 @@ MonoBehaviour:
   Speed_Lv: 2
   "\u73A9\u5BB6\u89D2\u5EA6_": 0
   Deb: 0
+  "\u6B21\u6570": 0
   "\u53D1\u5C04\u65F6\u95F4": 0
+  SP: {fileID: 0}
   "\u53D1\u5C04":
     m_PersistentCalls:
       m_Calls: []
+  "\u5F39\u5E55\u5F62\u5F0F\u53D1\u5C04\u91CD\u529B\u5B50\u5F39": 0
   "\u521D\u59CB\u8DDD\u79BB": 3
   "\u8BD5\u4E00\u4E0B": 0
   "\u5B50\u5F39\u5217\u8868": []

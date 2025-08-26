@@ -79,6 +79,7 @@ namespace 发射器空间
                     发射?.Invoke();
                     break; 
             }
+            //Debug.LogError("id OnEnable()id OnEnable()id OnEnable()id OnEnable()                                         AAAA"+子弹列表 .Count);
         }
         public void 试一啊下(SpriteRenderer  s  )
         {
@@ -87,7 +88,7 @@ namespace 发射器空间
         private void Start()
         {
             if (B.pre.GetComponent<Bullet_base>() == null)
-                应用重力子弹 = true;
+                弹幕形式发射重力子弹 = true;
                 重制(); 
         }
         public float 发射时间;
@@ -105,13 +106,15 @@ namespace 发射器空间
 
             当前时间 = 0f; 
         }
-
+        public SpriteRenderer SP;
         private void FixedUpdate()
         {
+            if (SP=null)
+            {
+                SP.transform.rotation = Quaternion.Euler(new Vector3 (0,0,1f)*Time.fixedDeltaTime*20f);
+            }
 
-            if (按照方向来) 朝向_ = 朝向 == 1 ? 0 : 180;
-            //if (!持续发射) return;
-
+            if (按照方向来) 朝向_ = 朝向 == 1 ? 0 : 180; 
 
             bool 可以 = false;
             switch (当前播放类型_)
@@ -136,6 +139,7 @@ namespace 发射器空间
                 当前时间 -= B.发射间隔;
 
                 次数++;
+                 
                 发射?.Invoke();
             } 
         }
@@ -144,6 +148,7 @@ namespace 发射器空间
         int TimeF;
 
         public UnityEvent 发射;
+         
         [Button("Play_", ButtonSizes.Large)]
         public void 发射一下()
         {
@@ -175,6 +180,48 @@ namespace 发射器空间
                 Send().transform.position = i;
             } 
         }
+        void 蘑菇( Vector2 V)
+        { 
+            Boss.蘑菇管理.I.从这里升起蘑菇(V.x);
+                特效_pool_2.I.GetPool(V, T_N.特效大爆炸); 
+        }
+        public void 发射组_p_定位_()
+        {
+            var a = Initialize.中间并列点(Player3.I.transform.position, B.Count, B.LineAnle);
+            for (int i = 0; i < B.Count; ++i)
+            {
+                if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
+                var VVV = a[i];
+                Phy aa = SendP();
+                aa.目标炮(VVV, B.生命周期);
+ 
+            }
+        }
+        [Button("重力跟踪", ButtonSizes.Large)]
+      public   void 蘑菇孢子发射组_p_定位(  )
+        {
+            var a = Initialize . 中间并列点(Player3.I.transform.position, B.Count, B.LineAnle);
+            for (int i = 0; i < B.Count; ++i)
+            {
+                if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
+                var VVV = a[i];
+                Phy aa = SendP();
+                aa.目标炮(VVV, B.生命周期);
+
+               var P= aa.GetComponent<Phy_检测>();
+                P.Enter += () =>
+                {
+                    for (int i = 0; i < P.Rs.Length; i++)
+                    {
+                        var ccc = P.Rs[i].collider.gameObject;
+                        if (ccc.layer ==Initialize .L_Ground )
+                        { 
+                            蘑菇(P.Rs[i].point  );
+                        } 
+                    }
+                };
+            } 
+        } 
 
         void 发射组(int count, float angle)
         { 
@@ -183,12 +230,12 @@ namespace 发射器空间
             for (int i = 0; i < count; ++i)
             {
                 temp += Mathf.Pow(-1, i) * i * B.LineAnle;
-                if (应用重力子弹) SendP(temp);
+                if (弹幕形式发射重力子弹) SendP(temp);
 
                 else  Send(temp);
             } 
         }
-      [SerializeField ][DisplayOnly]    bool 应用重力子弹;
+      [SerializeField ][DisplayOnly]    bool 弹幕形式发射重力子弹;
         public static List<Vector2> 平均点(Bounds bounds, int count)
         {
             List<Vector2> points = new List<Vector2>(count);
@@ -252,7 +299,7 @@ namespace 发射器空间
         float 返回不变形速度(Vector2 m,Vector2 y, float Tim=1)
         {
             var 距离 = Mathf.Abs(((Vector2)m - y).magnitude);
- return   距离 / Tim ;
+             return   距离 / Tim ;
         }
         public void 发射盒子平均点_重力(SpriteRenderer sp)
         {
@@ -527,13 +574,17 @@ namespace 发射器空间
             {
                 子弹列表.Add(Bb);
                 Bb.结束 += 子弹周期更新 ;
+                if (子弹列表.Count==0)
+                {
+                    列表归零?.Invoke();
+                }
             }
 
             初始化?.Invoke(Bb);
             return Bb;
  
         }
-
+        public Action 列表归零;
         public Action<Bullet_base> 初始化;
         void 初始化子弹(Bullet_base Bb)
         { 

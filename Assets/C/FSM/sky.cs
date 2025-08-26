@@ -393,7 +393,7 @@ public class sky : State_Base
             //Player.Velocity = Player.Velocity;
             if (Player.Velocity.y<0)
             {
-                Debug.LogError("                小于零"            );
+                //Debug.LogError("                小于零"            );
                 Player.Velocity = new Vector2(Player.Velocity.x *  8 / 10, Player.Velocity.y);
             }
 

@@ -15,11 +15,12 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
 
     public List<float> Times=new List<float> ();
     public List<Action> Actions=new List<Action> ();
-    private void OnEnable()
-    {
+
+    private void OnDisable()
+    { 
         Times.Clear();
         Actions.Clear();
-    }
+    } 
     public void Add(float T,Action A)
     {
         if (!Times.Contains(T))
@@ -42,8 +43,7 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     public static float 方向转角度(Vector2 a,Vector2 b)
     {
         var t =  a-b;
-        t.Normalize();
-          Debug.LogError(t);
+        t.Normalize(); 
         return Initialize.To_方向到角度(t) / Time.fixedDeltaTime;
     }
     public bool Deb;
@@ -168,6 +168,7 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
  
 
     }
+    
     public Action<Bullet_base> 结束;
     protected virtual void 我死了()
     {
@@ -185,15 +186,14 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool
     ///    难崩
     /// </summary>
     /// <param name="collision"></param>
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == Initialize.L_Player && deadtime == -1f)
-        {
-            if (collision.collider.gameObject == Player3.I.gameObject) 
-
-                deadtime = 0; 
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.layer == Initialize.L_Player && deadtime == -1f)
+    //    {
+    //        if (collision.collider.gameObject == Player3.I.gameObject) 
+    //            deadtime = 0; 
+    //    }
+    //}
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -238,6 +238,7 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool
     /// <returns></returns>
     public bool 被消弹()
     {
+        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+ 可以被消灭);
         if (可以被消灭)
         {
             特效_pool_2.I.GetPool(transform.position, T_N.特效消弹);

@@ -14,7 +14,7 @@ public class 半灵 : MonoBehaviour
 
     public void 打到目标()
     {
-        Debug.LogError("BBBBBBBBBBBBBBBBBBBBBBBB                 打到目标() 打到目标() 打到目标() 打到目标() 打到目标()");
+ 
         生物.被扣血(35,Player3.I.gameObject ,0);
     }
     private void Awake()
@@ -48,14 +48,12 @@ public class 半灵 : MonoBehaviour
     { 
         if (TIMEF!=Time .frameCount)
         {
-            TIMEF = Time.frameCount;
-            Debug.LogError("触发触发触发触发触发触发触发"+Time.frameCount );
+            TIMEF = Time.frameCount; 
             A.播放(Atk);
             子弹发射.pa.Play();
         }
         else
-        {
-            Debug.LogError("                                                触发触发" + Time.frameCount);
+        { 
             Initialize_Mono.I.Waite((() => 发射()),0.01f); 
         }
 

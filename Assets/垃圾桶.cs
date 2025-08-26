@@ -16,18 +16,20 @@ namespace  SampleFSM
         protected void to_state(state a)
         {
             if (当前 == a || !a.激活) return;
-            if (DeBuG) Debug.LogError("   前一个名字： " + 当前.StateName + "  下一个名字：  " + a.StateName); 
+            if (DeBuG) Debug.LogError("   前一个名字： " + 当前.StateName + "  下一个名字：  " + a.StateName);
+            当前 = 当前.to_state(a); 
+     
  
-            当前?.Exite?.Invoke();
-            当前.活动 = false;
+            //当前?.Exite?.Invoke();
+            //当前.活动 = false;
 
-            上一个 = 当前;
-            当前 = a;
+            //上一个 = 当前;
+            //当前 = a;
 
-            当前.活动 = true;
-            当前.timeCount = Time.frameCount;
-            当前.time = Time.time; 
-            当前?.Enter?.Invoke();
+            //当前.活动 = true;
+            //当前.timeCount = Time.frameCount;
+            //当前.time = Time.fixedTime; 
+            //当前?.Enter?.Invoke();
         }
   protected  virtual void Update()
         { 
@@ -59,7 +61,7 @@ namespace  SampleFSM
     [Serializable ]
     public class state
     {
-        public static bool 嵌套Deb;
+        public static bool 嵌套Deb  ;
         public string StateName { get => stateName; private set => stateName = value; }
         [SerializeField]
         [DisplayOnly]
@@ -87,36 +89,54 @@ namespace  SampleFSM
         public bool Deb;
         Vector2Int Get_关系(state Target)
         {
+            state TTarget = Target;
             state My = this;
             List<state> X = new List<state>();
             List<state> Y = new List<state>();
 
             X.Add(My);
-            Y.Add(Target);
-            while (My.Get_father() != null)
+            Y.Add(TTarget);
+
+            if (嵌套Deb )
             {
-                My = My.Get_father();
+                Debug.LogError(StateName+X.Count +"   目标  "+TTarget .stateName+Y.Count );
+          
+            }
+            ///为啥一个用方法一个用属性
+            while (My.Father != null)
+            {
+                My = My.Father;
                 X.Add(My);
             }
-            while (Target.Father != null)
+
+             
+
+            while (TTarget.Father != null)
             {
-                Target = Target.Father;
-                Y.Add(Target);
+                TTarget = TTarget.Father;
+                Y.Add(TTarget);
             }
+             
             for (int i = 0; i < X.Count; i++)    ///有相交
             {
                 for (int Z = 0; Z < Y.Count; Z++)
                 {
                     if (X[i] == Y[Z])
                     {
-                        var v = new Vector2Int(i, Z);
-                         
-                        if (v == Vector2Int.zero) return v;
-                        else return (v - Vector2Int.one);
+                        var v = new Vector2Int(i, Z); 
+                        if (v == Vector2Int.zero)
+                        { 
+                            return v;
+                        }
+                        else
+                        { 
+                            return (v - Vector2Int.one);
+                        }
                     }
                 }
-            } 
-            ///无相交
+            }
+            ///无相交 
+          
             return new Vector2Int(X.Count, Y.Count);
         }
         int i;
@@ -139,17 +159,12 @@ namespace  SampleFSM
             }
 
             if (StateName == a.StateName || !a.激活)
-            {
-                if (Deb)
-                {
-                    Debug.LogError("   前一个名字： " + StateName + "  下一个名字：  " + a.StateName + "\n" + a.激活);
-                }
+            { 
                 return this;
             }
-
-            if (Deb )  Debug.LogError("   前一个名字： " + StateName + "  下一个名字：  " + a.StateName  );
+             
             var v = Get_关系(a);
-            if (v.x >= 0) Up(v.x);
+            if (v.x >= 0) Up(v.x); 
 
             活动 = false;
 
@@ -164,8 +179,12 @@ namespace  SampleFSM
         {
             if (F == null) Debug.LogError("状态  " + s + "试图跟着空父类   ，可能要调整代码顺序"); 
             Father = F;
-        }
-        public state(string s)=> StateName = s;
+        } 
+        public state(string s) { 
+            StateName = s;
+        } 
+
+
         void Up(int i)
         {
             if (嵌套Deb) Debug.LogError(StateName + "Up                        Exite");
@@ -225,11 +244,7 @@ namespace Enemmy
         }
  [SerializeField ][DisableOnPlay]       E_距离情况 距离情况;
 
-        public Transform 发射点;
-         
-
-
- 
+        public Transform 发射点; 
         private void Awake()
         {
 

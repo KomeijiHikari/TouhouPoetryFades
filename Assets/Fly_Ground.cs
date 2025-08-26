@@ -31,6 +31,8 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
 
     float tim { get; set; }
 
+   
+    bool 是我;
     private void OnCollisionEnter2D(Collision2D co)
     {
  
@@ -38,11 +40,14 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
         if (Time.realtimeSinceStartup - tim < 0.5f) return;
 
         if (co.gameObject.layer == Initialize.L_Player)
-        {
-
+        { 
             bool 碰到的是上面 = Initialize.Vector2Int比较(co.contacts[0].normal, Vector2.down);
 
-            if (!旋转)     Player3.I.ChangeFather(transform);
+            if (!旋转1) 
+            {
+            是我 = true;
+            Player3.I.ChangeFather(transform);
+            }
 
             if (不下落) return;
             if (碰到的是上面)
@@ -58,10 +63,18 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
         }
     }
     public bool 是玩家噶的;
+    private void OnDisable()
+    {
+        if (是我)
+        {
+            Player3.I.ChangeFather();
+        }
+    }
     private void OnCollisionExit2D(Collision2D co)
     {
         if (co.gameObject.layer == Initialize.L_Player)
         {
+            是我=false;
             Player3.I.ChangeFather();
         }
     }
@@ -190,6 +203,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
 
     public bool 暂停 { get => 暂停1; set => 暂停1 = value; }
     public float TTime1 { get => TTime;private     set => TTime = value; }
+    public bool 旋转1 { get => 旋转; set => 旋转 = value; }
 
     public void 反作用力(int i)
     {
@@ -197,6 +211,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
     }
     void 引线爆炸(Collider2D c)
     {
+        Debug.LogError("AAAAAAAAAAAAAAAA                "      +c.gameObject .name);
         bool 方向是上下 = (方向.v2_To方向() == E_方向.上 || 方向.v2_To方向() == E_方向.下);
         if (Time.realtimeSinceStartup - WakeTime < 0.2f) return;
         if (Player3.I.transform.parent == gameObject.transform)
@@ -253,9 +268,9 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
     public void 旋转触发(int I)
     {
         Debug.LogError("chufa?");
-        if (!旋转)
+        if (!旋转1)
         {  
-            旋转 = true;
+            旋转1 = true;
             暂停 = true;
             销毁 = false;
             方向 = Vector2.up; 
@@ -263,7 +278,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
         }     else  if (I == -1)
         {
             特效_pool_2.I.GetPool(transform.position, T_N.特效大爆炸);
-            旋转 = false;
+            旋转1 = false;
                 暂停 = false;
                 销毁 = false;
                 方向 = Vector2.down;
@@ -272,7 +287,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
             else if (I == 1)
         {
             特效_pool_2.I.GetPool(transform.position, T_N.特效大爆炸);
-            旋转 = false;
+            旋转1 = false;
                 暂停 = false;
                 销毁 = false;
                 方向 = Vector2.up;
@@ -281,14 +296,22 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
         else if (I == 0)
         {
             特效_pool_2.I.GetPool(transform .position ,T_N.特效大爆炸);
-            旋转 = false;
+            旋转1 = false;
             暂停 = false;
             销毁 = false;
             方向 = new Vector2(Player3.I.LocalScaleX_Set, 0);
             transform.rotation = Quaternion.Euler(0, 0,0); 
-        } 
+        }
+        if (旋转1 ==false )
+        {
+            不会碰撞消失 = true;
+            Initialize_Mono.I.Waite(
+                () => { 不会碰撞消失 = false;  },0.5f
+                );
+        }
     }
-  
+
+    bool 不会碰撞消失;
     private void FixedUpdate()
     {
         //((Vector2)盒子.center).DraClirl(2f,Color.cyan);
@@ -296,7 +319,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
         if (!gameObject.activeSelf) return;
         if (!运动暂停) 
         {
-            if (!旋转) transform.position += (Vector3)方向.normalized * 帧移动距离;
+            if (!旋转1) transform.position += (Vector3)方向.normalized * 帧移动距离;
             else   transform.position += (Vector3)模拟速度_ *Time.fixedDeltaTime  ;
         } 
 
@@ -315,7 +338,11 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
             var item = L[i];
             if (Debul) Debug.LogError(item);
             if (Debul) Debug.DrawRay(item, 方向 * 0.1f, Color.blue);
-            Hit = Physics2D.Raycast(item, 方向, 0.1f, Currrtten).collider;
+            if (!不会碰撞消失)
+            {
+                Hit = Physics2D.Raycast(item, 方向, 0.1f, Currrtten).collider;
+            }
+            if (Hit==bc)    break; 
 
             if (Hit == null)
             {
@@ -346,11 +373,11 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
 
 
         //帧移动距离 = Initialize.返回正负号(帧移动距离) * Mathf.Min(Mathf .Abs (帧移动距离) , Initialize_Mono.I.阀值2_5 * 0.01f);
-        if (旋转)
+        if (旋转1)
         {
             transform.Rotate(帧旋转速度 * Time.fixedDeltaTime);
             var Y = 模拟速度_.y;
-            Y-=Initialize_Mono .I.假物理重力*0.15f* Time.fixedDeltaTime *  I_S.固定等级差;
+            Y-=Initialize_Mono .I.假物理重力*0.3f* Time.fixedDeltaTime *  I_S.固定等级差;
 
             //Debug.LogError(Y);
             模拟速度_ = new Vector2(模拟速度_.x, Y );
@@ -460,7 +487,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
     bool is_dead;
     public void 重制()
     {
-        旋转 = false; 
+        旋转1 = false; 
         transform.rotation = Quaternion.Euler(0, 0, 0);
         is_dead =false ;
           是玩家噶的 = false;

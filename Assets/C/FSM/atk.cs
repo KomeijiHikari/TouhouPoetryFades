@@ -668,14 +668,14 @@ public class cricleatk : atkBase
                             Player.脚底中间.DraClirl(1f,Color.white);
                     new Vector2 (Player.transform.position.x, Rs).DraClirl(1f, Color.white);
 
-                            Debug.LogError(Player.脚底中间.y + "Rs:          " + Rs + "positionY :        " + Player.transform.position.y);
+                            //Debug.LogError(Player.脚底中间.y + "Rs:          " + Rs + "positionY :        " + Player.transform.position.y);
                             var a =Rs - Player.脚底中间.y;
                             if (a>0)
                             {
                                Player.transform.position += new Vector3  (0f, a);
                             }
                             判定框.所有碰撞体[i] = null;
-                            Debug.LogError(Player.transform.position.y);
+                            //Debug.LogError(Player.transform.position.y);
 
                             break;
                         }

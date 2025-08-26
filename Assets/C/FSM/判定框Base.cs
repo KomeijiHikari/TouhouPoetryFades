@@ -69,7 +69,7 @@ public class 判定框Base : MonoBehaviour
     }
     void ADDCo(Collider2D a)
     {
-        Debug.LogError(所有碰撞体.Contains(a)+"      "+a.gameObject.name );
+        //Debug.LogError(所有碰撞体.Contains(a)+"      "+a.gameObject.name );
         if (!所有碰撞体.Contains(a))
         { 
             所有碰撞体.Add(a);

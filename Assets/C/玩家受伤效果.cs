@@ -43,8 +43,8 @@ public class 玩家受伤效果 : MonoBehaviour
  
         EnterHit(damage, 硬抗);
 
-        if (obj != gameObject) 
-            Debug.LogError(force+"              AAAAAAAAAAAAAAAAAAA"+Time.frameCount);
+        //if (obj != gameObject) 
+        //    Debug.LogError(force+"              AAAAAAAAAAAAAAAAAAA"+Time.frameCount);
 
         if (Player3.I.受伤Force ==Vector2 .zero )
         {
