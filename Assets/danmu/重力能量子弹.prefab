@@ -208,6 +208,7 @@ MonoBehaviour:
   Stop: 0
   "\u6469\u64E6\u529B": 0.5
   Deb: 0
+  Sp: {fileID: 0}
   Speedd: 0
   "\u5173\u95ED1": 0
   "\u91CD\u529B\u589E\u5E451": 0
@@ -234,10 +235,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "I_\u6682\u505C\u7684OBJ": {fileID: 3523587353952303650}
   sp: {fileID: 3921428004920652762}
-  b: {fileID: 0}
-  "\u5217\u8868\u76D1\u63A7": 0
   L:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
   "\u9047\u89C1\u4E86_": 0
   PoinDeb: 0
+  Deb: 0

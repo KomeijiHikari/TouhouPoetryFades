@@ -70,7 +70,7 @@ namespace Boss
             {
                 if (Initialize.RandomInt(1, 蘑菇几率) < 蘑菇几率 - 2  || 普通攻击次数 >= 普通攻击最大次数)
                 {
-                    if (DeBuG )  Debug.LogError("ndomInt(1, 蘑菇几率) < 蘑菇几率 ");
+                    //if (DeBuG )  Debug.LogError("ndomInt(1, 蘑菇几率) < 蘑菇几率 ");
                     蘑菇几率 = 5;
                     普通攻击次数 = 0;
                     A.Playanim(A_转圈);
@@ -80,7 +80,7 @@ namespace Boss
                         () => 蘑菇发射器.gameObject.SetActive(false)
                      ,0.1f );
                     //StartCoroutine(       Initialize.Waite(  () => { 蘑菇发射器.gameObject.SetActive(false ); }   )      ，    );
-                    Debug.LogError("                        蘑菇");
+                    //Debug.LogError("                        蘑菇");
                     //T.Play("蘑菇");
                     to_state(atk_g);
                     return;
@@ -103,8 +103,7 @@ namespace Boss
                     魔炮管理.I.序号 = 3;
                     魔炮管理.I.是星星 = false;
                     普通攻击次数 = 0;
-                    T.Play("魔炮");
-                    Debug.LogError("                        大魔炮");
+                    T.Play("大魔炮"); 
                     return;
                 }
                 else
@@ -184,16 +183,8 @@ namespace Boss
         [SerializeField]
         [DisplayOnly]
         float 扫把计时_ = -1;
-        float 扫把2计时
-        {
-            get { return 扫把2计时_; }
-            set
-            {
-                if (扫把2计时_ != value)
 
-                    扫把2计时_ = value;
-            }
-        }
+        float 扫把计时最大 =4;
         float 扫把计时
         {
             get { return 扫把计时_; }
@@ -206,33 +197,30 @@ namespace Boss
         }
      public   Transform Ta, Tb;
         void 扫把atk_()
-        {
-            //扫把2.销毁触发 += () =>
-            //{
-            //    ///时间内
-            //    if (扫把2计时 > 0 && 扫把2计时 < 4)
-            //    {
-            //        if (当前 != 倒地)
-            //        {
-            //            if (当前 == atk_g)
-            //            {
-            //                if (!扫把 .isActiveAndEnabled)
-            //                {
-            //                    to_state(idle_g);
-            //                }
-            //            }
-            //        } 
-            //    }
-            //    ///时间外
-            //        扫把2.gameObject.SetActive(false);  
+        { 
+            Event_M.I.Add(Event_M.扫把打到了, (GameObject g) =>
+            {
+                if (g == gameObject)
+                {
+                    Debug.LogError("被扫把打到了");
+                    ///打到了自己
+                    //笨蛋玩家扫把 = 0;
+                    E.被扣血(1, gameObject, 0);
+                    if (E.韧性_ - 1000 > -1100)
+                    {
+                        E.韧性(-1000);
+                    }
+                    else
+                    {
+                        E.韧性(-1100);
+                    }
 
-            //        Debug.LogError(扫把2.isActiveAndEnabled+"         AAAAAAAAAAAA");
-            //        扫把2计时 = -1;
-            //};
+                } 
+            });
             扫把.销毁触发 += () =>
             {
                 ///时间内
-                if (扫把计时 > 0 && 扫把计时 < 4)
+                if (扫把计时 > 0 && 扫把计时 < 扫把计时最大)
                 {
                     if (当前 != 倒地)
                     {
@@ -269,7 +257,14 @@ namespace Boss
                 扫把.重制();
                 T扫把.position = transform.position;
                 扫把.方向 = new Vector2(transform.lossyScale.x, 0);
-                扫把.self_speed = 5f;
+                if (地形破坏)
+                { 
+                    扫把.self_speed = 4f;
+                }
+                else
+                {
+                    扫把.self_speed = 9f;
+                }
 
                 广播体操 = -1;
                 扫把计时 = 0;
@@ -293,7 +288,7 @@ namespace Boss
                     扫把计时 += Time.fixedDeltaTime * E.I_S.固定等级差;
                 }
 
-                if (扫把计时 > 4)
+                if (扫把计时 > 扫把计时最大)
                 {
                     if (当前 == atk_g)
                     {
@@ -400,23 +395,29 @@ namespace Boss
             }
         }
        bool  Move_to(Transform target)
-        { 
+        {
+            Debug.LogError("    Move_to(Transform target)  ");
           var TT=  target.position - transform.position;
-            var a= TT;
-            a.Normalize();
-            P.Velocity = a * E.Move_speed ;
+ 
             if (TT.sqrMagnitude<4)
             {
+                P.Stop_Velo();
                 return true;
             }
             else
             {
+                var a = TT;
+                a.Normalize();
+                P.Velocity = a * E.Move_speed;
                 return false;
             }
         }
-        void Move()
+        void Move(Vector2  Target )
         {
-            P.Velocity = Vector2.right * E.Move_speed * 刷新翻转();
+           var BB= Target .x- X;
+            var a = Initialize.返回正负号( Target.x - X);
+            transform.localScale = new Vector2(a, 1);
+            P.Velocity = Vector2.right * E.Move_speed * a;
         }
         [SerializeField]
         [DisableOnPlay]
@@ -440,6 +441,13 @@ namespace Boss
         [DisableOnPlay]
         Phy_检测 背后炮;
 
+        [Header("   ")]
+        [SerializeField]
+      Transform   地面A;
+        [SerializeField]
+        Transform 地面B;
+
+        [Header(" ")]
         [SerializeField]
         [DisableOnPlay]
         List<发射器> 两边;
@@ -450,9 +458,10 @@ namespace Boss
             //主UI.I.Boss血条_(gameObject, "魔理沙", true); 、
             to_state(开场);
         }
+        [SerializeField ]
         bool 追人;
 
-        //public void 星星发射()
+        //public void 星星发射()Down
         //{
         //    星星.监控子弹 = true;
         //    星星.
@@ -462,6 +471,9 @@ namespace Boss
         private float aTK_s时间 = -1;
         [SerializeField]
         private float aTK_g时间 =-1;
+
+        float 进入的血量;
+        float 倒地最大扣血量 =100;
         private void Awake()
         {
             if (I != null && I != this) Destroy(this);
@@ -493,21 +505,7 @@ namespace Boss
 
             atk_s_();
             atk_g_();
-            倒地.Enter += () =>
-            {
-                随机弹幕 = 随机弹幕.随机列表();
-                if (阶段 == E阶段.宝宝)
-                {
-
-                    阶段 = E阶段.一阶段;
-
-                    foreach (var item in 红色子弹)
-                    {
-                        item.随机发射无法消弹子弹 = true;
-                    }
-                } 
-                A.Playanim(A_倒地);
-            };
+            倒地_();
             A.当前动画为百分之99 += () =>
             {
                 if (当前 == atk_g)
@@ -518,7 +516,7 @@ namespace Boss
                 }
 
             };
-          
+
             T.pause += () => { };
             T.stopp += () =>
             {
@@ -537,11 +535,7 @@ namespace Boss
                 P.Velocity = E.Move_speed * Vector2.up;
                 if (天空检测.遇见了)
                 {
-                    if (阶段 == E阶段.二阶段)
-                    {
-                        to_state(idle_s);
-                    }
-                    else if (阶段 == E阶段.一阶段)
+                    if (阶段 == E阶段.一阶段)
                     {
                         to_state(idle_s);
                     }
@@ -551,7 +545,7 @@ namespace Boss
                     }
                 }
             };
-             
+
             Air.Enter += () =>
             {
                 弹幕攻击次数1 = 0;
@@ -564,7 +558,53 @@ namespace Boss
             {
                 P.Stop_Velo();
                 P.浮空 = false;
-            }; 
+            };
+        }
+
+        private void 倒地_()
+        {
+            E.A_恢复 += () =>
+            {
+                if (当前 == 倒地) Down(false);
+            };
+            E.A_破防 += () =>
+            {
+                Debug.LogError("AAAAAAAAAAAAA                           AAAAAAAAAAAAAAAAAA              ");
+                to_state(倒地);
+            };
+            倒地.FixStay += () =>
+            {
+                Debug.LogError(E.当前hp+"     " + 进入的血量+"     " + 倒地最大扣血量);
+                if (进入的血量-E.当前hp    > 倒地最大扣血量)
+                {
+                    Down(false);
+                }
+            };
+            倒地.Enter += () =>
+            {
+                进入的血量 = E.当前hp;
+                随机弹幕 = 随机弹幕.随机列表();
+                if (阶段 == E阶段.宝宝)
+                {
+
+                    阶段 = E阶段.一阶段;
+
+                    foreach (var item in 红色子弹)
+                    {
+                        item.随机发射无法消弹子弹 = true;
+                    }
+                }
+                else if(阶段== E阶段.一阶段)
+                {
+                    if (地形破坏 ==true)
+                    {
+                        阶段 = E阶段.三阶段;
+
+                    }
+                }
+                A.Playanim(A_倒地);
+
+            };
         }
 
         private void atk_g_()
@@ -613,9 +653,44 @@ namespace Boss
 
                 if (追人)
                 {
-                    Move();
+                    Vector2 target = default;
+                    if (地形破坏)
+                    {
+                       
+                        float A,B,P;
+                        P = Player3.I.transform.position.x;
+                        A = 地面A.position .x ;
+                        B = 地面B.position.x;
+
+                        if (Mathf .Abs (P-A)< Mathf.Abs(P - B))
+                        {
+                            target = 地面B.position;
+                            //A  更近
+        
+                        }
+                        else
+                        {
+                            //B 更近
+                            target = 地面A.position;
+                        }
+                       
+                        if (Mathf.Abs(target.x- transform.position.x) < 1f)
+                        {
+                            追人 = false;
+                            Down(true);
+                        }
+                    }
+                    else
+                    {
+                        target = Player3.I.transform.position;
+                    }
+                    Move(target);
+
+           
+
                     if (Mathf.Abs(距离) < 1f)
                     {
+                        追人 = false ;
                         Down(true);
                     }
                 }
@@ -744,40 +819,7 @@ namespace Boss
                     Initialize_Mono.I.Waite(() => 近战.gameObject.SetActive(false), 0.01f);
                 }
             };
-            E.A_恢复 += () =>
-            { 
-                    if (当前 == 倒地) Down(false); 
-            };
-            E.A_破防 += () =>
-            {
-                Debug.LogError("AAAAAAAAAAAAA                           AAAAAAAAAAAAAAAAAA              ");
-                to_state(倒地);
-            };
 
-            Event_M.I.Add(Event_M.扫把打到了, (GameObject g) =>
-            {
-                if (g == gameObject)
-                {
-                    Debug.LogError("被扫把打到了");
-                    ///打到了自己
-                    //笨蛋玩家扫把 = 0;
-                    E.被扣血(1, gameObject, 0);
-                    if (E.韧性_-1000> -1100)
-                    {
-                        E.韧性(-1000);
-                    }
-                    else
-                    { 
-                    E.韧性(-1100);
-                    }
-
-                }
-                //else if (g == Player3.I.gameObject)
-                //{
-                //    ///打到了玩家
-                //    笨蛋玩家扫把++;
-                //} 
-            });
 
             //E.被打 += () =>
             //  {
@@ -786,15 +828,15 @@ namespace Boss
             //      {
             //          to_state(倒地);
             //      }
-            //  };
+            ////  };
 
-            坠星发射器.发射.AddListener(() =>
-            {
+            //坠星发射器.发射.AddListener(() =>
+            //{
 
-                int I = 1;
-                if (坠星发射器.次数 > 1 && Initialize.是奇数(坠星发射器.次数)) I = -1;
-                坠星发射器.transform.position = 坠星发射器.transform.position + (I * 3 * Vector3.one);
-            });
+            //    int I = 1;
+            //    if (坠星发射器.次数 > 1 && Initialize.是奇数(坠星发射器.次数)) I = -1;
+            //    坠星发射器.transform.position = 坠星发射器.transform.position + (I * 3 * Vector3.one);
+            //});
         }
 
         void 星坠_()
@@ -818,7 +860,7 @@ namespace Boss
                 星辉发射器.gameObject.SetActive(true);
 
                 星辉发射器.初始化 += (Bullet_base B) => {
-                    B .Add( 0.5f, () => {
+                    B .Add( 0.3f, () => {
                         B.A角速度 = Initialize.To_方向到角度(B.返回当前指向玩家的方向(transform.position)) / Time.fixedDeltaTime;
                         B.L线速度 = 10;
                     });
@@ -864,9 +906,12 @@ namespace Boss
             };
             过渡.Enter += () =>
             {
-               
-                if (阶段!=E阶段.宝宝)  
-                    foreach (var item in 两边) item.gameObject.SetActive(true);     
+
+                if (阶段 != E阶段.宝宝)
+                    Initialize_Mono.I.Waite_同速 (()=> {
+                        foreach (var item in 两边) item.gameObject.SetActive(true);
+                    },0.2f);
+                        
             };
             过渡.Stay += () =>
             {
@@ -915,7 +960,7 @@ namespace Boss
             {
                 if (Time.time - 当前.time > idle_G时间)
                 {
-                    Debug.LogError(Time.time+"          "+ 当前.time+"         " + idle_G时间);
+                    //Debug.LogError(Time.time+"          "+ 当前.time+"         " + idle_G时间);
                     var 要翻转 = !方向对着玩家;
                     switch (条件判断())
                     {
@@ -931,7 +976,7 @@ namespace Boss
                             if (方向对着玩家)
                             {
                                 ///或者起飞  
-                                if (阶段 != E阶段.宝宝 && Initialize.RandomInt(1, 5) == 1)
+                                if (阶段 != E阶段.宝宝 && Initialize.RandomInt(1, 4) == 1)
                                 {
                                     Down(false);
                                     普通攻击次数++;
@@ -966,34 +1011,33 @@ namespace Boss
            
         public void 弹幕()
         {
-            索引++;
-            弹幕攻击次数1++;
-            var a = 随机弹幕[弹幕攻击次数1-1 ];
-            if (a==雷击发射器)
+
+            var a = 随机弹幕[索引];
+            if (a.gameObject == 圆形发射器.gameObject)
+            {
+                Debug.LogError("       else if (a == 圆形发射器) ");
+                aTK_s时间 = 7;
+                to_state(atk_s);
+                圆形发射器.SetActive(true);
+            }
+            else if (a.gameObject == 雷击发射器.gameObject)
             {
                 Debug.LogError("   if (a==雷击发射器)  ");
                 to_state(雷击);
             }
-            else if (a == 圆形发射器)
-            {
-                Debug.LogError("       else if (a == 圆形发射器) ");
-                aTK_g时间 = 7;
-                to_state(atk_s);
-                圆形发射器.SetActive(false );
-            }
-            else if (a == 星辉发射器)
+            else if (a.gameObject == 星辉发射器.gameObject)
             {
                 Debug.LogError("  se if (a == 星辉发射器)  ");
                 to_state(星辉);
             }
-            else if (a == 坠星发射器)
+            else if (a.gameObject == 坠星发射器.gameObject)
             {
                 Debug.LogError("     if (a == 坠星发射器)  ");
                 to_state(星坠);
             }
             else
             {
-                Debug.LogError(a + "    数据  " + (弹幕攻击次数1 - 1));
+                Debug.LogError(a + "    数据  " + (索引 - 1));
             }
 
 
@@ -1001,9 +1045,12 @@ namespace Boss
             {
                 索引 = 0;
             }
-            //Initialize.随机列表<>);
+            索引++;
+            弹幕攻击次数1++;
         }
         int 索引;
+        [SerializeField ]
+        bool 升空过了=false ;
         private void idle_s_()
         {
             idle_s.FixStay += () =>
@@ -1017,38 +1064,41 @@ namespace Boss
                         to_state(atk_s);
                         break;
                     case E阶段.一阶段:
-                        if (弹幕攻击次数1>=弹幕最大攻击次数 )
-                        {
-                            追人 = true;
-                            to_state(atk_s);
-                        } 
-                        else
+
+
+                        ///该阶段不会主动上升  
+                        ///刚进入在空中两次弹幕   DOWN   被击倒  UP  两次弹幕   地图炮  DOWN  极限火花第三阶段 
+
+                         if (弹幕攻击次数1<弹幕最大攻击次数 )
                         {
                             弹幕();
-                        } 
-                        break;
-                    case E阶段.二阶段:
-                        if (!地形破坏)
+                        }
+                        //两次弹幕放完  并且升过空
+                        //着个方法会反复调用在idle_s中反复调用
+                        else if (升空过了&&!地形破坏 )
                         {
                             if (Move_to(中心点))
                             {
-                 
+
+                                Debug.LogError("                      Move_to(中心点))  ");
                                 to_state(atk_s);
                                 P.Stop_Velo();
                                 T.Play("地形炮");
                             }
-                        }
-                        else if (弹幕攻击次数1 >= 弹幕最大攻击次数)
-                        {
-                            追人 = true;
-                            to_state(atk_s);
-                        }
-                        else
-                        {
-                            弹幕();
+
+                     
                         }
 
-                        break;
+                        else
+                        {
+                            Debug.LogError("                           升空过了 = true;     升空过了 = true;  ");
+                            升空过了 = true;
+                            追人 = true;
+                            to_state(atk_s);
+
+                        }
+                   
+                        break;   
                     case E阶段.三阶段:
                         break;
                     default:
@@ -1061,12 +1111,8 @@ namespace Boss
         {
             if (阶段==E阶段.一阶段)
             { 
-                弹幕最大攻击次数 = 1;
-            }
-            else if (阶段 == E阶段.二阶段)
-            {
                 弹幕最大攻击次数 = 2;
-            }
+            } 
             base.FixedUpdate();
             FixedUpdate_Action?.Invoke(); 
       

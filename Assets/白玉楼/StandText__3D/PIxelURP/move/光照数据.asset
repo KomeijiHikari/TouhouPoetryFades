@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5350145b04e957a49b815e6b12cad6b6, type: 3}
+  m_Name: "\u5149\u7167\u6570\u636E"
+  m_EditorClassIdentifier: 
+  Cs:
+  - Next: 1
+    "\u5F00\u59CB\u65F6\u95F4": {x: 0, y: 0, z: 0}
+    light: {r: 0.381132, g: 0.381132, b: 0.381132, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 0
+    "\u7ED3\u675F\u65F6\u95F4Fix": 21600
+    shadow: {r: 0.058156, g: 0.058156, b: 0.062, a: 1}
+    E: 0
+  - Next: 2
+    "\u5F00\u59CB\u65F6\u95F4": {x: 6, y: 0, z: 0}
+    light: {r: 0, g: 0, b: 0, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 21600
+    "\u7ED3\u675F\u65F6\u95F4Fix": 23400
+    shadow: {r: 0.081, g: 0.081, b: 0.1, a: 1}
+    E: 1
+  - Next: 3
+    "\u5F00\u59CB\u65F6\u95F4": {x: 6.5, y: 0, z: 0}
+    light: {r: 1, g: 0.8228777, b: 0.16470587, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 23400
+    "\u7ED3\u675F\u65F6\u95F4Fix": 27720
+    shadow: {r: 0.078431375, g: 0.09638932, b: 0.11372549, a: 1}
+    E: 2
+  - Next: 4
+    "\u5F00\u59CB\u65F6\u95F4": {x: 7, y: 42, z: 0}
+    light: {r: 1, g: 0.8308722, b: 0, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 27720
+    "\u7ED3\u675F\u65F6\u95F4Fix": 32400
+    shadow: {r: 0.25490198, g: 0.2654193, b: 0.28235295, a: 1}
+    E: 3
+  - Next: 5
+    "\u5F00\u59CB\u65F6\u95F4": {x: 9, y: 0, z: 0}
+    light: {r: 1, g: 0.7645208, b: 0.48235297, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 32400
+    "\u7ED3\u675F\u65F6\u95F4Fix": 36000
+    shadow: {r: 0.835625, g: 0.8577056, b: 0.875, a: 1}
+    E: 4
+  - Next: 6
+    "\u5F00\u59CB\u65F6\u95F4": {x: 10, y: 0, z: 0}
+    light: {r: 1, g: 0.9716338, b: 0.88113207, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 36000
+    "\u7ED3\u675F\u65F6\u95F4Fix": 46800
+    shadow: {r: 1, g: 1, b: 1, a: 1}
+    E: 5
+  - Next: 7
+    "\u5F00\u59CB\u65F6\u95F4": {x: 13, y: 0, z: 0}
+    light: {r: 0.93962264, g: 0.82261306, b: 0.6861018, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 46800
+    "\u7ED3\u675F\u65F6\u95F4Fix": 50400
+    shadow: {r: 0.8037735, g: 0.8037735, b: 0.8037735, a: 1}
+    E: 6
+  - Next: 8
+    "\u5F00\u59CB\u65F6\u95F4": {x: 14, y: 0, z: 0}
+    light: {r: 0.94117653, g: 0.8235295, b: 0.6862745, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 50400
+    "\u7ED3\u675F\u65F6\u95F4Fix": 61200
+    shadow: {r: 0.80392164, g: 0.80392164, b: 0.80392164, a: 1}
+    E: 7
+  - Next: 9
+    "\u5F00\u59CB\u65F6\u95F4": {x: 17, y: 0, z: 0}
+    light: {r: 1, g: 0, b: 0.6860709, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 61200
+    "\u7ED3\u675F\u65F6\u95F4Fix": 64800
+    shadow: {r: 0.31467426, g: 0.3029192, b: 0.4792453, a: 1}
+    E: 8
+  - Next: 10
+    "\u5F00\u59CB\u65F6\u95F4": {x: 18, y: 0, z: 0}
+    light: {r: 0, g: 0, b: 0, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 64800
+    "\u7ED3\u675F\u65F6\u95F4Fix": 79200
+    shadow: {r: 0.082, g: 0.091, b: 0.1, a: 1}
+    E: 9
+  - Next: 0
+    "\u5F00\u59CB\u65F6\u95F4": {x: 22, y: 0, z: 0}
+    light: {r: 0.11399999, g: 0.11399999, b: 0.11399999, a: 1}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 79200
+    "\u7ED3\u675F\u65F6\u95F4Fix": 0
+    shadow: {r: 0.16862746, g: 0.17254902, b: 0.18039216, a: 1}
+    E: 10
+  Fs:
+  - Next: 1
+    "\u5F00\u59CB\u65F6\u95F4": {x: 4, y: 0, z: 0}
+    light: {r: 0, g: 0, b: 0, a: 0.36862746}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 14400
+    "\u7ED3\u675F\u65F6\u95F4Fix": 21600
+  - Next: 2
+    "\u5F00\u59CB\u65F6\u95F4": {x: 6, y: 0, z: 0}
+    light: {r: 0, g: 0, b: 0, a: 0}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 21600
+    "\u7ED3\u675F\u65F6\u95F4Fix": 64800
+  - Next: 3
+    "\u5F00\u59CB\u65F6\u95F4": {x: 18, y: 0, z: 0}
+    light: {r: 0, g: 0, b: 0, a: 0}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 64800
+    "\u7ED3\u675F\u65F6\u95F4Fix": 79200
+  - Next: 0
+    "\u5F00\u59CB\u65F6\u95F4": {x: 22, y: 0, z: 0}
+    light: {r: 0, g: 0, b: 0, a: 0.36862746}
+    "\u5F00\u59CB\u65F6\u95F4Fix": 79200
+    "\u7ED3\u675F\u65F6\u95F4Fix": 14400

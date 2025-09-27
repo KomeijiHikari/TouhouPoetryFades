@@ -211,7 +211,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
     }
     void 引线爆炸(Collider2D c)
     {
-        Debug.LogError("AAAAAAAAAAAAAAAA                "      +c.gameObject .name);
+        //Debug.LogError("AAAAAAAAAAAAAAAA                "      +c.gameObject .name);
         bool 方向是上下 = (方向.v2_To方向() == E_方向.上 || 方向.v2_To方向() == E_方向.下);
         if (Time.realtimeSinceStartup - WakeTime < 0.2f) return;
         if (Player3.I.transform.parent == gameObject.transform)
@@ -264,7 +264,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
 
     
     Vector2 模拟速度_;
-   Vector2 模拟速度=new Vector2 (0,7f);
+   Vector2 模拟速度=new Vector2 (0,4f);
     public void 旋转触发(int I)
     {
         Debug.LogError("chufa?");

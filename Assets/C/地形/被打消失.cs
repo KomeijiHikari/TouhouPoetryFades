@@ -59,10 +59,13 @@ public partial class    被打消失
         {
             销毁触发?.Invoke();
         }
-    } 
-
+    }
+    [SerializeField ]
+    LayerMask 免疫;
     void 扣血效果(float i, GameObject obj)
     {
+        if (Initialize.Layer_is(obj.layer, 免疫)) return;
+
         float 反方向 = Initialize.返回和对方相反方向的标准力(gameObject, obj).x;
         sp.闪光(0.051f); ;
 

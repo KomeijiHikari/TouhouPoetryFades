@@ -648,7 +648,7 @@ public class cricleatk : atkBase
 
                     var e = 判定框.所有碰撞体[i];
 
-                    Debug.LogError(e.gameObject .name +"        "+ e.gameObject .transform .position );
+                    //Debug.LogError(e.gameObject .name +"        "+ e.gameObject .transform .position );
 
                     if (旋转箭失触发(e))
                     {

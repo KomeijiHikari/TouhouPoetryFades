@@ -5,8 +5,10 @@ using Sirenix.OdinInspector;
 namespace  Boss
 { 
 public class 蘑菇管理 : MonoBehaviour
-{
-    [SerializeField]
+    {
+        [SerializeField]
+      Transform 地平线;
+        [SerializeField]
     Sprite sp红;
     [SerializeField]
     Sprite sp蓝; 
@@ -30,9 +32,18 @@ public class 蘑菇管理 : MonoBehaviour
 
     public static 蘑菇管理 I;
 
+        float 上次F;
+
         [Button("Play_", ButtonSizes.Large)]
-        public void  从这里升起蘑菇(float X)
-        {
+        public void  从这里升起蘑菇(Vector2 vv)
+        { 
+            if (Mathf .Abs(vv.y -地平线.transform .position .y)>1)   return; 
+            float X = vv.x;
+
+            if (上次F !=X)   上次F = X; 
+            else   return; 
+
+            特效_pool_2.I.GetPool(vv, T_N.特效大爆炸);
             for (int i = 0; i < Os.Count; i++)
             {
                 var  O= Os[i];

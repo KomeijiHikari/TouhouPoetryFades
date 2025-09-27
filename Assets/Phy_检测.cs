@@ -20,8 +20,7 @@ public class Phy_检测 : MonoBehaviour
         } }
     [SerializeField]
     SpriteRenderer sp; 
-
-    bool boo; 
+     
     //private void OnEnable()
     //{
     //    Enter = null;

@@ -21316,6 +21316,7 @@ MonoBehaviour:
     - {fileID: 3523587353952303650, guid: 9e5ef8baece3a2d439c4d4b8ce2f6a5b, type: 3}
     - {fileID: 3523587353952303650, guid: c44db543418428747a4347fd38e78a22, type: 3}
     - {fileID: 3523587353952303650, guid: 8736d8107f80d0e408b84a7c5f5c0116, type: 3}
+    - {fileID: 3523587353952303650, guid: f0a4d71bccf0d9644b15eff5102f6aef, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -21334,7 +21335,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 9
+      Data: 10
     - Name: 
       Entry: 7
       Data: 
@@ -21400,7 +21401,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: "\u80FD\u91CF\u5B50\u5F39"
+      Data: "\u80FD\u91CF\u5B50\u5F39\u5927"
     - Name: $v
       Entry: 10
       Data: 5
@@ -21440,6 +21441,18 @@ MonoBehaviour:
     - Name: $v
       Entry: 10
       Data: 8
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u80FD\u91CF\u5B50\u5F39\u5927\u53EA\u73A9\u5BB6"
+    - Name: $v
+      Entry: 10
+      Data: 9
     - Name: 
       Entry: 8
       Data: 
@@ -25257,7 +25270,7 @@ MonoBehaviour:
     "\u5E38\u6001\u91CD\u529B1_BOSS": 1000
     "\u5706\u65A9\u4E0A\u5347\u529B1_BOSS": 19
     "\u5E38\u6001\u901F\u5EA61": 8
-    "\u8D77\u6B65\u901F\u5EA61": 40
+    "\u8D77\u6B65\u901F\u5EA61": 80
     "\u6700\u5927\u8DF3\u8DC3\u6B21\u65701": 1
     "\u5269\u4F59\u8DC3\u6B21\u6570": 0
     "\u8DF3\u8DC3\u77AC\u95F4\u901F\u5EA61": 17
@@ -31227,9 +31240,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u7126\u70B9": {fileID: 2129978458}
   "\u663E\u793A\u70B9\u4F4D\u7F6E": 0
-  "\u80FD\u91CF\u5B50\u5F39\u78B0\u649E":
-    serializedVersion: 2
-    m_Bits: 192
   "\u5047\u7269\u7406\u91CD\u529B": 40
   "\u80FD\u529B\u9053\u5177\u6307\u793A\u989C\u8272": {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   "\u641C\u96C6\u7269\u54C1\u6307\u793A\u989C\u8272": {r: 0, g: 1, b: 0, a: 1}

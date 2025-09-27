@@ -26,7 +26,7 @@ MonoBehaviour:
   SenderAcceleration: 0
   Count: 3
   LineAnle: 100
-  "\u53D1\u5C04\u95F4\u9694": 0.1
+  "\u53D1\u5C04\u95F4\u9694": 0.2
   "\u6CE2\u6B21": 0
   "\u53D1\u5C04\u65F6\u95F4": 0
   pre: {fileID: 3523587353952303650, guid: 1b1062d39cd5c9c4898b9f1bcf481416, type: 3}

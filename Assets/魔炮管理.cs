@@ -7,16 +7,24 @@ namespace Boss
 
 public class 魔炮管理 : MonoBehaviour
 {
-    public static 魔炮管理 I;
-  [SerializeField ]  GameObject 父类监控;
+        float Alpha
+        {
+            get
+            {
+                return 父类监控.color.a;
+            }
+        }
+
+        public static 魔炮管理 I;
+        [SerializeField] SpriteRenderer  父类监控;
    [SerializeField ] GameObject 子类监控;
 
-    [Header("魔炮")]
-    [SerializeField] GameObject 父类监控1;
+    [Header("魔炮")] 
+    public GameObject 父类监控1;
     [SerializeField] GameObject 子类监控1;
-    [SerializeField] GameObject 父类监控2;
+        public GameObject 父类监控2;
     [SerializeField] GameObject 子类监控2;
-    [SerializeField] GameObject 父类监控3;
+        public GameObject 父类监控3;
     [SerializeField] GameObject 子类监控3;
 
     [Header("星星")]
@@ -24,7 +32,12 @@ public class 魔炮管理 : MonoBehaviour
     [SerializeField] GameObject 星星2; 
     [SerializeField] GameObject 星星3;
 
-    [SerializeField] List<Phy_检测> 检测s; 
+        [SerializeField] List<SpriteRenderer>  Sp_s;
+        [SerializeField] List<Phy_检测> 检测s; 
+        void setA(SpriteRenderer  SP)
+        { 
+            SP.color = new Color(SP.color.r, SP.color.g, SP.color.b, 0.7f*Alpha); 
+        }
     private void Awake()
     {
         if (I != null && I != this) Destroy(this);
@@ -34,7 +47,7 @@ public class 魔炮管理 : MonoBehaviour
     {
         get
         {
-            return 父类监控.activeInHierarchy;
+            return 父类监控.gameObject .activeInHierarchy;
         }
     }
 
@@ -79,9 +92,21 @@ public class 魔炮管理 : MonoBehaviour
         Fb = fb;
         Zb = zb;
 
+            if (!是星星)
+            {
+                if (fb)
+                {
+                    foreach (var  item in  Sp_s)
+                    {
+                        if (item  .isVisible )
+                        {
+                            setA(item);
+                        }
+                    }
+                }
+            }
 
- 
-        foreach (var item in 检测s)
+            foreach (var item in 检测s)
         {
             if (item.isActiveAndEnabled)
             {
@@ -120,32 +145,32 @@ public class 魔炮管理 : MonoBehaviour
         {
             if (序号 == 1)
             {
-                父类监控1.SetActive(b);
+                父类监控1 .SetActive(b);
             }
             else if (序号 == 2)
             {
-                父类监控2.SetActive(b);
+                    父类监控2 .SetActive(b);
             }
             else
             {
-                父类监控3.SetActive(b);
+                    父类监控3 .SetActive(b);
             }
         } 
     }
     void 小(bool b)
-    {
+    { 
      ///星星和序号在发射前
         if (序号 == 1)
-        {
-            子类监控1.SetActive(b);
+            { 
+                子类监控1.SetActive(b);
         }
         else if (序号 == 2)
-        {
+        {           
             子类监控2.SetActive(b);
         }
         else
-        {
-            子类监控3.SetActive(b); 
+        { 
+                子类监控3.SetActive(b); 
         }
 
         if (序号 == 3 && !是星星)

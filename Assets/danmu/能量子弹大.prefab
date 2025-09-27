@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -4523840099942080857}
   - component: {fileID: 6012169047828885917}
   m_Layer: 13
-  m_Name: "\u80FD\u91CF\u5B50\u5F39"
+  m_Name: "\u80FD\u91CF\u5B50\u5F39\u5927"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,6 +113,9 @@ MonoBehaviour:
   eulerAngles: {x: 0, y: 0, z: 0}
   "\u81EA\u8EAB\u65CB\u8F6C": 0
   "\u8FFD\u8E2A\u73A9\u5BB6": 0
+  "\u5B50\u5F39\u78B0\u649E":
+    serializedVersion: 2
+    m_Bits: 192
   deadtime: -1
   "\u53EF\u4EE5\u88AB\u6D88\u706D": 1
 --- !u!114 &1959165710018720593

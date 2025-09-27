@@ -30,7 +30,7 @@ namespace 发射器空间
         [DisplayOnly]
         float 朝向_; 
         public Bullet数据 B; 
-        float 朝向
+        float 朝向X
         {
             get
             {
@@ -97,15 +97,34 @@ namespace 发射器空间
         {
             发射时间 = B.发射时间;
 
-            if (按照方向来) 朝向_ = 朝向 == 1 ? 0 : 180;
-            if (B!=null)
+            方向刷新();
+            if (B != null)
             {
-                currentAngle =  B.InitRotation;
+                currentAngle = B.InitRotation;
                 currentAngularVelocity = B.SenderAngularVelocity;
             }
 
-            当前时间 = 0f; 
+            当前时间 = 0f;
         }
+
+        private void 方向刷新()
+        {
+            if (按照方向来)
+            {
+
+                朝向_ = 1;
+
+                if (Initialize.返回正负号(朝向X) == 1)
+                {
+                    朝向_ = 0;
+                }
+                else
+                {
+                    朝向_ = 180;
+                }
+            }
+        }
+
         public SpriteRenderer SP;
         private void FixedUpdate()
         {
@@ -114,7 +133,7 @@ namespace 发射器空间
                 SP.transform.rotation = Quaternion.Euler(new Vector3 (0,0,1f)*Time.fixedDeltaTime*20f);
             }
 
-            if (按照方向来) 朝向_ = 朝向 == 1 ? 0 : 180; 
+            方向刷新();
 
             bool 可以 = false;
             switch (当前播放类型_)
@@ -179,22 +198,17 @@ namespace 发射器空间
             {
                 Send().transform.position = i;
             } 
-        }
-        void 蘑菇( Vector2 V)
-        { 
-            Boss.蘑菇管理.I.从这里升起蘑菇(V.x);
-                特效_pool_2.I.GetPool(V, T_N.特效大爆炸); 
-        }
+        } 
         public void 发射组_p_定位_()
         {
             var a = Initialize.中间并列点(Player3.I.transform.position, B.Count, B.LineAnle);
             for (int i = 0; i < B.Count; ++i)
             {
+                a[i].DraClirl(1,Color .blue);
                 if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
                 var VVV = a[i];
                 Phy aa = SendP();
-                aa.目标炮(VVV, B.生命周期);
- 
+                aa.目标炮(VVV, B.生命周期); 
             }
         }
         [Button("重力跟踪", ButtonSizes.Large)]
@@ -204,21 +218,23 @@ namespace 发射器空间
             for (int i = 0; i < B.Count; ++i)
             {
                 if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
-                var VVV = a[i];
+                var VVV = a[i]; 
                 Phy aa = SendP();
                 aa.目标炮(VVV, B.生命周期);
 
                var P= aa.GetComponent<Phy_检测>();
                 P.Enter += () =>
                 {
-                    for (int i = 0; i < P.Rs.Length; i++)
+                    if (P.Rs .Length >=1)
                     {
-                        var ccc = P.Rs[i].collider.gameObject;
-                        if (ccc.layer ==Initialize .L_Ground )
-                        { 
-                            蘑菇(P.Rs[i].point  );
-                        } 
+                        var ccc = P.Rs[0].collider.gameObject;
+                        if (ccc.layer == Initialize.L_Ground)
+                        {
+                            var Targgget = P.Rs[0].point;
+                            Boss.蘑菇管理.I.从这里升起蘑菇(Targgget);
+                        }
                     }
+            
                 };
             } 
         } 
@@ -338,10 +354,10 @@ namespace 发射器空间
         }
         public  void  发射盒子随机点(SpriteRenderer sp)
         {
-            var a = 盒子随机点(sp.bounds ,B.Count);
+            var a = 盒子随机点(sp.bounds ,B.Count,B .LineAnle);
             for (int i = 0; i < a.Count; i++)
             {
-                var B = Send();
+                var B = Send(ResultAngle);
                 B.transform.position = a[i];
                
             }

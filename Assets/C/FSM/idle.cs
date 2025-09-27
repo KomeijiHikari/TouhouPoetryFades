@@ -94,7 +94,7 @@ public override void StateStart()
                   Player.      »ºÂý·´ÏòÁ¦(0.3f); 
                         A.Playanim(name);
                     }
-       
+                    Player.Velocity = Vector2.zero;
                     break;
                 case E_State.downatk:
                 case E_State.skyatk:

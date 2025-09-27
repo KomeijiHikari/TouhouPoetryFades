@@ -111,6 +111,9 @@ MonoBehaviour:
   eulerAngles: {x: 0, y: 0, z: 0}
   "\u81EA\u8EAB\u65CB\u8F6C": 0
   "\u8FFD\u8E2A\u73A9\u5BB6": 0
+  "\u5B50\u5F39\u78B0\u649E":
+    serializedVersion: 2
+    m_Bits: 192
   deadtime: -1
   "\u53EF\u4EE5\u88AB\u6D88\u706D": 1
 --- !u!114 &1959165710018720593

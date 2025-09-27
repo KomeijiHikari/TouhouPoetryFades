@@ -123,7 +123,8 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
         玩家方向.Normalize();
         return 玩家方向;
     }
-
+    [SerializeField ]
+  protected   LayerMask 子弹碰撞;
     /// <summary>
     /// 碰到  地面  玩家
     /// 申明周期无
@@ -143,7 +144,7 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
                 方向 = Vector2.Lerp(Initialize.To_角度到方向(A角速度 * Time.fixedDeltaTime), 玩家方向, 追踪玩家);
 
             var 下一目标 = transform.position + L线速度 * (Vector3)方向 * Time.fixedDeltaTime * I_S.固定等级差;
-        var a=    Initialize.碰撞射线(transform.position, 下一目标, Initialize_Mono .I.能量子弹碰撞);
+        var a=    Initialize.碰撞射线(transform.position, 下一目标, 子弹碰撞);
 
             if (a==Vector2 .zero)  transform.position = 下一目标; 
             else   transform.position = a;
@@ -198,7 +199,7 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool
     {
         base.FixedUpdate();
 
-        var a = Physics2D.BoxCast(transform.position, transform.localScale, 0f, Vector2.zero, 0f, Initialize_Mono.I.能量子弹碰撞);
+        var a = Physics2D.BoxCast(transform.position, transform.localScale, 0f, Vector2.zero, 0f,  子弹碰撞);
         if (a)
         {
             if (a.transform.gameObject.layer == Initialize.L_Player && deadtime == -1f)

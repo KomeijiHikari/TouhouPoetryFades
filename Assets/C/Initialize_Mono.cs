@@ -54,8 +54,7 @@ public class Initialize_Mono:MonoBehaviour
     }
 
     public bool 显示点位置=false;
-
- public    LayerMask 能量子弹碰撞;
+     
     public   float 假物理重力  = 9.8f;
 
     public Color 能力道具指示颜色=Color .yellow;
@@ -1517,6 +1516,9 @@ public static    System.Random Get_随机种子()
         else if (value < 0) return -1;
         else     return 0; 
     }
+    /// <summary>
+    /// 包含否
+    /// </summary> 
     public static  bool  Layer_is(int layer,LayerMask lm)
     {
         ///如果一个层 obj.layer 是 4
