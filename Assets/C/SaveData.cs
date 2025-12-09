@@ -266,6 +266,7 @@ public static class Save_D
 }
 public static class Save_static
 {
+    public static string 按键 { get; } = "按键";
     public static string 已经死掉的机关 { get; } = "机关";
     public static string text { get; } = "text";
     public static string 存档点位 { get; } = "Save_way";
@@ -274,6 +275,14 @@ public static class Save_static
     public static string  字典 { get; } = "字典";
 
     public static string 小地图 { get => 小地图显示.I.Name; }
+
+#if UNITY_EDITOR
+    [UnityEditor.MenuItem("Tools/删键")]
+#endif 
+    public static void  DeleKey()
+    {
+        DeletsText(按键 + ".txt");
+    }
 #if UNITY_EDITOR
     [UnityEditor.MenuItem("Tools/删档")]
 #endif
@@ -306,11 +315,16 @@ public static class Save_static
         SaveinText( saveFileName,  obj);
     }
     public static void SaveinText(string  saveFileName,object obj)
-    {
- 
+    { 
+   
         //如果已经存在，就会覆盖掉
         var j = JsonUtility.ToJson(obj,true); 
         var path = Path.Combine (Application.persistentDataPath,saveFileName+".txt");
+        if (Initialize_Mono.I.打包额外打印)
+        {
+            Debug.LogError("文件名字:" + saveFileName + "路径    " + path+"内容 "+j);
+        }
+
 
         try
         {

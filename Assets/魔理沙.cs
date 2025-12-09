@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SampleFSM;
-using BehaviorDesigner.Runtime;
-using UnityEditor.Timeline;
+using BehaviorDesigner.Runtime; 
 using UnityEngine.Playables; 
 using System;
 using UnityEngine.Events;
@@ -362,7 +361,7 @@ namespace Boss
 
         private void Start()
         {
-            当前 = 开场;
+            当前 = NULL;
             A.Playanim(A_idle_sky);
 
             随机弹幕 = 随机弹幕.随机列表();
@@ -451,8 +450,16 @@ namespace Boss
         [SerializeField]
         [DisableOnPlay]
         List<发射器> 两边;
+
+        public void 退场()
+        {
+            半灵.I.初始化(null,false);
+            Initialize_Mono.I.BOSS模式(gameObject, false);
+            to_state(NULL);
+        }
         public void 登场()
         {
+            Debug.LogError("AAAAAAAAAAAAAAAA");
             半灵.I.初始化(E);
             Initialize_Mono.I.BOSS模式(gameObject, true);
             //主UI.I.Boss血条_(gameObject, "魔理沙", true); 、
@@ -574,7 +581,7 @@ namespace Boss
             };
             倒地.FixStay += () =>
             {
-                Debug.LogError(E.当前hp+"     " + 进入的血量+"     " + 倒地最大扣血量);
+                //Debug.LogError(E.当前hp+"     " + 进入的血量+"     " + 倒地最大扣血量);
                 if (进入的血量-E.当前hp    > 倒地最大扣血量)
                 {
                     Down(false);
@@ -1138,6 +1145,7 @@ namespace Boss
         protected state Air = new state("Air");
 
         protected state 开场 = new state("开场");
+        protected state NULL = new state("NULL");
 
         protected state 持续弹幕;
         protected state 星辉;

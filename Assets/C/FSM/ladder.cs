@@ -20,7 +20,7 @@ public class ladder : State_Base
         Player.GravityScale = 0;
     }
 
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
         Player.Trigger =false;
         Player.GravityScale = ÖØÁ¦;

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public  partial  class 传送点 : MonoBehaviour
 {
+    public bool 是否回血=true;
     public bool 可被销毁;
     public float 编号;
     BoxCollider2D bc;
@@ -38,7 +39,12 @@ public  partial  class 传送点 : MonoBehaviour
     { 
         if (collision.gameObject.tag != "Player") return; 
         if (!玩家走到了外面)
-        {
+        { 
+            if (是否回血)
+            {
+ 
+                Player3.I.当前hp = Player3.I.hpMax;
+            }
             玩家走到了外面 =true;
             传送导点.I.最后点 = transform.position;
             Player3.I.录入安全地点(true );

@@ -9,7 +9,8 @@ public class hit : State_Base
     bool BigHit => Player.BigHit;
     public override void EnterState()
     {
-
+  
+        Player.加速(false);
         Initialize.Set_碰撞(Initialize .L_Player , Initialize.L_Air_wall,false);
         if (Player.当前hp <=0)
         {
@@ -37,7 +38,7 @@ public class hit : State_Base
         }
     }
 
-    public override    void ExitState()
+    public override    void ExitState(E_State e )
     {
         Initialize.Set_碰撞(Initialize.L_Player, Initialize.L_Air_wall,true);
         if (Dead)
@@ -47,6 +48,9 @@ public class hit : State_Base
         Dead = false;
         Player.Velocity = Vector2.zero;
             Player.开启灵魂();
+            Player3.I.ChangeFather();
+            yalaAudil.I.EffectsPlay("ReLive", 0);
+            
 
             this.Player.站立box.isTrigger =false ;
             Player.po.isTrigger =false ;

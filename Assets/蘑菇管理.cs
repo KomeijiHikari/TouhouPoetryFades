@@ -37,6 +37,7 @@ public class 蘑菇管理 : MonoBehaviour
         [Button("Play_", ButtonSizes.Large)]
         public void  从这里升起蘑菇(Vector2 vv)
         { 
+            Debug.LogError("从这里升起蘑菇"+vv);
             if (Mathf .Abs(vv.y -地平线.transform .position .y)>1)   return; 
             float X = vv.x;
 

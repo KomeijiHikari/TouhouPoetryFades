@@ -6,7 +6,7 @@ Shader "ORIS Shaders/2D Light Shader URP"
 		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
 		[ASEBegin]_SpriteTexture("Sprite Texture", 2D) = "white" {}
-		_NormalTexture("Normal Texture", 2D) = "bump" {}
+		_MainTex("Normal Texture", 2D) = "bump" {}
 		[Toggle]_BlackWhite("Black&White", Float) = 0
 		_R("R", Range( 0 , 5)) = 2
 		_G("G", Range( 0 , 5)) = 2
@@ -282,7 +282,7 @@ Shader "ORIS Shaders/2D Light Shader URP"
 			#endif
 			CBUFFER_END
 			sampler2D _SpriteTexture;
-			sampler2D _NormalTexture;
+			sampler2D _MainTex;
 
 
 			float4 CalculateContrast( float contrastValue, float4 colorTarget )
@@ -496,9 +496,9 @@ Shader "ORIS Shaders/2D Light Shader URP"
 				float4 temp_cast_0 = (_Contrast).xxxx;
 				
 				float2 uv_NormalTexture = IN.ase_texcoord7.xy * _NormalTexture_ST.xy + _NormalTexture_ST.zw;
-				float3 unpack83 = UnpackNormalScale( tex2D( _NormalTexture, uv_NormalTexture ), float2( -1,1 ).x );
+				float3 unpack83 = UnpackNormalScale( tex2D( _MainTex, uv_NormalTexture ), float2( -1,1 ).x );
 				unpack83.z = lerp( 1, unpack83.z, saturate(float2( -1,1 ).x) );
-				float3 switchResult82 = (((ase_vface>0)?(UnpackNormalScale( tex2D( _NormalTexture, uv_NormalTexture ), 1.0f )):(unpack83)));
+				float3 switchResult82 = (((ase_vface>0)?(UnpackNormalScale( tex2D( _MainTex, uv_NormalTexture ), 1.0f )):(unpack83)));
 				float3 temp_cast_5 = (_NormalPower).xxx;
 				float3 clampResult57 = clamp( switchResult82 , CalculateContrast(_NormalIntensity,float4( switchResult82 , 0.0 )).rgb , pow( switchResult82 , temp_cast_5 ) );
 				
@@ -663,8 +663,8 @@ Shader "ORIS Shaders/2D Light Shader URP"
 				#ifdef ASE_DEPTH_WRITE_ON
 					outputDepth = DepthValue;
 				#endif
-				//appendResult9ºÏ³ÉºóµÄÑÕÉ« Ã»ÓÐW
-				//IN.clipPosÈ·ÊµÊÇ¶ÔµÄ IN.clipPos.y/1080¿ÉÒÔ
+				//appendResult9ï¿½Ï³Éºï¿½ï¿½ï¿½ï¿½É« Ã»ï¿½ï¿½W
+				//IN.clipPosÈ·Êµï¿½Ç¶Ôµï¿½ IN.clipPos.y/1080ï¿½ï¿½ï¿½ï¿½
 				return color;
 			}
 
@@ -1337,7 +1337,7 @@ Shader "ORIS Shaders/2D Light Shader URP"
 			#endif
 			CBUFFER_END
 			sampler2D _SpriteTexture;
-			sampler2D _NormalTexture;
+			sampler2D _MainTex;
 
 
 			float4 CalculateContrast( float contrastValue, float4 colorTarget )
@@ -1499,9 +1499,9 @@ Shader "ORIS Shaders/2D Light Shader URP"
 				
 				float smoothstepResult79 = smoothstep( _Thickness , ( _Thickness - 0.1 ) , distance( tex2DNode1.a , _Offset ));
 				float2 uv_NormalTexture = IN.ase_texcoord2.xy * _NormalTexture_ST.xy + _NormalTexture_ST.zw;
-				float3 unpack83 = UnpackNormalScale( tex2D( _NormalTexture, uv_NormalTexture ), float2( -1,1 ).x );
+				float3 unpack83 = UnpackNormalScale( tex2D( _MainTex, uv_NormalTexture ), float2( -1,1 ).x );
 				unpack83.z = lerp( 1, unpack83.z, saturate(float2( -1,1 ).x) );
-				float3 switchResult82 = (((ase_vface>0)?(UnpackNormalScale( tex2D( _NormalTexture, uv_NormalTexture ), 1.0f )):(unpack83)));
+				float3 switchResult82 = (((ase_vface>0)?(UnpackNormalScale( tex2D( _MainTex, uv_NormalTexture ), 1.0f )):(unpack83)));
 				float3 temp_cast_5 = (_NormalPower).xxx;
 				float3 clampResult57 = clamp( switchResult82 , CalculateContrast(_NormalIntensity,float4( switchResult82 , 0.0 )).rgb , pow( switchResult82 , temp_cast_5 ) );
 				float grayscale61 = (clampResult57.r + clampResult57.g + clampResult57.b) / 3;

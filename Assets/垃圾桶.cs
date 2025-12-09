@@ -9,10 +9,11 @@ namespace  SampleFSM
 {
     public class 泛用状态机 : SerializedMonoBehaviour
     {
+
         [SerializeField ]
         public state 当前;
         protected state 上一个; 
-        public bool DeBuG=false ;
+        public bool DeBuG=false ; 
         protected void to_state(state a)
         {
             if (当前 == a || !a.激活) return;
@@ -33,10 +34,13 @@ namespace  SampleFSM
         }
   protected  virtual void Update()
         { 
+   
             当前?.Stay?.Invoke(); 
         }
         protected   virtual  void FixedUpdate()
-        { 
+        {
+
+            当前?.fatherFix();
             当前?.FixStay?.Invoke();
         }
         /// <summary>
@@ -78,9 +82,21 @@ namespace  SampleFSM
         public int timeCount;
 
         public Action Enter;
+
+        public Action BaseFixStay;
         public Action FixStay;
         public Action Stay;
         public Action Exite;
+
+        public void  fatherFix()
+        {
+            if (Father!=null)
+            {
+
+                Father.fatherFix();
+               Father.BaseFixStay?.Invoke();
+            }
+        }
 
         public state Get_father()
         { return Father; }
@@ -225,12 +241,18 @@ namespace Enemmy
         protected state fang = new state("fang");
         protected state idle = new state("idle");
         Enemy_base e;
+        // 监控组件，用于在场景切换或禁用时清理发射的飞行物
+        监控激活碰撞框 监控;
+        // 跟踪该垃圾桶发射或产生的飞行物，便于在场景切换时清理
+        List<Fly_Ground> Flist = new List<Fly_Ground>();
 
         [Space ]
         [Header("  检查范围之内 ")]
         [SerializeField] float A, B;
         [Space]
 
+
+        // (已在上方声明 Flist)
         [SerializeField]
         [DisplayOnly]
         float 距离_;
@@ -251,6 +273,34 @@ namespace Enemmy
             j = GetComponent<戒备>();
             e = GetComponent<Enemy_base>(); 
             当前 = idle;
+
+            // 获取监控组件并订阅事件，用于在监控失活时清理飞行物
+            gameObject.组件(ref 监控);
+            if (监控 != null)
+            {
+                监控.是我 += (b) =>
+                {
+                    if (!b)
+                    {
+                        // 当监控变为非激活时，清理所有跟踪的飞行物并回收到对象池
+                        while (Flist.Count != 0)
+                        {
+                            for (int i = 0; i < Flist.Count; i++)
+                            {
+                                var fl = Flist[i];
+                                if (fl == null) continue;
+                                try
+                                {
+                                    fl.销毁触发?.Invoke();
+                                }
+                                catch { }
+                                Surp_Pool.I.ReturnPool(fl.gameObject);
+                            }
+                        }
+                    }
+                };
+            }
+
 
             e.销毁触发 += () => { to_state(dead); };
 
@@ -279,8 +329,17 @@ namespace Enemmy
                     e.Speed_Lv * 弹道速度
                      );
 
-                if (DeBuG) b.Debul = true;
-            };
+                // 跟踪由本垃圾桶发射的子弹，便于清理
+                var fg = b as Fly_Ground;
+                if (fg != null)
+                {
+                    Flist.Add(fg);
+                    // 当子弹被销毁时，从列表中移除引用
+                    Action handler = null;
+                    handler = () => { fg.销毁触发 -= handler; Flist.Remove(fg); };
+                    fg.销毁触发 += handler;
+                }
+            }; 
     
 
                 idle.Enter += () => {

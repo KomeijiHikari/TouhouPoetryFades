@@ -1,14 +1,17 @@
+using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor; 
+//using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
-using UnityEditor; 
-using Cinemachine;
 
 
 public class 相机框 : MonoBehaviour
 {
+    [DisplayOnly]
+    public int Scene编号 = -9999;
     [DisplayOnly]
     public int 编号 = -9999;
     [DisplayOnly]
@@ -114,9 +117,9 @@ void     来这是我的碰撞箱(GameObject  obj)
    static Collider2D 上一个碰撞框_;
     private new void Awake()
     {
- 
- 
-        碰撞框 = GetComponent<PolygonCollider2D>();
+
+        Scene编号 = gameObject.scene.buildIndex;
+               碰撞框 = GetComponent<PolygonCollider2D>();
         刷新正在运行的相机框列表(this); 
     }
 

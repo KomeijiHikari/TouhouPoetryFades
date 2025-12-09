@@ -1,6 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 using UnityEngine;
+using UnityEngine.Events;
 
 
 /// <summary>
@@ -16,6 +17,13 @@ using UnityEngine;
 /// </summary>
 public partial  class Move_P : Groundbase, I_Speed_Change,I_攻击, I_暂停
 {
+    /// <summary>
+    /// 开启后 巡逻点变换到自己的父坐标
+    /// 自己局部坐标必须是0
+    /// 只能在局部坐标系下工作
+    /// 多个平台共用点位
+    /// </summary>
+    public bool 应用局部坐标映射1 = false;
     public GameObject 对象 { get => gameObject; }
     public One_way O;
     public bool 超速_;
@@ -86,8 +94,17 @@ public     方式 移动方式;
         {
             Debug.LogError("离谱");
         }
-        a = A.localPosition;
-        b = moveto.localPosition;
+        if (应用局部坐标映射1)
+        {
+            a = getlo(A.position);
+            b= getlo(moveto.position);
+        }
+        else
+        {
+            a = A.localPosition;
+            b = moveto.localPosition;
+        }
+
         if (改AA )
         {
             next_ = a;
@@ -100,16 +117,25 @@ public     方式 移动方式;
     private void Start()
     {
         Player3.I.Public_Speed_ += () => {
-            if (Player3.Public_Const_Speed > speed_Lv) 重制();
+            //if (Player3.Public_Const_Speed > speed_Lv) 
+                重制();
         };
         if (speed_Lv==0)
         {
             speed_Lv = 1;
         }
- 
 
-        a = A == null? Pla.localPosition:A.localPosition;
-        b = moveto.localPosition;
+        if (应用局部坐标映射1)
+        {
+            a = getlo(A.position);
+            b = getlo(moveto.position);
+        }
+        else
+        {
+            a = A == null ? Pla.localPosition : A.localPosition;
+            b = moveto.localPosition;
+        }
+
         next_ =过滤(a) ;
         gameObject.tag = Initialize.MovePlatform;
         gameObject.layer= Initialize.L_M_Ground; 
@@ -134,6 +160,7 @@ public     方式 移动方式;
     }
     private new void Awake()
     {
+        if (p==null)        p = gameObject.AddComponent<平台动画效果>();
         gameObject.AddComponent<MonoMager >();
         StatWay = transform.position;
         base.Awake();
@@ -154,7 +181,11 @@ public     方式 移动方式;
         }
          transform.localPosition = 过滤(transform.localPosition); 
     }
-    
+    Vector2 getlo(Vector2 worldpos)
+    {
+        var a= transform.InverseTransformPoint(worldpos);
+        return 过滤   (a); 
+    }
     float LastPlayerLV;
     float LastLV;
     void 碰撞情况刷新()
@@ -215,9 +246,11 @@ public     方式 移动方式;
     }
     void change()
     {
+        if (Deb)    Debug.LogError("AAAAAAA         WWWWW"+gameObject.name+transform.position);
+ 
         if (Loop)
         { 
-            if (next_==a)
+            if ((Vector2)next_== 过滤(a))
         {
             可以移动 = false;
                 if (WaitTime!=999) StartCoroutine(Waite(WaitTime));
@@ -243,11 +276,14 @@ public     方式 移动方式;
  
     Vector2 过滤(Vector2 ini )
     {
+        if (Deb) Debug.LogError("AAAAQQQQQQQA         WWWWW");
         switch (移动方式)
         {
             case 方式.竖直:
-                return new Vector3(0, ini.y, 0);
+                if (Deb) Debug.LogError("AAAAWWWW    WWWWW");
+                return new Vector3(0, ini.y, 0); 
             case 方式.水平:
+                if (Deb) Debug.LogError("AAEEEEEEEEA         WWWWW");
                 return new Vector3(ini.x, 0, 0);
             case 方式.自由:
                 return ini;
@@ -281,15 +317,16 @@ public     方式 移动方式;
             bool 碰到的是上面 = Initialize.Vector2Int比较(c.contacts[0].normal,Vector2 .down); 
  
                 if ( 碰到的是上面)
+            { 
+                if (踩到之后不动)
                 { 
-                    if (踩到之后不动)
-                    { 
-                        因为玩家我不该动 = true;
+                    因为玩家我不该动 = true;
                     }
                     else
-                {
+                { 
                     Debug.LogError(Initialize.Vector2Int比较(c.contacts[0].normal, Vector2.down, true));
                     Player3.I.脚下 = this;
+                    Debug.LogError("脚下是这个平台");
                     Player3.I.ChangeFather(transform );
                     }
                 } 
@@ -304,7 +341,15 @@ public     方式 移动方式;
         碰撞情况刷新();
         帧移动距离_ = 帧移动距离;
         超速_ = 超速;
+        超速等级=I_S.超速等级;
+        固定等级差 = I_S.固定等级差;
     }
+    [SerializeField]
+    [DisplayOnly]
+    float 固定等级差;
+    [DisplayOnly]
+    [SerializeField]
+    E_超速等级 超速等级;
     private void OnCollisionExit2D(Collision2D collision)
     { 
         if (collision.gameObject.CompareTag(Initialize.Player))
@@ -312,12 +357,17 @@ public     方式 移动方式;
         因为玩家我不该动 = false;
 
             Player3.I.脚下 =null;
-            Player3.I.ChangeFather();
+            //Player3.I.ChangeFather();  ///横向移动时意外调用EXITE   注释掉之后意外的啥BUG都没有了
         }
     } 
 
     private void FixedUpdate()
     {
+        //if (I_S.超速等级== E_超速等级.半虚化)
+        //{
+        //    假死了(true);
+        //    return;
+        //}
         if (暂停) return;
         if (Pla==transform )
         {
@@ -343,12 +393,19 @@ public partial class Move_P : I_Revive,I_假死
     {
         throw new System.NotImplementedException();
     }
-    public bool 超速 { get { return I_S.固定等级差 > Initialize_Mono.I.阀值; } }
+    public bool 超速 { get { return I_S.固定等级差 >= Initialize_Mono.I.阀值; } }
 
     public I_Speed_Change I_S { get => (I_Speed_Change)this; }
   [SerializeField ][DisplayOnly ]
     private bool 暂停1;
-    public bool 暂停 { get => 暂停1; set => 暂停1 = value; }
+
+    public bool Deb;
+    public bool 暂停 { get => 暂停1; set {
+         if (Deb)
+            Debug.LogError(value+gameObject.name+transform.position);    
+        暂停1 = value;
+        }
+    }
     public Bounds 盒子 { get => sp.bounds; }
     public bool Re { get; set; } = true;
     public float Re_Time { get; set; }
@@ -357,16 +414,25 @@ public partial class Move_P : I_Revive,I_假死
 
     public void Event_重制()
     {
+
         重制();
     }
+    平台动画效果 p;
     public bool 重制()
-    {
-        transform.position = StatWay;
+    { 
+        p.重置特效(盒子);
+        if (gameObject.activeSelf)
+        {
+            transform.position = StatWay;
+            假死了(false);
+        }
+ 
         return true;
     }
 
     public void 假死了(bool 假死不)
     {
+ 
         if (假死不)
         {
             sp.enabled = false;

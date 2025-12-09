@@ -35,13 +35,23 @@ public class 半灵 : MonoBehaviour
     }
     [SerializeField]
     Enemy_base 生物;
-    public void 初始化(Enemy_base E)
+    public void 初始化(Enemy_base E,bool b=false)
     {
-        生物 = E;
-        子弹发射.飞向的target = E.transform;
-        子弹发射.co = E.co;
-        子弹发射.enabled = true;
-        子弹发射.初始化();
+        if (b)
+        {
+            生物 = E;
+            子弹发射.飞向的target = E.transform;
+            子弹发射.co = E.co;
+            子弹发射.enabled = true;
+            子弹发射.初始化();
+        }
+        else
+        {
+            生物 = null;
+            子弹发射.飞向的target = null;
+            子弹发射.co = null;
+            子弹发射.enabled = false; 
+        } 
     }
     int TIMEF;
     public void  发射()

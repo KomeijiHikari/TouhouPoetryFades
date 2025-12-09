@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class One_way :MonoBehaviour
+public class One_way :MonoBehaviour,I_暂停
 {
     bool 有干扰组件;
     [DisableOnPlay]
@@ -29,6 +29,8 @@ public class One_way :MonoBehaviour
    [SerializeField]
     private bool 有人1;
     public Action<bool> Enter_Exite;
+    [SerializeField]
+    private bool 暂停1;
 
     public bool 有人 { get => 有人1; set {
             if (有人1 != value)
@@ -37,6 +39,9 @@ public class One_way :MonoBehaviour
                 有人1 = value;
             }
              } }
+
+    public bool 暂停 { get => 暂停1; set => 暂停1 = value; }
+
     //private void OnCollisionExit2D(Collision2D collision)
     //{
     //    if (!enabled) return;
@@ -54,6 +59,7 @@ public class One_way :MonoBehaviour
 
     void Update()
     {
+        if (暂停) return;
         if (bc.IsTouching(Player3 .I.co))
         {
             有人 = true;
@@ -134,7 +140,7 @@ public class One_way :MonoBehaviour
             {
                 if (Player3.I.State == E_State.dun)
                 {
-                    if (Player_input.I.按键检测_按下(Player_input.I.跳跃))
+                    if (Player_input.I.按键检测_按下(Player_input.I.k.跳跃))
                     {
                         关闭一会儿();
                     }

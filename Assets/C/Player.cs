@@ -13,7 +13,7 @@ interface 操控
     public void 跳跃();
     public void 向目标水平移动(GameObject obj);
 }
-interface 攻击
+interface I_I攻击_
 { 
     public void 攻击();
 }
@@ -149,8 +149,8 @@ public class Biology : BiologyBase
     }
     public void 角色翻转更新()
     {
-        if (Player_input.I.按键检测_按住(Player_input.I.右)
-            || Player_input.I.按键检测_按住(Player_input.I.左)
+        if (Player_input.I.按键检测_按住(Player_input.I.k.右)
+            || Player_input.I.按键检测_按住(Player_input.I.k.左)
             )
         {
             if (灵魂1)
@@ -233,7 +233,7 @@ public class Biology : BiologyBase
 //[Tooltip("超过这个数开始播放跑步 ")]属性注释
 
 public interface I_攻击
-{
+{ 
     public float atkvalue { get; set; }
 
     public void 扣攻击(float  i);
@@ -256,6 +256,7 @@ public class 功能数值Base : I_Save
 {
     [Header("Boss参数")]
     public bool Boss杀手; 
+    [SerializeField]
     private float 水平相反力1 = -190;
     [SerializeField]  private float 水平相反力1_BOSS  = -190;
     private int 最大跳跃次数1_BOSS => 最大跳跃次数1 + 1;
@@ -344,7 +345,8 @@ public class 功能数值Base : I_Save
     public float 下落速度判断临界负数值 = 0.3f;
     [Range(0, 1)]
     public float 下落过渡速度 = 0.5f;
-    public float 小跳向下力 { get; set; } = -1450f;
+    //public float 小跳向下力 { get; set; } = 0f;
+    public float 小跳向下力  = -1450f*0.8f;
     public float 水平相反力 {
         get
         {
@@ -357,7 +359,7 @@ public class 功能数值Base : I_Save
     public float Atk;
 
     public int 钱;
-
+    public int 灵魂碎片;
 
     public string Name { get => "功能数值数据"; }
     public float 最大下落速度 {
@@ -664,7 +666,7 @@ public partial class Player : Biology
 
     public void 松开空格引发的事件(KeyCode k)
     { 
-        if (k != Player_input.I.跳跃 ||Player.I.Velocity.y <= 0) return;
+        if (k != Player_input.I.k.跳跃 ||Player.I.Velocity.y <= 0) return;
         P_Action.小跳向下力(生物数值.小跳向下力);
     }
     public override void 跳跃()
@@ -677,13 +679,13 @@ public partial class Player : Biology
     public void 按下跳跃引发的事件(KeyCode k)
     {
         if (!跳跃开关) return;
-        if (k != Player_input.I.跳跃 || 生物数值.跳跃剩余跃次数 <= 0) return;
+        if (k != Player_input.I.k.跳跃 || 生物数值.跳跃剩余跃次数 <= 0) return;
         跳跃();
     }
     public override void 离地动作()
     {
         生物数值.跳跃剩余跃次数 = 生物数值.最大跳跃次数 - 1;
-        松开下蹲(Player_input.I.下);
+        松开下蹲(Player_input.I.k.下);
  
     }
     public override void S_tart()
@@ -771,7 +773,7 @@ public partial class Player : Biology
 
     public override void U_pdate()
     {
-        if (Player_input.I.按键检测_按下(Player_input.I.上))
+        if (Player_input.I.按键检测_按下(Player_input.I.k.上))
         {
             特效_pool.I.GetPool(gameObject,"特效run_");
 
@@ -786,7 +788,7 @@ public partial class Player : Biology
     public bool 下蹲锁 = true;
     public void 按住下蹲(KeyCode k)
     {
-        if (k != Player_input.I.下) return;
+        if (k != Player_input.I.k.下) return;
         if (!下蹲锁) return;
         if (!Ground) return;
 
@@ -799,7 +801,7 @@ public partial class Player : Biology
     public void 松开下蹲(KeyCode k)
     {
 
-        if (k != Player_input.I.下) return;
+        if (k != Player_input.I.k.下) return;
         if (!头空_ ) return;
         if(冲刺表示) return;
         下蹲恢复到其他状态();

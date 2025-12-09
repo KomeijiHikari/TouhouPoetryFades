@@ -10,8 +10,8 @@ using DG.Tweening;
 
 public class 主UI : MonoBehaviour
 {
-    public Boss血条  Boss血条; 
-    [Space ]
+    public Boss血条 Boss血条;
+    [Space]
 
     public Image 遮罩;
     public static 主UI I { get; private set; }
@@ -19,8 +19,10 @@ public class 主UI : MonoBehaviour
     public Animator 过场动画;
 
     public Text 钱币;
+    public Text 灵魂;
 
- 
+
+
 
     public Text Speed_Lv;
 
@@ -48,9 +50,9 @@ public class 主UI : MonoBehaviour
         Event_M.I.Add(Event_M.UI回到战斗, 退回);
 
 
-         quence = DOTween.Sequence();
-        quence.AppendCallback(() => 遮罩.color = new Color (QQc.r , QQc.g , QQc.b ,0));
-        quence.Append(遮罩.DOFade(1,0.15f));
+        quence = DOTween.Sequence();
+        quence.AppendCallback(() => 遮罩.color = new Color(QQc.r, QQc.g, QQc.b, 0));
+        quence.Append(遮罩.DOFade(1, 0.15f));
         quence.AppendInterval(0.1f);
         quence.Append(遮罩.DOFade(0, QQtime));
         quence.Pause().SetAutoKill(false);
@@ -60,16 +62,16 @@ public class 主UI : MonoBehaviour
     float QQtime;
     Sequence quence;
     float TTTime;
-    public void 遮罩动画(Color c=default ,float time =1.5f )
+    public void 遮罩动画(Color c = default, float time = 1.5f)
     {
-        if (Time.time > TTTime+0.1f)
+        if (Time.time > TTTime + 0.1f)
         {
             TTTime = Time.time;
-        
-        if (c == default) QQc = Color.black;
-        QQtime = time;
 
-        quence .Restart ();
+            if (c == default) QQc = Color.black;
+            QQtime = time;
+
+            quence.Restart();
         }
     }
     void 退回()
@@ -77,17 +79,18 @@ public class 主UI : MonoBehaviour
         Player.开启灵魂();
         Initialize.时间恢复();
 
-        当前子菜单 =null;
+        当前子菜单 = null;
     }
-    public void Boss血条_(GameObject  那个Boss,String name ,bool 开关 )
-    { 
-            Boss血条.Boss血条_(那个Boss, name, 开关);  
-            Boss血条.gameObject.SetActive(开关); 
-    }
-    void 触发存档(GameObject  a)
+    public void Boss血条_(GameObject 那个Boss, String name, bool 开关)
     {
-        消息.I.Come_on_Meesge("已保存！"); 
-    } 
+        Boss血条.Boss血条_(那个Boss, name, 开关);
+        Boss血条.gameObject.SetActive(开关);
+    }
+
+    void 触发存档(GameObject a)
+    {
+        消息.I.Come_on_Meesge("已保存！");
+    }
     public void 播放黑幕动画()
     {
         过场动画.Play("黑");
@@ -124,31 +127,33 @@ public class 主UI : MonoBehaviour
     public Button_Father_base 战斗菜单;
     [DisplayOnly]
     public Button_Father_base 当前子菜单;
-    public void 展开(Button_Father_base obj,bool 地面限制=true)
+    public Button_Father_base 展开(Button_Father_base obj, bool 地面限制 = true)
     {
-        if (地面限制) if (!Player.Ground) return;//玩家站在地上 
-        if (obj.gameObject .activeInHierarchy) return;//菜单在XX里面是激活的 
+        if (地面限制) if (!Player.Ground) return null;//玩家站在地上 
+        if (obj.gameObject.activeInHierarchy) return null;//菜单在XX里面是激活的 
         //if (不可以切换) return;  //在缓冲时间内  不可释放 
-        if (当前子菜单 != null) return; //有其他菜单不可释放 
+        if (当前子菜单 != null) return null; //有其他菜单不可释放 
         var a = obj as Text_button_Father;
         if (a != null) a.展开情景1 = Text_button_Father.E_展开情景.一号菜单;
 
         obj.被展开();
 
- 
+
         当前子菜单 = obj;
 
 
         Player.关闭灵魂();
         Initialize.时间暂停();
+
+        return a;
     }
 
-    public void  发送消息()
+    public void 发送消息()
     {
 
     }
-   
-    public   void  回到主菜单()
+
+    public void 回到主菜单()
     {
         SceneManager.LoadScene(主菜单场景.BuildIndex);
     }
@@ -158,38 +163,50 @@ public class 主UI : MonoBehaviour
         // 使用 "F3" 格式化字符串，保留三位小数  
         return value.ToString("F3");
     }
+
     private void Update()
     {
         if (Speed_Lv != null)
             Speed_Lv.text = FormatFloat(Player3.Public_Const_Speed);
         //Speed_Lv.text = (Math.Round(Player3.Public_Const_Speed, 3)).ToString()+".000"; 
- 
-        大地图.SetActive(Player_input.I.按键检测_按住(Player_input.I.地图)); 
+
+        大地图.SetActive(Player_input.I.按键检测_按住(Player_input.I.k.地图));
 
         //Initialize   设置  地图   背包
         //if (Input.GetButtonDown(Initialize.Bag))
         //{
         //    展开(背包菜单);
         //}
-         
+
         if (Input.GetButtonDown(Initialize.Exite))
         {//从菜单里切回来的时候这个会触发
-            if (!Player.Ground) return;//玩家站在地上 
-            Player.关闭灵魂();
-            Initialize.时间暂停();
-            //测试.被展开();
+            if (Player.Ground)
+            {
 
-            展开(战斗菜单);
+                Player.关闭灵魂();
+                Initialize.时间暂停();
+                //测试.被展开();
+
+                展开(战斗菜单);
+            }
+            else
+            {
+                消息.I.Come_on_Meesge("无法在空中打开菜单！");
+
+            }
+
+            if (钱币 != null)
+            {
+                钱币.text = Player3.I.玩家数值.钱.ToString();
+            }
+
+            if (灵魂 != null)
+            {
+                灵魂.text = Player3.I.玩家数值.灵魂碎片.ToString();
+            }
+            场景名.text = SceneManager.GetActiveScene().name;
+
         }
-
-        if (钱币!=null)
-        {
-            钱币.text = Player3.I.玩家数值.钱.ToString();
-        }
-        
-
-        场景名.text = SceneManager.GetActiveScene().name;
-
     }
 }
 

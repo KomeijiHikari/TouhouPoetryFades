@@ -6,6 +6,7 @@ using UnityEngine;
 public class Surp_Pool : SerializedMonoBehaviour
 {
     public static string 白块 { get => "白块"; }
+    public static string 地图白块 { get => "地图白块"; }
     public static string 下坠刺 { get => "下坠刺"; }
     public static string 能量子弹 { get => "能量子弹"; }
     public static string 子弹 { get => "子弹"; } 
@@ -63,6 +64,7 @@ public class Surp_Pool : SerializedMonoBehaviour
 public  GameObject GetPool(string 哪一个池子)
     {
         bool BB = false;
+ 
         if (池子字典_[哪一个池子].Count==0)
         {
             BB = true;

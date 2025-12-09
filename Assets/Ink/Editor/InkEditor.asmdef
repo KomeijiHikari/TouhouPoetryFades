@@ -1,7 +1,9 @@
 {
     "name": "InkEditor",
     "references": [
-        "Ink-Libraries"
+        "Ink-Libraries",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

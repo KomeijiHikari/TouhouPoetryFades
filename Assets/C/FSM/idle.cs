@@ -24,7 +24,8 @@ public override void StateStart()
  
     public override void EnterState()
     {
-  
+         f.Wall_X = 0;
+        Player.加速(false);
         if (f.I_State_L == null)
         {
             //为空时 
@@ -91,21 +92,28 @@ public override void StateStart()
                         {
                             name = (A_N.idle_run_to0);
                         }
-                  Player.      缓慢反向力(0.3f); 
+                        //Player.Velocity = Vector2.zero;
+                        Player.缓慢反向力(0.3f);
                         A.Playanim(name);
+
                     }
-                    Player.Velocity = Vector2.zero;
+                    //Player.Velocity = Vector2.zero;
                     break;
                 case E_State.downatk:
                 case E_State.skyatk:
                 case E_State.sky:
                     if(IP.方向正零负 ==0)
+                        yalaAudil.I.EffectsPlay("DallGround", 0);
+                    
                     { Player.Velocity = new Vector2(Player.Velocity.x/3,0); }
                     A.Playanim(A_N.idle_jump_to0 ); 
                     break;
+                case E_State.dash:
+                    Player.Velocity = Vector2.zero;
+                    A.Playanim(A_N.idle_dundash);
+                    break;
                 case E_State.dun:
                 case E_State.atk:
-                case E_State.dash:
                 case E_State.hit:
                     Player.Velocity = Vector2.zero;
                         A.Playanim(A_N.idle_0_);
@@ -172,16 +180,16 @@ public override void StateStart()
     public override void 按住(KeyCode obj)
     {
  
-        if (obj == IP.右 || obj == IP.左)
+        if (obj == IP.k.右 || obj == IP.k.左)
         {
-            if (Input.GetKey(IP.左) && Input.GetKey(IP.右)) return;
+            if (Input.GetKey(IP.k.左) && Input.GetKey(IP.k.右)) return;
             f.To_State(E_State.run);
  
         }
  
     }
 
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
  
         //Initialize.Set_碰撞(Initialize.L_Enemy, Initialize.L_Player, true);
@@ -206,9 +214,9 @@ public override void StateStart()
     }
     public override void 松开(KeyCode obj)
     {
-        if (obj == IP.攻击)
+        if (obj == IP.k.攻击)
         {
-            if (Player_input .I.按键检测_按住(IP.上)  )
+            if (Player_input .I.按键检测_按住(IP.k.上)  )
             {
                 Debug.LogError("AAAAAAAAAAAAAAAA");
                 f.To_State(E_State.upatk);
@@ -225,16 +233,16 @@ public override void StateStart()
     public override void 按下(KeyCode obj)
     {
 
-        if (obj == IP.格挡 )
+        if (obj == IP.k.格挡 )
         {
             f.To_State(E_State.gedang); return;
         }
 
-        else if (obj == IP.冲刺)
+        else if (obj == IP.k.冲刺)
         { 
                 f.To_State(E_State.dash); return;
         }
-        else if (obj== IP.下)
+        else if (obj== IP.k.下)
         {
  
             f.To_State(E_State.dun); return;

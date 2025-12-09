@@ -44,6 +44,7 @@ public class 在小地图上另外显示  : MonoBehaviour
         小弟sp.gameObject.AddComponent<小地图显示>().初始化(编号);
     }
 
+    public GameObject 我的小地图 ;
     protected void Awake()
     {
         sp = GetComponent<SpriteRenderer>();
@@ -66,5 +67,6 @@ public class 在小地图上另外显示  : MonoBehaviour
 #endif
 
         召唤小弟();
+        我的小地图 = a;
     }
 }

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76232117c44f25642ac48bf48366a803, type: 3}
+  m_Name: "\u7D2B\u8272\u5B50\u5F39"
+  m_EditorClassIdentifier: 
+  "\u8FFD\u8E2A\u73A9\u5BB6": 0
+  "\u81EA\u8EAB\u65CB\u8F6C": 0
+  "\u751F\u547D\u5468\u671F": 5
+  LinearVelocity: 7
+  Acceleration: 0
+  AngularVelocity: 0
+  AngularAcceleration: 0
+  "Max\u901F\u5EA6": 2.1474836e+9
+  InitRotation: 260.26
+  SenderAngularVelocity: 0
+  "\u53D1\u5C04\u5668Max\u89D2\u901F\u5EA6": 2.1474836e+9
+  SenderAcceleration: 0
+  Count: 1
+  LineAnle: 13
+  "\u53D1\u5C04\u95F4\u9694": 100
+  "\u6CE2\u6B21": 0
+  "\u53D1\u5C04\u65F6\u95F4": 1
+  pre: {fileID: 3523587353952303650, guid: 73217584d925ec04aad65791b8940ee3, type: 3}

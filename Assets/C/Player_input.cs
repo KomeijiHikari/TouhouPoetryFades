@@ -1,3 +1,5 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityPlayerPrefs;
+using Schema.Builtin.Nodes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +11,9 @@ using UnityEngine;
 public class Key
 {
     public KeyCode my_Key_;
+
+    [DisplayOnly]
+ public    String Namee;
 
     [SerializeField]
     [DisplayOnly ]
@@ -59,8 +64,9 @@ public class Key
         }
     }
 
-    public Key(KeyCode K)
+    public Key(KeyCode K,string Name)
     {
+        Namee = Name;
         my_Key = K;
     }
 
@@ -101,10 +107,19 @@ public    bool 输入开关_ = true;
         }
     }
 
-    public   KeyCode 上 = KeyCode.W;
-    public KeyCode 下 = KeyCode.S;
-    public KeyCode 左 = KeyCode.A;
-    public KeyCode 右 = KeyCode.D;
+    
+    //public KeyCode 地图 = KeyCode.M;
+    //public KeyCode 攻击 = KeyCode.J;
+    //public KeyCode 跳跃 = KeyCode.Space;
+    //public KeyCode 冲刺 = KeyCode.LeftShift;
+    //public KeyCode 格挡 = KeyCode.K;
+    //public KeyCode 交互 = KeyCode.E;
+    //public KeyCode 变速 = KeyCode.F;
+
+    //public   KeyCode 上 = KeyCode.W;
+    //public KeyCode 下 = KeyCode.S;
+    //public KeyCode 左 = KeyCode.A;
+    //public KeyCode 右 = KeyCode.D;
 
     public Action<KeyCode> KeyUp { get; set; }
     public Action<KeyCode> KeyDown { get; set; }
@@ -118,25 +133,28 @@ public   Dictionary<KeyCode, Key> D_I = new Dictionary<KeyCode, Key>();
     {
         return D_I[k];
     }
-    public List<KeyCode> 玩家输入的按键存储_按住 { get; set; } = new List<KeyCode>();
+    public List<KeyCode> 玩家输入的按键存储_按住 { get => 玩家输入的按键存储_按住1; set => 玩家输入的按键存储_按住1 = value; }
     public List<KeyCode> 玩家输入的按键存储_按下 = new List<KeyCode>();
     public List<KeyCode> 玩家输入的按键存储_松开 = new List<KeyCode>();
     public int 玩家输入的按键栈的长度 = 5;
     public float Now_Time_;
+    [SerializeField]
+    private List<KeyCode> 玩家输入的按键存储_按住1 = new List<KeyCode>();
+
     public float Now_Time
     {
         get => Now_Time_;
         set => Now_Time_ = value;
     }
 
-    public KeyCode getKeyDownCode()
+    public static KeyCode getKeyDownCode()
     {
 
-        Debug.Log(Input.GetAxisRaw("Horizontal"));
-        Debug.Log(Input.GetAxisRaw("Vertical"));
+        //Debug.Log(Input.GetAxisRaw("Horizontal"));
+        //Debug.Log(Input.GetAxisRaw("Vertical"));
 
-        Debug.Log(Input.GetAxis("LT"));
-        Debug.Log(Input.GetAxis("RT"));
+        //Debug.Log(Input.GetAxis("LT"));
+        //Debug.Log(Input.GetAxis("RT"));
         if (Input.anyKeyDown)
         {
             foreach (KeyCode keyCode in Enum.GetValues(typeof(KeyCode)))
@@ -150,12 +168,12 @@ public   Dictionary<KeyCode, Key> D_I = new Dictionary<KeyCode, Key>();
         }
         return KeyCode.None;
     }
-    public void New_(KeyCode K)
+    public void New_(KeyCode K,string Name)
     {
         Key key;
         if (!D_I.TryGetValue(K, out key))
         {
-            key = new Key(K);
+            key = new Key(K,Name);
             D_I.Add(K, key);
         }
         else
@@ -164,9 +182,28 @@ public   Dictionary<KeyCode, Key> D_I = new Dictionary<KeyCode, Key>();
         }
     }
 
+    public List<KeyCode> 失效列表;
+    public void 按键失效和开启(KeyCode K,float time,bool b)
+    {
+        if (b)
+        {
+            if (失效列表.Contains(K)) 失效列表.Remove(K);
+        }
+        else
+        {
+            StartCoroutine(asd(K, time));
+        }
 
+    }
+    IEnumerator asd(KeyCode k,float time)
+    {
+        失效列表.Add(k);
+        yield return new WaitForSeconds(time);
+        if (失效列表.Contains(k)) 失效列表.Remove(k);
+    }
     public bool 按键检测_按下(KeyCode K)
     {
+        if (失效列表.Contains(K)) return false; 
 
         if ( 玩家输入的按键存储_按下.Contains(K))
         {
@@ -179,7 +216,7 @@ public   Dictionary<KeyCode, Key> D_I = new Dictionary<KeyCode, Key>();
     }
     public bool 按键检测_按住(KeyCode K)
     {
-
+        if (失效列表.Contains(K)) return false;
         if ( 玩家输入的按键存储_按住.Contains(K))
         {
 
@@ -205,6 +242,7 @@ public   Dictionary<KeyCode, Key> D_I = new Dictionary<KeyCode, Key>();
 }
 public class Player_input : Input_base
 {
+   public  IK k;
     public override bool 输入开关
     {
         get
@@ -216,6 +254,10 @@ public class Player_input : Input_base
             if (!value && 输入开关_)
             {
                 关掉();
+            }
+            else if ( value && !输入开关_)
+            { 
+            
             }
             //else if (value && !输入开关_)
             //{
@@ -231,13 +273,7 @@ public class Player_input : Input_base
 
     public int 竖直正负零;
 
-    public KeyCode 地图 = KeyCode.M;
-    public KeyCode 攻击 = KeyCode.J;
-    public KeyCode 跳跃 = KeyCode.Space;
-    public KeyCode 冲刺 = KeyCode.LeftShift;
-    public KeyCode 格挡 = KeyCode.K;
-    public KeyCode 交互 = KeyCode.E ;
-    public KeyCode 变速 = KeyCode.F;
+
 
 
     public  Vector2 输入
@@ -333,6 +369,19 @@ public class Player_input : Input_base
     public float 方向正零负_非零计时器 = 0;
 
     public int 水平操作_ { get => 方向正零负数_; set => 方向正零负数_ = value; }
+    public int 方向正零负_原生
+    {
+        get {
+
+            if (Input.GetKey(k.左)) 
+                return -1; 
+            else if (Input.GetKey(k.右))
+                return 1;
+            else
+                return 0;
+        }
+    }
+
     public  int 方向正零负
     {
         get
@@ -360,12 +409,92 @@ public class Player_input : Input_base
 
     public  float 水平操作插值 = 0;
 
+    [Serializable]
+    /// <summary>
+    /// Input Key  输入的按键
+    /// </summary>
+    public class IK
+    {
+        //public KeyCode 地图 = KeyCode.M;
+        //public KeyCode 攻击 = KeyCode.J;
+        //public KeyCode 跳跃 = KeyCode.Space;
+        //public KeyCode 冲刺 = KeyCode.LeftShift;
+        //public KeyCode 格挡 = KeyCode.K;
+        //public KeyCode 交互 = KeyCode.E;
+        //public KeyCode 变速 = KeyCode.F;
 
+        //public KeyCode 上 = KeyCode.W;
+        //public KeyCode 下 = KeyCode.S;
+        //public KeyCode 左 = KeyCode.A;
+        //public KeyCode 右 = KeyCode.D;
+
+
+        public KeyCode 地图;
+        public KeyCode 攻击;
+        public KeyCode 跳跃;
+        public KeyCode 冲刺;
+        public KeyCode 格挡;
+        public KeyCode 交互;
+        public KeyCode 变速;
+
+        public KeyCode 上;
+        public KeyCode 下;
+        public KeyCode 左;
+        public KeyCode 右;
+    }
+
+ public static   IK 来个新的()
+    { 
+        IK  A=new IK();
+        var a = Application.platform;
+        Debug.LogError(a); 
+
+        switch (a)
+        { 
+            case RuntimePlatform.WindowsPlayer:
+            case RuntimePlatform.WindowsEditor:
+                Debug.LogError("AAAAAAAAAAAAAAAAAAAAA");
+
+
+    A.地图 = KeyCode.M;
+    A.攻击 = KeyCode.J;
+    A.跳跃 = KeyCode.Space;
+    A.冲刺 = KeyCode.LeftShift;
+    A.格挡 = KeyCode.K;
+    A.交互 = KeyCode.E;
+    A.变速 = KeyCode.F;
+    
+    A.上 = KeyCode.W;
+    A.下 = KeyCode.S;
+    A.左 = KeyCode.A;
+    A.右 = KeyCode.D;
+                break; 
+               default:
+                Debug.LogError("不是所有平台");
+                break;
+        }
+
+        return A;
+    }
  
-
-    private void Awake()
+  public   void 读取()
     {
 
+        var a = Save_static.LoadinText<IK>(Save_static.按键);
+        if (a == null)
+        {
+            var kk = 来个新的();
+            Save_static.SaveinText(Save_static.按键, kk); 
+            读取();
+        } else
+        { 
+            k = a; 
+        } 
+    
+    }
+    private void Awake()
+    {
+   
         if (I != null/*&&I!=this*/)
         {
             Destroy(this);
@@ -374,20 +503,23 @@ public class Player_input : Input_base
         {
             I = this;
         }
-        New_(上);
-        New_(下);
-        New_(右);
-        New_(左);
 
-        New_(地图);
-        New_(攻击);
-        New_(跳跃);
-        New_(冲刺);
-        New_(格挡);
-        New_(交互);
-        New_(变速);
+        读取();
 
-        跳 = D_I[跳跃];
+        New_(k.上,"上");
+        New_(k.下, "下");
+        New_(k.右, "右");
+        New_(k.左, "左");
+
+        New_(k.地图, "地图");
+        New_(k.攻击, "攻击");
+        New_(k.跳跃, "跳跃");
+        New_(k.冲刺, "冲刺");
+        New_(k.格挡, "冲刺");
+        New_(k.交互, "交互");
+        New_(k.变速, "冲刺");
+
+        跳 = D_I[k.跳跃];
         foreach (Key D in D_I.Values)
         {
             所有的按键列表.Add(D);
@@ -401,18 +533,18 @@ public class Player_input : Input_base
  
     void 水平方向更新()
     {
-        if (按键检测_按住(左) && 按键检测_按住(右))
+        if (按键检测_按住(k.左) && 按键检测_按住(k.右))
         {
             方向正零负 = 0;
             return;
         }
-        else if (按键检测_按住(左))
+        else if (按键检测_按住(k.左))
         {
 
             方向正负 = -1;
             方向正零负 = -1;
         }
-        else if (按键检测_按住(右))
+        else if (按键检测_按住(k.右))
         {
 
             方向正负 = 1;
@@ -425,6 +557,27 @@ public class Player_input : Input_base
 
         水平操作插值 = Mathf.Lerp(水平操作插值, 方向正零负, 0.2f * Time.deltaTime);
     }
+    public int 原生正负零()
+    {
+        bool l= Input.GetKey(k.左);
+        bool r= Input.GetKey(k.右);
+        if (I&&r)
+        {
+            return 0;
+        }else   
+        {
+            if (l)
+            {
+                return -1;
+            }
+            else if (r)
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+    }
     private void Update()
     {
 
@@ -433,7 +586,27 @@ public class Player_input : Input_base
         //    getKeyDownCode();
         //}
 
-
+        //if (Input.GetKeyDown(k.上))
+        //{
+        //    Debug.LogError("上");
+        //}
+        //else if (Input.GetKeyDown(k.下))
+        //{
+        //    Debug.LogError("下");
+        //}
+        //else if (Input.GetKeyDown(k.左))
+        //{
+        //    Debug.LogError("左");
+        //}
+        //else if (Input.GetKeyDown(k.右))
+        //{
+        //    Debug.LogError("右");
+        //}
+        //else if (Input.GetKeyDown(k.交互))
+        //{
+        //    Debug.LogError("交互");
+        //}
+        //return;
         I.玩家输入的按键存储_按下.Clear();
         I.玩家输入的按键存储_松开.Clear();
 
@@ -523,15 +696,15 @@ public class Player_input : Input_base
     /// <returns></returns>
     void 竖直方向更新()
     {
-        if (按键检测_按住(上)&& 按键检测_按住(下))
+        if (按键检测_按住(k.上)&& 按键检测_按住(k.下))
         {
             竖直正负零 = 0;
         }
-        else  if(按键检测_按住(上))
+        else  if(按键检测_按住(k.上))
         {
             竖直正负零 = 1;
         }
-        else if (按键检测_按住(下))
+        else if (按键检测_按住(k.下))
         {
             竖直正负零 = -1;
         }

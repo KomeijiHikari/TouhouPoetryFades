@@ -24,6 +24,7 @@ public enum E_State
     counter,
     cricleatk,
     pa,
+    wall_surfing,
     interaction
     //ATK,//近战 -> 追击/丢失/死亡
     //DIE,//死亡
@@ -59,7 +60,7 @@ public interface I_State
     /// <summary>
     /// 离开状态
     /// </summary>
-    void ExitState();
+    void ExitState(E_State e=0 );
     /// <summary>
     /// 更新状态
     /// </summary>
@@ -74,9 +75,12 @@ public interface I_State
 [DefaultExecutionOrder(1)]
 //第二个方案实践，实现代码放在Player2里，其他状态引用实现代码方法
 public class FSM : MonoBehaviour
-{
- 
-  public   Transform 改变后的;
+{  
+    /// <summary>
+     /// 不可以爬同一个墙面  除非换墙登墙跳，落地
+     /// </summary> 
+    public float Wall_X;
+    public   Transform 改变后的;
     public bool 状态消息 = true;
     public bool 变速攻击;
     public static FSM f { get; private set; }
@@ -91,6 +95,7 @@ public class FSM : MonoBehaviour
     [DisplayOnly]
     public List<State_Base> 所有的状态;
 
+    public E_State 状态;
     //特效模板管理 Action;
  public 特效模板管理 蓄力 { get; set; }
    public 特效模板管理 Pool { get; set; }
@@ -236,22 +241,22 @@ public class FSM : MonoBehaviour
         switch (蓄力状态)
         {
             case E_蓄力状态.没蓄力:
-                if (Player_input.I.Get_key(Player_input.I.攻击).yes_State> 蓄力进入时间)
+                if (Player_input.I.Get_key(Player_input.I.k.攻击).yes_State> 蓄力进入时间)
                 {
                     真实特效( T_N.特效蓄力触发);
-
+                    yalaAudil.I.EffectsPlay("Waite", 0);
                     蓄力状态 = E_蓄力状态.开始蓄力;
                     特效(蓄力);
                 } 
                 break;
             case E_蓄力状态.开始蓄力:
-                if (Player_input.I.按键检测_松开(Player_input.I.攻击))
+                if (Player_input.I.按键检测_松开(Player_input.I.k.攻击))
                 {
                     特效(Pool, false);
                     特效(蓄力, false);
                     蓄力状态 = E_蓄力状态.没蓄力;
                 }
-                else    if (Player_input.I.Get_key(Player_input.I.攻击).yes_State > 蓄力完成时间  )
+                else    if (Player_input.I.Get_key(Player_input.I.k.攻击).yes_State > 蓄力完成时间  )
                 {
                     真实特效(T_N.特效蓄力结束);
  
@@ -262,7 +267,7 @@ public class FSM : MonoBehaviour
                     break;
             case E_蓄力状态.蓄力好了:
                 //蓄力完成时间 = Time.time;
-                if (Player_input.I.按键检测_松开(Player_input.I.攻击))
+                if (Player_input.I.按键检测_松开(Player_input.I.k.攻击))
                 {
                     特效(Pool, false);
                     特效(蓄力, false);
@@ -399,13 +404,14 @@ public class FSM : MonoBehaviour
         Player3.I.End = false;
         if (I_State_C!= null)
         {
-            I_State_C.ExitState();
+            I_State_C.ExitState(D_State[E].state);
             I_State_C.ExiteStatebase();
         }
         I_State_LLL = I_State_LL;
         I_State_LL = I_State_L;
         I_State_L = I_State_C; 
         I_State_C = D_State[E];
+        状态 = I_State_C.state;
         if (状态消息)
         {
             Debug.Log(   Time.time + "        状态情况=        "+ I_State_C +
@@ -450,7 +456,7 @@ public class State_Base : I_State
 
   protected  float Float_Value;
 
-    
+
 
   /// <summary>
   ///  进入状态后的间隔时间
@@ -548,7 +554,7 @@ protected bool 能力激活的_显示=true;
     public virtual  void EnterState()
     { 
     } 
-    public virtual void ExitState()
+    public virtual void ExitState(E_State e)
     { 
     } 
     public virtual void FixedState()

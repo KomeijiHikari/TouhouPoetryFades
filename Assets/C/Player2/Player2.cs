@@ -77,7 +77,7 @@ public class Player2 :MonoBehaviour
     private void 按下_(KeyCode obj)
     {
         CustomEvent.Trigger(gameObject, 按下, obj);
-        if (obj== Player_input.I.跳跃)
+        if (obj== Player_input.I.k.跳跃)
         {
             CustomEvent.Trigger(gameObject, "按下跳跃");
         }
@@ -90,7 +90,7 @@ public class Player2 :MonoBehaviour
     {
         CustomEvent.Trigger(gameObject, 按住, obj);
 
-        if (obj == Player_input.I.左 || obj == Player_input.I.右)
+        if (obj == Player_input.I.k.左 || obj == Player_input.I.k.右)
         {
             CustomEvent.Trigger(gameObject, "按住方向");
         }
@@ -210,7 +210,7 @@ public void 跳跃()
     {
         主角数值.跳跃剩余跃次数 = 主角数值.最大跳跃次数;
         CustomEvent.Trigger(gameObject, "接触地面");
-        if (Player_input.I.D_I[Player_input.I.跳跃].down_State < 0.1)
+        if (Player_input.I.D_I[Player_input.I.k.跳跃].down_State < 0.1)
         {
             CustomEvent.Trigger(gameObject, "按下跳跃");
         }

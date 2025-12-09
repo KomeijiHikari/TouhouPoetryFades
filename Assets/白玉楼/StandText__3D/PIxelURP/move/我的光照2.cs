@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using VFolders.Libs;
+using UnityEngine; 
  using Sirenix.OdinInspector;
  using Sirenix.OdinInspector;
  using UnityEngine.PlayerLoop;
@@ -24,6 +23,7 @@ public class 我的光照2 : MonoBehaviour
     public static 我的光照2 I { get; private set; }
     public List<SpriteRenderer>  ForgSprites;
     public List< Renderer> 受影响;
+    public List<Material> 受影响M;
 
     string DarkName="_DarkColor" ;
     string BounsName= "_Bouns"; 
@@ -124,7 +124,7 @@ void FixedUpdate()
 
  
  
-        Debug.LogError(Y.当前.E);
+        // Debug.LogError(Y.当前.E);
         
         if ( DebOutcolor) return;
         float lerp = Y.Get_lerp(  Time_Tool.TimeVector3ToFixTime(HourseVector)   );
@@ -160,7 +160,12 @@ void FixedUpdate()
                   
                   M精灵图材质.material.SetVector(BounsName, Bouns);///v2 rect位置和信息  世界坐标，精灵图左下角，坐标，精灵图尺寸
                   M精灵图材质.material.SetVector(SizeName, Size__);///v2 rect像素尺寸  W分量是 开关
-              } 
+              }
+                for (int i = 0; i < 受影响M.Count; i++)
+                {
+                    var a = 受影响M[i];
+                    a.SetColor(DarkName, CHHC.Flip(Out_ShaowColor));
+                }
             } 
         }
 
@@ -219,12 +224,14 @@ void FixedUpdate()
 
 public static class Time_Tool
 {
+
+ 
     /// <summary>
     /// 将时间单位的Vector3转换回浮点时间
     /// </summary>
     /// <param name="timeVector">Vector3(x=小时, y=分钟, z=秒)</param>
     /// <returns>总秒数</returns>
-    public static float TimeVector3ToFixTime(Vector3 timeVector)
+    public static float TimeVector3ToFixTime( this Vector3 timeVector)
     {
         float hours = timeVector.x;
         float minutes = timeVector.y;
@@ -232,6 +239,7 @@ public static class Time_Tool
         
         return (hours * 3600f) + (minutes * 60f) + seconds;
     }
+ 
     /// <summary>
     /// 将浮点时间转换为时间单位的Vector3
     /// </summary>

@@ -62,6 +62,42 @@ public partial class 单方面通过 : MonoBehaviour
 
 
     }
+
+    public bool   触发 (bool 方向为下=true)
+    {
+        if (方向为下)
+        {
+            if (被破坏方向 == E_方向.下)
+            {
+                销毁触发?.Invoke();
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            if (被破坏方向==E_方向.左|| 被破坏方向 == E_方向.右)
+            {
+
+
+                var a = Initialize.方向To_v2(被破坏方向).x;
+                var b =(int)Mathf.Sign(( Player3.I.transform.position - transform.position).x) ;
+
+                Debug.LogError(a + "              AAAAA     "+b);
+                if (a==b)
+                {
+                    ///方向一致不能爬 wall
+                    销毁触发?.Invoke(); 
+                    return false;  
+                }
+                else
+                {
+                    return true; ///方向不对wall 可以爬了 
+                }
+            }
+        }
+        return false;
+    }
     void 延迟销毁()
     {
         //Player3.I.LastV_Velocity();
@@ -82,6 +118,7 @@ public partial class 单方面通过 : MonoBehaviour
     }
     No_Re R = new No_Re();
     public bool bug;
+
     private void OnCollisionEnter2D(Collision2D co )
     {
         if (bug)  Debug.LogError("  (cAAAAAAAAAAAAAAAAAAAAAAAAAAAAA向));");
@@ -98,6 +135,7 @@ public partial class 单方面通过 : MonoBehaviour
             if (b)
             {
                 Debug.LogError("  (co.contacts[0].normal, -Initialize.方向To_v2(被破坏方向));");
+
                 延迟销毁();
             }
             else

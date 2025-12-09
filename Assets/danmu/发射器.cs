@@ -6,7 +6,7 @@ using System;
 using UnityEngine.Events;
 using Cinemachine;
 namespace 发射器空间
-{ 
+{
     public enum 播放类型
     {
         启动短暂播放,
@@ -22,26 +22,26 @@ namespace 发射器空间
     {
         CinemachineDollyCart C;
         CinemachineSmoothPath P;
-        public 播放类型 当前播放类型_; 
-        public 播放类型 原播放类型_; 
-        public bool 监控子弹=false; 
+        public 播放类型 当前播放类型_;
+        public 播放类型 原播放类型_;
+        public bool 监控子弹 = false;
         public bool 按照方向来 = true;
         [SerializeField]
         [DisplayOnly]
-        float 朝向_; 
-        public Bullet数据 B; 
+        float 朝向_;
+        public Bullet数据 B;
         float 朝向X
         {
             get
             {
                 return transform.lossyScale.x;
             }
-        }
-        [Button(" 刷新", ButtonSizes.Large)]
- 
+        } 
+
         [SerializeField]
         float currentAngle; //发射角度
-        [SerializeField][DisplayOnly]
+        [SerializeField]
+        [DisplayOnly]
         float ResultAngle; //发射角度
         [SerializeField] float currentAngularVelocity; //容器
 
@@ -51,16 +51,20 @@ namespace 发射器空间
         float Spee => Speed_Lv / Player3.Public_Const_Speed;
 
         public float 玩家角度_;
-        
+
         public float 玩家角度
         {
             get => Initialize.To_方向到角度(Player3.I.transform.position - transform.position);
 
         }
-        public float ResultAngle1 { get => ResultAngle; set {
-                if (Deb)           if (value != ResultAngle)     Debug.LogError(ResultAngle); 
-                ResultAngle  = value;
-            }  }
+        public float ResultAngle1
+        {
+            get => ResultAngle; set
+            {
+                if (Deb) if (value != ResultAngle) Debug.LogError(ResultAngle);
+                ResultAngle = value;
+            }
+        }
         public bool Deb;
         public int 次数;
         private void OnEnable()
@@ -70,18 +74,18 @@ namespace 发射器空间
             {
                 case 播放类型.启动持续播放:
                     当前播放类型_ = 播放类型.持续播放;
-                    StartCoroutine(Initialize .Waite(() => 当前时间 = B.发射间隔));
- 
+                    StartCoroutine(Initialize.Waite(() => 当前时间 = B.发射间隔));
+
                     break;
                 case 播放类型.启动短暂播放:
                     重制();
                     次数++;
                     发射?.Invoke();
-                    break; 
+                    break;
             }
             //Debug.LogError("id OnEnable()id OnEnable()id OnEnable()id OnEnable()                                         AAAA"+子弹列表 .Count);
         }
-        public void 试一啊下(SpriteRenderer  s  )
+        public void 试一啊下(SpriteRenderer s)
         {
 
         }
@@ -89,7 +93,7 @@ namespace 发射器空间
         {
             if (B.pre.GetComponent<Bullet_base>() == null)
                 弹幕形式发射重力子弹 = true;
-                重制(); 
+            重制();
         }
         public float 发射时间;
 
@@ -128,29 +132,29 @@ namespace 发射器空间
         public SpriteRenderer SP;
         private void FixedUpdate()
         {
-            if (SP=null)
+            if (SP = null)
             {
-                SP.transform.rotation = Quaternion.Euler(new Vector3 (0,0,1f)*Time.fixedDeltaTime*20f);
+                SP.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 1f) * Time.fixedDeltaTime * 20f);
             }
 
             方向刷新();
 
             bool 可以 = false;
             switch (当前播放类型_)
-            { 
+            {
                 case 播放类型.持续播放:
                     可以 = true;
-                    break; 
+                    break;
             }
             if (!可以) return;
- 
-                //currentAngle = 朝向_ - B.InitRotation;
-                玩家角度_ = 玩家角度;
-                currentAngularVelocity = Mathf.Clamp( currentAngularVelocity +(B.SenderAcceleration * Time.fixedDeltaTime * Spee) , -B.发射器Max角速度, B.发射器Max角速度);
-                currentAngle += currentAngularVelocity * Time.fixedDeltaTime * Spee;
- 
-                if (Mathf.Abs(ResultAngle1) > 720)currentAngle -= Mathf.Sign(currentAngle) * 360f;
-            ResultAngle1 = 朝向_ - currentAngle; 
+
+            //currentAngle = 朝向_ - B.InitRotation;
+            玩家角度_ = 玩家角度;
+            currentAngularVelocity = Mathf.Clamp(currentAngularVelocity + (B.SenderAcceleration * Time.fixedDeltaTime * Spee), -B.发射器Max角速度, B.发射器Max角速度);
+            currentAngle += currentAngularVelocity * Time.fixedDeltaTime * Spee;
+
+            if (Mathf.Abs(ResultAngle1) > 720) currentAngle -= Mathf.Sign(currentAngle) * 360f;
+            ResultAngle1 = 朝向_ - currentAngle;
 
             当前时间 += Time.fixedDeltaTime * Spee;
             if (当前时间 > B.发射间隔)
@@ -158,20 +162,20 @@ namespace 发射器空间
                 当前时间 -= B.发射间隔;
 
                 次数++;
-                 
+
                 发射?.Invoke();
-            } 
+            }
         }
 
 
         int TimeF;
 
         public UnityEvent 发射;
-         
+
         [Button("Play_", ButtonSizes.Large)]
         public void 发射一下()
         {
-            if (原播放类型_==播放类型.持续待播放)
+            if (原播放类型_ == 播放类型.持续待播放)
             {
                 当前播放类型_ = 播放类型.持续播放;
             }
@@ -181,14 +185,14 @@ namespace 发射器空间
                 发射组(B.Count, ResultAngle1);
             }
         }
-        public void 轨迹发射(CinemachineSmoothPath c  )
+        public void 轨迹发射(CinemachineSmoothPath c)
         {
             var a = c.m_Waypoints;
-            List<Vector2> 列表=new List<Vector2>();
+            List<Vector2> 列表 = new List<Vector2>();
             for (int i = 0; i < a.Length; i++)
             {
 
-              var TT = transform .TransformPoint(a[i].position);
+                var TT = transform.TransformPoint(a[i].position);
                 Send().transform.position = TT;
                 列表.Add(TT);
             }
@@ -197,35 +201,64 @@ namespace 发射器空间
             foreach (var i in R)
             {
                 Send().transform.position = i;
-            } 
-        } 
+            }
+        }
+        public void 炸弹_p_()
+        {
+            var a = Initialize.中间并列点(Player3.I.transform.position, B.Count, B.LineAnle);
+            for (int i = 0; i < B.Count; ++i)
+            {
+                if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
+                var VVV = a[i];
+                Phy aa = SendP();
+                aa.目标炮(VVV, B.生命周期);
+
+                var P = aa.GetComponent<Phy_检测>();
+                P.Enter += () =>
+                {
+                       if (P.Rs.Length >= 1)
+                    {
+                              var ccc = P.Rs[0].collider.gameObject;
+                        if (ccc.layer == Initialize.L_Ground||ccc.layer==Initialize.L_Player)
+                        {
+                             //var Targgget = P.Rs[0].point;
+                            var a = Physics2D.OverlapCircle(aa.transform.position, 3f, 1 << Initialize.L_Player);
+                            if (a != null)        Player3.I.被扣血(10, gameObject, 0);
+                            
+                          
+                        }
+                    }
+
+                };
+            }
+        }
         public void 发射组_p_定位_()
         {
             var a = Initialize.中间并列点(Player3.I.transform.position, B.Count, B.LineAnle);
             for (int i = 0; i < B.Count; ++i)
             {
-                a[i].DraClirl(1,Color .blue);
+                a[i].DraClirl(1, Color.blue);
                 if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
                 var VVV = a[i];
                 Phy aa = SendP();
-                aa.目标炮(VVV, B.生命周期); 
+                aa.目标炮(VVV, B.生命周期);
             }
         }
         [Button("重力跟踪", ButtonSizes.Large)]
-      public   void 蘑菇孢子发射组_p_定位(  )
+        public void 蘑菇孢子发射组_p_定位()
         {
-            var a = Initialize . 中间并列点(Player3.I.transform.position, B.Count, B.LineAnle);
+            var a = Initialize.中间并列点(Player3.I.transform.position, B.Count, B.LineAnle);
             for (int i = 0; i < B.Count; ++i)
             {
                 if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
-                var VVV = a[i]; 
+                var VVV = a[i];
                 Phy aa = SendP();
                 aa.目标炮(VVV, B.生命周期);
 
-               var P= aa.GetComponent<Phy_检测>();
+                var P = aa.GetComponent<Phy_检测>();
                 P.Enter += () =>
                 {
-                    if (P.Rs .Length >=1)
+                    if (P.Rs.Length >= 1)
                     {
                         var ccc = P.Rs[0].collider.gameObject;
                         if (ccc.layer == Initialize.L_Ground)
@@ -234,24 +267,24 @@ namespace 发射器空间
                             Boss.蘑菇管理.I.从这里升起蘑菇(Targgget);
                         }
                     }
-            
+
                 };
-            } 
-        } 
+            }
+        }
 
         void 发射组(int count, float angle)
-        { 
+        {
             float temp = count % 2 == 0 ? angle + B.LineAnle / 2 : angle;
-        
+
             for (int i = 0; i < count; ++i)
             {
                 temp += Mathf.Pow(-1, i) * i * B.LineAnle;
                 if (弹幕形式发射重力子弹) SendP(temp);
 
-                else  Send(temp);
-            } 
+                else Send(temp);
+            }
         }
-      [SerializeField ][DisplayOnly]    bool 弹幕形式发射重力子弹;
+        [SerializeField][DisplayOnly] bool 弹幕形式发射重力子弹;
         public static List<Vector2> 平均点(Bounds bounds, int count)
         {
             List<Vector2> points = new List<Vector2>(count);
@@ -297,7 +330,7 @@ namespace 发射器空间
                 // 达到所需点数时停止
                 if (points.Count >= count) break;
             }
-        
+
             return points;
         }
 
@@ -312,22 +345,22 @@ namespace 发射器空间
             }
 #endif
         }
-        float 返回不变形速度(Vector2 m,Vector2 y, float Tim=1)
+        float 返回不变形速度(Vector2 m, Vector2 y, float Tim = 1)
         {
             var 距离 = Mathf.Abs(((Vector2)m - y).magnitude);
-             return   距离 / Tim ;
+            return 距离 / Tim;
         }
         public void 发射盒子平均点_重力(SpriteRenderer sp)
         {
             var a = 平均点(sp.bounds, B.Count);
             for (int i = 0; i < a.Count; i++)
-            { 
+            {
                 a[i].DraClirl();
                 var S = SendP();
                 S.transform.position = Boss.魔理沙.I.transform.position;
                 var aaa = Initialize.抛物线_Get矢量(a[i] - (Vector2)S.transform.position, 2f, S.G);
                 S.Set_RealVelo(aaa);
-                Initialize_Mono.I.Waite_同速(() => { S.transform.position.DraClirl(); }, 2); 
+                Initialize_Mono.I.Waite_同速(() => { S.transform.position.DraClirl(); }, 2);
             }
         }
         /// <summary>
@@ -336,32 +369,32 @@ namespace 发射器空间
         /// <param name="sp"></param>
         public void 发射盒子平均点(SpriteRenderer sp)
         {
-            var a =  平均点(sp.bounds, B.Count);  
+            var a = 平均点(sp.bounds, B.Count);
             for (int i = 0; i < a.Count; i++)
-            {  
+            {
                 a[i].DraClirl();
                 var Bb = Send();
                 Bb.A角速度 = Bullet_base.方向转角度(a[i], Boss.魔理沙.I.transform.position);
-                Bb.transform.position = Boss.魔理沙.I.transform.position; 
+                Bb.transform.position = Boss.魔理沙.I.transform.position;
 
-                Bb.L线速度 = 返回不变形速度(Bb.transform.position, a[i],  0.8f);
+                Bb.L线速度 = 返回不变形速度(Bb.transform.position, a[i], 0.8f);
 
                 Bb.Add(0.8f, () =>
-              {
-                  Bb.L线速度 = 0;
-              });
-            } 
+                {
+                    Bb.L线速度 = 0;
+                });
+            }
         }
-        public  void  发射盒子随机点(SpriteRenderer sp)
+        public void 发射盒子随机点(SpriteRenderer sp)
         {
-            var a = 盒子随机点(sp.bounds ,B.Count,B .LineAnle);
+            var a = 盒子随机点(sp.bounds, B.Count, B.LineAnle);
             for (int i = 0; i < a.Count; i++)
             {
                 var B = Send(ResultAngle);
                 B.transform.position = a[i];
-               
+
             }
-            
+
         }
 
         /// <summary>
@@ -373,10 +406,10 @@ namespace 发射器空间
         /// <param name="maxAttempts">最大尝试次数</param>
         /// <returns>随机点列表</returns>
         /// 
-        public static List<Vector2>盒子随机点(
+        public static List<Vector2> 盒子随机点(
             Bounds bounds,
             int count,
-            float minDistance=1,
+            float minDistance = 1,
             int maxAttempts = 100)
         {
             List<Vector2> points = new List<Vector2>(count);
@@ -385,8 +418,8 @@ namespace 发射器空间
             while (points.Count < count && attempts < maxAttempts)
             {
                 // 生成候选点
-                float randomX = UnityEngine . Random.Range(bounds.min.x, bounds.max.x);
-                float randomY =  UnityEngine .Random.Range(bounds.min.y, bounds.max.y);
+                float randomX = UnityEngine.Random.Range(bounds.min.x, bounds.max.x);
+                float randomY = UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
                 Vector2 candidate = new Vector2(randomX, randomY);
 
                 // 检查是否满足最小间距
@@ -417,17 +450,17 @@ namespace 发射器空间
 
         public float 初始距离 = 3f;
 
-        [SerializeField ]
+        [SerializeField]
         float 试一下;
         [Button("星星弹幕_", ButtonSizes.Large)]
         public void 发射星星弹幕()
         {
-            var a = 星星弹幕_(初始距离, B.Count, ResultAngle1, 1, true ,false ,0.5f );
+            var a = 星星弹幕_(初始距离, B.Count, ResultAngle1, 1, true, false, 0.5f);
             foreach (var item in a)
             {
                 var S = Send(Initialize.To_方向到角度(item - transform.position));
                 S.transform.position = transform.position;
-                S.L线速度 = 返回不变形速度(S.transform .position ,item, S.L线速度);
+                S.L线速度 = 返回不变形速度(S.transform.position, item, S.L线速度);
                 //S.L线速度 += (item - transform.position).magnitude/2; 
             }
         }
@@ -439,7 +472,7 @@ namespace 发射器空间
    bool 连接非相邻内点 = false,
    bool 连接相邻内点 = false,
    float 内半径比例 = 0.5f)
-        { 
+        {
             N += 4;  // 实际顶点数 = N + 4
 
             Vector3 center = transform.position;
@@ -492,31 +525,31 @@ namespace 发射器空间
             }
             // 连接非相邻内点（形成星形图案）[核心修改]
             if (连接非相邻内点)
-            {    
+            {
                 for (int i = 0; i < innerPoints.Count; i++)
-                { 
+                {
                     List<Vector3> AA = new List<Vector3>();
                     List<int> UnI = new List<int>();
- 
+
                     ///三个不相邻的点
-                    
+
                     UnI.Add(i);
-                    UnI.Add(Initialize.头尾(N,i,1));
-                    UnI.Add(Initialize.头尾(N, i, -1)); 
-                    if (N!=4&&!Initialize.是奇数(N)) UnI.Add(Initialize.头尾(N, i, N/2)); 
+                    UnI.Add(Initialize.头尾(N, i, 1));
+                    UnI.Add(Initialize.头尾(N, i, -1));
+                    if (N != 4 && !Initialize.是奇数(N)) UnI.Add(Initialize.头尾(N, i, N / 2));
 
                     for (int iq = 0; iq < innerPoints.Count; iq++)
-                    { 
+                    {
                         if (UnI.Contains(iq)) continue;
-                        AA.AddRange(Initialize.单线段插值(innerPoints[i], innerPoints[iq], 均匀点数)); 
+                        AA.AddRange(Initialize.单线段插值(innerPoints[i], innerPoints[iq], 均匀点数));
                     }
                     Vector3 startPoint = innerPoints[i];
-                    points.AddRange(AA); 
+                    points.AddRange(AA);
                 }
-            } 
+            }
             // 连接相邻内点（形成内多边形）
             if (连接相邻内点)
-            { 
+            {
                 for (int i = 0; i < innerPoints.Count; i++)
                 {
                     int nextIndex = (i + 1) % innerPoints.Count;
@@ -530,23 +563,23 @@ namespace 发射器空间
                         points.Add(Vector3.Lerp(startPoint, endPoint, t));
                     }
                 }
-            } 
+            }
             // 闭合图形：添加第一个点
-            points.Add(keyPoints[0]); 
+            points.Add(keyPoints[0]);
             return points;
-        } 
-        public List<Bullet_base> 子弹列表; 
-      void   子弹周期更新(Bullet_base a)
+        }
+        public List<Bullet_base> 子弹列表;
+        void 子弹周期更新(Bullet_base a)
         {
-            子弹列表.Remove (a);
-            a.结束-= 子弹周期更新;
+            子弹列表.Remove(a);
+            a.结束 -= 子弹周期更新;
         }
         Phy SendP(float 角度 = 0)
         {
             var Bb = Surp_Pool.I.GetPool(B.pre.name).GetComponent<Phy>();
             var B_ = Bb.GetComponent<Phy_检测>();
             Bb.transform.position = transform.position;
-            B_.Enter +=()=>{
+            B_.Enter += () => {
                 for (int i = 0; i < B_.Rs.Length; i++)
                 {
                     var aa = B_.Rs[i];
@@ -563,7 +596,7 @@ namespace 发射器空间
                             Surp_Pool.I.ReturnPool(B_.gameObject, B.pre.name);
                         }, 0.1f);
                     }
-                } 
+                }
             };
 
             var 方向 = (Vector3)Initialize.To_角度到方向(角度);
@@ -574,23 +607,30 @@ namespace 发射器空间
             Bb.Velocity = 方向 * B.LinearVelocity;
             return Bb;
         }
-        Bullet_base Send(float 角度=0  )
-        { 
 
-            var Bb = Surp_Pool.I.GetPool( B.pre .name).GetComponent<Bullet_base>();
+        public bool 发射角度指向玩家=false;
+        Bullet_base Send(float 角度 = 0)
+        {
+
+            var Bb = Surp_Pool.I.GetPool(B.pre.name).GetComponent<Bullet_base>();
 
             初始化子弹(Bb);
 
-            if (Bb.自身旋转)   Bb.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 角度)); 
-            else  Bb.A角速度 += 角度 / (Time.fixedDeltaTime);
+            if (发射角度指向玩家)
+            {
+                角度= Initialize.To_方向到角度(Player3.I.transform.position - transform.position);
+            }
+
+            if (Bb.自身旋转) Bb.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 角度));
+            else Bb.A角速度 += 角度 / (Time.fixedDeltaTime);
 
             Bb.transform.position = transform.position + (Vector3)Initialize.To_角度到方向(角度) * 初始距离;
 
             if (监控子弹)
             {
                 子弹列表.Add(Bb);
-                Bb.结束 += 子弹周期更新 ;
-                if (子弹列表.Count==0)
+                Bb.结束 += 子弹周期更新;
+                if (子弹列表.Count == 0)
                 {
                     列表归零?.Invoke();
                 }
@@ -598,12 +638,12 @@ namespace 发射器空间
 
             初始化?.Invoke(Bb);
             return Bb;
- 
+
         }
         public Action 列表归零;
         public Action<Bullet_base> 初始化;
         void 初始化子弹(Bullet_base Bb)
-        { 
+        {
             if (随机发射无法消弹子弹)
             {
                 var a = ((Bullet)Bb);
@@ -617,7 +657,7 @@ namespace 发射器空间
                     else
                     {
                         a.GetComponent<SpriteRenderer>().color = Color.red;
-                    } 
+                    }
                 }
             }
 

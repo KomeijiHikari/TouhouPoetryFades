@@ -92,7 +92,7 @@ void 是完整(int i)
         };
         完整.Stay += () =>
         {
-            if (Player_input.I.按键检测_按下(Player_input.I.攻击))
+            if (Player_input.I.按键检测_按下(Player_input.I.k.攻击))
             {
                 to_state(头);
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Sirenix.OdinInspector;
 [DefaultExecutionOrder(-10)]
 public abstract   class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
 {
@@ -11,6 +12,7 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_Éú
     {
         get
         {
+
             if (an .updateMode ==AnimatorUpdateMode.UnscaledTime)
             {
                 return true; 
@@ -175,7 +177,7 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_Éú
     [DisplayOnly]
     public Collider2D co;
     [HideInInspector] Rigidbody2D rb;
-
+    public bool Staticrb { get => rb.bodyType == RigidbodyType2D.Static; }
     public Rigidbody2D Get_rb()
     {
         return rb;

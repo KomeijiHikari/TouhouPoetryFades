@@ -7,8 +7,10 @@ using UnityEngine.UI;
 public class 强提示 : MonoBehaviour
 {
     Image ima; 
-    Text_button_Father T;  
-
+    Text_button_Father T;
+    public Action Action强提示_回退 { get => T.Action_回退;
+        set => T.Action_回退 = value;
+    } 
     bool 初始化过; 
     void 初始化()
     {
@@ -33,7 +35,7 @@ public class 强提示 : MonoBehaviour
  
 
     int CCC;
-    public void 开 (GameObject obj )
+    public Button_Father_base 开 (GameObject obj )
     {
         if (Time.frameCount !=CCC)
         {
@@ -43,8 +45,8 @@ public class 强提示 : MonoBehaviour
             初始化();
      
 
-            主UI.I.展开(T,false );
+        return    主UI.I.展开(T,false );
         }
-
+        return null;
     }
 }

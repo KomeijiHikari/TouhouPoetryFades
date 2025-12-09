@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class 小地图额外指引 : MonoBehaviour
 {
-    [SerializeField ]
-    [DisplayOnly ]
+ 
     小地图显示 显示;
 
     生命周期管理 生命周期;
@@ -36,8 +35,8 @@ public class 小地图额外指引 : MonoBehaviour
         }
         else if(存在)
         {
-            显示.有东西 =((显示.当前1 == 显示.半透明) || 显示.当前1 == 显示.闪烁)&&大地图;
-             sp.enabled = (显示.当前1 == 显示.全显示) && 大地图;
+            //显示.有东西 =((显示.当前1 == 显示.半透明) || 显示.当前1 == 显示.闪烁)&&大地图;
+            // sp.enabled = (显示.当前1 == 显示.全显示) && 大地图;
      
         }
         }
@@ -67,7 +66,7 @@ public class 小地图额外指引 : MonoBehaviour
 
     void 生成obj()
     {
-        var a = Surp_Pool.I.GetPool(Surp_Pool.白块);
+        var a = Surp_Pool.I.GetPool(Surp_Pool.地图白块);
         a.layer = Initialize.L_小地图;
         sp = a.GetComponent<SpriteRenderer>();
         sp.material = 材质管理.Get_Material(材质管理.Unli_Orther);
@@ -77,6 +76,7 @@ public class 小地图额外指引 : MonoBehaviour
         a.transform.localScale = Vector2.one * 6f;
         sp.material.SetColor(材质管理._SpriteColor, Initialize_Mono.I.搜集物品指示颜色);
         sp.enabled = false;
+        这才是小地图 = a;
     }
-
+    public GameObject 这才是小地图;
 }

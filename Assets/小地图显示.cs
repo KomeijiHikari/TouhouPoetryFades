@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using SampleFSM;
 using DG.Tweening;
+using Ink.Parsed;
 public class 小地图显示 : MonoBehaviour
 {
-    bool Deb = false;
+    
+   public  bool Deb = false;
     public state 当前1 { get => 当前; private set => 当前 = value; }
 
-   [DisplayOnly ] state 当前;
+   [DisplayOnly ] [SerializeField]state 当前;
     public state 不显示 { get => 不显示1; private set => 不显示1 = value; }
     public state 半透明 { get => 半透明1; private set => 半透明1 = value; }
     public state 全显示 { get => 全显示1; private set => 全显示1 = value; }
@@ -35,19 +37,27 @@ public class 小地图显示 : MonoBehaviour
     static Color 全 = Color.white;
     static Color 半 = new Color(1, 1, 1, 0.5f);
 
-    [DisplayOnly]
+    //[DisplayOnly]
     public bool 有东西;
 
-    Sequence quence;
+    DG.Tweening.Sequence quence;
+    private void OnDestroy()
+    {
+         I = null;
+    }
     public void 初始化(int i)
     {
         编号 = i;
     }
-
+    public static string    机关刷新小地图 { get => "机关刷新小地图"; } 
     private void Awake()
     {
+
+
         小弟sp = GetComponent<SpriteRenderer>();
+        Initialize_Mono.I.小地图刷新 += 机关刷新;
         Initialize_Mono.I.重制触发 += 进入框框;
+        Event_M.I.Add(机关刷新小地图, 机关刷新);
 
         当前1 = new state("Null");
         全显示 = new state("全显示");
@@ -78,6 +88,7 @@ public class 小地图显示 : MonoBehaviour
 
         半透明.Enter += () =>
         {
+ 
             State_Action?.Invoke(半透明.StateName);
 
             显示否 = true;
@@ -91,7 +102,7 @@ public class 小地图显示 : MonoBehaviour
         };
 
         全显示.Enter += () =>
-        {
+        { 
             State_Action?.Invoke(全显示.StateName);
             显示否 = true;
             小弟sp.color = 全;
@@ -125,6 +136,24 @@ public class 小地图显示 : MonoBehaviour
 
         当前?.Enter();
     }
+ 
+    void 机关刷新()
+    {
+        if (Deb)
+        {
+            Debug.LogError("机关刷新 小地图显示 小地图显示 小地图显示 小地图显示 ");
+            Debug.LogError("机关刷新 小地图显示 小地图显示 小地图显示 小地图显示 ");
+        }
+
+        bool 有我 = 激活过没有 || I.have(my);
+        if (当前!=全显示) 
+        if (有我)/// 全显示表示我也有  那我也半透明
+        {
+            激活过没有 = true;
+            当前1 = 当前1.to_state(半透明);
+            //状态_ = 显示状态.半透明;
+        }
+    } 
     private void 进入框框(int arg1, int arg2)
     {
 
@@ -142,6 +171,7 @@ public class 小地图显示 : MonoBehaviour
         {
             if (有我)
             {
+                激活过没有 = true;
                 当前1 = 当前1.to_state(半透明);
                 //状态_ = 显示状态.半透明;
             }
@@ -149,10 +179,8 @@ public class 小地图显示 : MonoBehaviour
             {
                 当前1 = 当前1.to_state(不显示);
                 //状态_ = 显示状态.不显示;
-            }
-        }
-
-
+            } 
+        } 
     }
     Vector2Int my
     {
@@ -162,7 +190,21 @@ public class 小地图显示 : MonoBehaviour
         }
     }
 
-    public static 小地图数据 I => 小地图数据.I_;
+    public static 小地图数据 I
+    {
+        get
+        {
+            if (小地图数据.I_ == null)
+            {
+                小地图数据.I_ = new 小地图数据();
+            }
+            return 小地图数据.I_;
+        }
+        set
+        {
+            小地图数据.I_ = value;
+        }
+    }
 
 
 
@@ -217,12 +259,17 @@ public class 小地图显示 : MonoBehaviour
             }
         }
     }
-
+    public enum 宝贝显示状态
+    {
+  不显示,
+  显示
+    }
     public enum 显示状态
     {
-        半透明,
-        不显示,
-        全显示,
+    不知道, ///不显示
+    未探索,/// 显示，不显示通道出入口
+        探索过,///  显示通道出入口  不明显
+        是我,///   明显
     }
 }
 

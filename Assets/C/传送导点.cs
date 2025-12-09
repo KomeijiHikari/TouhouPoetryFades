@@ -49,11 +49,12 @@ public class 传送导点 : MonoBehaviour
     private void Start()
     {
         if (I!=null )
-        {
+        { 
             Destroy(this);
         }
         else
         {
+            
             I = this;
         }
         StartCoroutine(等());
@@ -81,16 +82,19 @@ public class 传送导点 : MonoBehaviour
                     传送点 = a.GetComponent<传送点>();
                     Initialize.设置和当前活动场景为这个obj的场景(传送点.gameObject);
                     //gameObject.transform.position = 传送点.传送点坐标;
+
+                    Debug.LogError("传送点坐标"+最后点);
+
                     if (最后点!=Vector2 .zero)
                     {
-                        gameObject.transform.position = 最后点;
+                        gameObject.transform.position = 最后点; 
                     }
                     else
                     {
                         Debug.LogError("传送点为？");
                     }
 
-Event_M.I.Invoke(Event_M.切换场景触发_obj, this.gameObject);
+      Event_M.I.Invoke(Event_M.切换场景触发_obj, this.gameObject);
                 }
                 yield break;
             }
@@ -105,7 +109,13 @@ Event_M.I.Invoke(Event_M.切换场景触发_obj, this.gameObject);
 
  public   Vector2 最后点
     {
-        get => Save_static.LoadinText<Vector2 >(Save_static.存档点位 );
+        get {
+            if (开发者调试.I.自由起始点)
+            {
+                return Player3.I.transform.position;
+            }
+            return Save_static.LoadinText<Vector2>(Save_static.存档点位);
+        }
     set => Save_static.SaveinText(Save_static.存档点位, value);
     }
  

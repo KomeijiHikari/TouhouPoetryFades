@@ -12,93 +12,99 @@ using UnityEngine.Tilemaps;
 using Cinemachine;
 using System.Reflection;
 using System.Linq;
-using static ÉúÃüÖÜÆÚ¹ÜÀí;
+using static ç”Ÿå‘½å‘¨æœŸç®¡ç†;
+using Unity.VisualScripting;
 
-interface ´òÓ¡ÏûÏ¢
+interface æ‰“å°æ¶ˆæ¯
 {
-    //±³°ü²Ëµ¥×óÓÒÇĞ»»±³°ü
-    public bool ×´Ì¬ÏûÏ¢ { get; set; }
-}
- 
-
- 
-    /// <summary>
-    /// ÉèÖÃÊôĞÔÖ»¶Á
-    /// </summary>
-    public class DisplayOnly : PropertyAttribute
-    {
-
+    //èƒŒåŒ…èœå•å·¦å³åˆ‡æ¢èƒŒåŒ…
+    public bool çŠ¶æ€æ¶ˆæ¯ { get; set; }
 }
 
- 
+
+
 /// <summary>
-/// FPSÏÔÊ¾
+/// è®¾ç½®å±æ€§åªè¯»
 /// </summary>
- 
+public class DisplayOnly : PropertyAttribute
+{
+
+}
+
+
+/// <summary>
+/// FPSæ˜¾ç¤º
+/// </summary>
+
 
 
 
 [DefaultExecutionOrder(-100)]
-public class Initialize_Mono:MonoBehaviour
+public class Initialize_Mono : MonoBehaviour
 {
     [SerializeField]
-    Transform  ½¹µã; 
-    public void BOSSÄ£Ê½( GameObject boss ,bool b)
+    Transform ç„¦ç‚¹;
+    public void BOSSæ¨¡å¼(GameObject boss, bool b)
     {
-        Ö÷UI.I.BossÑªÌõ_(boss,boss.name,b);
-     var a=  boss.GetComponent<Boss.I_Boss>().Gs ;
+        ä¸»UI.I.Bossè¡€æ¡_(boss, boss.name, b);
+        var a = boss.GetComponent<Boss.I_Boss>().Gs;
         foreach (var item in a)
         {
-            item.SetActive(b)  ;
-        } 
+            item.SetActive(b);
+        }
     }
 
-    public bool ÏÔÊ¾µãÎ»ÖÃ=false;
-     
-    public   float ¼ÙÎïÀíÖØÁ¦  = 9.8f;
+    public bool æ˜¾ç¤ºç‚¹ä½ç½® = false;
 
-    public Color ÄÜÁ¦µÀ¾ßÖ¸Ê¾ÑÕÉ«=Color .yellow;
-    public Color ËÑ¼¯ÎïÆ·Ö¸Ê¾ÑÕÉ« = Color.green;
+    public float å‡ç‰©ç†é‡åŠ› = 9.8f;
+
+    public Color èƒ½åŠ›é“å…·æŒ‡ç¤ºé¢œè‰² = Color.yellow;
+    public Color æœé›†ç‰©å“æŒ‡ç¤ºé¢œè‰² = Color.green;
 
     public Action<string> Key_Action;
 
-    public LayerMask ½ä±¸¼ì²â²ã;
-    public float Ñ¹Ëõ±¶Êı;
-    public Action<int,int> ÖØÖÆ´¥·¢ { get; set; } 
+    public LayerMask æˆ’å¤‡æ£€æµ‹å±‚;
+    public float å‹ç¼©å€æ•°;
+
+    //public Action<int, int> æœºå…³é‡åˆ¶è§¦å‘ { get; set; }
+    public Action  å°åœ°å›¾åˆ·æ–° { get; set; }
+    public Action<int, int> é‡åˆ¶è§¦å‘ { get; set; }
     public AnimationCurve defaul_Curve;
 
     [SerializeField]
-    float f_Time_µ¯·´Ïú»ÙÊ±¼ä;
-    [SerializeField ]
-      float f_Time_²ÈÉÏÈ¥×Ô±¬µÄÊ±¼ä;
-    public float Speed_Max=100;
-    public float Speed_Min=0.000001f;
-    [DisplayOnly ]
-    [SerializeField ]
+    float f_Time_å¼¹åé”€æ¯æ—¶é—´; 
+    [SerializeField]
+    private float f_Time_ç¢°åˆ°ç©å®¶åé”€æ¯æ—¶é—´ = 0.1f;
+    [SerializeField]
+    float f_Time_è¸©ä¸Šå»è‡ªçˆ†çš„æ—¶é—´;
+    public float Speed_Max = 100;
+    public float Speed_Min = 0.000001f;
+    [DisplayOnly]
+    [SerializeField]
     float Speed;
-    public float µĞÈË»ØÄÍ¾ÃËÙ¶È; 
-   public  List<ÏûÏ¢> ÏûÏ¢ÁĞ±í = new List<ÏûÏ¢>();
-    //public List<ÏûÏ¢> ÏûÏ¢ÁĞ±í { get {
-    //        ÏûÏ¢ÁĞ±íÏÔÊ¾ = ÏûÏ¢ÁĞ±í1;
-    //        return ÏûÏ¢ÁĞ±í1;
+    public float æ•Œäººå›è€ä¹…é€Ÿåº¦;
+    public List<æ¶ˆæ¯> æ¶ˆæ¯åˆ—è¡¨ = new List<æ¶ˆæ¯>();
+    //public List<æ¶ˆæ¯> æ¶ˆæ¯åˆ—è¡¨ { get {
+    //        æ¶ˆæ¯åˆ—è¡¨æ˜¾ç¤º = æ¶ˆæ¯åˆ—è¡¨1;
+    //        return æ¶ˆæ¯åˆ—è¡¨1;
     //    }
     //    set {
-    //        ÏûÏ¢ÁĞ±í1 = value;
-    //        ÏûÏ¢ÁĞ±íÏÔÊ¾ = ÏûÏ¢ÁĞ±í1;
+    //        æ¶ˆæ¯åˆ—è¡¨1 = value;
+    //        æ¶ˆæ¯åˆ—è¡¨æ˜¾ç¤º = æ¶ˆæ¯åˆ—è¡¨1;
     //    } }
-    //public List<ÏûÏ¢> ÏûÏ¢ÁĞ±íÏÔÊ¾;
+    //public List<æ¶ˆæ¯> æ¶ˆæ¯åˆ—è¡¨æ˜¾ç¤º;
 
-    public     bool ×´Ì¬ÏûÏ¢×ÜÕ¢;
+    public bool çŠ¶æ€æ¶ˆæ¯æ€»é—¸;
     public static Initialize_Mono I { get; private set; } = new Initialize_Mono();
 
-
+ 
     [DisplayOnly]
-    public List<String > ÊÂ¼ş×ÖµäÏÔÊ¾;
+    public List<String> äº‹ä»¶å­—å…¸æ˜¾ç¤º;
 
-    public    List<AnimationClip>  asddd;
-    public  Animator a ;
+    public List<AnimationClip> asddd;
+    public Animator a;
     [Serializable]
-    public struct ÏûÏ¢
+    public struct æ¶ˆæ¯
     {
         [SerializeField]
         [DisplayOnly]
@@ -106,8 +112,8 @@ public class Initialize_Mono:MonoBehaviour
         [SerializeField]
 
         public bool Value;
- 
-        public ÏûÏ¢(string key, bool value)
+
+        public æ¶ˆæ¯(string key, bool value)
         {
             Key = key;
             Value = value;
@@ -116,108 +122,108 @@ public class Initialize_Mono:MonoBehaviour
 
     [SerializeField]
     [DisplayOnly]
-    bool ÒÑ¾­µ÷ÓÃ¹ı;
+    bool å·²ç»è°ƒç”¨è¿‡;
 
-    Coroutine ¸Ä±äÊ±¼ä;
+    Coroutine æ”¹å˜æ—¶é—´;
 
-    public bool ÄÜ²È(Collider2D  C)
+    public bool èƒ½è¸©(Collider2D C)
     {
-        return (C.IsTouchingLayers(Initialize.L_Player) || C.CompareTag(Initialize.One_way)) &&Initialize . Layer_is(C.gameObject.layer, Player3.I.Åö×²¼ì²â²ã);
-        //return C.IsTouchingLayers(Player3.I.Åö×²¼ì²â²ã) || C.CompareTag(Initialize.Ground);
+        return (C.IsTouchingLayers(Initialize.L_Player) || C.CompareTag(Initialize.One_way)) && Initialize.Layer_is(C.gameObject.layer, Player3.I.ç¢°æ’æ£€æµ‹å±‚);
+        //return C.IsTouchingLayers(Player3.I.ç¢°æ’æ£€æµ‹å±‚) || C.CompareTag(Initialize.Ground);
     }
     private void Awake()
     {
-        ÊÂ¼ş×ÖµäÏÔÊ¾ = Event_M.I.ÊÂ¼şÁĞ±í;
+        äº‹ä»¶å­—å…¸æ˜¾ç¤º = Event_M.I.äº‹ä»¶åˆ—è¡¨;
         if (I != null && I != this)
         {
             Destroy(this);
         }
         else
         {
-            var a = I.ÏûÏ¢ÁĞ±í;
+            var a = I.æ¶ˆæ¯åˆ—è¡¨;
             I = this;
-            I.ÏûÏ¢ÁĞ±í = a;
+            I.æ¶ˆæ¯åˆ—è¡¨ = a;
         }
-        SceneManager.activeSceneChanged += asd;   //ÇĞ»»³¡¾°ÔÚÇĞ»»»ØÀ´Ö®ºó     Ê±¼ä±ØĞëÖØÖÆ 
-        if (µĞÈË»ØÄÍ¾ÃËÙ¶È == 0)
+        SceneManager.activeSceneChanged += asd;   //åˆ‡æ¢åœºæ™¯åœ¨åˆ‡æ¢å›æ¥ä¹‹å     æ—¶é—´å¿…é¡»é‡åˆ¶ 
+        if (æ•Œäººå›è€ä¹…é€Ÿåº¦ == 0)
         {
-            µĞÈË»ØÄÍ¾ÃËÙ¶È = 10;
+            æ•Œäººå›è€ä¹…é€Ÿåº¦ = 10;
         }
 
 
-        Save_D.´æµµ×Öµä_ = null;
+        Save_D.å­˜æ¡£å­—å…¸_ = null;
         Save_D.Load();
 
 
         DeadPla.I.DeadList = null;
-        DeadPla.I.¶ÁÈ¡();
+        DeadPla.I.è¯»å–();
         DeadPla.I.DE();
-    } 
-    public void ¸Ä±äÒ»»á¶ùÊ±¼ä(float ÕæÊµÊ±¼ä,float ËÙÂÊ)
-    {
-        ¸Ä±äÊ±¼ä= StartCoroutine(asd( ÕæÊµÊ±¼ä, ËÙÂÊ));
     }
-    IEnumerator asd(float ÕæÊµÊ±¼ä, float ËÙÂÊ)
+    public void æ”¹å˜ä¸€ä¼šå„¿æ—¶é—´(float çœŸå®æ—¶é—´, float é€Ÿç‡)
     {
-        Initialize.TimeScale = ËÙÂÊ;
-        yield return new WaitForSecondsRealtime(ÕæÊµÊ±¼ä);
+        æ”¹å˜æ—¶é—´ = StartCoroutine(asd(çœŸå®æ—¶é—´, é€Ÿç‡));
+    }
+    IEnumerator asd(float çœŸå®æ—¶é—´, float é€Ÿç‡)
+    {
+        Initialize.TimeScale = é€Ÿç‡;
+        yield return new WaitForSecondsRealtime(çœŸå®æ—¶é—´);
         Initialize.TimeScale = 1;
     }
 
 
     [SerializeField]
-    bool NEWÏûÏ¢ÁĞ±í=false ;  
-    public   void Debug_(Type t, object Message )
+    bool NEWæ¶ˆæ¯åˆ—è¡¨ = false;
+    public void Debug_(Type t, object Message)
     {
- 
-        string a = t.Name; 
-        bool ÓĞ=false ;
- 
-        foreach (var item in I.ÏûÏ¢ÁĞ±í)
+
+        string a = t.Name;
+        bool æœ‰ = false;
+
+        foreach (var item in I.æ¶ˆæ¯åˆ—è¡¨)
         {
-            if (item.Key ==a)
+            if (item.Key == a)
             {
-                ÓĞ = true;
+                æœ‰ = true;
             }
-        } 
-        if (!ÓĞ)
-        {//Ã»ÓĞ
-            Debug.Log ("Ìí¼ÓÁË"+a);
-            I.ÏûÏ¢ÁĞ±í.Add(new ÏûÏ¢ (a,true));
-        } 
-        int Ë÷Òı = -1;
-        for (int i = 0; i < I.ÏûÏ¢ÁĞ±í.Count; i++)
-        {
-            if (I.ÏûÏ¢ÁĞ±í[i].Key==a)
-            {
-                ÓĞ = true;
-                Ë÷Òı = i;
-            }
-        } 
-        if (!ÓĞ)
-        { 
         }
-        //ÏÖÔÚ¿Ï¶¨ÓĞÁË
-        if (I.ÏûÏ¢ÁĞ±í[Ë÷Òı].Value)
+        if (!æœ‰)
+        {//æ²¡æœ‰
+            Debug.Log("æ·»åŠ äº†" + a);
+            I.æ¶ˆæ¯åˆ—è¡¨.Add(new æ¶ˆæ¯(a, true));
+        }
+        int ç´¢å¼• = -1;
+        for (int i = 0; i < I.æ¶ˆæ¯åˆ—è¡¨.Count; i++)
         {
-            //ÊÇ¿ª×ÅµÄ
-            Debug.Log(a + "·¢ËÍ:\t\t    " + Message);
-        } 
-    }
- 
-    void asd(Scene  b, Scene a)
-    {
-        SceneManager.activeSceneChanged -= asd;
-        Initialize .    Ê±¼ä»Ö¸´();
+            if (I.æ¶ˆæ¯åˆ—è¡¨[i].Key == a)
+            {
+                æœ‰ = true;
+                ç´¢å¼• = i;
+            }
+        }
+        if (!æœ‰)
+        {
+        }
+        //ç°åœ¨è‚¯å®šæœ‰äº†
+        if (I.æ¶ˆæ¯åˆ—è¡¨[ç´¢å¼•].Value)
+        {
+            //æ˜¯å¼€ç€çš„
+            Debug.Log(a + "å‘é€:\t\t    " + Message);
+        }
     }
 
-    public static void ÉÁË¸(GameObject gameObject,float Ê±¼ä,float ¼ä¸ô)
+    void asd(Scene b, Scene a)
     {
-        SpriteRenderer sp =new SpriteRenderer();
-        Initialize.×é¼ş(gameObject,ref sp);
-       I. StartCoroutine(½øÈëÄ³³å´ÌÄ£Ê½(sp,¼ä¸ô));
+        SceneManager.activeSceneChanged -= asd;
+        Initialize.æ—¶é—´æ¢å¤();
     }
-   static  IEnumerator ½øÈëÄ³³å´ÌÄ£Ê½(SpriteRenderer sp,float ¼ä¸ô)
+
+    public static void é—ªçƒ(GameObject gameObject, float æ—¶é—´, float é—´éš”)
+    {
+        SpriteRenderer sp = new SpriteRenderer();
+        Initialize.ç»„ä»¶(gameObject, ref sp);
+        I.StartCoroutine(è¿›å…¥æŸå†²åˆºæ¨¡å¼(sp, é—´éš”));
+    }
+    static IEnumerator è¿›å…¥æŸå†²åˆºæ¨¡å¼(SpriteRenderer sp, float é—´éš”)
     {
         sp.enabled = false;
         yield return new WaitForSeconds(1f);
@@ -227,36 +233,36 @@ public class Initialize_Mono:MonoBehaviour
     private Sprite sp;
 
     //WaitForSeconds waite { get; } = new WaitForSeconds(1);
-    public static void ²ĞÁô( GameObject  G,  Vector2  a,Vector2 b)
+    public static void æ®‹ç•™(GameObject G, Vector2 a, Vector2 b)
     {
- 
 
-        var ga = new GameObject("²ĞÁô");
+
+        var ga = new GameObject("æ®‹ç•™");
         ga.transform.SetParent(G.transform);
         var SPP = ga.AddComponent<SpriteRenderer>();
         SPP.sprite = I.sp;
         SPP.color = Color.red;
         SPP.DOFade(0, 1);
         ga.transform.localPosition = a;
-        ga.transform.localScale =b;
+        ga.transform.localScale = b;
         ga.transform.SetParent(null);
     }
 
-    public static void ²ĞÁô(BoxCollider2D bo)
+    public static void æ®‹ç•™(BoxCollider2D bo)
     {
-     //   var T = bo.gameObject.transform;
-     //   Vector2 o = bo.offset;
-     //   Vector2 si = bo.size;
+        //   var T = bo.gameObject.transform;
+        //   Vector2 o = bo.offset;
+        //   Vector2 si = bo.size;
 
-     //   var ga = new GameObject("²ĞÁô");
-     //   ga.transform.SetParent(T);
-     //var SPP=ga.AddComponent <SpriteRenderer>();
-     //   SPP.sprite=I.sp;
-     //   SPP.color = Color.red;
-     //   SPP.DOFade(0,1);
-     //   ga.transform.localPosition = o;
-     //   ga.transform.localScale = si;
-     //   ga.transform.SetParent(null);
+        //   var ga = new GameObject("æ®‹ç•™");
+        //   ga.transform.SetParent(T);
+        //var SPP=ga.AddComponent <SpriteRenderer>();
+        //   SPP.sprite=I.sp;
+        //   SPP.color = Color.red;
+        //   SPP.DOFade(0,1);
+        //   ga.transform.localPosition = o;
+        //   ga.transform.localScale = si;
+        //   ga.transform.SetParent(null);
     }
     //IEnumerable asdasd(SpriteRenderer  a)
     //{
@@ -264,31 +270,31 @@ public class Initialize_Mono:MonoBehaviour
     //    for (int i = 0;  ; i++)
     //    {
     //        time += Time.deltaTime;
-    //        var no = 1-(time / Áô×Å);
+    //        var no = 1-(time / ç•™ç€);
     //        a.color = new Color();
     //        yield return waite;
     //        break;
     //    }
 
     //}
-    //IEnumerator µÈ´ıÕæÊµÊ±¼äÖ´ĞĞ·½·¨(Action a, float time)
+    //IEnumerator ç­‰å¾…çœŸå®æ—¶é—´æ‰§è¡Œæ–¹æ³•(Action a, float time)
     //{
     //    yield return new WaitForSecondsRealtime(time);
     //    a.Invoke();
     //}
-    IEnumerator µÈ´ı±äËÙÊ±¼äÖ´ĞĞ·½·¨_Í¬ËÙ(Action a, float time )
+    IEnumerator ç­‰å¾…å˜é€Ÿæ—¶é—´æ‰§è¡Œæ–¹æ³•_åŒé€Ÿ(Action a, float time)
     {
-        float TT = 0; 
-        while (TT < time)//falseÖ´ĞĞ
+        float TT = 0;
+        while (TT < time)//falseæ‰§è¡Œ
         {
 
-            yield return new WaitForFixedUpdate(); 
+            yield return new WaitForFixedUpdate();
             TT += Time.fixedDeltaTime;
-        } 
+        }
         a.Invoke();
     }
-    IEnumerator µÈ´ıÊ±¼äÖ´ĞĞ·½·¨(Action a, float time,bool b=false)
-    { 
+    IEnumerator ç­‰å¾…æ—¶é—´æ‰§è¡Œæ–¹æ³•(Action a, float time, bool b = false)
+    {
         if (b)
         {
             yield return new WaitForSecondsRealtime(time);
@@ -296,152 +302,162 @@ public class Initialize_Mono:MonoBehaviour
         else
         {
             yield return new WaitForSeconds(time);
-        } 
+        }
         a.Invoke();
-    } 
+    }
 
-    public void Waite_Í¬ËÙ(Action a, float time)
+    public void Waite_åŒé€Ÿ(Action a, float time)
     {
-        StartCoroutine(µÈ´ı±äËÙÊ±¼äÖ´ĞĞ·½·¨_Í¬ËÙ(a, time)); 
+        StartCoroutine(ç­‰å¾…å˜é€Ÿæ—¶é—´æ‰§è¡Œæ–¹æ³•_åŒé€Ÿ(a, time));
     }
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="a">            °¢Èı´óËÕ´ò</param>
+    /// <param name="a">            é˜¿ä¸‰å¤§è‹æ‰“</param>
     /// <param name="time"></param>
-    /// <param name="ÕæÊµÊ±¼ä"></param>
-    public void Waite(Action a,float time=0,bool ÕæÊµÊ±¼ä=false)
-    { 
-            StartCoroutine(µÈ´ıÊ±¼äÖ´ĞĞ·½·¨(a, time,ÕæÊµÊ±¼ä)); 
-    } 
-    public void µÈ´ıÒ»Ö¡Ö´ĞĞ·½·¨_¼ì²âÔ­objÊÇ·ñÆôÓÃ(GameObject  G, Action a)
+    /// <param name="çœŸå®æ—¶é—´"></param>
+    public void Waite(Action a, float time = 0, bool çœŸå®æ—¶é—´ = false)
     {
-        Debug.LogError(G.name );
-            StartCoroutine(µÈ´ı¼¤»îÒ»Ö¡ºóÖ´ĞĞ·½·¨(G,a)); 
+        StartCoroutine(ç­‰å¾…æ—¶é—´æ‰§è¡Œæ–¹æ³•(a, time, çœŸå®æ—¶é—´));
+    }
+    public void ç­‰å¾…ä¸€å¸§æ‰§è¡Œæ–¹æ³•_æ£€æµ‹åŸobjæ˜¯å¦å¯ç”¨(GameObject G, Action a)
+    {
+        Debug.LogError(G.name);
+        StartCoroutine(ç­‰å¾…æ¿€æ´»ä¸€å¸§åæ‰§è¡Œæ–¹æ³•(G, a));
     }
 
-        IEnumerator µÈ´ı¼¤»îÒ»Ö¡ºóÖ´ĞĞ·½·¨( GameObject  G, Action a)
+    IEnumerator ç­‰å¾…æ¿€æ´»ä¸€å¸§åæ‰§è¡Œæ–¹æ³•(GameObject G, Action a)
     {
         if (!G.activeInHierarchy)
-        {//Èç¹ûÃ»¼¤»î
+        {//å¦‚æœæ²¡æ¿€æ´»
             while (!G.activeInHierarchy)
-            {
-                yield return null; 
-            }
-        }
-        else
-        {//Èç¹û¼¤»îÁË
-            yield return null;
-            a.Invoke();
-        } 
-    }
-   public  bool Ê±»º²»¶¯;
-    // Ğ­³Ì·½·¨  
-    IEnumerator SetTimeCoroutine(float setTime, float endTime)
-    { 
-        Ê±»º²»¶¯ = false;
-        float startTime = Time.realtimeSinceStartup; // »ñÈ¡¿ªdÊ¼Ğ­³ÌÊ±µÄÕæÊµÊ±¼ä  
-        float elapsedTime = 0f; // Ğ­³ÌÒÑ¹ıÈ¥µÄÊ±¼ä   
-        while (elapsedTime < endTime)
-        {
-            while (Ê±»º²»¶¯)
             {
                 yield return null;
             }
-      
-         
-            // ¼ÆËãÒÑ¾­¹ıÈ¥µÄÊ±¼ä  
+        }
+        else
+        {//å¦‚æœæ¿€æ´»äº†
+            yield return null;
+            a.Invoke();
+        }
+    }
+    public bool æ—¶ç¼“ä¸åŠ¨;
+    // åç¨‹æ–¹æ³•  
+    IEnumerator SetTimeCoroutine(float setTime, float endTime)
+    {
+        æ—¶ç¼“ä¸åŠ¨ = false;
+        float startTime = Time.realtimeSinceStartup; // è·å–å¼€då§‹åç¨‹æ—¶çš„çœŸå®æ—¶é—´  
+        float elapsedTime = 0f; // åç¨‹å·²è¿‡å»çš„æ—¶é—´   
+        while (elapsedTime < endTime)
+        {
+            while (æ—¶ç¼“ä¸åŠ¨)
+            {
+                yield return null;
+            }
+
+
+            // è®¡ç®—å·²ç»è¿‡å»çš„æ—¶é—´  
             elapsedTime = Time.realtimeSinceStartup - startTime;
 
-            // Ê¹ÓÃMathf.LerpÀ´Æ½»¬µØ¸Ä±äTimeScale  
+            // ä½¿ç”¨Mathf.Lerpæ¥å¹³æ»‘åœ°æ”¹å˜TimeScale  
             //Initialize .    TimeScale = Mathf.Lerp(Initialize.TimeScale, setTime, elapsedTime / endTime);              666
-            Initialize.TimeScale = Mathf.Lerp(Initialize.TimeScale, setTime, 0.5f); 
-            // µÈ´ıÖ±µ½ÏÂÒ»Ö¡  
-            yield return ÁãµãÁã2Ãë;
+            Initialize.TimeScale = Mathf.Lerp(Initialize.TimeScale, setTime, 0.5f);
+            // ç­‰å¾…ç›´åˆ°ä¸‹ä¸€å¸§  
+            yield return é›¶ç‚¹é›¶2ç§’;
 
-            // Èç¹ûÔÚendTimeÖ®Ç°ÔÙ´Îµ÷ÓÃ´ËĞ­³Ì£¬ÎÒÃÇĞèÒªÖØĞÂ¼ÆËãendTime  
-            // ÕâÀï¼ÙÉèÄãÓĞÒ»¸öÍâ²¿µÄ·½·¨À´µ÷ÓÃStopCoroutine²¢ÖØÆôËü  
-            // ÀıÈç£ºStopCoroutine(myCoroutine); myCoroutine = StartCoroutine(SetTimeCoroutine(newSetTime, newEndTime));  
+            // å¦‚æœåœ¨endTimeä¹‹å‰å†æ¬¡è°ƒç”¨æ­¤åç¨‹ï¼Œæˆ‘ä»¬éœ€è¦é‡æ–°è®¡ç®—endTime  
+            // è¿™é‡Œå‡è®¾ä½ æœ‰ä¸€ä¸ªå¤–éƒ¨çš„æ–¹æ³•æ¥è°ƒç”¨StopCoroutineå¹¶é‡å¯å®ƒ  
+            // ä¾‹å¦‚ï¼šStopCoroutine(myCoroutine); myCoroutine = StartCoroutine(SetTimeCoroutine(newSetTime, newEndTime));  
         }
         for (int i = 0; i < 10; i++)
         {
             Initialize.TimeScale = Mathf.Lerp(Initialize.TimeScale, 1, 0.5f);
-            yield return ÁãµãÁã2Ãë;
+            yield return é›¶ç‚¹é›¶2ç§’;
         }
-        // µ½´ïendTimeºó£¬½«TimeScaleÉèÖÃÎª1  
+        // åˆ°è¾¾endTimeåï¼Œå°†TimeScaleè®¾ç½®ä¸º1  
         Initialize.TimeScale = 1;
 
     }
 
-    // Íâ²¿µ÷ÓÃÕâ¸ö·½·¨À´Æô¶¯Ğ­³Ì  
+    // å¤–éƒ¨è°ƒç”¨è¿™ä¸ªæ–¹æ³•æ¥å¯åŠ¨åç¨‹  
 
 
-    public void Ê±»º(float setTime, float endTime)
+    public void æ—¶ç¼“(float setTime, float endTime)
     {
-        Initialize.TimeScale = 1f; 
-        if (Ê±»ºĞ­³Ì!=null)
-        { 
-            StopCoroutine(Ê±»ºĞ­³Ì); // Èç¹ûÒÑ¾­ÓĞÆäËûĞ­³ÌÔÚÔËĞĞ£¬ÏÈÍ£Ö¹ËüÃÇ  
+        Initialize.TimeScale = 1f;
+        if (æ—¶ç¼“åç¨‹ != null)
+        {
+            StopCoroutine(æ—¶ç¼“åç¨‹); // å¦‚æœå·²ç»æœ‰å…¶ä»–åç¨‹åœ¨è¿è¡Œï¼Œå…ˆåœæ­¢å®ƒä»¬  
         }
-        Ê±»ºĞ­³Ì= StartCoroutine(SetTimeCoroutine(setTime, endTime));
+        æ—¶ç¼“åç¨‹ = StartCoroutine(SetTimeCoroutine(setTime, endTime));
     }
 
-public     Coroutine Ê±»ºĞ­³Ì;
-    WaitForSecondsRealtime ÁãµãÁã2Ãë = new WaitForSecondsRealtime (0.02f);
+    public Coroutine æ—¶ç¼“åç¨‹;
+    WaitForSecondsRealtime é›¶ç‚¹é›¶2ç§’ = new WaitForSecondsRealtime(0.02f);
     [SerializeField]
-    float ·§Öµ_=5;
-    public float ·§Öµ { get { 
-            return ·§Öµ_; 
+    float é˜€å€¼_ = 5;
+    public float é˜€å€¼
+    {
+        get
+        {
+            return é˜€å€¼_;
         }
     }
     [SerializeField]
     [DisplayOnly]
-    public float ¸º·§Öµ_=100;
+    public float è´Ÿé˜€å€¼_ = 100;
     [SerializeField]
     [DisplayOnly]
-    public float ·§Öµ2_5_;
-    [SerializeField ] 
-    float ·§Öµ2_=10;
-    [SerializeField] 
-    float ·§Öµ3_=50;
-  
-    public float ¸º·§Öµ { get =>1/ ¸º·§Öµ_; }
-    public float ·§Öµ2 { get => ·§Öµ2_; }
-    public float ·§Öµ2_5 { get =>  (·§Öµ3+ ·§Öµ2)/2; }
-    public float ·§Öµ3 { get => ·§Öµ3_; }
-    public float F_Time_²ÈÉÏÈ¥×Ô±¬µÄÊ±¼ä { get => f_Time_²ÈÉÏÈ¥×Ô±¬µÄÊ±¼ä; set => f_Time_²ÈÉÏÈ¥×Ô±¬µÄÊ±¼ä = value; }
-    public float F_Time_µ¯·´Ïú»ÙÊ±¼ä { get => f_Time_µ¯·´Ïú»ÙÊ±¼ä; set => f_Time_µ¯·´Ïú»ÙÊ±¼ä = value; }
+    public float é˜€å€¼2_5_;
+    [SerializeField]
+    float é˜€å€¼2_ = 10;
+    [SerializeField]
+    float é˜€å€¼3_ = 50;
+   public bool   æ‰“åŒ…é¢å¤–æ‰“å°;
+    [SerializeField]
+    float ç‰©ç†é˜€å€¼ = 50;
 
+    public float è´Ÿé˜€å€¼ { get => 1 / è´Ÿé˜€å€¼_; }
+    public float é˜€å€¼2 { get => é˜€å€¼* é˜€å€¼; }
+    public float é˜€å€¼2_5 { get => (é˜€å€¼3 + é˜€å€¼2) / 2; }
+    public float é˜€å€¼3 { get => é˜€å€¼ * é˜€å€¼ * é˜€å€¼  ; }
+    public float F_Time_è¸©ä¸Šå»è‡ªçˆ†çš„æ—¶é—´ { get => f_Time_è¸©ä¸Šå»è‡ªçˆ†çš„æ—¶é—´; private  set => f_Time_è¸©ä¸Šå»è‡ªçˆ†çš„æ—¶é—´ = value; }
+    public float F_Time_ç¢°åˆ°ç©å®¶åé”€æ¯æ—¶é—´ { get => f_Time_ç¢°åˆ°ç©å®¶åé”€æ¯æ—¶é—´; private set => f_Time_ç¢°åˆ°ç©å®¶åé”€æ¯æ—¶é—´ = value; }
+    public float ç‰©ç†é˜€å€¼1 { get => ç‰©ç†é˜€å€¼; set => ç‰©ç†é˜€å€¼ = value; } 
+    public   float GetMin(   float Speed)
+    {
+        return Mathf.Min(Speed,   ç‰©ç†é˜€å€¼1);
+    }
     private void Update()
     {
-        ·§Öµ2_5_ = ·§Öµ2_5;
-         ·§Öµ3_ = ·§Öµ3;
-        ·§Öµ2_ = ·§Öµ2;
+        é˜€å€¼2_5_ = é˜€å€¼2_5;
+        é˜€å€¼3_ = é˜€å€¼3;
+        é˜€å€¼2_ = é˜€å€¼2;
         if (Player3.I != null)
-            Speed = Player3.Public_Const_Speed; 
-        if (NEWÏûÏ¢ÁĞ±í )
+            Speed = Player3.Public_Const_Speed;
+        if (NEWæ¶ˆæ¯åˆ—è¡¨)
         {
-             ÏûÏ¢ÁĞ±í = new List<ÏûÏ¢>();
-            NEWÏûÏ¢ÁĞ±í = false;
+            æ¶ˆæ¯åˆ—è¡¨ = new List<æ¶ˆæ¯>();
+            NEWæ¶ˆæ¯åˆ—è¡¨ = false;
         }
     }
 }
 
-public enum E_·½Ïò
+public enum E_æ–¹å‘
 {
-    Null, ÉÏ, ÏÂ, ×ó, ÓÒ, ×óÉÏ, ×óÏÂ, ÓÒÉÏ, ÓÒÏÂ,
+    Null, ä¸Š, ä¸‹, å·¦, å³, å·¦ä¸Š, å·¦ä¸‹, å³ä¸Š, å³ä¸‹,
 }
-public class No_¼ÙFix
+public class No_å‡Fix
 {
-    float ¼ä¸ô;
- float TTime;
-    public No_¼ÙFix(float ¼ä¸ô)
+    float é—´éš”;
+    float TTime;
+    public No_å‡Fix(float é—´éš”)
     {
-        this.¼ä¸ô = ¼ä¸ô;
+        this.é—´éš” = é—´éš”;
     }
     public bool FixUpdate()
     {
-        if (Time .time>¼ä¸ô+TTime )
+        if (Time.time > é—´éš” + TTime)
         {
             TTime = Time.time;
             return true;
@@ -450,38 +466,210 @@ public class No_¼ÙFix
         {
             return false;
         }
-     
+
     }
 }
 public class No_Re
 {
-    int C=-1;
- 
-    public bool Note_Re( )
-    { 
-        if (C  != Time.frameCount)
+    int C = -1;
+
+    public bool Note_Re()
+    {
+        if (C != Time.frameCount)
         {
-            C  = Time.frameCount;  
+            C = Time.frameCount;
             return true;
         }
         else
-        { 
+        {
             return false;
         }
-    } 
+    }
 }
 
- 
+
 public static class Initialize
 {
-
-    public static List<T> Ëæ»úÁĞ±í<T>(this List<T> list)
+    /// <summary>
+    /// é‡è½½ï¼šå°†å­—å…¸èµ‹å€¼åˆ°å·²å­˜åœ¨çš„å®ä¾‹ï¼ˆé€‚åˆæ— æ³•æ–°å»ºå®ä¾‹çš„åœºæ™¯ï¼Œå¦‚ Unity MonoBehaviourï¼‰
+    /// </summary>
+    /// <param name="instance">å·²å­˜åœ¨çš„å®ä¾‹</param>
+    /// <param name="fieldDict">å­—æ®µåå­—å…¸</param>
+    /// <param name="includePrivateFields">æ˜¯å¦èµ‹å€¼ç§æœ‰å­—æ®µ</param>
+    /// <exception cref="ArgumentNullException">å®ä¾‹ä¸º null æ—¶æŠ›å‡º</exception>
+    public static void PopulateInstance(object instance, Dictionary<string, object> fieldDict, bool includePrivateFields = false)
     {
-        // ´´½¨ÁĞ±íµÄ¸±±¾ÒÔ±ÜÃâĞŞ¸ÄÔ­Ê¼ÁĞ±í
+        if (instance == null)
+            throw new ArgumentNullException(nameof(instance), "ç›®æ ‡å®ä¾‹ä¸èƒ½ä¸º null");
+        if (fieldDict == null || fieldDict.Count == 0)
+            return;
+
+        // æ„å»ºå­—æ®µæ£€ç´¢çš„ç»‘å®šæ ‡å¿—
+        BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
+        if (includePrivateFields)
+            bindingFlags |= BindingFlags.NonPublic;
+
+        Type targetType = instance.GetType();
+        foreach (var kvp in fieldDict)
+        {
+            try
+            {
+                // è·å–ç›®æ ‡ç±»å‹çš„å¯¹åº”å­—æ®µ
+                FieldInfo field = targetType.GetField(kvp.Key, bindingFlags);
+                if (field == null)
+                {
+                    Console.WriteLine($"è­¦å‘Šï¼šç±»å‹ {targetType.Name} ä¸­æœªæ‰¾åˆ°å­—æ®µ {kvp.Key}ï¼Œè·³è¿‡èµ‹å€¼");
+                    continue;
+                }
+
+                // æ ¡éªŒå€¼ç±»å‹ä¸å­—æ®µç±»å‹åŒ¹é…ï¼ˆé¿å…ç±»å‹ä¸å…¼å®¹èµ‹å€¼ï¼‰
+                object valueToSet = kvp.Value;
+                if (valueToSet != null && !field.FieldType.IsAssignableFrom(valueToSet.GetType()))
+                {
+                    // å°è¯•ç±»å‹è½¬æ¢ï¼ˆå¦‚ int è½¬ floatï¼Œstring è½¬ int ç­‰ï¼‰
+                    try
+                    {
+                        valueToSet = Convert.ChangeType(valueToSet, field.FieldType);
+                    }
+                    catch (InvalidCastException)
+                    {
+                        Console.WriteLine($"è­¦å‘Šï¼šå­—æ®µ {kvp.Key} ç±»å‹ {field.FieldType.Name} ä¸å€¼ç±»å‹ {valueToSet.GetType().Name} ä¸å…¼å®¹ï¼Œè·³è¿‡èµ‹å€¼");
+                        continue;
+                    }
+                }
+
+                // èµ‹å€¼åˆ°å®ä¾‹å­—æ®µ
+                field.SetValue(instance, valueToSet);
+                Console.WriteLine($"æˆåŠŸä¸ºå­—æ®µ {kvp.Key} èµ‹å€¼ï¼š{valueToSet ?? "null"}");
+            }
+            catch (FieldAccessException ex)
+            {
+                Console.WriteLine($"é”™è¯¯ï¼šæ— æ³•è®¿é—®å­—æ®µ {kvp.Key}ï¼ŒåŸå› ï¼š{ex.Message}");
+            }
+            catch (TargetException ex)
+            {
+                Console.WriteLine($"é”™è¯¯ï¼šå­—æ®µ {kvp.Key} èµ‹å€¼ç›®æ ‡æ— æ•ˆï¼ŒåŸå› ï¼š{ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"å¤„ç†å­—æ®µ {kvp.Key} æ—¶å‘ç”Ÿå¼‚å¸¸ï¼š{ex.Message}");
+            }
+        }
+    }
+    /// <summary>
+    /// å°†å­—å…¸è½¬æ¢ä¸ºæŒ‡å®šç±»å‹çš„å®ä¾‹ï¼ˆèµ‹å€¼å®ä¾‹å­—æ®µï¼‰
+    /// </summary>
+    /// <typeparam name="T">ç›®æ ‡ç±»å‹ï¼ˆéœ€æœ‰æ— å‚æ„é€ å‡½æ•°ï¼‰</typeparam>
+    /// <param name="fieldDict">å­—æ®µåå­—å…¸ï¼ˆé”®ï¼šå­—æ®µåï¼Œå€¼ï¼šå­—æ®µå€¼ï¼‰</param>
+    /// <param name="includePrivateFields">æ˜¯å¦èµ‹å€¼ç§æœ‰å­—æ®µ</param>
+    /// <returns>èµ‹å€¼åçš„ç›®æ ‡ç±»å‹å®ä¾‹</returns>
+    /// <exception cref="InvalidOperationException">ç±»å‹æ— æ— å‚æ„é€ å‡½æ•°æ—¶æŠ›å‡º</exception>
+    public static T ConvertToInstance<T>(Dictionary<string, object> fieldDict, bool includePrivateFields = false)
+        where T : new()
+    {
+        // åˆ›å»ºç›®æ ‡ç±»å‹å®ä¾‹ï¼ˆçº¦æŸ T å¿…é¡»æœ‰æ— å‚æ„é€ å‡½æ•°ï¼‰
+        T instance = new T();
+        PopulateInstance(instance, fieldDict, includePrivateFields);
+        return instance;
+    }
+    /// <summary>
+    /// å°†å¯¹è±¡çš„å­—æ®µåå’Œå­—æ®µå€¼è½¬æ¢ä¸ºå­—å…¸ï¼ˆé”®ï¼šå­—æ®µåï¼Œå€¼ï¼šå­—æ®µæ•°æ®ï¼‰
+    /// </summary>
+    /// <param name="source">æºå®ä¾‹ï¼ˆä¸èƒ½ä¸º nullï¼‰</param>
+    /// <param name="includePrivateFields">æ˜¯å¦åŒ…å«ç§æœ‰å­—æ®µï¼ˆé»˜è®¤ï¼šå¦ï¼‰</param>
+    /// <param name="includeStaticFields">æ˜¯å¦åŒ…å«é™æ€å­—æ®µï¼ˆé»˜è®¤ï¼šå¦ï¼‰</param>
+    /// <returns>åŒ…å«å­—æ®µåå’Œå€¼çš„å­—å…¸</returns>
+    /// <exception cref="ArgumentNullException">æºå®ä¾‹ä¸º null æ—¶æŠ›å‡º</exception>
+    public static Dictionary<string, object> GetFieldDictionary(object source, bool includePrivateFields = false, bool includeStaticFields = false)
+    {
+        // å‚æ•°æ ¡éªŒ
+        if (source == null)
+            throw new ArgumentNullException(nameof(source), "æºå®ä¾‹ä¸èƒ½ä¸º null");
+
+        // æ„å»ºåå°„ç»‘å®šæ ‡å¿—ï¼ˆæ§åˆ¶å­—æ®µæ£€ç´¢èŒƒå›´ï¼‰
+        BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
+        if (includePrivateFields)
+            bindingFlags |= BindingFlags.NonPublic;
+        if (includeStaticFields)
+            bindingFlags |= BindingFlags.Static;
+
+        // è·å–ç±»å‹çš„æ‰€æœ‰å­—æ®µ
+        Type sourceType = source.GetType();
+        FieldInfo[] fields = sourceType.GetFields(bindingFlags);
+
+        // åˆå§‹åŒ–å­—å…¸å¹¶å¡«å……å­—æ®µåå’Œå€¼
+        Dictionary<string, object> fieldDict = new Dictionary<string, object>();
+        foreach (FieldInfo field in fields)
+        {
+            try
+            {
+                // è¯»å–å­—æ®µå€¼ï¼ˆé™æ€å­—æ®µéœ€ä¼ å…¥ nullï¼Œå®ä¾‹å­—æ®µä¼ å…¥æºå®ä¾‹ï¼‰
+                object fieldValue = field.GetValue(field.IsStatic ? null : source);
+                fieldDict.Add(field.Name, fieldValue);
+            }
+            catch (FieldAccessException ex)
+            {
+                Console.WriteLine($"æ— æ³•è®¿é—®å­—æ®µ {field.Name}ï¼š{ex.Message}");
+            }
+            catch (TargetException ex)
+            {
+                Console.WriteLine($"å­—æ®µ {field.Name} èµ‹å€¼ç›®æ ‡æ— æ•ˆï¼š{ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"å¤„ç†å­—æ®µ {field.Name} æ—¶å‘ç”Ÿå¼‚å¸¸ï¼š{ex.Message}");
+            }
+        }
+
+        return fieldDict;
+    }
+    public  static E_è¶…é€Ÿç­‰çº§  Speed_toESpeed(float gå›ºå®šç­‰çº§å·®)
+    {
+        E_è¶…é€Ÿç­‰çº§ e_ = E_è¶…é€Ÿç­‰çº§.æ­£å¸¸; 
+ 
+                if (gå›ºå®šç­‰çº§å·® < 1 / Initialize_Mono.I.é˜€å€¼ || gå›ºå®šç­‰çº§å·®._is(1 / Initialize_Mono.I.é˜€å€¼))
+                    e_ = E_è¶…é€Ÿç­‰çº§.ä½é€Ÿ;
+                if (gå›ºå®šç­‰çº§å·® < Initialize_Mono.I.è´Ÿé˜€å€¼ || gå›ºå®šç­‰çº§å·®._is(1 / Initialize_Mono.I.è´Ÿé˜€å€¼))
+                    e_ = E_è¶…é€Ÿç­‰çº§.é™æ­¢;
+                if (gå›ºå®šç­‰çº§å·® >= Initialize_Mono.I.é˜€å€¼)
+                    e_ = E_è¶…é€Ÿç­‰çº§.è¶…é€Ÿ;
+                if (gå›ºå®šç­‰çº§å·® >= Initialize_Mono.I.é˜€å€¼2)
+                    e_ = E_è¶…é€Ÿç­‰çº§.åŠè™šåŒ–;
+                if (gå›ºå®šç­‰çº§å·® >= Initialize_Mono.I.é˜€å€¼2_5)
+                    e_ = E_è¶…é€Ÿç­‰çº§.è™šåŒ–;
+                if (gå›ºå®šç­‰çº§å·® >= Initialize_Mono.I.é˜€å€¼3)
+                    e_ = E_è¶…é€Ÿç­‰çº§.è™šæ— ;
+                return e_; 
+    }
+    public static RaycastHit2D[] ç¢°æ’é¢„æµ‹ç¢°æ’é¢„æµ‹(Bounds s, Vector2 æ–¹å‘, float è·ç¦», LayerMask l)
+    {
+        return Physics2D.BoxCastAll(
+    s.center,
+    s.size - new Vector3(0.05f, 0.05f),
+    0,
+    æ–¹å‘,
+   è·ç¦»,
+    l) ;
+
+    }
+     public  static  Vector2 Getç¢°æ’Position(Bounds myBounds, RaycastHit2D hit, float skin = 0.001f)
+    {
+        if (!hit.collider) return Vector2.zero;
+
+        Vector2 normal = hit.normal.normalized;
+        // myBounds.extents æ˜¯åŠå°ºå¯¸ï¼ˆæ²¿ä¸–ç•Œè½´ï¼‰ï¼Œå°†å…¶åœ¨æ³•çº¿æ–¹å‘ä¸Šçš„æŠ•å½±é•¿åº¦ä¼°ç®—ä¸ºï¼š
+        float proj = Mathf.Abs(myBounds.extents.x * normal.x) + Mathf.Abs(myBounds.extents.y * normal.y);
+        // å°†ä¸­å¿ƒç§»åŠ¨åˆ°ç¢°æ’ç‚¹å¤–ä¾§ï¼Œä¿è¯è¾¹ç•Œä¸ç¢°æ’ç‚¹è´´åˆï¼ˆå†åŠ ä¸Šä¸€ä¸ªå¾®å°çš„ skinï¼‰
+        Vector2 flushCenter = hit.point + normal * (proj + skin);
+        return flushCenter;
+    }
+    public static List<T> éšæœºåˆ—è¡¨<T>(this List<T> list)
+    {
+        // åˆ›å»ºåˆ—è¡¨çš„å‰¯æœ¬ä»¥é¿å…ä¿®æ”¹åŸå§‹åˆ—è¡¨
         var shuffledList = new List<T>(list);
         int n = shuffledList.Count;
 
-        // Fisher-Yates Ï´ÅÆËã·¨
+        // Fisher-Yates æ´—ç‰Œç®—æ³•
         while (n > 1)
         {
             n--;
@@ -494,27 +682,27 @@ public static class Initialize
 
         return shuffledList;
     }
-    public static List<Vector2> ÖĞ¼ä²¢ÁĞµã(Vector2 target, int count, float offset)
+    public static List<Vector2> ä¸­é—´å¹¶åˆ—ç‚¹(Vector2 target, int count, float offset)
     {
-        // ¼ì²écountÊÇ·ñÎªÕıÆæÊı
+        // æ£€æŸ¥countæ˜¯å¦ä¸ºæ­£å¥‡æ•°
         if (count <= 0 || count % 2 == 0)
         {
-            Debug.LogError("²ÎÊıcount±ØĞëÊÇÕıÆæÊı");
+            Debug.LogError("å‚æ•°countå¿…é¡»æ˜¯æ­£å¥‡æ•°");
             return null;
         }
 
-        // ¼ÆËãÖĞĞÄµãË÷Òı
+        // è®¡ç®—ä¸­å¿ƒç‚¹ç´¢å¼•
         int centerIndex = count / 2;
 
-        // ³õÊ¼»¯½á¹ûÁĞ±í
+        // åˆå§‹åŒ–ç»“æœåˆ—è¡¨
         List<Vector2> points = new List<Vector2>(count);
 
-        // Éú³ÉµãÁĞ±í
+        // ç”Ÿæˆç‚¹åˆ—è¡¨
         for (int i = 0; i < count; i++)
         {
-            // ¼ÆËãµ±Ç°µãÏà¶ÔÓÚÖĞĞÄµãµÄÆ«ÒÆÁ¿
+            // è®¡ç®—å½“å‰ç‚¹ç›¸å¯¹äºä¸­å¿ƒç‚¹çš„åç§»é‡
             float xOffset = (i - centerIndex) * offset;
-            // ´´½¨ĞÂµã£¬Y×ø±êÓëtargetÏàÍ¬£¬X×ø±ê°´Æ«ÒÆÁ¿¼ÆËã
+            // åˆ›å»ºæ–°ç‚¹ï¼ŒYåæ ‡ä¸targetç›¸åŒï¼ŒXåæ ‡æŒ‰åç§»é‡è®¡ç®—
             Vector2 newPoint = new Vector2(target.x + xOffset, target.y);
             points.Add(newPoint);
         }
@@ -523,81 +711,81 @@ public static class Initialize
     }
     public static Vector3 Z1 { get => new Vector3(0, 0, 1); }
     /// <summary>
-    ///  X×ÜÎ»ÒÆ = ³õÊ¼X*Á¦ * ti 
-    ///  Y×ÜÎ»ÒÆ = ³õÊ¼Y*Á¦ * ti - 0.5 * G*ti*ti
+    ///  Xæ€»ä½ç§» = åˆå§‹X*åŠ› * ti 
+    ///  Yæ€»ä½ç§» = åˆå§‹Y*åŠ› * ti - 0.5 * G*ti*ti
     ///  
-    /// ti= ×ÜÎ»ÒÆx/³õÊ¼X /Á¦         ´úÈë  ºóÕß·½³Ì
+    /// ti= æ€»ä½ç§»x/åˆå§‹X /åŠ›         ä»£å…¥  åè€…æ–¹ç¨‹
     /// </summary> 
-    /// ¹Ì¶¨Á¦Çó·½Ïò£¿
-    public static  float Å×ÎïÏß_GetÁ¦(Vector2 ·¢Éä·½Ïò, Vector3 ×ø±ê²î,float  ÖØÁ¦)
-    { 
-        var Cx = ·¢Éä·½Ïò.x;
-        var Cy = ·¢Éä·½Ïò.y;
-        var Mx = ×ø±ê²î.x;
-        var My = ×ø±ê²î.y;
-        float VValue = (0.5f * ÖØÁ¦ * Mx * Mx) / ((Cy * Mx / Cx - My) * Cx * Cx);
-        if (VValue<0)
+    /// å›ºå®šåŠ›æ±‚æ–¹å‘ï¼Ÿ
+    public static float æŠ›ç‰©çº¿_GetåŠ›(Vector2 å‘å°„æ–¹å‘, Vector3 åæ ‡å·®, float é‡åŠ›)
+    {
+        var Cx = å‘å°„æ–¹å‘.x;
+        var Cy = å‘å°„æ–¹å‘.y;
+        var Mx = åæ ‡å·®.x;
+        var My = åæ ‡å·®.y;
+        float VValue = (0.5f * é‡åŠ› * Mx * Mx) / ((Cy * Mx / Cx - My) * Cx * Cx);
+        if (VValue < 0)
         {
-            /// 0.45 0.89   0.34 2.8           ½Ç¶È³¬³öÉÏÏŞ
-            Debug.LogError("atic  float Å×ÎïÏß(Vector2 ·¢Éä·½Ïò, Vector3 ×ø±ê²î,float  ÖØÁ¦)"+·¢Éä·½Ïò +"   "+×ø±ê²î+"         "+ÖØÁ¦);
+            /// 0.45 0.89   0.34 2.8           è§’åº¦è¶…å‡ºä¸Šé™
+            Debug.LogError("atic  float æŠ›ç‰©çº¿(Vector2 å‘å°„æ–¹å‘, Vector3 åæ ‡å·®,float  é‡åŠ›)" + å‘å°„æ–¹å‘ + "   " + åæ ‡å·® + "         " + é‡åŠ›);
             return 0;
         }
         return (float)Math.Sqrt(VValue);
     }
 
     /// <summary>
-    ///  Ò»ÅÅ µã  ¸ß¶ÈÏàÍ¬  X²»Í¬    ½á¹û³öÀ´µÄYËÙ¶ÈÒ»ÖÂ
+    ///  ä¸€æ’ ç‚¹  é«˜åº¦ç›¸åŒ  Xä¸åŒ    ç»“æœå‡ºæ¥çš„Yé€Ÿåº¦ä¸€è‡´
     /// </summary> 
-    public static Vector2     Å×ÎïÏß_GetÊ¸Á¿(  Vector3  ²î,float tim, float g)
+    public static Vector2 æŠ›ç‰©çº¿_GetçŸ¢é‡(Vector3 å·®, float tim, float g)
     {
-        var X = ²î .x/ tim;
-        var Y  = ²î.y / tim+g*tim/2;
-        return new Vector2 (X,Y);
+        var X = å·®.x / tim;
+        var Y = å·®.y / tim + g * tim / 2;
+        return new Vector2(X, Y);
     }
 
 
-    public static int Í·Î²(int ×ÜÊı, int Ë÷Òı, int ²½)
+    public static int å¤´å°¾(int æ€»æ•°, int ç´¢å¼•, int æ­¥)
     {
-        if (×ÜÊı <= 0)
-            throw new ArgumentException("×ÜÊı±ØĞë´óÓÚ0");
+        if (æ€»æ•° <= 0)
+            throw new ArgumentException("æ€»æ•°å¿…é¡»å¤§äº0");
 
-        // Ê¹ÓÃ long ±ÜÃâÕûÊıÒç³ö
-        long ÁÙÊ± = (long)Ë÷Òı + ²½;
-        long Ä£ = ÁÙÊ± % ×ÜÊı;
+        // ä½¿ç”¨ long é¿å…æ•´æ•°æº¢å‡º
+        long ä¸´æ—¶ = (long)ç´¢å¼• + æ­¥;
+        long æ¨¡ = ä¸´æ—¶ % æ€»æ•°;
 
-        // ´¦Àí¸ºÊı½á¹û
-        if (Ä£ < 0)
+        // å¤„ç†è´Ÿæ•°ç»“æœ
+        if (æ¨¡ < 0)
         {
-            Ä£ += ×ÜÊı;
+            æ¨¡ += æ€»æ•°;
         }
 
-        return (int)Ä£;
+        return (int)æ¨¡;
     }
-    public static bool ÊÇÆæÊı(int num)
+    public static bool æ˜¯å¥‡æ•°(int num)
     {
-        return num % 2 == 0 ? false  :true;
+        return num % 2 == 0 ? false : true;
     }
 
     /// <summary>
-    /// ÔÚÁ½µãÖ®¼äÉú³É¾ùÔÈ·Ö²¼µÄ²åÖµµã
+    /// åœ¨ä¸¤ç‚¹ä¹‹é—´ç”Ÿæˆå‡åŒ€åˆ†å¸ƒçš„æ’å€¼ç‚¹
     /// </summary>
-    /// <param name="a">Æğµã×ø±ê</param>
-    /// <param name="b">ÖÕµã×ø±ê</param>
-    /// <param name="I">²åÈëµÄµãÊı£¨²»°üÀ¨¶Ëµã£©</param>
-    /// <returns>Éú³ÉµÄ²åÖµµãÁĞ±í</returns>
-    public static List<Vector3> µ¥Ïß¶Î²åÖµ(Vector2 a, Vector2 b, int I)
+    /// <param name="a">èµ·ç‚¹åæ ‡</param>
+    /// <param name="b">ç»ˆç‚¹åæ ‡</param>
+    /// <param name="I">æ’å…¥çš„ç‚¹æ•°ï¼ˆä¸åŒ…æ‹¬ç«¯ç‚¹ï¼‰</param>
+    /// <returns>ç”Ÿæˆçš„æ’å€¼ç‚¹åˆ—è¡¨</returns>
+    public static List<Vector3> å•çº¿æ®µæ’å€¼(Vector2 a, Vector2 b, int I)
     {
         List<Vector3> points = new List<Vector3>();
 
-        // ÊıÑ§Ô­Àí£ºÏßĞÔ²åÖµ¹«Ê½
+        // æ•°å­¦åŸç†ï¼šçº¿æ€§æ’å€¼å…¬å¼
         // $P(t) = (1-t) \cdot \mathbf{a} + t \cdot \mathbf{b}, \quad t \in [0,1]$
         for (int i = 1; i <= I; i++)
         {
-            // ¼ÆËã²åÖµ±ÈÀı t = i/(I+1)
-            // È·±£µãÔÚ a ºÍ b Ö®¼ä£¬²»°üÀ¨¶Ëµã
+            // è®¡ç®—æ’å€¼æ¯”ä¾‹ t = i/(I+1)
+            // ç¡®ä¿ç‚¹åœ¨ a å’Œ b ä¹‹é—´ï¼Œä¸åŒ…æ‹¬ç«¯ç‚¹
             float t = (float)i / (I + 1);
 
-            // Ó¦ÓÃÏßĞÔ²åÖµ¹«Ê½
+            // åº”ç”¨çº¿æ€§æ’å€¼å…¬å¼
             Vector2 point = (1 - t) * a + t * b;
             points.Add(point);
         }
@@ -605,232 +793,238 @@ public static class Initialize
         return points;
     }
     /// <summary>
-    /// ÔÚÏß¶ÎÉÏ¾ùÔÈ²åÈëµã
+    /// åœ¨çº¿æ®µä¸Šå‡åŒ€æ’å…¥ç‚¹
     /// </summary>
-    /// <param name="points">Ô­Ê¼µãÁĞ±í£¨ÖÁÉÙ2¸öµã£©</param>
-    /// <param name="I">Ã¿¶ÎÏß¶Î²åÈëµÄµãÊı</param>
-    /// <returns>²åÖµºóµÄµãÁĞ±í</returns>
-    public static List<Vector2> ¶àÏß¶Î¾ùÔÈ²åµã(List<Vector2> points, int I)
+    /// <param name="points">åŸå§‹ç‚¹åˆ—è¡¨ï¼ˆè‡³å°‘2ä¸ªç‚¹ï¼‰</param>
+    /// <param name="I">æ¯æ®µçº¿æ®µæ’å…¥çš„ç‚¹æ•°</param>
+    /// <returns>æ’å€¼åçš„ç‚¹åˆ—è¡¨</returns>
+    public static List<Vector2> å¤šçº¿æ®µå‡åŒ€æ’ç‚¹(List<Vector2> points, int I)
     {
-        // ÑéÖ¤ÊäÈë
+        // éªŒè¯è¾“å…¥
         if (points == null || points.Count < 2)
         {
-            Debug.LogError("ĞèÒªÖÁÉÙ2¸öµã²ÅÄÜ¹¹³ÉÏß¶Î");
+            Debug.LogError("éœ€è¦è‡³å°‘2ä¸ªç‚¹æ‰èƒ½æ„æˆçº¿æ®µ");
             return points ?? new List<Vector2>();
         }
 
         List<Vector2> result = new List<Vector2>();
 
-        // Ìí¼ÓµÚÒ»¸öµã
+        // æ·»åŠ ç¬¬ä¸€ä¸ªç‚¹
         result.Add(points[0]);
 
-        // ´¦ÀíÃ¿ÌõÏß¶Î
+        // å¤„ç†æ¯æ¡çº¿æ®µ
         for (int i = 0; i < points.Count - 1; i++)
         {
-            // ÔÚµ±Ç°Ïß¶ÎÉÏ²åÈëµã
+            // åœ¨å½“å‰çº¿æ®µä¸Šæ’å…¥ç‚¹
             for (int j = 1; j <= I; j++)
             {
-                // ¼ÆËã²åÖµ±ÈÀı
+                // è®¡ç®—æ’å€¼æ¯”ä¾‹
                 float t = j / (float)(I + 1);
-                // ÏßĞÔ²åÖµ
+                // çº¿æ€§æ’å€¼
                 Vector2 newPoint = Vector2.Lerp(points[i], points[i + 1], t);
                 result.Add(newPoint);
             }
-            // Ìí¼ÓÏÂÒ»¸öÔ­Ê¼µã
+            // æ·»åŠ ä¸‹ä¸€ä¸ªåŸå§‹ç‚¹
             result.Add(points[i + 1]);
         }
         return result;
     }
-    public  static  Vector2 Åö×²ÉäÏß(Vector2 v1,Vector2 v2,LayerMask l )
+    public static Vector2 ç¢°æ’å°„çº¿(Vector2 v1, Vector2 v2, LayerMask l)
     {
-  var a=      Physics2D.Linecast(v1,v2,l);
+        var a = Physics2D.Linecast(v1, v2, l);
         return a.point;
     }
-    public  static E_·½Ïò Get_ºĞ×Ó°Ë·½Ïò(   Bounds bounds, Vector2 point)
+    public static E_æ–¹å‘ Get_ç›’å­å…«æ–¹å‘(Bounds bounds, Vector2 point)
     {
-        // ¼ì²éµãÊÇ·ñÔÚBoundsÄÚ²¿  
+        // æ£€æŸ¥ç‚¹æ˜¯å¦åœ¨Boundså†…éƒ¨  
         if (bounds.Contains(point))
         {
-            return E_·½Ïò.Null; // »òÕß¿ÉÒÔ¶¨ÒåÒ»¸ö±íÊ¾¡°ÄÚ²¿¡±µÄÃ¶¾ÙÖµ  
+            return E_æ–¹å‘.Null; // æˆ–è€…å¯ä»¥å®šä¹‰ä¸€ä¸ªè¡¨ç¤ºâ€œå†…éƒ¨â€çš„æšä¸¾å€¼  
         }
 
-        // ±ß½çÖµ  
+        // è¾¹ç•Œå€¼  
         float minX = bounds.min.x;
         float maxX = bounds.max.x;
         float minY = bounds.min.y;
         float maxY = bounds.max.y;
 
-        // ¼ì²é¸÷¸öÎ»ÖÃ  
+        // æ£€æŸ¥å„ä¸ªä½ç½®  
         if (point.x < minX && point.y > minY && point.y < maxY)
-            return E_·½Ïò.×ó;
+            return E_æ–¹å‘.å·¦;
         if (point.x > maxX && point.y > minY && point.y < maxY)
-            return E_·½Ïò.ÓÒ;
+            return E_æ–¹å‘.å³;
         if (point.y < minY && point.x > minX && point.x < maxX)
-            return E_·½Ïò.ÏÂ;
+            return E_æ–¹å‘.ä¸‹;
         if (point.y > maxY && point.x > minX && point.x < maxX)
-            return E_·½Ïò.ÉÏ;
+            return E_æ–¹å‘.ä¸Š;
 
-        // ËÄ¸ö½Ç  
+        // å››ä¸ªè§’  
         if (point.x < minX && point.y < minY)
-            return E_·½Ïò.×óÏÂ;
+            return E_æ–¹å‘.å·¦ä¸‹;
         if (point.x > maxX && point.y < minY)
-            return E_·½Ïò.ÓÒÏÂ;
+            return E_æ–¹å‘.å³ä¸‹;
         if (point.x < minX && point.y > maxY)
-            return E_·½Ïò.×óÉÏ;
+            return E_æ–¹å‘.å·¦ä¸Š;
         if (point.x > maxX && point.y > maxY)
-            return E_·½Ïò.ÓÒÉÏ;
+            return E_æ–¹å‘.å³ä¸Š;
 
-        // Èç¹û¶¼²»Âú×ã£¬ÀíÂÛÉÏ²»Ó¦¸Ã×ßµ½ÕâÀï£¨³ı·ÇBoundsÉèÖÃ²»ÕıÈ·£©  
-        return   E_·½Ïò.Null; // »òÕßÅ×³öÒì³£  
+        // å¦‚æœéƒ½ä¸æ»¡è¶³ï¼Œç†è®ºä¸Šä¸åº”è¯¥èµ°åˆ°è¿™é‡Œï¼ˆé™¤éBoundsè®¾ç½®ä¸æ­£ç¡®ï¼‰  
+        return E_æ–¹å‘.Null; // æˆ–è€…æŠ›å‡ºå¼‚å¸¸  
     }
-    public static Vector2   Get_»ñÈ¡Åö×²¾àÀë(Bounds  s,Vector2  point)
+    public static Vector2 Get_è·å–ç¢°æ’è·ç¦»(Bounds s, Vector2 point,bool Deb=false)
     {
-        float minX =  s.min.x;
-        float maxX =  s.max.x;
-        float minY =  s.min.y;
+        float minX = s.min.x;
+        float maxX = s.max.x;
+        float minY = s.min.y;
         float maxY = s.max.y;
         float Hx = s.size.x / 2;
         float Hy = s.size.y / 2;
         Vector2 C = s.center;
 
         Vector2 TargetPO = Vector2.zero;
-        switch (Get_ºĞ×Ó°Ë·½Ïò(s,point))
+
+        var a = Get_ç›’å­å…«æ–¹å‘(s, point);
+        if (Deb)
         {
-            case E_·½Ïò.Null:
-                return C; 
-            case E_·½Ïò.ÉÏ:
-            case E_·½Ïò.ÏÂ:
-                TargetPO = new Vector2( C.x,point .y-Hy );
-                break; 
-            case E_·½Ïò.×ó: 
-            case E_·½Ïò.ÓÒ:
-                TargetPO = new Vector2(point.x - Hx, C.y);
-                break; 
-            case E_·½Ïò.×óÉÏ: 
-            case E_·½Ïò.×óÏÂ:
-            case E_·½Ïò.ÓÒÉÏ:
-            case E_·½Ïò.ÓÒÏÂ:
-                TargetPO = new Vector2(point.x - Hx, point.y - Hy); 
-                break; 
+Debug.LogError( a.ToString());
         }
-      
-            return TargetPO - C;
+        switch (a)
+        {
+            case E_æ–¹å‘.Null:
+                return Vector2.zero;
+            case E_æ–¹å‘.ä¸Š:
+            case E_æ–¹å‘.ä¸‹:
+                TargetPO = new Vector2(C.x, point.y - Hy);
+                break;
+            case E_æ–¹å‘.å·¦:
+            case E_æ–¹å‘.å³:
+                TargetPO = new Vector2(point.x - Hx, C.y);
+                break;
+            case E_æ–¹å‘.å·¦ä¸Š:
+            case E_æ–¹å‘.å·¦ä¸‹:
+            case E_æ–¹å‘.å³ä¸Š:
+            case E_æ–¹å‘.å³ä¸‹:
+                TargetPO = new Vector2(point.x - Hx, point.y - Hy);
+                break;
+        }
+
+        return TargetPO - C;
     }
     public static List<Vector2> Get_v2(Vector2 center, float distance)
     {
         List<Vector2> points = new List<Vector2>(9);
 
-        // Ìí¼ÓÖĞĞÄµã£¨Ë÷Òı0£©
+        // æ·»åŠ ä¸­å¿ƒç‚¹ï¼ˆç´¢å¼•0ï¼‰
         points.Add(center);
 
-        // 8¸ö·½ÏòÏòÁ¿£¨ÒÑ¹éÒ»»¯£©
+        // 8ä¸ªæ–¹å‘å‘é‡ï¼ˆå·²å½’ä¸€åŒ–ï¼‰
         Vector2[] directions = new Vector2[8]
         {
-            new Vector2(0, 1),      // ÉÏ
-            new Vector2(1, 1),      // ÓÒÉÏ
-            new Vector2(1, 0),      // ÓÒ
-            new Vector2(1, -1),     // ÓÒÏÂ
-            new Vector2(0, -1),     // ÏÂ
-            new Vector2(-1, -1),    // ×óÏÂ
-            new Vector2(-1, 0),     // ×ó
-            new Vector2(-1, 1)      // ×óÉÏ
+            new Vector2(0, 1),      // ä¸Š
+            new Vector2(1, 1),      // å³ä¸Š
+            new Vector2(1, 0),      // å³
+            new Vector2(1, -1),     // å³ä¸‹
+            new Vector2(0, -1),     // ä¸‹
+            new Vector2(-1, -1),    // å·¦ä¸‹
+            new Vector2(-1, 0),     // å·¦
+            new Vector2(-1, 1)      // å·¦ä¸Š
         };
 
-        // Éú³É8¸ö·½Ïòµã
+        // ç”Ÿæˆ8ä¸ªæ–¹å‘ç‚¹
         for (int i = 0; i < 8; i++)
         {
-            // ¼ÆËã·½ÏòµãÎ»ÖÃ£ºÖĞĞÄµã + ·½Ïò * ¾àÀë
+            // è®¡ç®—æ–¹å‘ç‚¹ä½ç½®ï¼šä¸­å¿ƒç‚¹ + æ–¹å‘ * è·ç¦»
             Vector2 dirPoint = center + directions[i].normalized * distance;
             points.Add(dirPoint);
         }
 
         return points;
     }
-    public static Vector2Int[] Get_v2_IntArry( this  Vector2Int  vI )
+    public static Vector2Int[] Get_v2_IntArry(this Vector2Int vI)
     {
-        Vector2Int[]  outt= new Vector2Int[9] ;
+        Vector2Int[] outt = new Vector2Int[9];
         outt[0] = new Vector2Int(vI.x, vI.y + 1);
-        outt[1] =new Vector2Int (vI.x, vI.y);
-        outt[2] = new Vector2Int(vI.x, vI.y-1);
+        outt[1] = new Vector2Int(vI.x, vI.y);
+        outt[2] = new Vector2Int(vI.x, vI.y - 1);
         outt[3] = new Vector2Int(vI.x + 1, vI.y + 1);
         outt[4] = new Vector2Int(vI.x + 1, vI.y);
-        outt[5] = new Vector2Int(vI.x + 1, vI.y-1);
-        outt[6] = new Vector2Int(vI.x-1, vI.y + 1);
+        outt[5] = new Vector2Int(vI.x + 1, vI.y - 1);
+        outt[6] = new Vector2Int(vI.x - 1, vI.y + 1);
         outt[7] = new Vector2Int(vI.x - 1, vI.y);
         outt[8] = new Vector2Int(vI.x - 1, vI.y - 1);
         return outt;
     }
-    public static Color Set_Alpha(this  Color  C,float  a )
-    { 
-        return new Color (C.r ,C.g,C.b,a);
+    public static Color Set_Alpha(this Color C, float a)
+    {
+        return new Color(C.r, C.g, C.b, a);
     }
- 
+
     /// <summary>
-    /// C#»ñÈ¡Ò»¸öÀàÔÚÆäËùÔÚµÄ³ÌĞò¼¯ÖĞµÄËùÓĞ×ÓÀà
+    /// C#è·å–ä¸€ä¸ªç±»åœ¨å…¶æ‰€åœ¨çš„ç¨‹åºé›†ä¸­çš„æ‰€æœ‰å­ç±»
     /// </summary>
-    /// <param name="parentType">¸ø¶¨µÄÀàĞÍ</param>
-    /// <returns>ËùÓĞ×ÓÀàµÄÃû³Æ</returns>
+    /// <param name="parentType">ç»™å®šçš„ç±»å‹</param>
+    /// <returns>æ‰€æœ‰å­ç±»çš„åç§°</returns>
     public static List<string> GetSubClassNames(Type parentType)
     {
         var subTypeList = new List<Type>();
-        var assembly = parentType.Assembly;//»ñÈ¡µ±Ç°¸¸ÀàËùÔÚµÄ³ÌĞò¼¯``
-        var assemblyAllTypes = assembly.GetTypes();//»ñÈ¡¸Ã³ÌĞò¼¯ÖĞµÄËùÓĞÀàĞÍ
-        foreach (var itemType in assemblyAllTypes)//±éÀúËùÓĞÀàĞÍ½øĞĞ²éÕÒ
+        var assembly = parentType.Assembly;//è·å–å½“å‰çˆ¶ç±»æ‰€åœ¨çš„ç¨‹åºé›†``
+        var assemblyAllTypes = assembly.GetTypes();//è·å–è¯¥ç¨‹åºé›†ä¸­çš„æ‰€æœ‰ç±»å‹
+        foreach (var itemType in assemblyAllTypes)//éå†æ‰€æœ‰ç±»å‹è¿›è¡ŒæŸ¥æ‰¾
         {
-            var baseType = itemType.BaseType;//»ñÈ¡ÔªËØÀàĞÍµÄ»ùÀà
-            if (baseType != null)//Èç¹ûÓĞ»ùÀà
+            var baseType = itemType.BaseType;//è·å–å…ƒç´ ç±»å‹çš„åŸºç±»
+            if (baseType != null)//å¦‚æœæœ‰åŸºç±»
             {
-                if (baseType.Name == parentType.Name)//Èç¹û»ùÀà¾ÍÊÇ¸ø¶¨µÄ¸¸Àà
+                if (baseType.Name == parentType.Name)//å¦‚æœåŸºç±»å°±æ˜¯ç»™å®šçš„çˆ¶ç±»
                 {
-                    subTypeList.Add(itemType);//¼ÓÈë×ÓÀà±íÖĞ
+                    subTypeList.Add(itemType);//åŠ å…¥å­ç±»è¡¨ä¸­
                 }
             }
         }
-        return subTypeList.Select(item => item.Name).ToList();//»ñÈ¡ËùÓĞ×ÓÀàÀàĞÍµÄÃû³Æ
+        return subTypeList.Select(item => item.Name).ToList();//è·å–æ‰€æœ‰å­ç±»ç±»å‹çš„åç§°
     }
-    public static Vector2 To_½Ç¶Èµ½·½Ïò(float angle)
+    public static Vector2 To_è§’åº¦åˆ°æ–¹å‘(float angle)
     {
-        // ½«½Ç¶È×ª»»Îª»¡¶È
+        // å°†è§’åº¦è½¬æ¢ä¸ºå¼§åº¦
         float radian = angle * Mathf.Deg2Rad;
 
-        // Ê¹ÓÃÓàÏÒºÍÕıÏÒ¼ÆËã·½Ïò·ÖÁ¿
+        // ä½¿ç”¨ä½™å¼¦å’Œæ­£å¼¦è®¡ç®—æ–¹å‘åˆ†é‡
         return new Vector2(
             Mathf.Cos(radian),
             Mathf.Sin(radian)
-        ).normalized; // ¶ş´ÎÈ·±£µ¥Î»³¤¶È
+        ).normalized; // äºŒæ¬¡ç¡®ä¿å•ä½é•¿åº¦
     }
-    public static float To_·½Ïòµ½½Ç¶È(Vector2 direction)
+    public static float To_æ–¹å‘åˆ°è§’åº¦(Vector2 direction)
     {
-        // ¹æ·¶»¯ÊäÈëÏòÁ¿È·±£Îªµ¥Î»ÏòÁ¿
+        // è§„èŒƒåŒ–è¾“å…¥å‘é‡ç¡®ä¿ä¸ºå•ä½å‘é‡
         direction.Normalize();
 
-        // Ê¹ÓÃMathf.Atan2¼ÆËã»¡¶È½Ç£¨·¶Î§£º-¦Ğ µ½ ¦Ğ£©
+        // ä½¿ç”¨Mathf.Atan2è®¡ç®—å¼§åº¦è§’ï¼ˆèŒƒå›´ï¼š-Ï€ åˆ° Ï€ï¼‰
         float radian = Mathf.Atan2(direction.y, direction.x);
 
-        // ½«»¡¶È×ª»»Îª½Ç¶È£¨0-360¶È£©
+        // å°†å¼§åº¦è½¬æ¢ä¸ºè§’åº¦ï¼ˆ0-360åº¦ï¼‰
         float angle = radian * Mathf.Rad2Deg;
         return angle < 0 ? angle + 360 : angle;
     }
-    public static int Get_Ëæ»úInt()
+    public static int Get_éšæœºInt()
     {
-        var a = Get_Ëæ»úÖÖ×Ó().Next (-2147483648, 2147483647); 
+        var a = Get_éšæœºç§å­().Next(-2147483648, 2147483647);
         return a;
     }
-public static    System.Random Get_Ëæ»úÖÖ×Ó()
+    public static System.Random Get_éšæœºç§å­()
     {
         var seed = Guid.NewGuid().GetHashCode();
-        System.Random r = new System.Random(seed );
+        System.Random r = new System.Random(seed);
         return r;
     }
-    public static void Copy_SpriteRenderto( this  SpriteRenderer sp,SpriteRenderer  toMe,int  Ç°ºó=0,bool Ìæ»»Í¼=false )
+    public static void Copy_SpriteRenderto(this SpriteRenderer sp, SpriteRenderer toMe, int å‰å = 0, bool æ›¿æ¢å›¾ = false)
     {
-        if (sp == null) Debug.LogError("SpÊÇ¿Õ");
-        if (toMe == null) Debug.LogError(" toMeÊÇ¿Õ");
+        if (sp == null) Debug.LogError("Spæ˜¯ç©º");
+        if (toMe == null) Debug.LogError(" toMeæ˜¯ç©º");
         toMe.sortingLayerID = sp.sortingLayerID;
-        toMe.sortingOrder = sp.sortingOrder+ Ç°ºó;
-        if (Ìæ»»Í¼)
+        toMe.sortingOrder = sp.sortingOrder + å‰å;
+        if (æ›¿æ¢å›¾)
         {
-            toMe.sprite = sp.sprite ;
+            toMe.sprite = sp.sprite;
         }
     }
     public static void AddUnique<T>(this List<T> list, T item)
@@ -841,189 +1035,202 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
         }
     }
     /// <summary>
-    ///  °áÔËµÄ±ØĞëÊÇÊôĞÔ   {get;set;}
+    ///  æ¬è¿çš„å¿…é¡»æ˜¯å±æ€§   {get;set;}
     /// </summary>
     /// <param name="_object"></param>
     /// <returns></returns>
-    public static object  Copy( this   object _object)
+    public static object Copy(this object _object)
     {
         Type T = _object.GetType();
-        object o = Activator.CreateInstance(T); 
+        object o = Activator.CreateInstance(T);
 
-        PropertyInfo[] PI = T.GetProperties();  
+        PropertyInfo[] PI = T.GetProperties();
         for (int i = 0; i < PI.Length; i++)
         {
-            PropertyInfo P = PI[i]; 
+            PropertyInfo P = PI[i];
             P.SetValue(o, P.GetValue(_object));
         }
-       
+
         return o;
     }
-    public static Vector2 ÓÒÏÂ½Ç()
+    public static Vector2 å³ä¸‹è§’()
     {
-        return new Vector2(1,-1);
+        return new Vector2(1, -1);
     }
     static List<Vector2> Vector2_L { get; } = new List<Vector2>() {
-        Vector2 .down,Vector2.left ,Vector2.right, Vector2.up , Vector2.one, -Vector2.one,ÓÒÏÂ½Ç(),-ÓÒÏÂ½Ç()};
-    public static List<Vector2> ±ßÉÏÈıµã(this Bounds B,E_·½Ïò E)
-    {// v2 ÀïÓĞ0    ³ı0ÍâÏàÍ¬  Êı×Ö
-        //v2 Ã»0    xy¸÷Îª0
-        List<Vector2 > List=new List<Vector2> ();
-   var a=     E.·½ÏòTo_v2();
+        Vector2 .down,Vector2.left ,Vector2.right, Vector2.up , Vector2.one, -Vector2.one,å³ä¸‹è§’(),-å³ä¸‹è§’()};
+    public static List<Vector2> è¾¹ä¸Šä¸‰ç‚¹(this Bounds B, E_æ–¹å‘ E,bool Deb=false)
+    {// v2 é‡Œæœ‰0    é™¤0å¤–ç›¸åŒ  æ•°å­—
+        //v2 æ²¡0    xyå„ä¸º0
+        List<Vector2> List = new List<Vector2>();
+        var a = E.æ–¹å‘To_v2();
         var X = a.x;
         var Y = a.y;
-        if (a==Vector2 .zero)
+        if (a == Vector2.zero)
         {
-            Debug.LogError("²»½ÓÊÜ  v2 ±äÁ¿");
+            Debug.LogError("ä¸æ¥å—  v2 å˜é‡");
         }
         else
-        { 
-            if (X*Y==0)
-            { 
-                // v2 ÀïÓĞ0    ³ı0ÍâÏàÍ¬  Êı×Ö
-                if (X!=0)
+        {
+            if (X * Y == 0)
+            {
+                // v2 é‡Œæœ‰0    é™¤0å¤–ç›¸åŒ  æ•°å­—
+                if (X != 0)
                 {
                     Vector2_L.ForEach((Vector2 v) => {
-                        if (v.x==X)
-                        { 
+                        if (v.x == X)
+                        {
                             List.Add(v);
                         }
                     });
                 }
-                else if (Y!=0)
+                else if (Y != 0)
                 {
                     Vector2_L.ForEach((Vector2 v) => {
                         if (v.y == Y)
-                        { 
+                        {
                             List.Add(v);
                         }
                     });
                 }
                 else
                 {
-                    Debug.LogError("ÀëÆ×");
+                    Debug.LogError("ç¦»è°±");
                 }
             }
             else
-            { 
-                //v2 Ã»0    xy¸÷Îª0
+            {
+
+                //v2 æ²¡0    xyå„ä¸º0
                 List.Add(new Vector2(X, Y));
-                List.Add(new Vector2 (0,Y));
+                List.Add(new Vector2(0, Y));
                 List.Add(new Vector2(X, 0));
             }
         }
 
         for (int i = 0; i < List.Count; i++)
         {
-            List[i] = B.¾Å¸öµã(List[i].v2_To·½Ïò());
-        } 
+
+        
+            List[i] = B.ä¹ä¸ªç‚¹(List[i].v2_Toæ–¹å‘());
+            if (Deb) Debug.LogError(List[i]);
+        }
         return List;
     }
-    public static void  ¼¯Ìå¿ª¹Ø( this   List<Component> ×é¼şÁĞ±í,bool ¿ª¹Ø)
+    public static void é›†ä½“å¼€å…³(this List<Component> ç»„ä»¶åˆ—è¡¨, bool å¼€å…³)
     {
-        if (×é¼şÁĞ±í==null&&×é¼şÁĞ±í .Count<1)
+        if (ç»„ä»¶åˆ—è¡¨ == null && ç»„ä»¶åˆ—è¡¨.Count < 1)
         {
-            Debug.LogError("×é¼şÎª¿Õ£¬»òÕß×é¼şÁĞ±í³¤¶ÈĞ¡ÓÚ1");
+            Debug.LogError("ç»„ä»¶ä¸ºç©ºï¼Œæˆ–è€…ç»„ä»¶åˆ—è¡¨é•¿åº¦å°äº1");
             return;
         }
-        for (int i = 0; i < ×é¼şÁĞ±í.Count; i++)
+        for (int i = 0; i < ç»„ä»¶åˆ—è¡¨.Count; i++)
         {
-            var B = ×é¼şÁĞ±í[i];
+            var B = ç»„ä»¶åˆ—è¡¨[i];
             if (B == null) continue;
             if (B is Behaviour)
             {
-                ((Behaviour)B).enabled = ¿ª¹Ø;
+                ((Behaviour)B).enabled = å¼€å…³;
             }
             else if (B is Renderer)
             {
-                ((Renderer)B).enabled = ¿ª¹Ø;
+                ((Renderer)B).enabled = å¼€å…³;
             }
             else
             {
-                Debug.LogError("ÀëÆ×   ¸Ã×é¼şÔõÃ´¹Ø°¡" + B);
+                Debug.LogError("ç¦»è°±   è¯¥ç»„ä»¶æ€ä¹ˆå…³å•Š" + B);
             }
         }
- 
- 
+
+
     }
     /// <summary>
-     /// Ê¹ÓÃÏŞÖÆ     loca ³ß´ç±ØĞëÊÇ1 1  ±ØĞëÊÇÄ³¸ö×ÓÎïÌå
-     /// ×îºÃ²»Òª   ¼«¶ÌÊ±¼äÄÚÍ¬¸öÎïÌå·´¸´µ÷ÓÃ £¬·ÇÒªÕâÑù£¬Òª×öºÃÎ¬»¤Õâ¸öĞ­³ÌºÍ»Ö¸´POµÄÊÖ¶Î
-     /// ¶ÌÊ±¼äÄÚ¿ìËÙÊ¹ÓÃ»á³öÏÖÎ»ÒÆ
-     /// force  Ä¬ÈÏÊÇ1
-     /// </summary>
-     /// <param name="a"></param>
-     /// <param name="t"></param>
-     /// <param name="forc"></param>
-     /// <param name="time"></param>
-     /// <returns></returns>
-    public static IEnumerator Qµ¯(this Transform t, float forc, float time,  bool ¸Ä±äÎ»ÖÃ = true, bool ÕæÊµÊ±¼ä = false,AnimationCurve a = null,bool »¹Ô­= true)
+    /// ä½¿ç”¨é™åˆ¶     loca å°ºå¯¸å¿…é¡»æ˜¯1 1  å¿…é¡»æ˜¯æŸä¸ªå­ç‰©ä½“
+    /// æœ€å¥½ä¸è¦   æçŸ­æ—¶é—´å†…åŒä¸ªç‰©ä½“åå¤è°ƒç”¨ ï¼Œéè¦è¿™æ ·ï¼Œè¦åšå¥½ç»´æŠ¤è¿™ä¸ªåç¨‹å’Œæ¢å¤POçš„æ‰‹æ®µ
+    /// çŸ­æ—¶é—´å†…å¿«é€Ÿä½¿ç”¨ä¼šå‡ºç°ä½ç§»
+    /// force  é»˜è®¤æ˜¯1
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="t"></param>
+    /// <param name="forc"></param>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    public static IEnumerator Qå¼¹(this Transform t, float forc, float time, bool æ”¹å˜ä½ç½® = true, bool çœŸå®æ—¶é—´ = false, AnimationCurve a = null, bool è¿˜åŸ = true)
     {
         if (a == null) a = Initialize_Mono.I.defaul_Curve;
-        float Ò» = 0;
-        var Ô­Ê¼³ß´ç = new Vector2(t.localScale.x.Sign() * 1, 1);
-        var Ô­Ê¼P = t.localPosition;
-        while (Ò» < 1)
+        float ä¸€ = 0;
+        var åŸå§‹å°ºå¯¸ = new Vector2(t.localScale.x.Sign() * 1, 1);
+        var åŸå§‹P = t.localPosition;
+        while (ä¸€ < 1)
         {
-            if (ÕæÊµÊ±¼ä) Ò» += Time.fixedUnscaledTime  * 1 / time;
-            else Ò» += Time.fixedDeltaTime * 1 / Player3.Public_Const_Speed / time;
-             
-            var f = (a.Evaluate(Ò») - 0.5f) * forc;
-            //Debug.LogError(f + "                              " + Ò»);
-            Initialize.µÈÌå»ıÑ¹Ëõ(t, f, ¸Ä±äÎ»ÖÃ);
+            if (çœŸå®æ—¶é—´) ä¸€ += Time.fixedUnscaledTime * 1 / time;
+            else ä¸€ += Time.fixedDeltaTime * 1 / Player3.Public_Const_Speed / time;
+
+            var f = (a.Evaluate(ä¸€) - 0.5f) * forc;
+            //Debug.LogError(f + "                              " + ä¸€);
+            Initialize.ç­‰ä½“ç§¯å‹ç¼©(t, f, æ”¹å˜ä½ç½®);
             yield return new WaitForFixedUpdate();
         }
-        if (»¹Ô­)  t.localPosition = Ô­Ê¼P; 
-        t.localScale = Ô­Ê¼³ß´ç;
+        if (è¿˜åŸ) t.localPosition = åŸå§‹P;
+        t.localScale = åŸå§‹å°ºå¯¸;
     }
-    public static Ïà»ú¿ò Get_ÉãÏñ¿ò(this Transform t)
+    public static ç›¸æœºæ¡† Get_æ‘„åƒæ¡†(this Transform t)
     {
-        var TTT = Physics2D.CircleCastAll(t.position, 1f, Vector2.zero, 0)?.Get_Åö×²×é<Ïà»ú¿ò>();
+        var TTT = Physics2D.CircleCastAll(t.position, 1f, Vector2.zero, 0)?.Get_ç¢°æ’ç»„<ç›¸æœºæ¡†>();
         return TTT;
     }
 
-    public static     int Get_ÉãÏñ¿ò±àºÅ(this Transform t)
+    public static int Get_æ‘„åƒæ¡†ç¼–å·(this Transform t)
     {
-        var TTT = Physics2D.CircleCastAll(t.position, 1f, Vector2.zero, 0)?.Get_Åö×²×é<Ïà»ú¿ò>();
+        var TTT = Physics2D.CircleCastAll(t.position, 0.1f, Vector2.zero, 0)?.Get_ç¢°æ’ç»„<ç›¸æœºæ¡†>();
         if (TTT == null)
-        { 
+        {
             ((Vector2)t.position).DraClirl(10);
             return -999;
         }
         else
         {
-            if (TTT.±àºÅ==-9999)
+            if (TTT.ç¼–å· == -9999)
             {
-                Debug.LogError(TTT + "Ã»³õÊ¼»¯ºÃ");
+                Debug.LogError(TTT + "æ²¡åˆå§‹åŒ–å¥½");
             }
-          
-            return TTT.±àºÅ;
+
+            return TTT.ç¼–å·;
         }
     }
-    public static   IEnumerator Time_State(float time, Action End = null, Action Fixupdate = null, Action Start = null)
+    public static IEnumerator Time_State(float time, Action End = null, Action Fixupdate = null, Action Start = null)
     {
         Start?.Invoke();
-        float t = Time.time; 
+        float t = Time.time;
         while (Time.time < t + time)
         {
             yield return null;
-     Fixupdate?.Invoke();
+            Fixupdate?.Invoke();
         }
-     End?.Invoke();
+        End?.Invoke();
     }
-    public static RaycastHit2D Åö×²(this Bounds s, int layer, float ¼Ó³É = 1)
+    public static RaycastHit2D ç¢°æ’(this Bounds s, int layer, float åŠ æˆ = 1)
     {
-        var a = Physics2D.BoxCast(s.center, s.size * ¼Ó³É, 0, Vector2.zero, 0, layer);
+        var a = Physics2D.BoxCast(s.center, s.size * åŠ æˆ, 0, Vector2.zero, 0, layer);
 
         return a;
     }
-    public static   RaycastHit2D [] Åö×²ÁĞ±í(this Bounds s,int layer,float ¼Ó³É=1)
+    public static RaycastHit2D[] ç¢°æ’åˆ—è¡¨(this Bounds s, int layer, Vector2 size ,bool Deb)
     {
-        var a = Physics2D.BoxCastAll(s.center, s.size* ¼Ó³É, 0, Vector2.zero, 0, layer);
- 
+        var a = Physics2D.BoxCastAll(s.center, s.size+ (Vector3)size, 0, Vector2.zero, 0, layer);
+        if (Deb)
+        {
+            s.Dra(Color.white, 3f);
+        }
         return a;
     }
-    public static Color Lerp( this  Color color, Color colorNext, float speed)
+    public static RaycastHit2D[] ç¢°æ’åˆ—è¡¨(this Bounds s, int layer, float åŠ æˆ = 1)
+    {
+        var a = Physics2D.BoxCastAll(s.center, s.size * åŠ æˆ, 0, Vector2.zero, 0, layer);
+
+        return a;
+    }
+    public static Color Lerp(this Color color, Color colorNext, float speed)
     {
         color = new Color(
             Mathf.Lerp(color.r, colorNext.r, speed),
@@ -1032,105 +1239,115 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
                           );
         return color;
     }
-    public static bool  _is(this  float a,float b,float ¾«¶È=0.0001f)
-    {  
-        return Mathf.Abs(a) - Mathf.Abs(b) < Mathf.Abs(¾«¶È);
+    public static bool _is(this float a, float b, float ç²¾åº¦ = 0.0001f)
+    { 
+        return Mathf.Abs(Mathf.Abs(a) - Mathf.Abs(b))    < ç²¾åº¦ ;
     }
-    public static void Dra(this Bounds B, Color C = default)
+    public static void Dra(this Bounds B, Color C = default,float time =0.1f)
+    {
+        if (C == default) C = Color.red;
+        Debug.DrawLine(B.min, B.ä¹ä¸ªç‚¹(E_æ–¹å‘.å·¦ä¸Š), C, time);
+        Debug.DrawLine(B.ä¹ä¸ªç‚¹(E_æ–¹å‘.å·¦ä¸Š), B.max, C, time);
+        Debug.DrawLine(B.max, B.ä¹ä¸ªç‚¹(E_æ–¹å‘.å³ä¸‹), C, time);
+        Debug.DrawLine(B.ä¹ä¸ªç‚¹(E_æ–¹å‘.å³ä¸‹), B.min, C, time);
+    }
+    public static void DraClirl(this Vector3 o, float è·ç¦» = 0.1f, Color C = default, float time = 0.1f)
+    {
+        DraClirl((Vector2)o, è·ç¦», C, time);
+    }
+    public static void DraClirl(this Vector2 o, float è·ç¦» = 0.1f, Color C = default, float time = 0.1f)
     {
         if (C == Color.white * 0f) C = Color.red;
-        Debug.DrawLine(B.min,B.¾Å¸öµã(E_·½Ïò .×óÉÏ));
-        Debug.DrawLine(  B.¾Å¸öµã(E_·½Ïò.×óÉÏ), B.max);
-        Debug.DrawLine(B.max, B.¾Å¸öµã(E_·½Ïò.ÓÒÏÂ));
-        Debug.DrawLine(B.¾Å¸öµã(E_·½Ïò.ÓÒÏÂ), B.min);
-    }
-    public static void DraClirl(this Vector3 o, float ¾àÀë = 0.1f, Color C = default, float time = 0.1f)
-    {
-        DraClirl( (Vector2)o, ¾àÀë  ,   C ,   time );
-    }
-    public static void DraClirl(this    Vector2 o, float ¾àÀë=0.1f,Color C=default,float time=0.1f )
-    {
-        if (C==Color .white *0f) C = Color.red;
-    if(Initialize_Mono .I.ÏÔÊ¾µãÎ»ÖÃ)    Debug.Log(o+" Ò»ÏÂ");
-        var  ¶şÒ»_ = new Vector2(2,1);
-        var  ¶şÒ» = new Vector2(-2,1);
+        if (Initialize_Mono.I.æ˜¾ç¤ºç‚¹ä½ç½®) Debug.Log(o + " ä¸€ä¸‹");
+        var äºŒä¸€_ = new Vector2(2, 1);
+        var äºŒä¸€ = new Vector2(-2, 1);
 
-        var Ò»¶ş_ = new Vector2(-1, 2);
-        var Ò»¶ş = new Vector2(1,2);
+        var ä¸€äºŒ_ = new Vector2(-1, 2);
+        var ä¸€äºŒ = new Vector2(1, 2);
 
         var ZZ = new Vector2(1, -1);
-        Debug.DrawRay(o, Ò»¶ş_.normalized * ¾àÀë, C,time );
-        Debug.DrawRay(o, -Ò»¶ş_.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, Ò»¶ş.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, -Ò»¶ş.normalized * ¾àÀë, C, time);
+        Debug.DrawRay(o, ä¸€äºŒ_.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, -ä¸€äºŒ_.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, ä¸€äºŒ.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, -ä¸€äºŒ.normalized * è·ç¦», C, time);
 
-        Debug.DrawRay(o,¶şÒ»_.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, -¶şÒ»_.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, ¶şÒ».normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, -¶şÒ».normalized * ¾àÀë, C, time);
+        Debug.DrawRay(o, äºŒä¸€_.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, -äºŒä¸€_.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, äºŒä¸€.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, -äºŒä¸€.normalized * è·ç¦», C, time);
 
-        Debug.DrawRay(o, Vector2.up.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, Vector2.down.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, Vector2.left.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, Vector2.right.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, Vector2.one.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, Vector2.one.normalized * -1 * ¾àÀë, C, time);
-        Debug.DrawRay(o,ZZ.normalized * ¾àÀë, C, time);
-        Debug.DrawRay(o, ZZ.normalized * - ¾àÀë, C, time);
+        Debug.DrawRay(o, Vector2.up.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, Vector2.down.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, Vector2.left.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, Vector2.right.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, Vector2.one.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, Vector2.one.normalized * -1 * è·ç¦», C, time);
+        Debug.DrawRay(o, ZZ.normalized * è·ç¦», C, time);
+        Debug.DrawRay(o, ZZ.normalized * -è·ç¦», C, time);
     }
-     public static int   Sign( this  float  a )
-    { 
+    public static int Sign(this float a)
+    {
         if (a > 0) return 1;
         else if (a < 0) return -1;
-        else return 0; 
+        else return 0;
     }
-    public static T Get_Åö×²×é<T>(this  RaycastHit2D[] Hit) where T : Component
+    public static T Get_ç¢°æ’ç»„<T>(this RaycastHit2D[] Hit) where T : Component
     {
-        Component Out=null;
-        for (int i = 0; i < Hit.Length ; i++)
+        Component Out = null;
+        for (int i = 0; i < Hit.Length; i++)
         {
             var c = Hit[i].collider;
             if (c != null)
             {
-         
-                Out=c.GetComponent<T>();
-                if (Out!=null) return (T)Out; 
-                  
+
+                Out = c.GetComponent<T>();
+                if (Out != null) return (T)Out;
+
             }
         }
-        return   (T)Out;
+        return (T)Out;
     }
     /// <summary>
-    ///  ÈÎÒâ·ûºÅÏàÍ¬·µ»Øtrue
+    ///  ä»»æ„ç¬¦å·ç›¸åŒè¿”å›true
     ///  
     /// </summary>
     /// <param name="v"></param>
     /// <param name="target"></param>
     /// <returns></returns>
-    public static bool is_ËÄ·½Ïò±È½Ï(this Vector2Int v, Vector2Int target)
+    public static bool is_å››æ–¹å‘æ¯”è¾ƒ(this Vector2Int v, Vector2Int target)
     {
-        if (v.x == 0 || v.y == 0 || target .x == 0 || target.y==0)
+        if (v.x == 0 || v.y == 0 || target.x == 0 || target.y == 0)
         {
-            Debug.Log ("·µ»Ø0ÁËÕâ²»¿ÆÑ§"+ v+"          "+target  );
+            Debug.Log("è¿”å›0äº†è¿™ä¸ç§‘å­¦" + v + "          " + target);
         }
-       bool  Out=   v.x  ==  target.x ||  v.y  ==  target.y ;
-   
+        bool Out = v.x == target.x || v.y == target.y;
+
         return Out;
     }
-    /// <summary>
-    /// ·µ»Ø9¸ö·½Ïò
-    /// </summary>
-    /// <param name="ÎÒ"></param>
-    /// <param name="Äã"></param>
-    /// <returns></returns>
-  public static Vector2Int ÄãÔÚÎÒµÄÄÄÀï(this Transform  ÎÒ,Transform  Äã)
+    public static Vector2Int ä½ åœ¨æˆ‘çš„å“ªé‡Œ(this Vector3  æˆ‘, Transform ä½ , bool Deb = false)
     {
-        Vector2 cha = Äã.position - ÎÒ.position;
+        Vector2 cha = ä½ .position - æˆ‘ ;
+        if (Deb)
+        {
+            æˆ‘ .DraClirl(2, Color.white, 1);
+            ä½ .position.DraClirl(2, Color.blue, 1);
+            Debug.LogError(cha);
+        }
         var x = cha.x > 0 ? 1 : -1;
         var y = cha.y > 0 ? 1 : -1;
-        return new Vector2Int(x,y);
+        return new Vector2Int(x, y);
     }
-   static  int ASD( float t)
+    /// <summary>
+    /// è¿”å›9ä¸ªæ–¹å‘
+    /// </summary>
+    /// <param name="æˆ‘"></param>
+    /// <param name="ä½ "></param>
+    /// <returns></returns>
+    public static Vector2Int ä½ åœ¨æˆ‘çš„å“ªé‡Œ(this Transform æˆ‘, Transform ä½ ,bool Deb=false)
+    { 
+        return ä½ åœ¨æˆ‘çš„å“ªé‡Œ(æˆ‘.position,ä½ ,Deb);
+    }
+    static int ASD(float t)
     {
         var f = Mathf.Abs(t);
         if (t < 1)
@@ -1142,17 +1359,17 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
             return Mathf.RoundToInt(t);
         }
     }
-    public static  List<Vector2> ÕóÁĞºĞ×Ó(this  Bounds Ïú»ÙºĞ×Ó)
+    public static List<Vector2> é˜µåˆ—ç›’å­(this Bounds é”€æ¯ç›’å­)
     {
         List<Vector2> Out = new List<Vector2>();
 
-        var min = Ïú»ÙºĞ×Ó.min;
-        int X = ASD(Ïú»ÙºĞ×Ó.size.x);
-        int Y = ASD(Ïú»ÙºĞ×Ó.size.y);
+        var min = é”€æ¯ç›’å­.min;
+        int X = ASD(é”€æ¯ç›’å­.size.x);
+        int Y = ASD(é”€æ¯ç›’å­.size.y);
 
 
-        float h_X = Ïú»ÙºĞ×Ó.size.x / X;
-        float h_Y = Ïú»ÙºĞ×Ó.size.y / Y;
+        float h_X = é”€æ¯ç›’å­.size.x / X;
+        float h_Y = é”€æ¯ç›’å­.size.y / Y;
         for (int i = 0; i < X; i++)
         {
             for (int j = 0; j < Y; j++)
@@ -1161,10 +1378,10 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
 
                 Out.Add(r);
             }
-        } 
+        }
         return Out;
     }
-    public static GameObject ÉäÏß¼ì²âÅÅ³ı×Ô¼º(this GameObject Self, RaycastHit2D[] S)
+    public static GameObject å°„çº¿æ£€æµ‹æ’é™¤è‡ªå·±(this GameObject Self, RaycastHit2D[] S)
     {
         GameObject Out = null;
         for (int i = 0; i < S.Length; i++)
@@ -1176,130 +1393,130 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
                 return o;
             }
         }
-        Debug.LogError("¿Õ¿Õ¿Õ");
+        Debug.LogError("ç©ºç©ºç©º");
         return Out;
     }
     public static Vector2 Set_Y(this Vector2 v, float y)
     {
-        return new Vector2( v.x ,y);
+        return new Vector2(v.x, y);
     }
-    public static Vector2 Set_X(  this Vector2 v,float x)
+    public static Vector2 Set_X(this Vector2 v, float x)
     {
-        return new Vector2(x,v.y);
+        return new Vector2(x, v.y);
     }
 
-   /// <summary>
-   /// ÊäÈë   21£¬20£¬30    Êä³ö0.1   
-   /// </summary>
-   /// <param name="value"></param>
-   /// <param name="min"></param>
-   /// <param name="max"></param>
-   /// <returns></returns>
+    /// <summary>
+    /// è¾“å…¥   21ï¼Œ20ï¼Œ30    è¾“å‡º0.1   
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
     public static float ScaleValue(float value, float min, float max)
     {
-        // ¼ì²émaxÊÇ·ñ´óÓÚmin  
+        // æ£€æŸ¥maxæ˜¯å¦å¤§äºmin  
         if (max <= min)
         {
             return value;
             //throw new ArgumentException("Max value must be greater than min value.", nameof(max));
         }
 
-        // ¼ì²évalueÊÇ·ñÔÚminºÍmaxÖ®¼ä  
+        // æ£€æŸ¥valueæ˜¯å¦åœ¨minå’Œmaxä¹‹é—´  
         if (value <= min)
         {
-            return 0; // ¸ù¾İÄãµÄÒªÇó·µ»Ømin£¬µ«Í¨³£Ó¦·µ»ØÒ»¸ö´íÎóÖ¸Ê¾Öµ  
+            return 0; // æ ¹æ®ä½ çš„è¦æ±‚è¿”å›minï¼Œä½†é€šå¸¸åº”è¿”å›ä¸€ä¸ªé”™è¯¯æŒ‡ç¤ºå€¼  
         }
         else if (value >= max)
         {
-            return 1; // ¸ù¾İÄãµÄÒªÇó·µ»Ømax£¬µ«Í¨³£Ó¦·µ»ØÒ»¸ö´íÎóÖ¸Ê¾Öµ  
+            return 1; // æ ¹æ®ä½ çš„è¦æ±‚è¿”å›maxï¼Œä½†é€šå¸¸åº”è¿”å›ä¸€ä¸ªé”™è¯¯æŒ‡ç¤ºå€¼  
         }
         else
         {
-            // ¼ÆËã²¢·µ»ØvalueÔÚminºÍmaxÖ®¼äµÄÏà¶ÔÎ»ÖÃ  
+            // è®¡ç®—å¹¶è¿”å›valueåœ¨minå’Œmaxä¹‹é—´çš„ç›¸å¯¹ä½ç½®  
             return (value - min) / (max - min);
         }
     }
-        /// <summary>
-        /// ÊäÈë   1 £¬5£¬-5£¬  Êä³ö0.2
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="max"></param>
-        /// <param name="min"></param>
-        /// <returns></returns>
-        public static float Î»ÖÃValue(float value, float F)
+    /// <summary>
+    /// è¾“å…¥   1 ï¼Œ5ï¼Œ-5ï¼Œ  è¾“å‡º0.2
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="max"></param>
+    /// <param name="min"></param>
+    /// <returns></returns>
+    public static float ä½ç½®Value(float value, float F)
     {
-        // ¼ì²éFÊÇ·ñºÏ·¨£¨·ÇÁãÇÒ·Ç¸º£©  
+        // æ£€æŸ¥Fæ˜¯å¦åˆæ³•ï¼ˆéé›¶ä¸”éè´Ÿï¼‰  
         if (F <= 0)
         {
-            Debug.LogError("FĞ¡ÓÚ0        ÖµÎª      "+F);
+            Debug.LogError("Få°äº0        å€¼ä¸º      " + F);
         }
-        if (value==0)
+        if (value == 0)
         {
             return 0;
         }
-        // µ±valueĞ¡ÓÚµÈÓÚ1/FÊ±£¬·µ»Ø-1  
+        // å½“valueå°äºç­‰äº1/Fæ—¶ï¼Œè¿”å›-1  
         if (value <= 1 / F)
         {
             return -1;
         }
 
-        // µ±value´óÓÚµÈÓÚFÊ±£¬·µ»Ø1  
+        // å½“valueå¤§äºç­‰äºFæ—¶ï¼Œè¿”å›1  
         if (value >= F)
         {
             return 1;
         }
 
-        // µ±valueµÈÓÚ1Ê±£¬·µ»Ø0  
+        // å½“valueç­‰äº1æ—¶ï¼Œè¿”å›0  
         if (Math.Abs(value - 1) < float.Epsilon)
         {
             return 0;
         }
 
-        // valueÔÚ1ºÍFÖ®¼äÊ±£¬¼ÆËãÎ»ÖÃ  
+        // valueåœ¨1å’ŒFä¹‹é—´æ—¶ï¼Œè®¡ç®—ä½ç½®  
         if (value > 1 && value < F)
         {
             return (value - 1) / (F - 1);
         }
 
-        // valueÔÚ1ºÍ1/FÖ®¼äÊ±£¬¼ÆËãÎ»ÖÃ  
+        // valueåœ¨1å’Œ1/Fä¹‹é—´æ—¶ï¼Œè®¡ç®—ä½ç½®  
         if (value > 1 / F && value < 1)
         {
-            return  ((value - (1 )) / (1 - (1 / F))) ;
+            return ((value - (1)) / (1 - (1 / F)));
         }
 
-        // Èç¹ûvalue²»ÔÚÉÏÊö·¶Î§ÄÚ£¬ÔòÀíÂÛÉÏ²»»áÖ´ĞĞµ½ÕâÀï£¨³ı·ÇF·Ç³£½Ó½ü0»ò1£©  
-        // µ«ÎªÁËÍêÕûĞÔ£¬¿ÉÒÔÅ×³öÒ»¸öÒì³£»ò·µ»ØÒ»¸ö´íÎóÖµ  
-        throw new ArgumentException("ÀëÆ×");
+        // å¦‚æœvalueä¸åœ¨ä¸Šè¿°èŒƒå›´å†…ï¼Œåˆ™ç†è®ºä¸Šä¸ä¼šæ‰§è¡Œåˆ°è¿™é‡Œï¼ˆé™¤éFéå¸¸æ¥è¿‘0æˆ–1ï¼‰  
+        // ä½†ä¸ºäº†å®Œæ•´æ€§ï¼Œå¯ä»¥æŠ›å‡ºä¸€ä¸ªå¼‚å¸¸æˆ–è¿”å›ä¸€ä¸ªé”™è¯¯å€¼  
+        throw new ArgumentException("ç¦»è°±");
     }
 
-    public static E_·½Ïò v2_To·½Ïò( this  Vector2  v2)
+    public static E_æ–¹å‘ v2_Toæ–¹å‘(this Vector2 v2)
     {
-        // ¼ÙÉèv2µÄxºÍy·ÖÁ¿Ö»ÄÜÊÇ1, 0, -1  
+        // å‡è®¾v2çš„xå’Œyåˆ†é‡åªèƒ½æ˜¯1, 0, -1  
         if (v2 == Vector2.zero)
         {
-            return E_·½Ïò.Null;
+            return E_æ–¹å‘.Null;
         }
 
         if (v2.x == 0)
         {
             if (v2.y == 1)
             {
-                return E_·½Ïò.ÉÏ;
+                return E_æ–¹å‘.ä¸Š;
             }
             else
             {
-                return E_·½Ïò.ÏÂ;
+                return E_æ–¹å‘.ä¸‹;
             }
         }
         else if (v2.y == 0)
         {
             if (v2.x == 1)
             {
-                return E_·½Ïò.ÓÒ;
+                return E_æ–¹å‘.å³;
             }
             else
             {
-                return E_·½Ïò.×ó;
+                return E_æ–¹å‘.å·¦;
             }
         }
         else
@@ -1308,52 +1525,52 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
             {
                 if (v2.y == 1)
                 {
-                    return E_·½Ïò.ÓÒÉÏ;
+                    return E_æ–¹å‘.å³ä¸Š;
                 }
                 else
                 {
-                    return E_·½Ïò.ÓÒÏÂ;
+                    return E_æ–¹å‘.å³ä¸‹;
                 }
             }
             else
             {
                 if (v2.y == 1)
                 {
-                    return E_·½Ïò.×óÉÏ;
+                    return E_æ–¹å‘.å·¦ä¸Š;
                 }
                 else
                 {
-                    return E_·½Ïò.×óÏÂ;
+                    return E_æ–¹å‘.å·¦ä¸‹;
                 }
             }
         }
     }
-    public static Vector2Int ·½ÏòTo_v2(this E_·½Ïò e)
+    public static Vector2Int æ–¹å‘To_v2(this E_æ–¹å‘ e)
     {
         switch (e)
         {
-            case E_·½Ïò.Null:
+            case E_æ–¹å‘.Null:
                 return Vector2Int.zero;
-            case E_·½Ïò.ÉÏ:
+            case E_æ–¹å‘.ä¸Š:
                 return Vector2Int.up;
-            case E_·½Ïò.ÏÂ:
+            case E_æ–¹å‘.ä¸‹:
                 return Vector2Int.down;
-            case E_·½Ïò.×ó:
+            case E_æ–¹å‘.å·¦:
                 return Vector2Int.left;
-            case E_·½Ïò.ÓÒ:
+            case E_æ–¹å‘.å³:
                 return Vector2Int.right;
-            case E_·½Ïò.×óÉÏ:
-                return new Vector2Int(-1,1);
-            case E_·½Ïò.×óÏÂ:
-                return Vector2Int.one*-1;
-            case E_·½Ïò.ÓÒÉÏ:
+            case E_æ–¹å‘.å·¦ä¸Š:
+                return new Vector2Int(-1, 1);
+            case E_æ–¹å‘.å·¦ä¸‹:
+                return Vector2Int.one * -1;
+            case E_æ–¹å‘.å³ä¸Š:
                 return Vector2Int.one;
-            case E_·½Ïò.ÓÒÏÂ:
-                return new Vector2Int( 1, -1);
+            case E_æ–¹å‘.å³ä¸‹:
+                return new Vector2Int(1, -1);
         }
         return Vector2Int.zero;
     }
-    public static Vector2 ¾Å¸öµã(this Bounds B, E_·½Ïò f)
+    public static Vector2 ä¹ä¸ªç‚¹(this Bounds B, E_æ–¹å‘ f)
     {
 
         Vector2 c = B.center;
@@ -1361,84 +1578,85 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
         float y = B.size.y / 2;
         switch (f)
         {
-            case E_·½Ïò.ÉÏ:
+            case E_æ–¹å‘.ä¸Š:
                 x = 0;
                 break;
-            case E_·½Ïò.ÏÂ:
+            case E_æ–¹å‘.ä¸‹:
                 y = -y;
                 x = 0;
                 break;
-            case E_·½Ïò.×ó:
+            case E_æ–¹å‘.å·¦:
                 x = -x;
                 y = 0;
                 break;
-            case E_·½Ïò.ÓÒ:
+            case E_æ–¹å‘.å³:
                 y = 0;
                 break;
-            case E_·½Ïò.×óÉÏ:
+            case E_æ–¹å‘.å·¦ä¸Š:
                 x = -x;
                 break;
-            case E_·½Ïò.×óÏÂ:
+            case E_æ–¹å‘.å·¦ä¸‹:
                 return B.min;
-            case E_·½Ïò.ÓÒÉÏ:
+            case E_æ–¹å‘.å³ä¸Š:
                 return B.max;
-            case E_·½Ïò.ÓÒÏÂ:
+            case E_æ–¹å‘.å³ä¸‹:
                 y = -y;
-                break; 
+                break;
         }
         c += new Vector2(x, y);
         return c;
     }
     /// <summary>
-    /// ËÄ·½Ïò
+    /// å››æ–¹å‘
     /// </summary>
     /// <param name="v"></param>
-    /// <param name="·½Ïò"></param>
+    /// <param name="æ–¹å‘"></param>
     /// <returns></returns>
-    public static  bool Is_·½Ïò(Vector2  v,E_·½Ïò  ·½Ïò)
+    public static bool Is_æ–¹å‘(Vector2 v, E_æ–¹å‘ æ–¹å‘)
     {
-        switch (·½Ïò)
-        { 
-            case E_·½Ïò.ÉÏ:
-                if (v.y>0)       return true; 
+        switch (æ–¹å‘)
+        {
+            case E_æ–¹å‘.ä¸Š:
+                if (v.y > 0) return true;
                 break;
-            case E_·½Ïò.ÏÂ:
+            case E_æ–¹å‘.ä¸‹:
                 if (v.y <= 0) return true;
                 break;
-            case E_·½Ïò.×ó:
+            case E_æ–¹å‘.å·¦:
                 if (v.x >= 0) return true;
                 break;
-            case E_·½Ïò.ÓÒ:
+            case E_æ–¹å‘.å³:
                 if (v.x <= 0) return true;
-                break; 
+                break;
         }
         return false;
     }
 
-   /// <summary>
-   /// Obj Ê±¼ä
-   /// </summary>
-    public static string  Obj_E { get; } = "Obj_E";
-    public static LayerMask L_Ğ¡µØÍ¼ { get; } = LayerMask.NameToLayer("Ğ¡µØÍ¼");//Air_wall
+    /// <summary>
+    /// Obj æ—¶é—´
+    /// </summary>
+    public static string Obj_E { get; } = "Obj_E";
+    public static LayerMask L_å°åœ°å›¾ { get; } = LayerMask.NameToLayer("å°åœ°å›¾");//Air_wall
     public static LayerMask L_Air_wall { get; } = LayerMask.NameToLayer("Air_wall");//Air_wall
     /// <summary>
-    /// ¾ÉµÄ½Å²ÈÏä 
-    /// ÄÜÁ¿×Óµ¯£¬ºÍÍæ¼Ò¸úGround½»»¥   ½Å²È²ã
+    /// æ—§çš„è„šè¸©ç®± 
+    /// èƒ½é‡å­å¼¹ï¼Œå’Œç©å®¶è·ŸGroundäº¤äº’   è„šè¸©å±‚
     /// </summary>
     public static LayerMask L_Box_Ground { get; } = LayerMask.NameToLayer("Box_Ground");
 
     public static LayerMask L_Enemy_hit_collision { get; } = LayerMask.NameToLayer("Enemy_hit_collision");
     public static LayerMask L_M_Ground { get; } = LayerMask.NameToLayer("M_Ground");
     /// <summary>
-    /// Ö»ÓĞPlayer  ÓĞÅö×²
+    /// åªæœ‰Player  æœ‰ç¢°æ’
     /// </summary>
-    public static LayerMask L_Only_Ground { get; } = LayerMask.NameToLayer("Only_Ground"); 
+    public static LayerMask L_Default { get; } = LayerMask.NameToLayer("Default");
+    public static LayerMask L_Only_Ground { get; } = LayerMask.NameToLayer("Only_Ground");
     public static LayerMask L_Enemy { get; } = LayerMask.NameToLayer("Enemy");
     public static LayerMask Only_Player { get; } = LayerMask.NameToLayer("Only_Player");
- 
+
     public static LayerMask L_Player { get; } = LayerMask.NameToLayer("Player");
     public static LayerMask L_Ladder { get; } = LayerMask.NameToLayer("Ladder");
-    public static int S_Ğ¡µØÍ¼ { get; } = SortingLayer.NameToID("Ğ¡µØÍ¼");
+    public static int S_å°åœ°å›¾ { get; } = SortingLayer.NameToID("å°åœ°å›¾");
 
     public static LayerMask L_No_Player { get; } = LayerMask.NameToLayer("No_Player");
     public static LayerMask L_Null { get; } = LayerMask.NameToLayer("Null");
@@ -1446,7 +1664,7 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
     /// <summary>
     /// Tag
     /// </summary>
-    public static string MovePlatform { get; } = "MovePlatform";
+    public static string MovePlatform { get; } = "MovePP";
     public static string Player { get; } = "Player";
     public static string Ground { get; } = "Ground";
     public static string One_way { get; } = "One_way";
@@ -1457,41 +1675,41 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
     public static string Exite { get; } = "Cancel";
     public static string Enter { get; } = "Submit";
 
- 
-    public static float ´òÍÈ { get; private set; } = 0.5f;
-    public static float ´òĞØ { get; private set; } = 2.5f;
+
+    public static float æ‰“è…¿ { get; private set; } = 0.5f;
+    public static float æ‰“èƒ¸ { get; private set; } = 2.5f;
 
     private static string scenePath { get; } = "Scenes";
-    private static   string MateriaPath { get; } = "Material";
-    static System.Random  random = new System.Random();
-    // Éú³ÉÒ»¸öËæ»úÕûÊı£¬·¶Î§ÔÚ[min, max)  
-    public   static  Vector2 MoveToPosition(Vector2 My, Vector2 targetPosition, float distance)
+    private static string MateriaPath { get; } = "Material";
+    static System.Random random = new System.Random();
+    // ç”Ÿæˆä¸€ä¸ªéšæœºæ•´æ•°ï¼ŒèŒƒå›´åœ¨[min, max)  
+    public static Vector2 MoveToPosition(Vector2 My, Vector2 targetPosition, float distance)
     {
 
-        // ¼ÆËãÄ¿±êÎ»ÖÃÓëµ±Ç°Î»ÖÃÖ®¼äµÄ·½ÏòÏòÁ¿  
+        // è®¡ç®—ç›®æ ‡ä½ç½®ä¸å½“å‰ä½ç½®ä¹‹é—´çš„æ–¹å‘å‘é‡  
         Vector2 direction = (targetPosition - My).normalized;
-        // ¸ù¾İ·½ÏòºÍ¾àÀë¼ÆËãĞÂµÄÎ»ÖÃ  
+        // æ ¹æ®æ–¹å‘å’Œè·ç¦»è®¡ç®—æ–°çš„ä½ç½®  
         return My + direction * distance;
 
     }
 
-   /// <summary>
-   /// 0   Îª²»±ä  ·µ»ØY×ø±ê¸Ä±äÖµ
-   /// </summary>
-   /// <param name="t"></param>
-   /// <param name="v"></param>
-    public static float  µÈÌå»ıÑ¹Ëõ(Transform t, float v, bool ¸Ä±äÎ»ÖÃ = true)
+    /// <summary>
+    /// 0   ä¸ºä¸å˜  è¿”å›Yåæ ‡æ”¹å˜å€¼
+    /// </summary>
+    /// <param name="t"></param>
+    /// <param name="v"></param>
+    public static float ç­‰ä½“ç§¯å‹ç¼©(Transform t, float v, bool æ”¹å˜ä½ç½® = true)
     {
 
-        var y =1+v;
-        var x =1-v;
+        var y = 1 + v;
+        var x = 1 - v;
 
-        if (Mathf.Abs(t.localScale.y) == y) return   0;
+        if (Mathf.Abs(t.localScale.y) == y) return 0;
 
         var cha = t.localScale.y - y;
-        var py = t.localPosition.y- cha*2.5f ;
+        var py = t.localPosition.y - cha * 2.5f;
 
-        if (¸Ä±äÎ»ÖÃ)    t.localPosition = new Vector2(t.localPosition.x, py);
+        if (æ”¹å˜ä½ç½®) t.localPosition = new Vector2(t.localPosition.x, py);
         t.localScale = new Vector2(Mathf.Sign(t.localScale.x) * x, y);
 
 
@@ -1505,93 +1723,93 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
         //var cha = t.localScale.y - y;
         //var py = t.localPosition.y - cha / 2;
 
-        //if (¸Ä±äÎ»ÖÃ) t.localPosition = new Vector2(t.localPosition.x, py);
+        //if (æ”¹å˜ä½ç½®) t.localPosition = new Vector2(t.localPosition.x, py);
         //t.localScale = new Vector2(Mathf.Sign(t.localScale.x) * x, y);
 
 
     }
-    public static int ·µ»ØÕı¸ººÅ(float value)
-    { 
-        if (value >= 0) return  1;
+    public static int è¿”å›æ­£è´Ÿå·(float value)
+    {
+        if (value >= 0) return 1;
         else if (value < 0) return -1;
-        else     return 0; 
+        else return 0;
     }
     /// <summary>
-    /// °üº¬·ñ
+    /// åŒ…å«å¦
     /// </summary> 
-    public static  bool  Layer_is(int layer,LayerMask lm)
+    public static bool Layer_is(int layer, LayerMask lm)
     {
-        ///Èç¹ûÒ»¸ö²ã obj.layer ÊÇ 4
-//        layermask ÊÇ 0001 0010£¬Ò²¾ÍÊÇ 18
-//£¨1 << 4£© &18 ¾Í»áÊÇ 0001 0000
-        bool B = ((1 <<  layer) & lm.value) > 0;
+        ///å¦‚æœä¸€ä¸ªå±‚ obj.layer æ˜¯ 4
+        //        layermask æ˜¯ 0001 0010ï¼Œä¹Ÿå°±æ˜¯ 18
+        //ï¼ˆ1 << 4ï¼‰ &18 å°±ä¼šæ˜¯ 0001 0000
+        bool B = ((1 << layer) & lm.value) > 0;
         return B;
     }
     /// <summary>
-    /// Ã¿´ÎÊ¹ÓÃ¶¼»á»á»ñÈ¡Ò»´Î
+    /// æ¯æ¬¡ä½¿ç”¨éƒ½ä¼šä¼šè·å–ä¸€æ¬¡
     /// </summary>
 
-    public static float Lerp¾ùºâ²åÖµ(  float bÎó²îÖµ, int n²½Êı)
+    public static float Lerpå‡è¡¡æ’å€¼(float bè¯¯å·®å€¼, int næ­¥æ•°)
     {
- 
-        var b = 1 - Mathf.Pow(bÎó²îÖµ, 1 / n²½Êı);
-        int ´ÎÊı = 1;
-        while (b==1)
+
+        var b = 1 - Mathf.Pow(bè¯¯å·®å€¼, 1 / næ­¥æ•°);
+        int æ¬¡æ•° = 1;
+        while (b == 1)
         {
- 
-            b = 1 - Mathf.Pow(bÎó²îÖµ, 1 / (float)n²½Êı);
-            n²½Êı++;
-            ´ÎÊı++;
-            Debug.LogError(1 / (float)n²½Êı);
-            if (´ÎÊı>10)
+
+            b = 1 - Mathf.Pow(bè¯¯å·®å€¼, 1 / (float)næ­¥æ•°);
+            næ­¥æ•°++;
+            æ¬¡æ•°++;
+            Debug.LogError(1 / (float)næ­¥æ•°);
+            if (æ¬¡æ•° > 10)
             {
                 break;
             }
         }
-        if (b==1)
+        if (b == 1)
         {
-            Debug.LogError("ÎÔ²Û"+ bÎó²îÖµ + "" + 1 / (float)n²½Êı);
+            Debug.LogError("å§æ§½" + bè¯¯å·®å€¼ + "" + 1 / (float)næ­¥æ•°);
         }
-        return 1- Mathf.Pow(bÎó²îÖµ, 1 / (float)n²½Êı);
+        return 1 - Mathf.Pow(bè¯¯å·®å€¼, 1 / (float)næ­¥æ•°);
     }
     /// <summary>
-    ///  ·µ»ØÖµµÄ·¶Î§°üÀ¨minValueµ«²»°üÀ¨maxValue
+    ///  è¿”å›å€¼çš„èŒƒå›´åŒ…æ‹¬minValueä½†ä¸åŒ…æ‹¬maxValue
     /// </summary>
     /// <param name="min"></param>
     /// <param name="max"></param>
     /// <returns></returns>
     public static int RandomInt(int min, int max)
-        { 
-            return random.Next(min, max);
-        }
-    public static bool  Vector2Int±È½Ï(Vector2 a,Vector2 b,bool bug=false )
+    {
+        return random.Next(min, max);
+    }
+    public static bool Vector2Intæ¯”è¾ƒ(Vector2 a, Vector2 b, bool bug = false)
     {
         if (bug)
         {
-            Debug.LogError(a.x+"_"+a.y+"\n          " +(int)a.x + "_" + (int)b.x + "\n         " + (int)a.y + "_" + (int)b.y);
+            Debug.LogError(a.x + "_" + a.y + "\n          " + (int)a.x + "_" + (int)b.x + "\n         " + (int)a.y + "_" + (int)b.y);
         }
 
         return (int)a.x == (int)b.x && (int)a.y == (int)b.y;
     }
-    public static string  Get_CutternAnimName(Animator a)
+    public static string Get_CutternAnimName(Animator a)
     {
-            return a.GetCurrentAnimatorClipInfo(0)[0].clip.name; ;
+        return a.GetCurrentAnimatorClipInfo(0)[0].clip.name; ;
     }
-       public static List<GameObject> ÉÈĞÎ¼ì²â(Vector2 Ô­µã, float ¾àÀë, float ½Ç¶È, float ÉÈĞÎ½Ç¶È, int ¾«¶È, LayerMask layerMask,bool ´©Í¸=false ,bool Deb =false )
+    public static List<GameObject> æ‰‡å½¢æ£€æµ‹(Vector2 åŸç‚¹, float è·ç¦», float è§’åº¦, float æ‰‡å½¢è§’åº¦, int ç²¾åº¦, LayerMask layerMask, bool ç©¿é€ = false, bool Deb = false)
     {
         List<GameObject> detectedObjects = new List<GameObject>();
-        float angleStep = ÉÈĞÎ½Ç¶È / (¾«¶È - 1);
+        float angleStep = æ‰‡å½¢è§’åº¦ / (ç²¾åº¦ - 1);
 
-        for (int i = 0; i < ¾«¶È; i++)
+        for (int i = 0; i < ç²¾åº¦; i++)
         {
-            float currentAngle = ½Ç¶È - ÉÈĞÎ½Ç¶È / 2f + angleStep * i;
+            float currentAngle = è§’åº¦ - æ‰‡å½¢è§’åº¦ / 2f + angleStep * i;
             Vector2 rayDirection = new Vector2(Mathf.Sin(currentAngle * Mathf.Deg2Rad), Mathf.Cos(currentAngle * Mathf.Deg2Rad));
 
 #if UNITY_EDITOR
-            if (Deb )      Debug.DrawRay(Ô­µã, rayDirection * ¾àÀë, Color.green);
+            if (Deb) Debug.DrawRay(åŸç‚¹, rayDirection * è·ç¦», Color.green);
 #endif
 
-            RaycastHit2D[] hits = Physics2D.RaycastAll(Ô­µã, rayDirection, ¾àÀë, layerMask);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(åŸç‚¹, rayDirection, è·ç¦», layerMask);
 
             foreach (RaycastHit2D hit in hits)
             {
@@ -1601,30 +1819,30 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
                 }
                 GameObject hitObject = hit.collider.gameObject;
 
-                // Èç¹ûÎïÌå²»ÔÚÒÑ¼ì²âÁĞ±íÖĞ£¬ÔòÌí¼Ó  
+                // å¦‚æœç‰©ä½“ä¸åœ¨å·²æ£€æµ‹åˆ—è¡¨ä¸­ï¼Œåˆ™æ·»åŠ   
                 if (!detectedObjects.Contains(hitObject))
                 {
-                    detectedObjects.Add(hitObject); 
+                    detectedObjects.Add(hitObject);
                 }
-                if (!´©Í¸)break ;
+                if (!ç©¿é€) break;
             }
 
         }
 
         return detectedObjects;
     }
-    //    public static List<GameObject> ÉÈĞÎ¼ì²â(Vector2 Ô­µã, float ¾àÀë, float ½Ç¶È, float ÉÈĞÎ½Ç¶È, int ¾«¶È, LayerMask layerMask)
+    //    public static List<GameObject> æ‰‡å½¢æ£€æµ‹(Vector2 åŸç‚¹, float è·ç¦», float è§’åº¦, float æ‰‡å½¢è§’åº¦, int ç²¾åº¦, LayerMask layerMask)
     //    {
     //        List<GameObject> detectedObjects = new List<GameObject>();
-    //        float angleStep = ÉÈĞÎ½Ç¶È / (¾«¶È - 1);
+    //        float angleStep = æ‰‡å½¢è§’åº¦ / (ç²¾åº¦ - 1);
 
-    //        for (int i = 0; i < ¾«¶È; i++)
+    //        for (int i = 0; i < ç²¾åº¦; i++)
     //        {
-    //            float currentAngle = ½Ç¶È - ÉÈĞÎ½Ç¶È / 2f + angleStep * i;
+    //            float currentAngle = è§’åº¦ - æ‰‡å½¢è§’åº¦ / 2f + angleStep * i;
     //            Vector2 rayDirection = new Vector2(Mathf.Sin(currentAngle * Mathf.Deg2Rad), Mathf.Cos(currentAngle * Mathf.Deg2Rad));
-    //            RaycastHit2D hit = Physics2D.Raycast(Ô­µã, rayDirection, ¾àÀë, layerMask);
+    //            RaycastHit2D hit = Physics2D.Raycast(åŸç‚¹, rayDirection, è·ç¦», layerMask);
     //#if UNITY_EDITOR
-    //            Debug.DrawRay(Ô­µã, rayDirection* ¾àÀë, Color.green );
+    //            Debug.DrawRay(åŸç‚¹, rayDirection* è·ç¦», Color.green );
     //#endif
     //            if (hit.collider != null)
     //            {
@@ -1633,11 +1851,11 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
     //                {
     //                    detectedObjects.Add(hitObject);
 
-    //                    // ¿ÉÑ¡£ºÔÚ±à¼­Æ÷Ä£Ê½ÏÂ»æÖÆÉäÏß  
+    //                    // å¯é€‰ï¼šåœ¨ç¼–è¾‘å™¨æ¨¡å¼ä¸‹ç»˜åˆ¶å°„çº¿  
 
     //                }
 
-    //                // ¼ì²éÊÇ·ñÎªµØÃæ²ã£¬²¢ÖĞ¶ÏºóĞø¼ì²â  
+    //                // æ£€æŸ¥æ˜¯å¦ä¸ºåœ°é¢å±‚ï¼Œå¹¶ä¸­æ–­åç»­æ£€æµ‹  
     //                if (hitObject.layer == LayerMask.NameToLayer("Ground"))
     //                {
     //                    break;
@@ -1648,21 +1866,21 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
     //        return detectedObjects;
     //    }
 
- 
+
     /// <summary>
-    /// ºöÂÔÅö×²
+    /// å¿½ç•¥ç¢°æ’
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <param name="target"></param>
-    public static void Set_Åö×²(LayerMask a, LayerMask b, bool target)
+    public static void Set_ç¢°æ’(LayerMask a, LayerMask b, bool target)
     {
-  
+
         Physics2D.IgnoreLayerCollision(a, b, target);
     }
-    public static bool Get_Åö×²(LayerMask a, LayerMask b)
+    public static bool Get_ç¢°æ’(LayerMask a, LayerMask b)
     {
-     return   Physics2D.GetIgnoreLayerCollision(a, b);
+        return Physics2D.GetIgnoreLayerCollision(a, b);
     }
     public static int GetNumOfString(string str)
     {
@@ -1672,161 +1890,193 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
         num = int.Parse(strNum);
         return num;
     }
-    public static IEnumerator Waite(Action a )
-    { 
-        yield return null; 
+    public static IEnumerator Waite(Action a)
+    {
+        yield return null;
         a.Invoke();
     }
     public static string _Color(this object o, Color c)
-    { 
-        var a = ColorUtility.ToHtmlStringRGBA(c);  
+    {
+        var a = UnityEngine.ColorUtility.ToHtmlStringRGBA(c);
         return "<color=#" + a + ">" + o + "</color>";
     }
-    public static Vector2 ×ª»»½øÈ¥(int i, int Const)
+    public static Vector2 è½¬æ¢è¿›å»(int i, int Const)
     {
         var Y = i / Const + 1;
         var X = i % Const + 1;
         return new Vector2(X, Y);
     }
-    public static int ×ª»»³öÈ¥(Vector2 v2, int Const)
+    public static int è½¬æ¢å‡ºå»(Vector2 v2, int Const)
     {
         var I = ((v2.y - 1) * Const) + v2.x - 1;
         return (int)I;
     }
 
-    public static  float   TimeScale{get => Time.timeScale; set
-        {         Time.timeScale = value;     }
- }
-    public static void Ê±¼äÔİÍ£()
+    public static float TimeScale
     {
-        TimeScale = 0; 
+        get => Time.timeScale; set
+        { Time.timeScale = value; }
+    }
+    public static void æ—¶é—´æš‚åœ()
+    {
+        TimeScale = 0;
     }
 
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void Ê±¼ä»Ö¸´()
+    public static void æ—¶é—´æ¢å¤()
     {
-        if (Initialize_Mono.I==null||Initialize_Mono.I.gameObject ==null )
+        if (Initialize_Mono.I == null || Initialize_Mono.I.gameObject == null)
         {
-            Debug.LogError("ÄÇÀïµ÷ÓÃµÄ");
+            Debug.LogError("é‚£é‡Œè°ƒç”¨çš„");
             return;
         }
-        if (Initialize_Mono.I.Ê±»ºĞ­³Ì != null) 
-            Initialize_Mono.I.StopCoroutine(Initialize_Mono.I.Ê±»ºĞ­³Ì);
+        if (Initialize_Mono.I.æ—¶ç¼“åç¨‹ != null)
+            Initialize_Mono.I.StopCoroutine(Initialize_Mono.I.æ—¶ç¼“åç¨‹);
 
         TimeScale = 1;
     }
- 
-    public static Transform[] »ñÈ¡Í¬¼¶ÎïÌå(GameObject obj)
+
+    public static Transform[] è·å–åŒçº§ç‰©ä½“(GameObject obj)
     {
         var p = obj.transform.parent;
 
         return p.GetComponentsInChildren<Transform>();
     }
-    public static void ÉèÖÃºÍµ±Ç°»î¶¯³¡¾°ÎªÕâ¸öobjµÄ³¡¾°(GameObject obj)
+    public static void è®¾ç½®å’Œå½“å‰æ´»åŠ¨åœºæ™¯ä¸ºè¿™ä¸ªobjçš„åœºæ™¯(GameObject obj)
     {
 
         SceneManager.SetActiveScene(obj.scene);
     }
-    public static float  ÆÁÄ»ºá×İ±È
+    public static float å±å¹•æ¨ªçºµæ¯”
     {
         get
         {
             return (float)Screen.currentResolution.width / (float)Screen.currentResolution.height;
         }
     }
-    public static  bool V2±È½Ï_A´óÓÚB(Vector2 A,Vector2 B)
-    { 
-            return ! (B.x > A.x || B.y > A.y);  
+    public static bool V2æ¯”è¾ƒ_Aå¤§äºB(Vector2 A, Vector2 B)
+    {
+        return !(B.x > A.x || B.y > A.y);
     }
- 
     /// <summary>
-    /// /·µ»ØÎªÁãËµÃ÷ÏÖÓĞµÄ¸ü´ó
+    /// GetAngleåå‡½æ•°   çŸ¥é“è§’åº¦æ±‚å°ºå¯¸
     /// </summary>
-    /// <param name="ÏÖÓĞµÄÅö×²¿òSize"></param>
-    /// <param name="ÉãÏñ»úÄ¿±êSize"></param>
+    /// <param name="W"></param>
+    /// <param name="angle"></param>
     /// <returns></returns>
-    public static float ·µ»Ø¼æÈİÏà»úÅö×²¿òµÄÉãÏñ»ú³ß´ç(Vector2 ÏÖÓĞµÄÅö×²¿òSize, float ÉãÏñ»úÄ¿±êSize)
-    {  
-        Vector2 ÉãÏñ»úÄ¿±ê³ß´ç;  
+    public static float GetCarmeraAngle2_SIze(float W, float angle)
+    {
+        return W * Mathf.Tan(angle / 2 * Mathf.Deg2Rad) ;
+    }
+    /// <summary>
+    /// Ver  ç«–å‘æ•´å°ºå¯¸è½¬æ¢æ‘„åƒæœº FOVçºµå‘è§’åº¦
+    /// </summary>
+    /// <param name="W"></param>
+    /// <param name="Hight"></param>
+    /// <returns></returns>
+    public static float GetSize2CarmeraAngle( float Hight,float W,bool b=false)
+    {
+        if (b) Debug.LogError(Hight + "    " + W);
+        float angleA = Mathf.Atan2(W, Hight  ) * Mathf.Rad2Deg;
+
+        if (b) Debug.LogError(angleA);
+        return (90 - angleA) * 2;
+    }
+    /// <summary>
+    /// /è¿”å›ä¸ºé›¶è¯´æ˜ç°æœ‰çš„æ›´å¤§
+    /// </summary>
+    /// <param name="ç°æœ‰çš„ç¢°æ’æ¡†Size"></param>
+    /// <param name="æ‘„åƒæœºç›®æ ‡Size"></param>
+    /// <returns></returns>
+    public static float è¿”å›å…¼å®¹ç›¸æœºç¢°æ’æ¡†çš„æ‘„åƒæœºå°ºå¯¸(Vector2 ç°æœ‰çš„ç¢°æ’æ¡†Size, float æ‘„åƒæœºç›®æ ‡Size,float W=0)
+    {
+
+        Vector2 æ‘„åƒæœºç›®æ ‡å°ºå¯¸;
+        if (W!=0)
+        {
+            ///W ä¸ä¸º0 ä»£è¡¨FOV
+            ///FOVè½¬æ¢æˆå°ºå¯¸
+            æ‘„åƒæœºç›®æ ‡Size = GetCarmeraAngle2_SIze(æ‘„åƒæœºç›®æ ‡Size, W)/2;
+            æ‘„åƒæœºç›®æ ‡å°ºå¯¸ = new Vector2(æ‘„åƒæœºç›®æ ‡Size * å±å¹•æ¨ªçºµæ¯”, æ‘„åƒæœºç›®æ ‡Size) * 2;
+            Debug.LogError(æ‘„åƒæœºç›®æ ‡å°ºå¯¸+"    "+ æ‘„åƒæœºç›®æ ‡Size);
+        }
+
         ///68  34
-        //µÃ³öÊµ¼ÊÉãÏñ»ú³ß´ç
-        ÉãÏñ»úÄ¿±ê³ß´ç = new Vector2(ÉãÏñ»úÄ¿±êSize * ÆÁÄ»ºá×İ±È, ÉãÏñ»úÄ¿±êSize) * 2;
+        //å¾—å‡ºå®é™…æ‘„åƒæœºæƒ³è¦çš„å°ºå¯¸
+        æ‘„åƒæœºç›®æ ‡å°ºå¯¸ = new Vector2(æ‘„åƒæœºç›®æ ‡Size * å±å¹•æ¨ªçºµæ¯”, æ‘„åƒæœºç›®æ ‡Size) * 2;
 
         float X = 0, Y = 0;
-        if (ÉãÏñ»úÄ¿±ê³ß´ç.x >= ÏÖÓĞµÄÅö×²¿òSize.x)
+        if (æ‘„åƒæœºç›®æ ‡å°ºå¯¸.x >= ç°æœ‰çš„ç¢°æ’æ¡†Size.x)
         {
-            X = ÏÖÓĞµÄÅö×²¿òSize.x / ÆÁÄ»ºá×İ±È / 2;
+            X = ç°æœ‰çš„ç¢°æ’æ¡†Size.x / å±å¹•æ¨ªçºµæ¯” / 2;
         }
-        if (ÉãÏñ»úÄ¿±ê³ß´ç.y >= ÏÖÓĞµÄÅö×²¿òSize.y)
+        if (æ‘„åƒæœºç›®æ ‡å°ºå¯¸.y >= ç°æœ‰çš„ç¢°æ’æ¡†Size.y)
         {
-            Y = ÏÖÓĞµÄÅö×²¿òSize.y / 2;
+            Y = ç°æœ‰çš„ç¢°æ’æ¡†Size.y / 2;
         }
- 
-        ///XY ¶¼ÓĞ
+
+        ///XY éƒ½æœ‰
         if (X != 0 && Y != 0)
-        {
-            Debug.LogError("³ö");
+        { 
             return Mathf.Min(X, Y) - 0.0001f;
         }
         else if (X == Y && X == 0)
-        {
-            Debug.LogError("³ö");
-            //Debug.LogError("ÎªÉõÃ´Ñ½" + ÉãÏñ»úÄ¿±ê³ß´ç+"       "+ Target_OrthographicSize+ "     Åö×²¿ò  " + ÏÖÓĞµÄÅö×²¿òSize);
-         ///Ä¿±ê³ß´çĞ¡ÓÚÄ¿±ê³ß´ç
+        { 
+            //Debug.LogError("ä¸ºç”šä¹ˆå‘€" + æ‘„åƒæœºç›®æ ‡å°ºå¯¸+"       "+ Target_OrthographicSize+ "     ç¢°æ’æ¡†  " + ç°æœ‰çš„ç¢°æ’æ¡†Size);
+            ///ç›®æ ‡å°ºå¯¸å°äºç›®æ ‡å°ºå¯¸
             return 0;
         }
-        ///XY Ò»¸öÓĞ
+        ///XY ä¸€ä¸ªæœ‰
         else
-        {
-            Debug.LogError("³ö");
-            return Mathf.Max(X, Y)-0.0001f;
+        { 
+            return Mathf.Max(X, Y) - 0.0001f;
         }
     }
-    public static GameObject »ñÈ¡ÒÑ¼ÓÔØ³¡¾°¸ù½ÚµãµÄTAGÊÇµÄ(string  tag)
+    public static GameObject è·å–å·²åŠ è½½åœºæ™¯æ ¹èŠ‚ç‚¹çš„TAGæ˜¯çš„(string tag)
     {
- 
-           var a = »ñÈ¡ÒÑ¼ÓÔØ³¡¾°ÖĞËùÓĞ¸ù½ÚµãµÄobj();
+
+        var a = è·å–å·²åŠ è½½åœºæ™¯ä¸­æ‰€æœ‰æ ¹èŠ‚ç‚¹çš„obj();
         foreach (var item in a)
         {
-            if (item.tag==tag)
+            if (item.CompareTag(tag)  )
             {
                 return item;
-            } 
-        } 
+            }
+        }
         return null;
 
     }
-    public   static List<GameObject> »ñÈ¡ÒÑ¼ÓÔØ³¡¾°ÖĞËùÓĞ¸ù½ÚµãµÄobj()
-    {//¸Ã·½·¨ÔÚ³¡¾°Î´¼ÓÔØÍêÊ±£¬Î´¼ÓÔØµÄ³¡¾°·µ»ØµÄOBJÁĞ±íÎª¿Õ,Òò´ËÒª·ÅÔÚUPdateÀï
-        List<GameObject> G = new List<GameObject>(); 
-        for (int i = 0; i < SceneManager .sceneCount ; i++)
-        { 
-            Scene a = SceneManager.GetSceneAt(i);
-            if (a != null)
-            { 
-                foreach (var item in a.GetRootGameObjects())
-                { 
-                    G.Add(item);
-                }
-            }
-        }
- 
-        return G;
-    }
-    /// <summary>
-    /// ÅĞ¶ÏÒÀ¾İÊÇÄ³Ä³³¡¾°µÄ¸úOBJÊı×é³¤¶È
-    /// </summary>
-    /// <returns></returns>
-    public static bool  ËùÓĞµÄ³¡¾°¶¼¼ÓÔØÍêÁËÂï()
-    {
- 
+    public static List<GameObject> è·å–å·²åŠ è½½åœºæ™¯ä¸­æ‰€æœ‰æ ¹èŠ‚ç‚¹çš„obj()
+    {//è¯¥æ–¹æ³•åœ¨åœºæ™¯æœªåŠ è½½å®Œæ—¶ï¼ŒæœªåŠ è½½çš„åœºæ™¯è¿”å›çš„OBJåˆ—è¡¨ä¸ºç©º,å› æ­¤è¦æ”¾åœ¨UPdateé‡Œ
+        List<GameObject> G = new List<GameObject>();
         for (int i = 0; i < SceneManager.sceneCount; i++)
         {
             Scene a = SceneManager.GetSceneAt(i);
             if (a != null)
-            { 
-                if (a.GetRootGameObjects ().Length==0)
+            {
+                foreach (var item in a.GetRootGameObjects())
+                {
+                    G.Add(item);
+                }
+            }
+        }
+
+        return G;
+    }
+    /// <summary>
+    /// åˆ¤æ–­ä¾æ®æ˜¯æŸæŸåœºæ™¯çš„è·ŸOBJæ•°ç»„é•¿åº¦
+    /// </summary>
+    /// <returns></returns>
+    public static bool æ‰€æœ‰çš„åœºæ™¯éƒ½åŠ è½½å®Œäº†å˜›()
+    {
+
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene a = SceneManager.GetSceneAt(i);
+            if (a != null)
+            {
+                if (a.GetRootGameObjects().Length == 0)
                 {
                     return false;
                 }
@@ -1834,47 +2084,47 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
         }
         return true;
     }
- 
-    //public static PolygonCollider2D »ñÈ¡³¡¾°ÖĞµÄÏà»úÅö×²Ïä×Ó(GameObject  obj)
+
+    //public static PolygonCollider2D è·å–åœºæ™¯ä¸­çš„ç›¸æœºç¢°æ’ç®±å­(GameObject  obj)
     //{
-    //    PolygonCollider2D Ïà»úÅö×²¿ò1 =null;
+    //    PolygonCollider2D ç›¸æœºç¢°æ’æ¡†1 =null;
     //    foreach (var item in obj.scene.GetRootGameObjects())
     //    { 
-    //        Ïà»úÅö×²¿ò1 = item.GetComponent<Ïà»ú¿ò>()?.Åö×²¿ò_;
-    //        if (Ïà»úÅö×²¿ò1 != null) break; 
+    //        ç›¸æœºç¢°æ’æ¡†1 = item.GetComponent<ç›¸æœºæ¡†>()?.ç¢°æ’æ¡†_;
+    //        if (ç›¸æœºç¢°æ’æ¡†1 != null) break; 
     //    }
-    //    if (Ïà»úÅö×²¿ò1 == null)
+    //    if (ç›¸æœºç¢°æ’æ¡†1 == null)
     //    {
-    //        Debug.LogError(obj.name +"µÄ³¡¾°»ñÈ¡ÅöÏà»úÅö×²ÏäÊ§°Ü");
+    //        Debug.LogError(obj.name +"çš„åœºæ™¯è·å–ç¢°ç›¸æœºç¢°æ’ç®±å¤±è´¥");
     //    } 
-    //    return Ïà»úÅö×²¿ò1;
+    //    return ç›¸æœºç¢°æ’æ¡†1;
     //}
-   //static  public GameObject Tag»ñÈ¡GameObject(string  tag)
-   // {
-   //     var B = GameObject.FindGameObjectsWithTag(tag);
-   //     if (B.Length > 0)
-   //     {
-   //         return B[0];
-   //     }
-   //     else
-   //     {
-   //         return null;
-   //     }
-   // }
+    //static  public GameObject Tagè·å–GameObject(string  tag)
+    // {
+    //     var B = GameObject.FindGameObjectsWithTag(tag);
+    //     if (B.Length > 0)
+    //     {
+    //         return B[0];
+    //     }
+    //     else
+    //     {
+    //         return null;
+    //     }
+    // }
     public static float GetAngle(Vector2 from_, Vector2 to_)
     {
-        //Á½µãµÄx¡¢yÖµ  
+        //ä¸¤ç‚¹çš„xã€yå€¼  
         float x = to_.x - from_.x;
         float y = to_.y - from_.y;
 
-        //Ğ±±ß³¤¶È  
+        //æ–œè¾¹é•¿åº¦  
         float hypotenuse = Mathf.Sqrt(Mathf.Pow(x, 2f) + Mathf.Pow(y, 2f));
 
-        //Çó³ö»¡¶È  
+        //æ±‚å‡ºå¼§åº¦  
         float cos = x / hypotenuse;
         float radian = Mathf.Acos(cos);
 
-        //ÓÃ»¡¶ÈËã³ö½Ç¶È  
+        //ç”¨å¼§åº¦ç®—å‡ºè§’åº¦  
         float angle = 180 / (Mathf.PI / radian);
 
         if (y < 0)
@@ -1901,154 +2151,153 @@ public static    System.Random Get_Ëæ»úÖÖ×Ó()
     //    }
     //    EditorBuildSettings.scenes = scenes;
     //}
-    public static Vector2  ³¯Ïò¶ÔÏó(GameObject my,GameObject  target)
+    public static Vector2 æœå‘å¯¹è±¡(GameObject my, GameObject target)
     {
         var a = my.transform.position.x;
         var b = target.transform.position.x;
-        int I = a -b>0 ? -1 : 1;
-        return new Vector2(I,1);
+        int I = a - b > 0 ? -1 : 1;
+        return new Vector2(I, 1);
     }
-    public static void ÉÁ¹â(this  SpriteRenderer sp, float time,bool b=true)
-    {
-
-        sp.material.SetColor(²ÄÖÊ¹ÜÀí._SpriteColor, Color.white);
-            Initialize_Mono.I.Waite(()=> {
-                if (sp!=null)
- 
-                sp.material.SetColor(²ÄÖÊ¹ÜÀí._SpriteColor, new Color (1,1,1,0));
-            }
-            , time, b
-            );
-       
-        }
-
-    public static Vector2 ·µ»ØºÍ¶Ô·½Ïà·´·½ÏòµÄ±ê×¼Á¦(Vector2  m, Vector2  y)
+    public static void é—ªå…‰(this SpriteRenderer sp, float time, bool b = true)
     { 
+        sp.material.SetColor(æè´¨ç®¡ç†._SpriteColor, Color.white);
+        Initialize_Mono.I.Waite(() => {
+            if (sp != null)
+
+                sp.material.SetColor(æè´¨ç®¡ç†._SpriteColor, new Color(1, 1, 1, 0));
+        }
+        , time, b
+        );
+
+    }
+
+    public static Vector2 è¿”å›å’Œå¯¹æ–¹ç›¸åæ–¹å‘çš„æ ‡å‡†åŠ›(Vector2 m, Vector2 y)
+    {
         float o = (m - y).x;
         float p = (m - y).y;
         o = o > 0 ? 1 : -1;
         p = p > 0 ? 1 : -1;
-        //Debug.LogError(Äã+"          "+ÎÒ+o+"         "+p);
+        //Debug.LogError(ä½ +"          "+æˆ‘+o+"         "+p);
         return new Vector2(o, p);
     }
-    public   static  Vector2  ·µ»ØºÍ¶Ô·½Ïà·´·½ÏòµÄ±ê×¼Á¦(GameObject  my,GameObject  Target)
+    public static Vector2 è¿”å›å’Œå¯¹æ–¹ç›¸åæ–¹å‘çš„æ ‡å‡†åŠ›(GameObject my, GameObject Target)
     {
-        Vector2 Äã = Target.transform.position;
-        Vector2 ÎÒ = my.transform.position;
-  
-        //Debug.LogError(Äã+"          "+ÎÒ+o+"         "+p);
-        return ·µ»ØºÍ¶Ô·½Ïà·´·½ÏòµÄ±ê×¼Á¦(ÎÒ, Äã);
+        Vector2 ä½  = Target.transform.position;
+        Vector2 æˆ‘ = my.transform.position;
+
+        //Debug.LogError(ä½ +"          "+æˆ‘+o+"         "+p);
+        return è¿”å›å’Œå¯¹æ–¹ç›¸åæ–¹å‘çš„æ ‡å‡†åŠ›(æˆ‘, ä½ );
     }
-    public static void ÏòÄ¿±êË®Æ½ÒÆ¶¯(float ËÙ¶È, GameObject gameObject, GameObject target)
+    public static void å‘ç›®æ ‡æ°´å¹³ç§»åŠ¨(float é€Ÿåº¦, GameObject gameObject, GameObject target)
     {
         if (gameObject.GetComponent<Rigidbody2D>() == null)
         {
             gameObject.AddComponent<Rigidbody2D>();
         }
-        int ³¯Ïò;
+        int æœå‘;
         var a = target.transform.position.x - gameObject.transform.position.x;
         if (a <= 0)
         {
-            ³¯Ïò = -1;
+            æœå‘ = -1;
         }
         else
         {
-            ³¯Ïò = 1;
+            æœå‘ = 1;
         }
 
-        //gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(  ËÙ¶È* ³¯Ïò, 0f);
-        gameObject.transform.Translate(new Vector2(³¯Ïò * ËÙ¶È, 0));
+        //gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(  é€Ÿåº¦* æœå‘, 0f);
+        gameObject.transform.Translate(new Vector2(æœå‘ * é€Ÿåº¦, 0));
     }
-    public static void ÏòÄ¿±êÉÏÏÂÒÆ¶¯(float ËÙ¶È, GameObject gameObject, GameObject target)
+    public static void å‘ç›®æ ‡ä¸Šä¸‹ç§»åŠ¨(float é€Ÿåº¦, GameObject gameObject, GameObject target)
     {
         if (gameObject.GetComponent<Rigidbody2D>() == null)
         {
             gameObject.AddComponent<Rigidbody2D>();
         }
-        int ³¯Ïò;
+        int æœå‘;
         var a = target.transform.position.y - gameObject.transform.position.y;
         if (a <= 0)
         {
-            ³¯Ïò = -1;
+            æœå‘ = -1;
         }
         else
         {
-            ³¯Ïò = 1;
+            æœå‘ = 1;
         }
-        //gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, ³¯Ïò * ËÙ¶È);
-        //gameObject.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + ³¯Ïò * ËÙ¶È);
-        gameObject.transform.Translate(new Vector2(0, ³¯Ïò * ËÙ¶È));
+        //gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, æœå‘ * é€Ÿåº¦);
+        //gameObject.transform.position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + æœå‘ * é€Ÿåº¦);
+        gameObject.transform.Translate(new Vector2(0, æœå‘ * é€Ÿåº¦));
     }
-    public static bool ·½Ïò_AÊÇ·ñÔÚBµÄ×ó±ß»òÕßÏÂÃæ(Vector2 A, Vector2 B, bool true¾ÍÊÇËãY_flase¾ÍÊÇX)
+    public static bool æ–¹å‘_Aæ˜¯å¦åœ¨Bçš„å·¦è¾¹æˆ–è€…ä¸‹é¢(Vector2 A, Vector2 B, bool trueå°±æ˜¯ç®—Y_flaseå°±æ˜¯X)
     {
         Vector2 O = A;
-        Vector2 P = B ;
+        Vector2 P = B;
 
-        if (true¾ÍÊÇËãY_flase¾ÍÊÇX)
+        if (trueå°±æ˜¯ç®—Y_flaseå°±æ˜¯X)
         {
             return O.y - P.y < 0;
         }
         else
         {
             return O.x - P.x < 0;
-        } 
+        }
     }
-public static bool ·½Ïò_AÊÇ·ñÔÚBµÄ×ó±ß»òÕßÏÂÃæ(GameObject A, GameObject B, bool true¾ÍÊÇËãY_flase¾ÍÊÇX)
+    public static bool æ–¹å‘_Aæ˜¯å¦åœ¨Bçš„å·¦è¾¹æˆ–è€…ä¸‹é¢(GameObject A, GameObject B, bool trueå°±æ˜¯ç®—Y_flaseå°±æ˜¯X)
     {
         Vector2 O = A.transform.position;
         Vector2 P = B.transform.position;
-        if (true¾ÍÊÇËãY_flase¾ÍÊÇX) 
+        if (trueå°±æ˜¯ç®—Y_flaseå°±æ˜¯X)
         {
-            return O.y - P.y< 0;
+            return O.y - P.y < 0;
         }
         else
         {
-            return O.x - P.x< 0;
+            return O.x - P.x < 0;
         }
     }
 
     /// <summary>
-    /// AÊÇ²»ÊÇÔÚBµÄÅÔ±ß
+    /// Aæ˜¯ä¸æ˜¯åœ¨Bçš„æ—è¾¹
     /// </summary>
     /// <param name="A"></param>
     /// <param name="B"></param>
-    /// <param name="true¾ÍÊÇËãY_flase¾ÍÊÇX"></param>
+    /// <param name="trueå°±æ˜¯ç®—Y_flaseå°±æ˜¯X"></param>
     /// <returns></returns>
-    public static bool ½Ó½ü_ÅĞ¶ÏA¼õBµÄ¾ø¶Ô¾àÀëÊÇ·ñĞ¡ÓÚµÈÓÚ_·¶Î§(GameObject A, GameObject B, float ·¶Î§ ,bool true¾ÍÊÇËãY_flase¾ÍÊÇX)
+    public static bool æ¥è¿‘_åˆ¤æ–­Aå‡Bçš„ç»å¯¹è·ç¦»æ˜¯å¦å°äºç­‰äº_èŒƒå›´(GameObject A, GameObject B, float èŒƒå›´, bool trueå°±æ˜¯ç®—Y_flaseå°±æ˜¯X)
     {
         Vector2 O = A.transform.position;
         Vector2 P = B.transform.position;
-        if (true¾ÍÊÇËãY_flase¾ÍÊÇX)
+        if (trueå°±æ˜¯ç®—Y_flaseå°±æ˜¯X)
         {
-            return MathF.Abs(  O.y - P.y) <= ·¶Î§;
+            return MathF.Abs(O.y - P.y) <= èŒƒå›´;
         }
         else
         {
-            return MathF.Abs(O.x - P.x) <= ·¶Î§;
+            return MathF.Abs(O.x - P.x) <= èŒƒå›´;
         }
     }
-    public static void ¼ì²âÒÆ¶¯Æ½Ì¨ÏÂÂä( BiologyBase B)
-    { 
-      var  po = B.co;
-           var DD = Physics2D.BoxCast(
- new Vector2(po.bounds.center.x, po.bounds.min.y),
-  new Vector2(po.bounds.size.x - 0.5f, 0.1f),
-  0f,
-  Vector2.down,
-   0.5f,
- 1 << LayerMask.NameToLayer("Ground")
-  )
-  .collider;
+    public static void æ£€æµ‹ç§»åŠ¨å¹³å°ä¸‹è½(BiologyBase B)
+    {
+        var po = B.co;
+        var DD = Physics2D.BoxCast(
+new Vector2(po.bounds.center.x, po.bounds.min.y),
+new Vector2(po.bounds.size.x - 0.5f, 0.1f),
+0f,
+Vector2.down,
+0.5f,
+1 << LayerMask.NameToLayer("Ground")
+)
+.collider;
         if (DD != null)
         {
             if (DD.GetComponent<I_Speed_Change>() != null)
             {
                 if (!B.Ground)
                 {
- 
+
                     if (B.Velocity.y <= 0)
                     {
-                        float ca = Initialize.»ñÈ¡Á½Åö×²Ìå×î½ü·½ÏòµÄ²åÖµ(B.gameObject, DD.gameObject);
+                        float ca = Initialize.è·å–ä¸¤ç¢°æ’ä½“æœ€è¿‘æ–¹å‘çš„æ’å€¼(B.gameObject, DD.gameObject);
                         B.transform.position = new Vector2(B.transform.position.x, B.transform.position.y - ca);
                     }
 
@@ -2056,17 +2305,17 @@ public static bool ·½Ïò_AÊÇ·ñÔÚBµÄ×ó±ß»òÕßÏÂÃæ(GameObject A, GameObject B, bool 
             }
         }
     }
-  public static float »ñÈ¡Á½Åö×²Ìå×î½ü·½ÏòµÄ²åÖµ(GameObject a, GameObject b)
+    public static float è·å–ä¸¤ç¢°æ’ä½“æœ€è¿‘æ–¹å‘çš„æ’å€¼(GameObject a, GameObject b)
     {
         if ((a.transform.position.y - b.transform.position.y > 0))
         {
-            //AÔÚBµÄÉÏÃæ
+            //Aåœ¨Bçš„ä¸Šé¢
             float A = a.GetComponent<Collider2D>().bounds.min.y;
             float B = b.GetComponent<Collider2D>().bounds.max.y;
             return A - B;
         }
         else if (a.transform.position.y - b.transform.position.y < 0)
-        {    //BÔÚAµÄÉÏÃæ
+        {    //Båœ¨Açš„ä¸Šé¢
             float A = a.GetComponent<Collider2D>().bounds.max.y;
             float B = b.GetComponent<Collider2D>().bounds.min.y;
             return A - B;
@@ -2075,14 +2324,14 @@ public static bool ·½Ïò_AÊÇ·ñÔÚBµÄ×ó±ß»òÕßÏÂÃæ(GameObject A, GameObject B, bool 
         {
             return 0;
         }
-    } 
+    }
     /// <summary>
-    /// Ìí¼Ó×é¼ş
+    /// æ·»åŠ ç»„ä»¶
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="gb"></param>
     /// <param name="co"></param>
-    public static void ×é¼ş<T>(this  GameObject gb, ref T co) where T : Component
+    public static void ç»„ä»¶<T>(this GameObject gb, ref T co) where T : Component
     {
         if (co != null) return;
         co = gb.GetComponent<T>();
@@ -2096,20 +2345,23 @@ public static bool ·½Ïò_AÊÇ·ñÔÚBµÄ×ó±ß»òÕßÏÂÃæ(GameObject A, GameObject B, bool 
 
 
 public class Event_M
-{ 
-    public static string É¨°Ñ´òµ½ÁË { get; } = "É¨°Ñ´òµ½ÁË";
-    public static string ³¡¾°±£´æ´¥·¢ { get; } = "³¡¾°±£´æ´¥·¢";
-    public static string ¾çÇé´¥·¢ { get; } = "¾çÇé´¥·¢";
-    public static string ¶Ô»°ÍË³ö { get; } = "¶Ô»°ÍË³ö";
-    public static string ÇĞ»»³¡¾°´¥·¢_obj { get; } = "ÇĞ»»³¡¾°´¥·¢";
-    internal static string ¶Ô»°´¥·¢_OBJ { get; } = "¶Ô»°";
-    internal static  string UI»Øµ½Õ½¶· { get; } = "ÍË»Ø";
+{
+    public static string åˆ·æ–°æç¤ºæœºå…³ { get; } = "åœ°å›¾è§£é”";
+    public static string æ‰«æŠŠæ‰“åˆ°äº† { get; } = "æ‰«æŠŠæ‰“åˆ°äº†";
+  
+    public static string åœºæ™¯ä¿å­˜è§¦å‘ { get; } = "åœºæ™¯ä¿å­˜è§¦å‘";
+    public static string å‰§æƒ…è§¦å‘ { get; } = "å‰§æƒ…è§¦å‘";
+    public static string å¯¹è¯é€€å‡º { get; } = "å¯¹è¯é€€å‡º";
+    public static string åˆ‡æ¢åœºæ™¯è§¦å‘_obj { get; } = "åˆ‡æ¢åœºæ™¯è§¦å‘";
+    internal static string å¯¹è¯è§¦å‘_OBJ { get; } = "å¯¹è¯";
+    internal static string UIå›åˆ°æˆ˜æ–— { get; } = "é€€å›";
 
-    public List<String> ÊÂ¼şÁĞ±í  = new List<String>();
+    public List<String> äº‹ä»¶åˆ—è¡¨ = new List<String>();
 
     private Dictionary<string, UnityEvent<GameObject>> eventDictionary_G = new Dictionary<string, UnityEvent<GameObject>>();
-    private Dictionary<string, UnityEvent > eventDictionary = new Dictionary<string, UnityEvent >();
+    private Dictionary<string, UnityEvent> eventDictionary = new Dictionary<string, UnityEvent>();
     private static Event_M eventManager = new Event_M();
+
 
     private Event_M()
     {
@@ -2123,100 +2375,100 @@ public class Event_M
             return eventManager;
         }
     }
-    public void Add(string eventName, UnityAction ·½·¨)
+    public void Add(string eventName, UnityAction æ–¹æ³•)
     {
-        if (!ÊÂ¼şÁĞ±í.Contains(eventName))
-            ÊÂ¼şÁĞ±í.Add(eventName);
+        if (!äº‹ä»¶åˆ—è¡¨.Contains(eventName))
+            äº‹ä»¶åˆ—è¡¨.Add(eventName);
 
-        UnityEvent  thisEvent = null;
+        UnityEvent thisEvent = null;
         if (eventManager.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
-            thisEvent.AddListener(·½·¨);
+            thisEvent.AddListener(æ–¹æ³•);
         }
         else
         {
-            thisEvent = new UnityEvent ();
-            thisEvent.AddListener(·½·¨);
+            thisEvent = new UnityEvent();
+            thisEvent.AddListener(æ–¹æ³•);
             eventManager.eventDictionary.Add(eventName, thisEvent);
         }
     }
-    public void Add(string eventName, UnityAction<GameObject> ·½·¨)
+    public void Add(string eventName, UnityAction<GameObject> æ–¹æ³•)
     {
-        if (!ÊÂ¼şÁĞ±í.Contains(eventName))
-            ÊÂ¼şÁĞ±í.Add(eventName);
-         
+        if (!äº‹ä»¶åˆ—è¡¨.Contains(eventName))
+            äº‹ä»¶åˆ—è¡¨.Add(eventName);
+
         UnityEvent<GameObject> thisEvent = null;
         if (eventManager.eventDictionary_G.TryGetValue(eventName, out thisEvent))
         {
-            thisEvent.AddListener(·½·¨);
+            thisEvent.AddListener(æ–¹æ³•);
         }
         else
         {
             thisEvent = new UnityEvent<GameObject>();
-            thisEvent.AddListener(·½·¨);
+            thisEvent.AddListener(æ–¹æ³•);
             eventManager.eventDictionary_G.Add(eventName, thisEvent);
         }
     }
 
-    public void Remove(string eventName, UnityAction<GameObject> ·½·¨)
+    public void Remove(string eventName, UnityAction<GameObject> æ–¹æ³•)
     {
-        ÊÂ¼şÁĞ±í.Remove(eventName);
+        äº‹ä»¶åˆ—è¡¨.Remove(eventName);
 
         if (eventManager == null) return;
         UnityEvent<GameObject> thisEvent = null;
         if (eventManager.eventDictionary_G.TryGetValue(eventName, out thisEvent))
         {
-            thisEvent.RemoveListener(·½·¨);
+            thisEvent.RemoveListener(æ–¹æ³•);
         }
     }
-    public void Remove(string eventName, UnityAction  ·½·¨)
+    public void Remove(string eventName, UnityAction æ–¹æ³•)
     {
-        ÊÂ¼şÁĞ±í.Remove(eventName);
+        äº‹ä»¶åˆ—è¡¨.Remove(eventName);
 
         if (eventManager == null) return;
-        UnityEvent  thisEvent = null;
+        UnityEvent thisEvent = null;
         if (eventManager.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
-            thisEvent.RemoveListener(·½·¨);
+            thisEvent.RemoveListener(æ–¹æ³•);
         }
     }
-    public void Invoke(string eventName,GameObject  obj)
-    { 
+    public void Invoke(string eventName, GameObject obj)
+    {
         UnityEvent<GameObject> thisEvent = null;
         if (eventManager.eventDictionary_G.TryGetValue(eventName, out thisEvent))
-        { 
+        {
             thisEvent.Invoke(obj);
         }
     }
 
-    public void Invoke(string eventName )
+    public void Invoke(string eventName)
     {
-        UnityEvent  thisEvent = null;
+        UnityEvent thisEvent = null;
         if (eventManager.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
-            thisEvent.Invoke( );
+            thisEvent.Invoke();
         }
     }
 }
 //  else
 //  {
-//      c.m.SetColor(²ÄÖÊ¹ÜÀí._SpriteColor, Color.white);
+//      c.m.SetColor(æè´¨ç®¡ç†._SpriteColor, Color.white);
 
 //      Initialize_Mono.I.Waite(() => {
-//          c.m.SetColor(²ÄÖÊ¹ÜÀí._SpriteColor, new Color(1, 1, 1, 0));
+//          c.m.SetColor(æè´¨ç®¡ç†._SpriteColor, new Color(1, 1, 1, 0));
 //      }, 0.1f
 //);
 //  }
-//public static IEnumerator DOShakePosition_(this Transform t, Vector2 ·½Ïò, float time, float ¼ä¸ô)
+//public static IEnumerator DOShakePosition_(this Transform t, Vector2 æ–¹å‘, float time, float é—´éš”)
 //{
-//    if (·½Ïò != Vector2.zero)
+//    if (æ–¹å‘ != Vector2.zero)
 //    {
 //        WaitForFixedUpdate W = new WaitForFixedUpdate();
 //        Vector2 Enter_way = t.localPosition;
-//        float ³¤¶È = ·½Ïò.magnitude;
-//        Vector2 ±ê×¼·½Ïò = ·½Ïò.normalized;
-//        int ´ÎÊı = (int)(time / ¼ä¸ô);
-//        float ²åÖµ = Lerp¾ùºâ²åÖµ(0.001f, ´ÎÊı);
+//        float é•¿åº¦ = æ–¹å‘.magnitude;
+//        Vector2 æ ‡å‡†æ–¹å‘ = æ–¹å‘.normalized;
+//        int æ¬¡æ•° = (int)(time / é—´éš”);
+//        float æ’å€¼ = Lerpå‡è¡¡æ’å€¼(0.001f, æ¬¡æ•°);
 
 
 //        float Enter_Time = 0;
@@ -2224,14 +2476,14 @@ public class Event_M
 //        while (true)
 //        {
 //            Vector2 Targe = default;
-//            ³¤¶È = Mathf.Lerp(³¤¶È, 0, ²åÖµ);
-//            Targe = ³¤¶È * ·½Ïò;
-//            while (Time.unscaledTime <= Enter_Time + ¼ä¸ô)
+//            é•¿åº¦ = Mathf.Lerp(é•¿åº¦, 0, æ’å€¼);
+//            Targe = é•¿åº¦ * æ–¹å‘;
+//            while (Time.unscaledTime <= Enter_Time + é—´éš”)
 //            {
 
 
 
-//                //Vector2 End = ³¤¶È * ±ê×¼·½Ïò;
+//                //Vector2 End = é•¿åº¦ * æ ‡å‡†æ–¹å‘;
 //                //t.localPosition = Enter_way + End;
 //                yield return W;
 
@@ -2244,47 +2496,47 @@ public class Event_M
 
 
 //    }
-//    else Debug.LogError("ÀëÆ×.Ô­µØÕğ¶¯");
+//    else Debug.LogError("ç¦»è°±.åŸåœ°éœ‡åŠ¨");
 //}
 
-//public static void ÉÁ¹â(GameObject Ô­Éíj, float time)
+//public static void é—ªå…‰(GameObject åŸèº«j, float time)
 //{
-//    ÉÁË¸ ÉÁ;
-//    ÉÁ = Ô­Éíj.GetComponent <ÉÁË¸>();
-//    if (ÉÁ == null)
-//    {//Îª¿Õ¾Í³õÊ¼»¯
+//    é—ªçƒ é—ª;
+//    é—ª = åŸèº«j.GetComponent <é—ªçƒ>();
+//    if (é—ª == null)
+//    {//ä¸ºç©ºå°±åˆå§‹åŒ–
 
 //        //GameObject light;
 
 
-//        //light = new GameObject("ÉÁ¹â");
-//        //light.transform.SetParent(Ô­Éíj.transform);
+//        //light = new GameObject("é—ªå…‰");
+//        //light.transform.SetParent(åŸèº«j.transform);
 
-//        ÉÁ = Ô­Éíj.AddComponent<ÉÁË¸>();
+//        é—ª = åŸèº«j.AddComponent<é—ªçƒ>();
 
-//        ÉÁ.father = Ô­Éíj;
-//        ÉÁ.³õÊ¼»¯();
+//        é—ª.father = åŸèº«j;
+//        é—ª.åˆå§‹åŒ–();
 //    }
-//    ÉÁ.StartCoroutine(ÉÁ.¿ªÉÁÒ»ÏÂ(time));
+//    é—ª.StartCoroutine(é—ª.å¼€é—ªä¸€ä¸‹(time));
 //}
 
-//public static    void ÉÁ¹â(GameObject Ô­Éíj,float time)
+//public static    void é—ªå…‰(GameObject åŸèº«j,float time)
 //{
-//    ÉÁË¸ ÉÁ;
-//    ÉÁ = Ô­Éíj.GetComponentInChildren<ÉÁË¸>();
-//    if (ÉÁ == null)
-//    {//Îª¿Õ¾Í³õÊ¼»¯
+//    é—ªçƒ é—ª;
+//    é—ª = åŸèº«j.GetComponentInChildren<é—ªçƒ>();
+//    if (é—ª == null)
+//    {//ä¸ºç©ºå°±åˆå§‹åŒ–
 
 //        GameObject light;
 
 
-//        light = new GameObject("ÉÁ¹â");
-//        light.transform.SetParent(Ô­Éíj.transform);
+//        light = new GameObject("é—ªå…‰");
+//        light.transform.SetParent(åŸèº«j.transform);
 
-//        ÉÁ = light.AddComponent<ÉÁË¸>();
+//        é—ª = light.AddComponent<é—ªçƒ>();
 
-//        ÉÁ.father = Ô­Éíj;
-//        ÉÁ.³õÊ¼»¯();
+//        é—ª.father = åŸèº«j;
+//        é—ª.åˆå§‹åŒ–();
 //    }
-//    ÉÁ.StartCoroutine(ÉÁ.¿ªÉÁÒ»ÏÂ(time));
+//    é—ª.StartCoroutine(é—ª.å¼€é—ªä¸€ä¸‹(time));
 //}n

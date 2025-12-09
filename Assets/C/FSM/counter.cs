@@ -39,7 +39,7 @@ public class counter : State_Base
     {
         if (Player.Ground)
         {
-            if (IP.°´¼ü¼ì²â_°´×¡(IP.¸ñµ²))
+            if (IP.°´¼ü¼ì²â_°´×¡(IP.k.¸ñµ²))
             {
                 f.To_State(E_State.gedang );
             }
@@ -61,7 +61,7 @@ public class counter : State_Base
     }
     void ³É¹¦Ê§°Ü(bool b)
     {
-        if (IP.°´¼ü¼ì²â_ËÉ¿ª(IP.¹¥»÷))
+        if (IP.°´¼ü¼ì²â_ËÉ¿ª(IP.k.¹¥»÷))
         {
 
 
@@ -117,7 +117,7 @@ public class counter : State_Base
     }
 
  
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
  
         if (Fly != null) Fly.ÔÝÍ£ = false; 
@@ -262,7 +262,7 @@ public class counter : State_Base
     }
     public override void °´ÏÂ(KeyCode obj)
     {
-        if (obj==IP.¹¥»÷)
+        if (obj==IP.k.¹¥»÷)
         {
             switch (Player.·ÀÓù×´Ì¬)
             {

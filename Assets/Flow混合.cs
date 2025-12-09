@@ -29,7 +29,7 @@ public class Flow混合 : MonoBehaviour
         //Ts.Add(t);
         target1 = Player3.I.transform;
         target2 = Boss.魔理沙.I.transform;
-        摄像机.I.c.Follow = transform;
+        //摄像机.I.c.Follow = transform;
      最大fov = 摄像机.I.当前场景真正最大FOV;
     }
     private void OnEnable()
@@ -100,12 +100,25 @@ public class Flow混合 : MonoBehaviour
     float Last;
     [SerializeField]
     float 目标;
-    float Fov
+    //float Fov
+    //{
+    //    get => 摄像机.I.Fov;
+    //    set => C.m_Lens.OrthographicSize = value;
+    //    //get => 1;
+    //    //set { }
+    //}
+    public float Fov
     {
-        get => C.m_Lens.OrthographicSize;
-        set => C.m_Lens.OrthographicSize = value;
+        get
+        {
+
+       return Initialize.GetCarmeraAngle2_SIze( 摄像机.I. W, C.m_Lens.FieldOfView); 
+        }
+        private set
+        {
+           C.m_Lens.FieldOfView = Initialize.GetSize2CarmeraAngle(value, 摄像机.I.W ); 
+        }
     }
-    
     public bool Xb;
 
     public Vector2 Xv;

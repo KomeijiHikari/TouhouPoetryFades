@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3734062449617054905
+--- !u!114 &-6561538637661138852
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21,9 +21,11 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Other
-  m_Shader: {fileID: -6465566751694194690, guid: 18970fcfb0120434a8040d8795be2177, type: 3}
+  m_Shader: {fileID: 4800000, guid: a3196c8c99c88d44199d85435011136d, type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _DEPTHTEXIDEBUG_ON
+  - _SAMPLELIGHT_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -33,34 +35,99 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BlurTexx:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DepthTex:
+        m_Texture: {fileID: 2800000, guid: c5cc7ae2add2eca4c9a9593779cc7a62, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 66d1f8371241e0244b1e6bc3c5c2492d, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
+    - _NorTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
+    - _NorTexx:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _X:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Y:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Z:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _Alpha: 1
-    - _BUILTIN_QueueControl: -1
-    - _BUILTIN_QueueOffset: 0
-    - _Float: 1
+    - _AlphaCutoff: 0.5
+    - _B: 2
+    - _BlackWhite: 0
+    - _BlurBlend: 1
+    - _Contrast: 1
+    - _DarkColor: 0.719
+    - _DepthBlack: 0
+    - _DepthLightDeb: 0
+    - _DepthTexDeb: 0
+    - _DepthTexDebug: 0
+    - _DepthTexIDebug: 1
+    - _DepthTexIntensity: 1
+    - _DepthTexOri: 1
+    - _DownIntensity: 1
+    - _DownLightPixel: 25.7
+    - _EmisionPower: 0
+    - _FFF: 1
+    - _G: 2
+    - _Hsl_s: 0.5
+    - _LerpDarkLight: 1
+    - _LightAffection: 2
+    - _LightDeb: 0
     - _NoColor: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
+    - _NoShader: 0
+    - _NoWayDeb: 0
+    - _NormalDebug: 0
+    - _NormalIntensity: 2
+    - _NormalPower: 0
+    - _Offset: 1
+    - _R: 2
+    - _SampleLight: -1
+    - _Sen: -0.24
+    - _SenS: 0
+    - _SolidEmision: 0
+    - _Step: 0.51
+    - _Thickness: 0.462
+    - _Threshold: 1
+    - _ThresholdNor: 1
+    - _TwoPartDeb: 0
+    - _UpIntensity: 1
+    - _UpLightPixel: 0
+    - _UpsaturabilityLrep: 1
+    - _WayDeb: 0
+    - _WayInt: 0
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 0}
-    - _EdgeColor: {r: 1, g: 1, b: 1, a: 0}
-    - _SpriteColor: {r: 1, g: 1, b: 1, a: 0}
-    - _Vector3: {r: 0, g: 0, b: 0, a: 0}
+    - _Bouns: {r: 0, g: 0, b: 0, a: 0}
+    - _CCC: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+    - _DarkColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+    - _EdgeColor: {r: 0, g: 0, b: 0, a: 0}
+    - _EmisionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FogColor: {r: 0, g: 0, b: 0, a: 0.21176471}
+    - _Ocolor: {r: 1, g: 1, b: 1, a: 1}
+    - _Size: {r: 0, g: 0, b: 0, a: 0}
+    - _SpriteColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Way: {r: -1.3, g: -1.7, b: 0.7, a: 0}
+    - _WayColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

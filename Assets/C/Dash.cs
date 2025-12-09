@@ -28,8 +28,14 @@ public class DASH
         this.my = my;
 
     }
-public  float 冲刺持续时间_;
+    /// <summary>
+    ///变动的总
+    /// </summary>
+    public float 冲刺持续时间_;
 
+    /// <summary>
+    ///不变的总时间
+    /// </summary>
     public float 冲刺持续时间 = 0.2f;
     public float 冲刺速度 = 40f;
     public float 基础冲刺速度 = 5f;
@@ -143,7 +149,7 @@ public class Dash : MonoBehaviour
         {
             if (!下蹲dASH .冲刺显示)
             {
-            if (!Player_input.I.按键检测_按住(Player_input.I.下))
+            if (!Player_input.I.按键检测_按住(Player_input.I.k.下))
             {
                 if (Player.I.头空_)
                 {
@@ -193,7 +199,7 @@ public class Dash : MonoBehaviour
     {
  
 
-        if (Player_input.I.D_I [Player_input.I.冲刺].no_State >= 0.9f
+        if (Player_input.I.D_I [Player_input.I.k.冲刺].no_State >= 0.9f
           || Player_input.I.玩家输入的按键存储_按住.Count >= 1
           )
         {
@@ -228,7 +234,7 @@ public class Dash : MonoBehaviour
         进入自动滑铲模式了();
         撞到墙或者腾空跳出();
 
-        if (Player_input.I.按键检测_按下(Player_input.I.冲刺))
+        if (Player_input.I.按键检测_按下(Player_input.I.k.冲刺))
         {
 
 

@@ -27,7 +27,7 @@ public class 加强点
 public class 剧情控制器 : MonoBehaviour
 {
     操控 操控_;
-    攻击 攻击_;
+    I_攻击 攻击_;
 
     static 剧情控制器 I { get;    }
  

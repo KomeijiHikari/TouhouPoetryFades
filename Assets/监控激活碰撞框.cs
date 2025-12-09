@@ -4,15 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class 监控激活碰撞框 : MonoBehaviour
-{
-    [SerializeField]
+{ 
     [DisplayOnly]
-    int 所属相机编号 = -999;
+  public  int 所属相机编号 = -999;
 
-    public Action<bool> 是我;
+    [SerializeField] 
+Transform  碰撞框;
+
+    public bool Deb;
+
+    public Action<bool> 是我; 
     private void Start()
     {
-        所属相机编号 = transform.Get_摄像框编号();
+        if (碰撞框!=null)
+        {
+            所属相机编号 = 碰撞框.Get_摄像框编号();
+        }
+        else
+        {
+            所属相机编号 = transform.Get_摄像框编号();
+        }
+
         Initialize_Mono.I.重制触发 += 响应; 
     }
  public void 刷新()
@@ -21,8 +33,11 @@ public class 监控激活碰撞框 : MonoBehaviour
     }
     private void 响应(int 场景, int 编号)
     {
+ 
         var a = 场景 == gameObject.scene.buildIndex && 编号 == 所属相机编号;
-
+        if (Deb)
+        { 
+        }
         if (gameObject.name == "molisa")
         {
           bool AAA = 场景 == gameObject.scene.buildIndex && 编号 == 所属相机编号; 

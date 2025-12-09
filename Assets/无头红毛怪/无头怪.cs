@@ -139,14 +139,14 @@ public class 无头怪 : 泛用状态机
         {
             a?.播放(字典["run"]);
 
-            if (Player_input.I.按键检测_按下(Player_input.I.跳跃)||!Ground)
+            if (Player_input.I.按键检测_按下(Player_input.I.k.跳跃)||!Ground)
             {
                 to_state(sky);
             }else  if (Player_input.I.水平操作_ != 0)
             {
                 rd.velocity = new Vector2(Speed* Player_input.I.水平操作_, 0);
             }
-            else if (Player_input.I.按键检测_按下(Player_input.I.攻击)) 当前 = 当前.to_state(dash);
+            else if (Player_input.I.按键检测_按下(Player_input.I.k.攻击)) 当前 = 当前.to_state(dash);
             else
             {
                  to_state(idle);
@@ -159,11 +159,11 @@ public class 无头怪 : 泛用状态机
         idle.Stay += () =>
         {
 
-            if (Player_input.I.按键检测_按下(Player_input.I.跳跃)||!Ground )
+            if (Player_input.I.按键检测_按下(Player_input.I.k.跳跃)||!Ground )
             {
                  to_state(sky);
             }
-            else if (Player_input.I.按键检测_按下(Player_input.I.攻击)) 当前 = 当前.to_state(dash);
+            else if (Player_input.I.按键检测_按下(Player_input.I.k.攻击)) 当前 = 当前.to_state(dash);
             else
             {
                 if (Player_input.I.水平操作_ != 0)

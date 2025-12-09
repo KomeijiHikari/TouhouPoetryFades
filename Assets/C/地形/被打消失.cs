@@ -4,9 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
+using Unity.VisualScripting;
+
+
 
 public partial class    被打消失
 {
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    sp.color = Color.red;
+    //    Initialize_Mono.I.Waite(() => { 
+    //        sp.color = Color.white;
+    //    },0.1f);
+   
+    //}
     private void Update()
     {
         if (主动出发)
@@ -31,6 +42,7 @@ public partial class    被打消失
     Vector2 Way;
     private void Awake()
     {
+        if (Poin!=null)     PoinPos = Poin.position;
         sp = GetComponent<SpriteRenderer>();
         bc = GetComponent<BoxCollider2D >();
 
@@ -41,10 +53,7 @@ public partial class    被打消失
     void Start()
     {
         sp = GetComponent<SpriteRenderer>();
-        if (hpMax_ == 0)
-        {
-            hpMax_ = 100;
-        }
+ 
         当前hp = hpMax;
  
         粒子 = GetComponentInChildren<粒子系统>();
@@ -103,7 +112,13 @@ public partial class 被打消失 : MonoBehaviour, I_生命, I_Dead, I_Revive
 
 
     public float hpMax_;
-    public float hpMax { get => hpMax_; set => hpMax_ = value; }
+    public float hpMax { get {
+            if (hpMax_==0)
+            {
+                hpMax_ = 100;
+            }
+            return hpMax_;
+        } set => hpMax_ = value; }
     public Action 生命归零 { get; set; }
     public bool HPROCK { get; set; }
 
@@ -121,7 +136,7 @@ public partial class 被打消失 : MonoBehaviour, I_生命, I_Dead, I_Revive
             return 当前hp_;
         }
         set
-        {
+        { 
             当前hp_ = value;
             if (当前hp_ <= 0)
             {
@@ -129,14 +144,34 @@ public partial class 被打消失 : MonoBehaviour, I_生命, I_Dead, I_Revive
             }
         }
     }
+    [SerializeField] bool Deb;
+
     float TT;
+
+    public Transform Poin;
+    Vector3 PoinPos;
     public void 被扣血(float i, GameObject obj, int SKey)
     {
         if (Time.time-TT> 最小收击时间间隔)
         {
             TT = Time.time;
+            var a = false;
 
-            var a = 当前方向.方向To_v2().is_四方向比较(transform.你在我的哪里(obj.transform));
+            if (Poin==null)
+            {
+                Debug.LogError("被打方向检测 被打方向检测 被打方向检测 被打方向检测 被打方向检测 被打方向检测 被打方向检测 ");
+                a = 当前方向.方向To_v2().is_四方向比较(transform.你在我的哪里(obj.transform));
+            }
+            else
+            {
+                ///冰块很长玩家在下面用圆劈 但是在冰块右下方 符合右方标准 所以 让“自己”位置偏移到最右侧
+                Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA测 被打方向检测 ");
+                var zzz = PoinPos.你在我的哪里(obj.transform,true);
+                var www = 当前方向.方向To_v2();
+                Debug.LogError(zzz + "              "+ www);
+              a = 当前方向.方向To_v2().is_四方向比较(PoinPos.你在我的哪里(obj.transform));
+            }
+
             if (a) 扣血效果(i, obj);
         }
 

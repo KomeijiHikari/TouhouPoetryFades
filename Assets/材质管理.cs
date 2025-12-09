@@ -7,7 +7,7 @@ public class 材质管理 :MonoBehaviour
     public static string Unli_Orther { get; } = "Unli_Orther";
     public static string Other { get; } = "Other";
             public static string _去色 { get; } = "_NoColor";
-    public static string _EdgeColor { get; } = "_EdgeColor";
+    public static string _EdgeColor { get; } = "_EdgeColor"; 
     public static string _SpriteColor { get; } = "_SpriteColor";
     public static string _Alpha { get; } = "_Alpha";
     public static string 残影 { get; } = "残影";

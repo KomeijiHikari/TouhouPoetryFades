@@ -7,9 +7,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ATK : MonoBehaviour,打印消息, 攻击
+public class ATK : MonoBehaviour,打印消息, I_I攻击_
 {
-
+  
     public bool 状态消息_;
     public bool 状态消息 { get => 状态消息_; set => 状态消息_ = value; }
     public bool 攻击了吗_ = false;
@@ -205,7 +205,7 @@ default:
     }
  public  void 攻击动画控制(KeyCode obj)
     {
-        if (obj != Player_input.I.攻击) return; 
+        if (obj != Player_input.I.k.攻击) return; 
         攻击(); 
     }
     private void ATK_下蹲攻击控制()

@@ -8,13 +8,24 @@ public class dun : State_Base
     public override void EnterState()
     {
 
-        Player.Velocity = Vector2.zero;
+
         Player.进入一半();
-        A.Playanim(A_N.dun_0_);
+        Player.Velocity = Vector2.zero;
+        switch (f.I_State_L.state)
+        {
+            case E_State.dash:
+                A.Playanim(A_N.dun_dundash);
+                break;
+            default:
+                A.Playanim(A_N.dun_0_);
+                break;
+        }
+ 
+
 
     }
     
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
         if (!不退出一半)
         {
@@ -30,7 +41,7 @@ public class dun : State_Base
 
     public override void 按下(KeyCode obj)
     {
-        if (obj == IP.冲刺)
+        if (obj == IP.k.冲刺)
         {
             if (Player.dundash.冷却好了)
             {
@@ -41,7 +52,7 @@ public class dun : State_Base
                 Player.闪光();
             }
         }
-        if (obj == IP.攻击)
+        if (obj == IP.k.攻击)
         {
             不退出一半 = true; 
             f.To_State(E_State.dunatk);
@@ -51,7 +62,7 @@ public class dun : State_Base
 
     public override void 松开(KeyCode obj)
     {
-        if (obj==IP.下)
+        if (obj==IP.k.下)
         { 
             f.To_State(E_State.idle);
         }

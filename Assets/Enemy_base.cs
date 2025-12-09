@@ -7,6 +7,7 @@ using BehaviorDesigner.Runtime;
 using DG.Tweening;
 using System.Linq;
 using SampleFSM;
+using Sirenix.OdinInspector;
 public enum E_超速等级
 {
     静止,
@@ -17,23 +18,51 @@ public enum E_超速等级
     虚化,
     虚无,
 }
-public interface I_Speed_Change
+public interface I_Speed_Is
 {
+ 
+    /// <summary>
+    /// 每个预制体自行设置的  ，游戏内不会改变
+    /// </summary> 
+    public float 固定等级差
+    {
+        get
+        {
+            var f = Speed_Lv / Player3.Public_Const_Speed;
+            //var  V = Math.Clamp(f, Initialize_Mono.I.Speed_Min, Initialize_Mono.I.Speed_Max);
+            return f;
+        }
+    }
+
+    /// <summary>
+    /// 只读  等级换算玩家速度后的速度
+    /// </summary>
+    float Speed_Lv { get; set; }
+}
+public interface I_Speed_Change: I_Speed_Is
+{
+    /// <summary>
+    ///  设定  我比主角快，那就上海主角 很快 那就消失
+    ///  我比主角慢 那就接近静止  太慢 那就碰撞消失  视觉存在
+    /// </summary>
+
+
     public GameObject 对象 { get  ; }
     System.Action 变速触发 { get; set; }
     E_超速等级 超速等级 { get {
-            E_超速等级 e_ = E_超速等级.低速;
-          if ( 固定等级差 < 1/Initialize_Mono.I.负阀值)
-              e_ = E_超速等级.静止;
-            if ( 固定等级差 > 1) 
-                e_ = E_超速等级.正常;
-                if ( 固定等级差 > Initialize_Mono.I.阀值) 
+            E_超速等级 e_ = E_超速等级.正常;
+
+            if (固定等级差 < 1 / Initialize_Mono.I.阀值|| 固定等级差._is(1 / Initialize_Mono.I.阀值 )) 
+                e_ = E_超速等级.低速;
+            if (固定等级差 <    Initialize_Mono.I.负阀值 || 固定等级差._is(1 / Initialize_Mono.I.负阀值 ))
+                e_ = E_超速等级.静止; 
+            if ( 固定等级差 >= Initialize_Mono.I.阀值) 
                     e_ = E_超速等级.超速;
-                    if ( 固定等级差 > Initialize_Mono.I.阀值2) 
+                    if ( 固定等级差 >= Initialize_Mono.I.阀值2) 
                         e_ = E_超速等级.半虚化;
-                        if ( 固定等级差 > Initialize_Mono.I.阀值2_5) 
+                        if ( 固定等级差 >= Initialize_Mono.I.阀值2_5) 
                             e_ = E_超速等级.虚化;
-                            if ( 固定等级差 > Initialize_Mono.I.阀值3) 
+                            if ( 固定等级差 >= Initialize_Mono.I.阀值3) 
                                 e_ = E_超速等级.虚无;     
             return e_;
         } }
@@ -59,19 +88,7 @@ public interface I_Speed_Change
     /// 生物的话，会一直改变          死物的话不会变          变速的目标
     /// </summary>
     float Current_Speed_LV { get; }
-    /// <summary>
-    /// 每个预制体自行设置的  ，游戏内不会改变
-    /// </summary>
-    float Speed_Lv { get; set; }
-    /// <summary>
-    /// 只读  等级换算玩家速度后的速度
-    /// </summary>
-  public  float 固定等级差 { get
-        { 
-            var f =  Speed_Lv / Player3.Public_Const_Speed;
-            //var  V = Math.Clamp(f, Initialize_Mono.I.Speed_Min, Initialize_Mono.I.Speed_Max);
-            return f;
-        } } 
+ 
 }
 
 interface I_暂停
@@ -82,8 +99,7 @@ interface I_暂停
 /// 攻击行为和动画由行为树编辑。，攻击实际伤害 数值发生由碰撞箱触发
 /// </summary>
 public partial class Enemy_base : BiologyBase, I_Speed_Change, I_暂停, I_M_Ridbody2D
-{
- 
+{ 
     public bool 根性=false ;
     public GameObject 对象 { get => gameObject; }
     [SerializeField]
@@ -132,6 +148,7 @@ public partial class Enemy_base : BiologyBase, I_Speed_Change, I_暂停, I_M_Ridbo
         get { 
             if (p.Get_矢量长度()==0)
             {
+                
                 return Speed_Lv;
             }
             else
@@ -197,6 +214,7 @@ public  float Max韧性;
         碰撞不动 = transform.position;
 
     }
+
     private void OnCollisionStay2D(Collision2D co)
     {
         if (co.gameObject.CompareTag(Initialize.Player))
@@ -294,6 +312,8 @@ public  float Max韧性;
 
     public void 嗝屁()
     {
+        yalaAudil.I.EffectsPlay("Die", gameObject. GetInstanceID());
+
         co.enabled = false;
         生命归零?.Invoke();
 
@@ -336,11 +356,14 @@ public  float Max韧性;
     Vector2 BoomSpeed_;
     public Vector2 BoomSpeed { get => BoomSpeed_; set => BoomSpeed_ = value; }
 
+    [SerializeField]
+    bool 空气墙碰撞设置1_=true;
     /// <summary>
     ///    只读
     /// </summary>
     [SerializeField]
-    bool 空气墙碰撞_;
+    [DisplayOnly]
+    bool 空气墙碰撞显示_; 
     public bool 空气墙碰撞
     {
         get
@@ -443,7 +466,7 @@ public  float Max韧性;
         开箱();
 
        GravityScale = 0;
-        sp.material = 材质管理.Get_Material("Other");
+        sp.material = 材质管理.Get_Material(材质管理.Other);
         //边缘颜色更新();
         //Color .blue 
 
@@ -491,6 +514,7 @@ public  float Max韧性;
     bool 限制_;
     private void Update()
     {
+  
         限制_ = I_S.限制;
         if (Debug_)
         {
@@ -529,15 +553,17 @@ public  float Max韧性;
         else
         {
             v?.EnableBehavior(); ///恢复
-            an.speed = I_S.固定等级差;
+
+            if (an!=null)   an.speed = I_S.固定等级差;
         }
 
  
                //显示读取后刷新_Curttent_Speed_ = I_S.Curttent_Speed;
-               显示_Speed_ = I_S.固定等级差;
-        移动距离_ = 移动距离;
-        空气墙碰撞 = 空气墙碰撞_;
-        空气墙碰撞_ = 空气墙碰撞;
+               显示_Speed_ = I_S.固定等级差; 
+
+        if (暂停) return;
+        空气墙碰撞 = 空气墙碰撞设置1_;
+        空气墙碰撞显示_ = 空气墙碰撞;
     }
     
 
@@ -546,6 +572,9 @@ public  float Max韧性;
     public float 被打时间;
     public override void 被扣血(float i, GameObject obj, int SKey=0)
     {
+
+        /// 挡住无伤  没挡住  被扣血  扣血破防  或者被扣学死掉   4种情况
+
         if (SKey == 0) SKey = Initialize.Get_随机Int();
         ///不重复
         if (!IIIIIIIB.Add(SKey)) return;
@@ -561,7 +590,7 @@ public  float Max韧性;
             return;
         }
 
-  
+        yalaAudil.I.EffectsPlay("Hit", gameObject.GetInstanceID()); 
         //共用特效
         sp.闪光(0.05f);
         ///血量计算
@@ -572,6 +601,7 @@ public  float Max韧性;
         float 反方向 = Initialize.返回和对方相反方向的标准力(gameObject, obj).x;
         if (当前hp <= 0)
         { 
+
             ///特效
             粒子系统?.restore();
             粒子系统?.Play(); 
@@ -610,6 +640,8 @@ public  float Max韧性;
                 粒子系统.数量 = 3;
                 粒子系统.喷射方向 = new Vector2(反方向, 0);
                 粒子系统?.Play();
+
+                 
             }
             ///刀光特效
             特效_pool_2.I.GetPool(Bounds.center, T_N.特效受击, 反方向 > 0, sp).Speed_Lv = Player3.Public_Const_Speed;
@@ -621,7 +653,7 @@ public  float Max韧性;
                 p.SafeVelocity = 扣血外部力;
                 扣血外部力 = Vector2.zero;
             }
-            else if (!根性)   p.SafeVelocity = new Vector2(反方向 * 5, 0);
+            else if (!根性) p.SafeVelocity = new Vector2(反方向 * 5, 0);
           
 
 
@@ -643,12 +675,12 @@ public  float Max韧性;
         {
             if (空气墙碰撞)
             {
-                return 1 << Initialize.L_Ground | 1 << Initialize.L_Air_wall;
+                return 1 << Initialize.L_Ground | 1 << Initialize.L_Air_wall| 1 << Initialize.L_M_Ground;
 
             }
             else
             {
-                return 1 << Initialize.L_Ground;
+                return 1 << Initialize.L_Ground | 1 << Initialize.L_M_Ground;
             }
         }
     }
@@ -733,6 +765,7 @@ public partial class Enemy_base : I_Dead, I_Revive
         StartWay.DraClirl(5, Color.blue, 20);
 
     }
+    [UnityEngine.Tooltip(" 死亡时候关闭  复活时候开启的组件　")]
     [SerializeField]
     List<Component> 组件列表;
 
@@ -757,10 +790,11 @@ public partial class Enemy_base : I_Dead, I_Revive
 
     public bool 重制()
     {
-        if (Debug_) Debug.LogError(" 重制() 重制() 重制() 重制() 重制() ");
+ 
+           if (Debug_) Debug.LogError(" 重制() 重制() 重制() 重制() 重制() ");
         if (p != null) p.Stop_Velo();
-         
-        v?.EnableBehavior(); ///恢复
+        E_重制?.Invoke();
+       v?.EnableBehavior(); ///恢复
 
         an.Play(idle);
         HPROCK = false; //和死亡状态相对应
@@ -773,12 +807,19 @@ public partial class Enemy_base : I_Dead, I_Revive
 
         return true;
     }
+   public  System.Action E_重制;
 }
 
 public class Int不重复
 {
-    List<int> 列表=new List<int> (); 
- public bool Add(int i,bool de=false)
+    List<int> 列表=new List<int> ();
+    /// <summary>
+    ///  如果重复返回false
+    /// </summary>
+    /// <param name="i"></param>
+    /// <param name="de"></param>
+    /// <returns></returns>
+    public bool Add(int i,bool de=false)
     {
     if(de)    Debug.LogError(i);
         if (!列表.Contains (i))

@@ -49,7 +49,7 @@ namespace SampleFSM
       };
             Up.Stay += () =>
             {
-                if (Player_input.I.按键检测_松开(Player_input.I.交互))
+                if (Player_input.I.按键检测_松开(Player_input.I.k.交互))
                 {
                     当前 = 当前.to_state(Null);
                 } 
@@ -90,8 +90,8 @@ namespace SampleFSM
                 else    摄像机.I.FOV_还原(); 
 
                     脉冲.I.File(Player3.I.transform.position, 0.08f, false, 间隔  ,0.3f);
- 
-                               Player3.Public_Const_Speed = f;
+                Player3.I.SetSpeed(f);
+                //Player3.Public_Const_Speed = f;
             } 
         }
 

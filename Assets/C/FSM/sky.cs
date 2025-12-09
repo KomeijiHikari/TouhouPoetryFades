@@ -1,12 +1,11 @@
+//using Schema.Internal.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class sky : State_Base  
-{
-
-
+{ 
     //float 原始碰撞;
     public override void AweakStatebase()
     {
@@ -24,8 +23,8 @@ public class sky : State_Base
         不是第一次悬浮 = false;
            第一次跳跃 = false;
         //Player.前档板.enabled = true;
- 
- 
+
+
         switch (f.I_State_L .state)
         { 
             case E_State.upatk: 
@@ -43,6 +42,7 @@ public class sky : State_Base
                 }
                 else
                 {
+
                     A.Playanim(JUMAP_name.上去);
                 }
                 break;
@@ -62,9 +62,11 @@ public class sky : State_Base
             case E_State.run:
             case E_State.idle:
                case E_State.skydash:
+
                 Vector2 dian = Player.脚底发射(0.9f);
                 if (dian!=Vector2 .zero)
                 {
+                    yalaAudil.I.EffectsPlay("Jump", 0);
                     特效_pool_2.I.GetPool(dian, T_N .特效跳跃 ).Speed_Lv =Player3 .Public_Const_Speed;
  
                 }
@@ -76,14 +78,20 @@ public class sky : State_Base
                     A.Playanim(JUMAP_name.中间);
                 }
                 else
-                { 
+                {
+                    yalaAudil.I.EffectsPlay("Jump", 0);
                     A.Playanim(JUMAP_name.上去);
+                    特效_pool_2.I.GetPool(dian, T_N.特效跳跃).Speed_Lv = Player3.Public_Const_Speed;
                 }
                 break;
             case E_State.cricleatk:
             case E_State.pa:
+            case E_State.wall_surfing:
                 //Debug.LogError("AAAAAAAAAAAAAAAA");
                 A.Playanim(JUMAP_name.中间);
+                break;
+            case E_State.dash:
+                A.Playanim(JUMAP_name.下去);
                 break;
         }
 
@@ -91,10 +99,10 @@ public class sky : State_Base
         //A.Playanim(animname);
  
     }
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
-        base.ExitState();
-    
+        base.ExitState(e);
+        Player.记录a(true);
         //Player.前档板.enabled = false;
         //Player.po.size = new Vector2(原始碰撞, Player.po.size.y);
     }
@@ -110,8 +118,8 @@ public class sky : State_Base
                 第一次跳跃 = false;
             }
         }
-        f.To_State(E_State.cricleatk);
-        return;
+
+
         ///多端跳
         //if (Player.玩家数值.Boss杀手)
         //{
@@ -144,7 +152,7 @@ public class sky : State_Base
 
         if (IP.方向正零负!=0)
         {
-            if (Player.前空_) Player.AddForce(new Vector2(IP.方向正零负 * Player.玩家数值.起步速度, 0));
+            if (Player.前空_) Player.AddForce(new Vector2(Player.返回方向 ()* Player.玩家数值.起步速度, 0));
         }
         if (IP.水平操作_ == 0 && Player.Velocity.y < 0)
         {
@@ -170,7 +178,7 @@ public class sky : State_Base
         if (Player.N_.悬浮)
         {
             //Debug.LogError("  if (Player.N.悬浮)  if (Player.N.悬浮)  if (Player.N.悬浮)");
-        if (IP.按键检测_按住(IP.跳跃)&& IP.Get_key( IP.跳跃).Keeptime>0.2f)
+        if (IP.按键检测_按住(IP.k.跳跃)&& IP.Get_key( IP.k.跳跃).Keeptime>0.2f)
         {
                 if (false )
                     if (Player.Velocity.y < 悬浮速度)
@@ -195,6 +203,9 @@ public class sky : State_Base
         if (Player_input .I .方向正零负!=0
             &&Player.顶死
             &&!Player.Ground
+                        && Player.Velocity.y<0
+            //&&IP.按键检测_按住(IP.上)
+            //&&IP.按键检测_按住 (IP.跳跃)
             )
         { 
             if (Time.frameCount- f.Getstate(E_State.wall).ExiteFramet>6)
@@ -243,7 +254,7 @@ public class sky : State_Base
         //    f.To_State(E_State.dash); 
         //}
         //else  
-        if (IP.按键检测_按住 (IP.下))
+        if (IP.按键检测_按住 (IP.k.下))
         { 
                 f.To_State(E_State.dun); 
         }
@@ -276,13 +287,21 @@ public class sky : State_Base
 
             if (pa!=null||pb!=null)
             { 
-                Player.Ground = true;
+                //Player.Ground = true;
+               Player. transform.position-= new Vector3 (0,0.1f);
             }
         }
     }
     bool 前空=true;
     public override void UpdateState()
     {
+        if (IP.按键检测_按下(IP.k.跳跃)) 
+        if (EnterTime > 0.1f || f.I_State_L.state == E_State.cricleatk)
+        {
+            f.To_State(E_State.cricleatk);
+
+            return;
+        }
         if (Player.悬挂.满足)
         {
             if (IP.方向正零负 == Player.LocalScaleX_Set)
@@ -315,6 +334,11 @@ public class sky : State_Base
             //}   );
         }
 
+        if (Player.Velocity.y>0)
+        {
+         
+            Find(双点碰撞(Player.Velocity.y / 20));
+        }
 
         if (!第一次跳跃)
         {
@@ -328,7 +352,7 @@ public class sky : State_Base
             } 
         }
 
-        if (!IP.按键检测_按住 (IP.跳跃))//被弹簧弹上去
+        if (!IP.按键检测_按住 (IP.k.跳跃))//被弹簧弹上去
         {
             if (Player.Velocity .y>Player.玩家数值.跳跃瞬间速度)
             {
@@ -371,24 +395,77 @@ public class sky : State_Base
         }
     }
 
+    public static List<RaycastHit2D> 双点碰撞(float distance)
+    {
+        var a = new Vector2(Player3.I.Bounds.min.x, Player3.I.Bounds.max.y);
+        var b = (Vector2)Player3.I.Bounds.max;
+        LayerMask l = 1 << Initialize.L_Ground|1<<Initialize.L_M_Ground;
+
+        // 使用类内的 碰撞检测层
+        var mask = l;
+
+        // 从 a 和 b 向上发射射线
+        List<RaycastHit2D> hitA = new List<RaycastHit2D>(Physics2D.RaycastAll(a, Vector2.up, distance, mask));
+        List<RaycastHit2D> hitB = new List<RaycastHit2D>(Physics2D.RaycastAll(b, Vector2.up, distance, mask));
+
+        // Debug 可视化（使用 Vector3 构造以避免 Vector2/Vector3 运算二义性）
+        Debug.DrawLine(new Vector3(a.x, a.y, 0f), new Vector3(a.x, a.y + distance, 0f), Color.cyan, 0.5f);
+        Debug.DrawLine(new Vector3(b.x, b.y, 0f), new Vector3(b.x, b.y + distance, 0f), Color.cyan, 0.5f);
+
+        for (int i = 0; i < hitB.Count; ++i)
+        {
+            hitA.Add(hitB[i]);
+        }
+        return hitA;
+   }
+
+ 
+  public static  bool Find(List<RaycastHit2D> L)
+    { 
+        bool asd(RaycastHit2D r)
+        {
+            if (r.collider!=null)
+            {
+                r.point.DraClirl();
+                var obj = r.collider.gameObject;
+                bool bo =!  obj.CompareTag(Initialize.Ground);
+                if (bo)
+                {
+                var D=    obj.GetComponent<单方面通过>();
+                if(D!=null)
+                    { 
+                        D.触发();
+                        return true;
+                    }
+                } 
+            }
+            return false;
+        }
+        for (int i = 0; i < L.Count; i++)
+        {
+       return     asd(L[i]);
+        }
+        return false;
+    }
     public override void 松开(KeyCode obj)
     { 
-        if (obj== IP.攻击)
+        if (obj== IP.k.攻击)
         { 
                 f.To_State(E_State.skyatk);
                  
             return;
         }
- 
-            if (obj == IP.跳跃)
-            { 
+
+        if (obj == IP.k.跳跃)
+        {
             var y = 0f;
             if (Player.Velocity.y > 0) y = Player.Velocity.y;
-            var a = y / Player.玩家数值.跳跃瞬间速度; 
-            a = Mathf.Pow(a, 1.7f); 
-            Player.AddForce(new Vector2(0, Player.玩家数值.小跳向下力 * a)); 
+            var a = y / Player.玩家数值.跳跃瞬间速度;
+            a = Mathf.Min(a, 0.4f);
+            //a = Mathf.Pow(a, 1.7f);
+            Player.AddForce(new Vector2(0, Player.玩家数值.小跳向下力 * a));
         }
-        if (obj == IP.左 || obj == IP.右)
+        if (obj == IP.k.左 || obj == IP.k. 右)
         {
             //Player.Velocity = Player.Velocity;
             if (Player.Velocity.y<0)
@@ -404,7 +481,7 @@ public class sky : State_Base
             //Player.AddForce(new Vector2(foce, 0));
         }
 
-        if (obj== IP.跳跃)
+        if (obj== IP.k.跳跃)
         {
             if (A.当前anim.name == A_N.air)
             {
@@ -421,9 +498,9 @@ public class sky : State_Base
         //    f.To_State(E_State.cricleatk);
         //    return;
         //}
-        if (obj==IP.攻击)
+        if (obj==IP.k. 攻击)
         {
-            if (IP.按键检测_按住 (IP.下))
+            if (IP.按键检测_按住 (IP.k.下))
             {
                 f.To_State(E_State.downatk);
                 return;
@@ -434,7 +511,7 @@ public class sky : State_Base
             //}
        
         }
-        if (obj==IP.冲刺&&Player.前空_)
+        if (obj==IP.k. 冲刺 &&Player.前空_)
         { 
             f.To_State(E_State.skydash);
             return;

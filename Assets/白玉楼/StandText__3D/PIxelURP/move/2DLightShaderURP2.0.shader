@@ -1,5 +1,4 @@
-﻿// Made with Amplify Shader Editor
-// Available at the Unity Asset Store - http://u3d.as/y3X 
+﻿
 Shader "ORIS Shaders/my2D Light Shader URP"
 {
 	Properties
@@ -377,7 +376,7 @@ float _Threshold;
 			float _SampleLight;
 			float4 _Ocolor;
 	float _LerpDarkLight;
-
+ 
 			
 			float4 OC(sampler2D  tex,float2 UV   )
 			
@@ -453,14 +452,15 @@ float _Threshold;
  
 			
  float4 Blur (float2 uv ,float f=1)//f是采样像素之间的距离
-{ 
+{
+	if (_BlurBlend==0)  return  OC(_MainTex,uv  ); 
+
     half2 texelSize = _MainTex_TexelSize.xy*f;
-    float4 Color  ;
+    float4 Color  =0;
   float  Valid = 0;   
-
-  // half2 DepthSize= _DepthTex_TexelSize;
+ 
   int i=(_DepthTex_TexelSize.z-1)/2;
-
+  i=1;
   half2 Do=(0.5,0.5);
     for (int y = -i; y <= i; y++)
     {
@@ -778,10 +778,17 @@ return  (value+1)/2;
 				inputData.viewDirectionWS = WorldViewDirection;
 				inputData.shadowCoord = ShadowCoords;
 
-
- 		if (_NoShader==1)
+				half2 XXYY=IN.clipPos.xy;
+				XXYY/=_ScreenParams.xy;
+				if (XXYY.x*XXYY.y<0||XXYY.x>1||XXYY.y>1)
 				{
-					return tex2DNode1;
+					 // discard;
+					clip(-1);
+				}
+				
+ 				if (_NoShader==1)
+				{
+					return tex2DNode1 ;
 				}
 
 
@@ -1040,7 +1047,7 @@ float3 DirectionColor= DLInt* _WayColor.rgb  ;
 					} 
 					else if (H_LC.z  < -0.0001)  H_LC.z  =0; 
 					 
-			 	
+			 			// return tex2DNode1*_DarkColor;
 		 
 				
 				} 
@@ -1060,15 +1067,17 @@ float3 DirectionColor= DLInt* _WayColor.rgb  ;
 				
 							else if (_SampleLight==-1 )
 							{
-						
+								half3  wos=0;
 								H_DC.z=(1-H_DC.z) ;
+										 
 								 //反转后 
 						 ///step 阀门越高范围越是大，越是低  边界越是不平滑
 						 ///_LerpDarkLight  越高越越亮
 						 float zzz =step(0,H_LC.z);
-								half3  wos=0;
+						
 								if (zzz==1)
 								{
+									
 									///光照范围内
 									///光照和阴影混合？？？？
 								// zzz =step(1-_LerpDarkLight,H_LC.z);	
@@ -1089,7 +1098,7 @@ float3 DirectionColor= DLInt* _WayColor.rgb  ;
 
 		
 									 Outcolor.rgb= (0.00000001+DC.rgb)*(  1+Lightcolor .rgb)*pow(  1+DirectionColor.rgb,1+ _WayInt) ;
-								
+				 
 			 // return half4(DC.xxx,tex2DNode1.a);
 								if (LightPixel!=0)
 								{

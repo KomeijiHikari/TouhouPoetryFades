@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893229436452513750}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.89, y: 3.84, z: 0}
+  m_LocalPosition: {x: -18.7, y: -422.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -57,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 22daa333a9443be4b87b972064ae8f14, type: 2}
+  - {fileID: 2100000, guid: 0078378f955cae04f831dbd50672b074, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -101,9 +101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab704f4681b6810449b3b1ba0993633d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "\u5355\u65B9\u5411": 0
-  "\u6709\u4EBA1": 0
   "\u5E94\u8BE5\u65E0\u89C6": 0
+  "\u9876\u4E00\u4E0B\u73A9\u5BB6": 0
+  "\u5355\u65B9\u5411": 0
+  Deb: 0
+  "\u6709\u4EBA1": 0
+  "\u6682\u505C1": 0
 --- !u!114 &893229436452513751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,28 +119,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cb58321549e53442a71ff432884d7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  "\u4E0D\u4E0B\u843D": 0
   sp: {fileID: 0}
   Speed_Lv_: 4
   "\u65B9\u5411_": {x: 0, y: -1}
   "\u662F\u73A9\u5BB6\u5676\u7684": 0
-  atkvalue_: 50
+  atkvalue_: 1
+  "\u662FSP\u800C\u4E0D\u662FBC": 1
+  "\u53EF\u4EE5\u65CB\u8F6C": 0
+  "\u7206\u70B8\u9001\u8D70z": 1
+  "\u7206\u70B8\u4F24\u5BB3": 1
+  "\u89E6\u53D1\u51B0\u5757": 1
+  "\u7BAD\u5934\u4F24\u5BB3": 0
+  "\u65E0\u89C6": 1
+  "\u65E0\u89C6\u76D2\u5B50":
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
   L1:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 8640
   L2:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 8640
   Currrtten:
     serializedVersion: 2
     m_Bits: 0
   "\u9500\u6BC1_": 0
-  TTime: 0.1
-  Last: {fileID: 0}
-  Currtent: {fileID: 0}
+  TTime: 0.01
   "\u8FD0\u52A8\u6682\u505C": 0
+  "\u91CD\u529B\u52A0\u901F\u5EA6\u4E58": 0.022
+  "\u6A21\u62DF\u901F\u5EA6": {x: 0, y: 4}
+  lookme: 0
+  "\u5E27\u65CB\u8F6C\u901F\u5EA6": {x: 0, y: 0, z: 800}
   "\u5E27\u79FB\u52A8\u8DDD\u79BB": 0
-  self_speed1: 1
+  self_speed1: 2
   Debul: 0
+  "\u56DE\u6C60\u5B50": 1
   "\u6682\u505C1": 0
 --- !u!61 &893229436452513747
 BoxCollider2D:

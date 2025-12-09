@@ -24,6 +24,7 @@ public class 平台动画效果 : MonoBehaviour
     {
         P = GetComponent<生命周期管理>();
 
+        //return;
         P.效果_不复活 += (bool BBB) => {
             if (BBB&&P.闪闪发光特效)
             {
@@ -68,12 +69,21 @@ public class 平台动画效果 : MonoBehaviour
             }
             if (Time.frameCount >5)
             {
-                var B = transform.Q弹(0.8f, 0.5f, false, P.E != null, null, false);
+                var B = transform.Q弹(0.8f, 0.5f, false, true, null, false);
                 Initialize_Mono.I.Waite(() => Q弹结束?.Invoke(), 0.5f);
                 StartCoroutine(B);
             }
 
 
         };
+    }
+
+    public void 重置特效(Bounds Bb)
+    {
+        var a = Bb.阵列盒子();
+        for (int i = 0; i < a.Count; i++)
+        {
+            var B = 特效_pool_2.I.GetPool(a[i], T_N.特效砖块爆炸, Player3.I.sp);
+        }
     }
 }

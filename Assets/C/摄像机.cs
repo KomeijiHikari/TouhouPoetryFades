@@ -3,9 +3,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+using 发射器空间;
 
 public class 摄像机 : MonoBehaviour
-{
+{ 
+    public bool Deb;
+    public Transform wt;
+   public float W{get{
+            //if (Deb) Debug.LogError("摄像机距离"+ (wt.position.z - Camera.main.transform.position.z)
+            //    +"      摄像机位置"+ Camera.main.transform.position+"       摄像机前方"+ wt.position);
+            //return wt.position.z-Camera.main.transform.position.z;
+            return wt.position.z - Camera.main.transform.position.z;
+        }
+    }
+    //public bool is透视; 
+    /// <summary>
+    /// Ver  竖向尺寸转换摄像机 FOV纵向角度
+    /// </summary>
+    /// <param name="W"></param>
+    /// <param name="Hight"></param>
+    /// <returns></returns>
+    public static float GetAngle(float W, float Hight)
+    {
+
+        // 计算角度A（弧度转角度）
+        float angleA = Mathf.Atan2(W, Hight / 2) * Mathf.Rad2Deg;
+        return (90 - angleA) * 2;
+    }
+
     public static Vector2 to_屏幕坐标(Bounds b, Vector2 va)
     { 
         // 计算Bounds的左下角和右上角坐标  
@@ -42,18 +68,18 @@ public class 摄像机 : MonoBehaviour
             return new Bounds(Camera.main.transform.position, 返回对应屏幕尺寸(Fov ));
         }
     }
-    /// <summary>
-    /// 当16单位      宽为1 时，fov为0.564
-    /// </summary>
-    public    float 完美 { get; } = 0.564f;
-    public float Y
-    {
-        get { return  Fov   * 2; }
-    }
-    public float X
-    {
-        get { return Fov * Initialize.屏幕横纵比 * 2; }
-    }
+    ///// <summary>
+    ///// 当16单位      宽为1 时，fov为0.564
+    ///// </summary>
+    //public    float 完美 { get; } = 0.564f;
+    //public float Y
+    //{
+    //    get { return  Fov   * 2; }
+    //}
+    //public float X
+    //{
+    //    get { return Fov * Initialize.屏幕横纵比 * 2; }
+    //}
 
     public float 全局默认Fov { get => 原Fov1; set => 原Fov1 = value; }
 
@@ -64,13 +90,30 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
     [SerializeField]
     public  CinemachineConfiner2D 碰撞组件;
 
-  public   float Fov {  get { return c.m_Lens.OrthographicSize; }
-       private  set { c.m_Lens.OrthographicSize = value; }
-    }
- public void FOV_直接至(float  f)
+
+    private void Update()
     {
-        Fov = f;
+        FFOV = Fov;
     }
+    public float FFOV;
+  public   float Fov {  get {
+
+        if(wt!=null) return Initialize.GetCarmeraAngle2_SIze(W, c.m_Lens.FieldOfView) ;
+            return c.m_Lens.OrthographicSize; }
+       private  set {
+            if (value==0)
+            {
+                Debug.LogError("输入了0");
+            }
+            if (wt != null)  c.m_Lens.FieldOfView= Initialize.GetSize2CarmeraAngle(value ,W, Deb); 
+
+            //if (is透视)  c.m_Lens.FieldOfView = value;
+            else c.m_Lens.OrthographicSize = value; }
+    }
+ //public void FOV_直接至(float  f)
+ //   {
+ //       Fov = f;
+ //   }
 
 
     public  void FOV_缓动至( float FOV,float time, bool 用直线 = false)
@@ -78,47 +121,52 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
         if (Coroutine_缓动 != null)
             StopCoroutine(Coroutine_缓动);
  
-            Coroutine_缓动 = StartCoroutine(IE_FOV(FOV, time ));
+            Coroutine_缓动 = StartCoroutine(IE_FOV(FOV, time )); 
+    }
  
-    }
-    IEnumerator IE_FOV2(float FOV, float time, bool 用直线 = false,float time2=0 )
+[Button("设置一下", ButtonSizes.Large)]
+public void setFov(float v)
     {
-        float TargetFov = (FOV > 当前场景真正最大FOV) ? 当前场景真正最大FOV : FOV;
-        float Enter_tim = Time.realtimeSinceStartup;
-        float now_time = Time.realtimeSinceStartup;
-        float 分子 = 0;
-        if (用直线)
-        {
-            float 分母 = time / 0.04f;
-            分子 = (FOV - Fov) / 分母;
-        }
-        while (time + Enter_tim > now_time)  //第一次进入 10+1大于10
-        {
-            ///时间内循环
-            now_time = Time.realtimeSinceStartup;  //      NOW增量
-            if (用直线)
-            {
-                Fov += 分子;
-            }
-            else
-            {
-                if (Mathf.Abs(Fov - TargetFov) > 0.01)
-                {
-                    Fov = Mathf.Lerp(Fov, TargetFov, 0.05f);
-                }
-            }
-            yield return new WaitForFixedUpdate();
-        }
-        if (time2!=0)
-        {
-            while (time + Enter_tim > now_time)  //第一次进入 10+1大于10
-            {
-
-            }
-     }
-        Debug.LogError("完成");
-        Coroutine_缓动 = null;
+        Fov = v;
     }
+    //IEnumerator IE_FOV2(float FOV, float time, bool 用直线 = false,float time2=0 )
+    //{
+    //    float TargetFov = (FOV > 当前场景真正最大FOV) ? 当前场景真正最大FOV : FOV;
+    //    float Enter_tim = Time.realtimeSinceStartup;
+    //    float now_time = Time.realtimeSinceStartup;
+    //    float 分子 = 0;
+    //    if (用直线)
+    //    {
+    //        float 分母 = time / 0.04f;
+    //        分子 = (FOV - Fov) / 分母;
+    //    }
+    //    while (time + Enter_tim > now_time)  //第一次进入 10+1大于10
+    //    {
+    //        ///时间内循环
+    //        now_time = Time.realtimeSinceStartup;  //      NOW增量
+    //        if (用直线)
+    //        {
+    //            Fov += 分子;
+    //        }
+    //        else
+    //        {
+    //            if (Mathf.Abs(Fov - TargetFov) > 0.01)
+    //            {
+    //                Fov = Mathf.Lerp(Fov, TargetFov, 0.05f);
+    //            }
+    //        }
+    //        yield return new WaitForFixedUpdate();
+    //    }
+    //    if (time2!=0)
+    //    {
+    //        while (time + Enter_tim > now_time)  //第一次进入 10+1大于10
+    //        {
+
+    //        }
+    // }
+    //    Debug.LogError("完成");
+    //    Coroutine_缓动 = null;
+    //}
 
     IEnumerator IE_FOV(float FOV, float time,bool 用直线=false, float time2 = 0)
     {
@@ -293,12 +341,16 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
         }
  
           碰撞组件.InvalidateCache();
+
+        //Debug.LogError(po.gameObject.transform.name+"       "+ po.gameObject.transform.position);
         碰撞组件.m_BoundingShape2D = po;
         碰撞组件.InvalidateCache();
 
-        当前场景真正最大FOV = Initialize.返回兼容相机碰撞框的摄像机尺寸(碰撞组件.m_BoundingShape2D.bounds.size, 1000);
+ 
+        var Value = Initialize.返回兼容相机碰撞框的摄像机尺寸(碰撞组件.m_BoundingShape2D.bounds.size ,1000);
+        当前场景真正最大FOV = Value; 
 
-
+        //Fov = 当前场景真正最大FOV;
         float Result_Fov = Target_Fov;
         ///有没有目标
         if (Result_Fov == 0) 当前场景默认FOV = 全局默认Fov;
@@ -310,47 +362,8 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
         Fov = Result_Fov;
         Target_Fov = 0;
 
+        //Fov = 3;
 
-        //if (Target_Fov!=0)
-        //{
-        //    Debug.LogError(Target_Fov+"          见鬼   ");
-        //    if (当前场景真正最大FOV > Target_Fov)
-        //    {
-        //        Result_Fov = Target_Fov;
-        //    }
-        //    else
-        //    {
-        //        Result_Fov = 当前场景真正最大FOV;
-        //    }
-        //}
-        //else
-        //{
-        //    Debug.LogError(当前场景真正最大FOV+ "       "+ 全局默认Fov + "  全局默认Fov全局默认Fov全局默认Fov全局默认Fov     ");
-        //    if (当前场景真正最大FOV < 全局默认Fov)
-        //    {
-        //        Result_Fov = 当前场景真正最大FOV;
-        //    }
-        //    else
-        //    {
-        //        Result_Fov = 全局默认Fov; 
-        //    }
-        //}
-        //Fov = Result_Fov;
-        //当前场景默认FOV = Result_Fov;
-        //Target_Fov = 0;
-        /////原来的和现在的
-        ///////返回为0说明现在的更大
-        //var b = Initialize.返回兼容相机碰撞框的摄像机尺寸(碰撞组件.m_BoundingShape2D.bounds.size, 全局默认Fov);
-        //if (b != 0)
-        //{
-        //    Fov = b;
-        //    当前场景默认FOV = b;
-        //}
-        //else
-        //{
-        //    Fov = 全局默认Fov;
-        //    当前场景默认FOV = 全局默认Fov;
-        //}
     }
     public void 设置相机跟随(GameObject  p)
     {

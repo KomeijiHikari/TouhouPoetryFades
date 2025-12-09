@@ -7,6 +7,7 @@ public class pa : State_Base
     float 原先重力;
     public override bool 可以切换嘛()
     {
+        return false; 
         if (Player.玩家数值.Boss杀手) return false;
         
         //Debug.LogError("AAAAAAAAAAAAAAAAAAAA");
@@ -25,7 +26,7 @@ public class pa : State_Base
         }
         
     }
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
         Player.GravityScale = 原先重力;
     }
@@ -66,11 +67,11 @@ public class pa : State_Base
 
         if (EnterTime>0.1f )
         {
-            if (IP.按键检测_按住(IP.上))
+            if (IP.按键检测_按住(IP.k.上))
             {
                 A.Playanim(A_N.pa_to_);
             }
-            if (IP.按键检测_按住(IP.下))
+            if (IP.按键检测_按住(IP.k.下))
             {
                 f.To_State(E_State.sky);
             }

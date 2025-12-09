@@ -1,11 +1,12 @@
+using Cinemachine;
+using Ink.Parsed;
+using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
-using System;
-using UnityEngine.Rendering.Universal;
-using Cinemachine;
 using System.Linq;
-using Sirenix.OdinInspector;
+using UnityEngine; 
+using UnityEngine.Rendering.Universal;
 using static ÉúÃüÖÜÆÚ¹ÜÀí;
 
 [Serializable ]
@@ -27,8 +28,7 @@ public struct   Value
     {
         Value O = new Value();
         if (v is int) O.Int = Convert.ToInt32(v); else O.Int = iD; 
-        if (v is float) O.Float = Convert.ToSingle(v); else O.Float = fD;
-
+        if (v is float) O.Float = Convert.ToSingle(v); else O.Float = fD; 
         if (v is bool) {
             O.bD = true;
             O.Bool = Convert.ToBoolean(v);
@@ -55,65 +55,71 @@ public struct   Value
 }
 public partial class Player3 : BiologyBase
 {
+    public Action<int> Dash´«ËÍ´¥·¢;
     public ¿ØÖÆÁ£×Ó ×Óµ¯·¢Éä;
-    public Ô²Õ¶Ìø  Ô²Õ¶ÅĞ¶¨; 
-    public new  Bounds Bounds
+    public Ô²Õ¶Ìø Ô²Õ¶ÅĞ¶¨;
+    public new Bounds Bounds
     {
         get
         {
             if (co == null)
             {
                 return new Bounds();
-            } 
+            }
 
-            return Õ¾Á¢box .bounds;
+            return Õ¾Á¢box.bounds;
         }
     }
-    public bool µØÃæµ÷ÊÔ; 
-    public static void  SaveAll()
+    public bool µØÃæµ÷ÊÔ;
+    public static string Public_Const_Speed_Name => "Public_Speed";
+    public static void SaveAll()
     {
+        Save_D.Add(Public_Const_Speed_Name, Player3.Public_Const_Speed);
         Event_M.I.Invoke(Event_M.³¡¾°±£´æ´¥·¢, Player3.I.gameObject);
+        if (Player3.I.¼ÓËÙÁË)
+        {
+            Player3.I.¼ÓËÙ(false);
+        }
         Player3.I.N_.±£´æ();
         Player3.I.Íæ¼ÒÊıÖµ.±£´æ();
         DeadPla.I.±£´æ();
         Save_D.Save();
     }
- 
-    public  Vector2 ÆÁÄ»ÉÏµÄ×ø±ê
+
+
+    public Vector2 ÆÁÄ»ÉÏµÄ×ø±ê
     {
         get
         {
-            var a = ÉãÏñ»ú.I.Camera_Bounds; 
+            var a = ÉãÏñ»ú.I.Camera_Bounds;
             return ÉãÏñ»ú.to_ÆÁÄ»×ø±ê(a, Player3.I.transform.position);
         }
     }
     new public Transform transform
     {
         get => base.transform;
-    } 
+    }
     [DisplayOnly]
     public float ±äËÙÊ±¼ä;
     float ÕæÊµÊ±¼ä;
     float ×îºóËÙ¶È;
     float Speed_fixDeltaTime
     {
-        get =>Time.fixedDeltaTime/Public_Const_Speed ;
+        get => Time.fixedDeltaTime / Public_Const_Speed;
     }
     [DisplayOnly]
     public float ÓÎÏ·ÄÚµÄÊ±ÖÓ;
     [DisplayOnly]
-   [SerializeField]
-  float µ×²ãspeed;
-
-    [SerializeField] [DisplayOnly]
-    float Public_Const_SpeedASD;
     [SerializeField]
-    bool µ÷ÊÔÄ£Ê½;
+    float µ×²ãspeed;
+
+    [SerializeField]
+    [DisplayOnly]
+    float Public_Const_SpeedASD; 
 
     public bool ³ÖĞøÌáÉıËÙ¶È;
-    public float  ÌáÉıËÙ¶È;
-
-    public float Ö÷¶¯ÉèÖÃ;
+    public float ÌáÉıËÙ¶È;
+     
     static float Public_Const_Speed_ = 1;
     public Action Public_Speed_;
     public static float Public_Const_Speed
@@ -122,13 +128,20 @@ public partial class Player3 : BiologyBase
         {
             return Public_Const_Speed_;
         }
-        set
+     private   set
         {
+            if (value == 0||value==float.NaN)
+            {
+                Debug.LogError("µ½µ×ÊÇÄÄÀïÈÃÎÒ±ä³ÉÁã£¿£¿");
+                Public_Const_Speed_ = 1;
+                return;
+            }
             if (Public_Const_Speed_ != value)
             {
-                Public_Const_Speed_ = value; 
+                Debug.LogError("±äËÙ£¬ÓÉ" + Public_Const_Speed_ + "±ä³É" + value);
+                Public_Const_Speed_ = value;
                 Player3.I.Public_Speed_?.Invoke();
-                //Debug.LogError("±äËÙ£¬ÓÉ" + Public_Const_Speed_ + "±ä³É" + value);
+
             }
         }
     }
@@ -141,66 +154,84 @@ public partial class Player3 : BiologyBase
     [Serializable]
     public class Íæ¼ÒÄÜÁ¦ : I_Save
     {
- public void È«½âËø()
+        public enum E_Íæ¼ÒÄÜÁ¦
         {
-            µØÍ¼µÀ¾ß½âËø = true;
-
-            ¿ÕÖĞDash = true;
-            Dash = true;
-          ÅÀÇ½ = true;
-          ÏÂÂä¹¥»÷ = true;
-          ÉÏÉı¹¥»÷ = true;
-          Ğü¸¡ = true;
-          ¸ñµ² = true;
-          Ê±»º = true;
+            Ô²Åü,
+            Ç½³åÀË,
+            ÉÏÉı¹¥»÷,
+            ¿ÕÖĞDash,
+            Ê±»º
         }
-   public  string  Name { get => "Íæ¼ÒÄÜÁ¦Êı¾İ";}
-      public    void ±£´æ( )
+        public void È«½âËø(bool b = true)
         {
- 
-            if (Player3.I.N_==null)
+            µØÍ¼µÀ¾ß½âËø = b;
+
+            Dash¼ÓËÙ = b;
+            Ô²Åü = b;
+            ¿ÕÖĞDash = b;
+            Dash = b;
+            Ç½³åÀË = b;
+            ÏÂÂä¹¥»÷ = b;
+            ÉÏÉı¹¥»÷ = b;
+            Ğü¸¡ = b;
+            ¸ñµ² = b;
+            Ê±»º = b;
+        }
+        public string Name { get => "Íæ¼ÒÄÜÁ¦Êı¾İ"; }
+        public void ±£´æ()
+        {
+
+            if (Player3.I.N_ == null)
             {
                 Player3.I.N_ = new Íæ¼ÒÄÜÁ¦();
             }
             string s = JsonUtility.ToJson(Player3.I.N_);
-            Save_D.Add(Name, s);   
-
- 
+            Save_D.Add(Name, s);
         }
-        public  void   ¶ÁÈ¡()
+        public void ¶ÁÈ¡()
         {
             µ¯·´ĞîÁ¦½ÌÑ§Ä£Ê½ = false;
             ½ÌÑ§Ä£Ê½ = false;
 
             if (Save_D.´æµµ×Öµä_.ContainsKey(Name))
             {
-                Player3.I.N_ = Save_D.Load_Value_D<Íæ¼ÒÄÜÁ¦>(Name,true ); 
+                Player3.I.N_ = Save_D.Load_Value_D<Íæ¼ÒÄÜÁ¦>(Name, true);
             }
             else
-            { 
+            {
                 ±£´æ();
             }
         }
         public bool µ¯·´ĞîÁ¦½ÌÑ§Ä£Ê½ { get; set; }
         public bool ½ÌÑ§Ä£Ê½ { get; set; }
-        [SerializeField] public bool µØÍ¼µÀ¾ß½âËø;
-         
-        [SerializeField] public  bool ¿ÕÖĞDash ;
-        [SerializeField] public  bool Dash;
-        [SerializeField] public  bool ÅÀÇ½ ;
-        [SerializeField] public  bool ÏÂÂä¹¥»÷ ;
-        [SerializeField] public  bool ÉÏÉı¹¥»÷ ;
-        [SerializeField] public  bool Ğü¸¡ ;
-        [SerializeField] public  bool ¸ñµ² ;
-        [SerializeField] public  bool Ê±»º ; 
- 
+        public bool µØÍ¼µÀ¾ß½âËø
+        {
+            get => µØÍ¼µÀ¾ß½âËø1; set
+            {
+                Debug.LogError("¸Ä±ä");
+                µØÍ¼µÀ¾ß½âËø1 = value;
+            }
+        }
+
+        [SerializeField] private bool µØÍ¼µÀ¾ß½âËø1;
+
+        [SerializeField] public bool ¿ÕÖĞDash;
+        [SerializeField] public bool Dash;
+        [SerializeField] public bool Ç½³åÀË;
+        [SerializeField] public bool ÏÂÂä¹¥»÷;
+        [SerializeField] public bool ÉÏÉı¹¥»÷;
+        [SerializeField] public bool Ğü¸¡;
+        [SerializeField] public bool ¸ñµ²;
+        [SerializeField] public bool Ê±»º;
+        [SerializeField] public bool Ô²Åü;
+        [SerializeField] public bool Dash¼ÓËÙ;
     }
- 
+
     public ÅĞ¶¨¿òBase ÅĞ¶¨¿ò { get; set; }
     public Íæ¼ÒÊÜÉËĞ§¹û ÊÜÉË { get; set; }
     public static Player3 I { get; private set; }
 
-    public DASH dundash { get; set; } = new DASH(0.2f, 40f, 10f, 1f, E_dash.ÏÂ²ù);
+    public DASH dundash { get; set; } = new DASH(0.07f, 40f, 20f, 1f, E_dash.ÏÂ²ù);
     public DASH skydash { get; set; } = new DASH(0.3f, 30f, 10, 1f, E_dash.¿ÕÖĞ);
     [NonSerialized]
     public AniContr_4 _4;
@@ -218,8 +249,11 @@ public partial class Player3 : BiologyBase
     /// <summary>
     /// Ç°·½ÊÇ¿ÕµÄ
     /// </summary>
-    [SerializeField] [DisplayOnly] bool ¶¥ËÀ1;
+    [SerializeField][DisplayOnly] bool ¶¥ËÀ1;
 
+    /// <summary>
+    /// ´«ËÍÏà¹Ø
+    /// </summary>
     public float NB_Dash_Time { get; set; }
     public bool ¶¥ËÀ
     {
@@ -228,7 +262,7 @@ public partial class Player3 : BiologyBase
         {
             if (¶¥ËÀ1 != value)
             {
- 
+
                 //Debug.LogError("±ä±ã±ã");
                 ¶¥ËÀ1 = value;
                 ¶¥µ½Ç½ÁË?.Invoke(value);
@@ -240,7 +274,7 @@ public partial class Player3 : BiologyBase
 
 
 
-    public   BoxCollider2D po;
+    public BoxCollider2D po;
     //void ²¥·ÅÌØĞ§(string s)
     //{
     //    ÌØĞ§_pool.I.GetPool(gameObject, s);
@@ -256,7 +290,7 @@ public partial class Player3 : BiologyBase
         dASH.ÀäÈ´ºÃÁË = true;
     }
 
-  Vector2 Last_Velocity;
+    Vector2 Last_Velocity;
 
     public Action °´ÏÂÌøÔ¾ { get; set; }
     public Action<KeyCode> °´ÏÂ { get; set; }
@@ -268,35 +302,31 @@ public partial class Player3 : BiologyBase
 
     public ÊÊÓ¦ÎÄ×Ö ÊÊÓ¦ÎÄ×Ö;
 
-  public Ğü¹Ò¼ì²â Ğü¹Ò { get;private set; }
+    public Ğü¹Ò¼ì²â Ğü¹Ò { get; private set; }
 
     public override void Flip()
     {
-        Player_input.¼Ù×°Ïà·´·½Ïò¼ü(); 
+        Player_input.¼Ù×°Ïà·´·½Ïò¼ü();
         base.Flip();
     }
- 
- public void »ºÂı·´ÏòÁ¦(float ×îµÍµã,float ±¶ÂÊ=1)
-    {
-        float °Ù·Ö±È =MathF .Abs (Velocity.x) / Íæ¼ÒÊıÖµ.³£Ì¬ËÙ¶È ;
 
-        °Ù·Ö±È = Mathf.Clamp(°Ù·Ö±È, ×îµÍµã, 1f);
-       AddForce( LocalScaleX_Set * Vector2.right *  Íæ¼ÒÊıÖµ.Ë®Æ½Ïà·´Á¦ * °Ù·Ö±È);
+    public void »ºÂı·´ÏòÁ¦(float ×îµÍµã, float ±¶ÂÊ = 1)
+    {
+        float °Ù·Ö±È = MathF.Abs(Velocity.x) / Íæ¼ÒÊıÖµ.³£Ì¬ËÙ¶È;
+
+        //°Ù·Ö±È = Mathf.Clamp( °Ù·Ö±È, ×îµÍµã, 1f);
+        Debug.LogError(°Ù·Ö±È);
+        //°Ù·Ö±È = 1;
+        AddForce(Time.fixedDeltaTime   *LocalScaleX_Set * Vector2.right * Íæ¼ÒÊıÖµ.Ë®Æ½Ïà·´Á¦ * °Ù·Ö±È);
         //Debug.LogError(°Ù·Ö±È + "  Á¦¶È   " + LocalScaleX_Set * Vector2.right * Íæ¼ÒÊıÖµ.Ë®Æ½Ïà·´Á¦* ±¶ÂÊ * °Ù·Ö±È);
     }
     protected override void Awake()
-    {  
+    {
         base.Awake();
 
 
-        if (I != null && I != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            I = this;
-        }
+        if (I != null && I != this) Destroy(this);
+        else I = this;
         _4 = GetComponent<AniContr_4>();
         Ğü¹Ò = GetComponentInChildren<Ğü¹Ò¼ì²â>();
         //³¯Ïò = 1; 
@@ -305,7 +335,7 @@ public partial class Player3 : BiologyBase
         po = GetComponent<BoxCollider2D>();
         F = GetComponent<FSM>();
 
-        if (Player_input.I!=null)
+        if (Player_input.I != null)
         {
             Player_input.I.KeyDown += °´ÏÂ_;
             Player_input.I.KeyUp += ËÉ¿ª_;
@@ -314,7 +344,8 @@ public partial class Player3 : BiologyBase
         }
         else
         {
-            Initialize_Mono.I.Waite(()=> {
+            Initialize_Mono.I.Waite(() =>
+            {
                 Player_input.I.KeyDown += °´ÏÂ_;
                 Player_input.I.KeyUp += ËÉ¿ª_;
                 Player_input.I.KeyState += °´×¡_;
@@ -331,10 +362,48 @@ public partial class Player3 : BiologyBase
 
         Player3.I.Íæ¼ÒÊıÖµ.¶ÁÈ¡();
         Player3.I.N_.¶ÁÈ¡();
+        Public_Const_Speed = Save_D.Load_Value_D<float>(Public_Const_Speed_Name);
+
+        Initialize_Mono.I.ÖØÖÆ´¥·¢ += (int i,int L) =>
+        {
+            More_SafeWay_ = Vector2.zero;
+            Initialize_Mono.I.Waite(() =>
+            {
+                SafeWay_ = Player3.I.transform.position;
+            },0f);
+        };
+
+        Ô­ËÙ¶È = Íæ¼ÒÊıÖµ.³£Ì¬ËÙ¶È;
+        ¼ÓËÙ¶È = Ô­ËÙ¶È * 1.5f;
+    }
+    float Ô­ËÙ¶È;
+    float ¼ÓËÙ¶È;
+
+    public bool ¼ÓËÙÁË;
+    public void ¼ÓËÙ(bool f)
+    {
+        if (Player3.I.N_.Dash¼ÓËÙ)
+        {
+            Debug.LogError("AAAA  if (Player3.I.N_.Dash¼ÓËÙ)  if (Player3.I.N_.Dash¼ÓËÙ)            AAAAAAAAAA");
+            if (f)
+            {
+
+                Íæ¼ÒÊıÖµ.³£Ì¬ËÙ¶È = ¼ÓËÙ¶È;
+                ¼ÓËÙÁË = true;
+                ²ĞÓ°.I.¿ªÆô²ĞÓ°(true);
+            }
+            else
+            {
+                Íæ¼ÒÊıÖµ.³£Ì¬ËÙ¶È = Ô­ËÙ¶È;
+                ¼ÓËÙÁË = false;
+                ²ĞÓ°.I.¿ªÆô²ĞÓ°(false);
+            }
+
+        }
+
     }
 
 
- 
     [DisplayOnly]
     public float ladderX;
     public bool Åöµ½Ground;
@@ -397,9 +466,9 @@ public partial class Player3 : BiologyBase
 
 
     private void °´ÏÂ_(KeyCode obj)
-    { 
+    {
         °´ÏÂ?.Invoke(obj);
-        if (obj == Player_input.I.ÌøÔ¾)
+        if (obj == Player_input.I.k.ÌøÔ¾)
         {
             °´ÏÂÌøÔ¾?.Invoke();
         }
@@ -412,11 +481,11 @@ public partial class Player3 : BiologyBase
     {
         °´×¡?.Invoke(obj);
 
-        if (obj == Player_input.I.×ó)
+        if (obj == Player_input.I.k.×ó)
         {
             ·½Ïò°´×¡?.Invoke(false);
         }
-        else if (obj == Player_input.I.ÓÒ)
+        else if (obj == Player_input.I.k.ÓÒ)
         {
             ·½Ïò°´×¡?.Invoke(true);
         }
@@ -428,7 +497,7 @@ public partial class Player3 : BiologyBase
         {
             LocalScaleX_Int = Player_input.I.·½ÏòÕı¸º;
             Debug.Log("·½Ïò¸üĞÂ´¥·¢");
-        } 
+        }
 
     }
     public void ·½Ïò¸Ä±ä(bool b)
@@ -454,35 +523,42 @@ public partial class Player3 : BiologyBase
 
     public float ¾àÀë = 0.5f;
 
-    public void To_SafeWay()
+    public void To_SafeWay( )
     {
- 
-        Initialize_Mono.I.Waite(() => {
+        yalaAudil.I.EffectsPlay("PlayerHit", 1);
+
+        Initialize_Mono.I.Waite(() =>
+        {
             Player3.I.transform.position = SafeWay_;
             Player3.I.Velocity = Vector2.zero;
-        },0.2f);
+        }, 0.2f);
 
 
         Ö÷UI.I.ÕÚÕÖ¶¯»­();
     }
-
-    private  Vector2 SafeWay_;
-
+ 
+ 
+    [SerializeField]
     [DisplayOnly]
-    [SerializeField ]
+    private Vector2 SafeWay_;
+    [DisplayOnly]
+    private Vector2 More_SafeWay_;
+    [DisplayOnly]
+    [SerializeField]
     private Move_P ½ÅÏÂ1;
     public Move_P ½ÅÏÂ { get => ½ÅÏÂ1; set => ½ÅÏÂ1 = value; }
 
-   void FixedUpdate()
+    void FixedUpdate()
     {
-        ÓÎÏ·ÄÚµÄÊ±ÖÓ += Time.fixedDeltaTime/Public_Const_Speed;
-     
+        ÓÎÏ·ÄÚµÄÊ±ÖÓ += Time.fixedDeltaTime / Public_Const_Speed;
+
         if (³ÖĞøÌáÉıËÙ¶È)
         {
-            Public_Const_Speed += ÌáÉıËÙ¶È*Time .fixedDeltaTime;
+            Public_Const_Speed += ÌáÉıËÙ¶È * Time.fixedDeltaTime;
         }
 
-        if (Time.time - ÕæÊµÊ±¼ä>1.5f)
+ 
+        if (Time.time - ÕæÊµÊ±¼ä > 1.5f)  ///ºÎÒâÎ¹
         {
             var ²îÖµ = Player3.Public_Const_Speed - µ×²ãspeed;
             int Õı¸ººÅ = Initialize.·µ»ØÕı¸ººÅ(²îÖµ);
@@ -490,18 +566,40 @@ public partial class Player3 : BiologyBase
             if (±äËÙÊ±¼ä != 0 && ¾ø¶ÔÖµ >= 0.02f)
             {
                 ///ÉÏÒ»Ãë¾­¹ıµÄÊ±¼ä
-                var b = (ÓÎÏ·ÄÚµÄÊ±ÖÓ - ±äËÙÊ±¼ä-(1.5f/×îºóËÙ¶È));
+                var ttt = ÓÎÏ·ÄÚµÄÊ±ÖÓ - ±äËÙÊ±¼ä;  //  ÓÎÏ·ÄÚÊ±¼äÉÏ´Î Í¬ËÙµ½ÏÖÔÚµÄÊ±¼ä
+                var b = (ttt - (1.5f / ×îºóËÙ¶È));
+ 
                 var a = ¾ø¶ÔÖµ * b * b;
+                var aaaaa = Õı¸ººÅ * a;
+                 
+          
+           
+                    var val = Player3.Public_Const_Speed -  aaaaa;
+               if (val<0)
+                {              
+                    ///Á½¸öÎÊÌâ  Ò»        Ö±½Ó=µÄ»°µ×²ãspeed²»»á±ä  ÓĞµ×²ãµÄÇé¿öÉèÖÃ
+                      ///ÎÊÌâ¶ş  ÃÛÖ­¸ºÊı 
+                    Debug.LogError("¸ºÊıÉèÖÃ·¢Éú"+
+                        "\nÓÎÏ·ÄÚµÄÊ±ÖÓ:" + ÓÎÏ·ÄÚµÄÊ±ÖÓ +
+                        " \n±äËÙÊ±¼ä: " + ±äËÙÊ±¼ä
+                 + "\nSpeed: " + Public_Const_Speed
+                    + "\n¾­¹ıµÄ: " + b
+                 + "\n¼õÈ¥: " + Õı¸ººÅ * a
+                 + "\n×îºóËÙ¶È: " + ×îºóËÙ¶È
+                    + "\n²îÖµ: " + ²îÖµ
+                + "\nµ×²ãspeed: " + µ×²ãspeed
+                   ); 
+                    ÕæÊµÊ±¼ä = Time.time;
+                        return;
+                    }
+                    Player3.Public_Const_Speed = val;
 
-                Player3.Public_Const_Speed -= Õı¸ººÅ * a;
-                //Debug.LogError("ÓÎÏ·ÄÚµÄÊ±ÖÓ:\n" + ÓÎÏ·ÄÚµÄÊ±ÖÓ + " ±äËÙÊ±¼ä:\n" + ±äËÙÊ±¼ä 
-                //    + "Speed:\n" + Public_Const_Speed 
-                //         + "¾­¹ıµÄ:\n" + b
-                //   + "¼õÈ¥:\n" + Õı¸ººÅ * a); 
-                if (¾ø¶ÔÖµ <= 0.02f)
-                {
-                    Player3.Public_Const_Speed = µ×²ãspeed;
-                }
+                    if (¾ø¶ÔÖµ <= 0.02f)
+                    {
+                        Player3.Public_Const_Speed = µ×²ãspeed;
+                    }
+ 
+         
             }
         }
 
@@ -518,20 +616,36 @@ public partial class Player3 : BiologyBase
             // ÓĞ ½Ó´¥   
         }
 
-        var chaox = -(Player3.I.Bounds.center - Vector3 .zero).normalized;
-        Debug.DrawRay(Player3.I.Bounds.center, chaox * 10f, Color.blue); 
+        var chaox = -(Player3.I.Bounds.center - Vector3.zero).normalized;
+        Debug.DrawRay(Player3.I.Bounds.center, chaox * 10f, Color.blue);
     }
-    public void Â¼Èë°²È«µØµã(bool ³¤=false )
+    public Action<int> Ô²Õ¶¶ÔÏó;
+    public void °²È«µØµã(bool b=false)
     {
+        if (b)
+        {
+            More_SafeWay_ = transform.position;
+        }
+        else
+        {
+            if (More_SafeWay_==Vector2.zero) More_SafeWay_ = SafeWay_;
+           
+            transform.position = More_SafeWay_;
+        }
+    
+    }
+    public void Â¼Èë°²È«µØµã(bool ³¤ = false)
+    {
+
         float ¾àÀë = 0.1f;
         if (³¤) ¾àÀë = 3f;
         var a = Physics2D.Raycast(new Vector2(Bounds.center.x, Bounds.min.y), Vector2.down, ¾àÀë, 1 << Initialize.L_Ground);
         if (a.collider != null)
         {
-            if (a.collider.gameObject.CompareTag(Initialize .Ground ))
+            if (a.collider.gameObject.CompareTag(Initialize.Ground))
             {
                 SafeWay_ = transform.position;
-            } 
+            }
         }
     }
     //float IS;
@@ -562,7 +676,7 @@ public partial class Player3 : BiologyBase
         if (NB_Dash_Time != 0)
         {
             NB_Dash_Time -= Time.deltaTime;
-             
+
             var c = Physics2D.BoxCast(
                 ½Åµ×ÖĞ¼ä,
                 Bounds.size,
@@ -588,7 +702,7 @@ public partial class Player3 : BiologyBase
                         if (st == Enemy_base.atk)
                         {
                             Initialize_Mono.I.Ê±»º(0.4f, 0.25f);
-                             ÉËº¦(a);
+                            ÉËº¦(a);
 
                         }
                     }
@@ -616,8 +730,8 @@ public partial class Player3 : BiologyBase
             var ·½ÏòÕıÈ· = Initialize.Vector2Int±È½Ï(co.contacts[0].normal, Vector2.up);
 
             if (Contains(co.gameObject.layer, Åö×²¼ì²â²ã)
-                &&·½ÏòÕıÈ·
-                && co.contacts[0].collider==po
+                && ·½ÏòÕıÈ·
+                && co.contacts[0].collider == po
                 )
             {
                 ±¸ÓÃµØÃæ++;
@@ -630,11 +744,13 @@ public partial class Player3 : BiologyBase
         }
     }
     //public BoxCollider2D Ç°µµ°å;
+
+    public static float Ç°µµ°å¾àÀë = 0.05f;
     protected void Update()
     {
-        
+
         {
-            if (Player_input.I.°´¼ü¼ì²â_°´ÏÂ(Player_input.I.±äËÙ))
+            if (Player_input.I.°´¼ü¼ì²â_°´ÏÂ(Player_input.I.k.±äËÙ))
             {
                 if (Ö÷ == null)
                 {
@@ -660,26 +776,15 @@ public partial class Player3 : BiologyBase
 
             }
         }
-      
+
 
         if (Ground && !HPROCK && (FSM.f.I_State_C.state == E_State.run || FSM.f.I_State_C.state == E_State.idle))
         {
-            Â¼Èë°²È«µØµã();  
+            Â¼Èë°²È«µØµã();
         }
         Ç°ºóºÍÍ·(1f, 0.1f);
         ÏÔÊ¾ = N_;
-               Public_Const_SpeedASD = Public_Const_Speed;
-        if (µ÷ÊÔÄ£Ê½)
-        {
-           N_.È«½âËø();
-            µ÷ÊÔÄ£Ê½ = false;
-            Public_Const_Speed = Ö÷¶¯ÉèÖÃ;
-        }
-        if (ËÙ¶Èµ÷ÊÔ )
-        {
-            Public_Const_Speed = Ö÷¶¯ÉèÖÃ;
-            ËÙ¶Èµ÷ÊÔ = false;
-        }
+        Public_Const_SpeedASD = Public_Const_Speed; 
 
         ³å´ÌÉËº¦();
 
@@ -696,17 +801,17 @@ public partial class Player3 : BiologyBase
         //    } 
         //}
         //¶¥ÉÏ = Ğü¹Ò.ÕÚµ²;
-        ÏÂ = Physics2D.OverlapCircle(ÏÂ¼ì²â.position, 0.1f, Åö×²¼ì²â²ã) != null;
-        ÉÏ = Physics2D.OverlapCircle(ÉÏ¼ì²â.position, 0.1f, Åö×²¼ì²â²ã) != null;
-        ÖĞ = Physics2D.OverlapCircle(ÖĞ¼ì²â.position, 0.1f, Åö×²¼ì²â²ã) != null; if (true)
-            if (ÉÏ && ÖĞ && ÏÂ)
-            {
-                e_wall = E_wall.IIII;
-            }
-            else
-            {
-                e_wall = E_wall.OOOO;
-            }
+        ÏÂ = Physics2D.OverlapCircle(ÏÂ¼ì²â.position, Ç°µµ°å¾àÀë, Åö×²¼ì²â²ã) != null;
+        ÉÏ = Physics2D.OverlapCircle(ÉÏ¼ì²â.position, Ç°µµ°å¾àÀë, Åö×²¼ì²â²ã) != null;
+        ÖĞ = Physics2D.OverlapCircle(ÖĞ¼ì²â.position, Ç°µµ°å¾àÀë, Åö×²¼ì²â²ã) != null;
+        if (ÉÏ && ÖĞ && ÏÂ)
+        {
+            e_wall = E_wall.IIII;
+        }
+        else
+        {
+            e_wall = E_wall.OOOO;
+        }
         //else if (!¶¥ÉÏ && ÉÏ && !ÖĞ && !ÏÂ)
         //{
         //    e_wall = E_wall.OIOO;
@@ -729,12 +834,13 @@ public partial class Player3 : BiologyBase
         //}
         ¶¥ËÀ = e_wall == E_wall.IIII /*|| e_wall == E_wall.OIOO*/;
 
-         Last_Velocity = Velocity;
+        Last_Velocity = Velocity;
         ¼à¿Ø = Velocity;
     }
+    public float ¾àÀëÇ½ÃæµÄ¾àÀë => MathF.Abs(ÖĞ¼ì²â.transform.localScale.x + Ç°µµ°å¾àÀë * 2);
     public void LastV_Velocity()
     {
-        Velocity =  Last_Velocity;
+        Velocity = Last_Velocity;
     }
     public void asdasd()
     {
@@ -742,8 +848,8 @@ public partial class Player3 : BiologyBase
     }
     public void Ë®Æ½Æğ²½¼ÓÁ¦(KeyCode obj)
     {
-        if (obj == Player_input.I.×ó ||
-          obj == Player_input.I.ÓÒ)
+        if (obj == Player_input.I.k.×ó ||
+          obj == Player_input.I.k.ÓÒ)
         {
             AddForce(new Vector2(Player_input.I.·½ÏòÕıÁã¸º * Íæ¼ÒÊıÖµ.Æğ²½ËÙ¶È, 0));
         }
@@ -766,7 +872,7 @@ public partial class Player3 : BiologyBase
     {
 
     }
- 
+
 
 
 
@@ -847,7 +953,7 @@ public partial class Player3 : BiologyBase
             Velocity = new Vector2(Íæ¼ÒÊıÖµ.³£Ì¬ËÙ¶È * Mathf.Sign(Velocity.x), Velocity.y);
         }
     }
- 
+
     /// <summary>
     ///   ¶¼ÊÇÕıÃæÉèÖÃ
     /// </summary>
@@ -859,30 +965,30 @@ public partial class Player3 : BiologyBase
     /// <param name="M_poY"></param>
     /// <param name="M_forceX"></param>
     /// <param name="M_forceY"></param>
-public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î»ÖÃ,
-       Vector2 M_po,
-       Vector2 M_Force)
+    public void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î»ÖÃ,
+           Vector2 M_po,
+           Vector2 M_Force)
     {
         if (E != null)
-     {
-        if ((E.Bounds.center -  Bounds.center).magnitude < E_¾àÀë) 
         {
-        E.p.SafeVelocity = new Vector2( LocalScaleX_Set * E_Ê¸Á¿.x, E_Ê¸Á¿.y); 
-        E.transform.position += new Vector3( LocalScaleX_Set * E_Î»ÖÃ.x, E_Î»ÖÃ.x);
-        } 
-    } 
-         
-        var Ğü¿Õ =  Ğü¿Õ¼ì²â();
+            if ((E.Bounds.center - Bounds.center).magnitude < E_¾àÀë)
+            {
+                E.p.SafeVelocity = new Vector2(LocalScaleX_Set * E_Ê¸Á¿.x, E_Ê¸Á¿.y);
+                E.transform.position += new Vector3(LocalScaleX_Set * E_Î»ÖÃ.x, E_Î»ÖÃ.x);
+            }
+        }
+
+        var Ğü¿Õ = Ğü¿Õ¼ì²â();
         var a = Physics2D.Raycast(new Vector2(·´Ãæ½Åµ×.x, Bounds.center.y), ·´Ïò, Åö×²¼ì²â²ã).collider == null;
- 
- 
+
+
         ///»¥×÷ÓÃÁ¦  
         if (!a)
         {///ÅĞ¶ÏºóÃæÊÇ²»ÊÇ¿ÕµÄ 
             if (!Ğü¿Õ)
-            { 
-                 transform.position += new Vector3( LocalScaleX_Set *  M_po.x, M_po.y);
-                 Velocity = new Vector2( LocalScaleX_Set * M_Force.x, M_Force.y);
+            {
+                transform.position += new Vector3(LocalScaleX_Set * M_po.x, M_po.y);
+                Velocity = new Vector2(LocalScaleX_Set * M_Force.x, M_Force.y);
             }
         }
     }
@@ -951,7 +1057,7 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
     }
     public Vector2 ½Åµ×·¢Éä(float ¾àÀë)
     {
- 
+
         Vector2 a = ½Åµ×ÖĞ¼ä;
         var b = Physics2D.Raycast(a, Vector2.down, ¾àÀë, Åö×²¼ì²â²ã);
         if (b.collider == null)
@@ -995,13 +1101,13 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
     /// <param name="³¯Ïò"></param>
     /// <param name="aSH"></param>
 
-    public void Dash_(int ³¯Ïò, DASH aSH)
+    public Vector2 Dash_(int ³¯Ïò, DASH aSH)
     {
         ///µ±dash_¹ı³Ì±»´ò¶Ï£¬×´Ì¬»úÄÚ²¿²»»áÒıÓÃÕâ¸ö,
 
 
-        if (!aSH.³å´ÌÏÔÊ¾) return;
-        if (!aSH.·¢Á¦ÏÔÊ¾) return;
+        if (!aSH.³å´ÌÏÔÊ¾) return Vector2.zero;
+        if (!aSH.·¢Á¦ÏÔÊ¾) return Vector2.zero;
 
         if (!±£³ÖDash) aSH.³å´Ì³ÖĞøÊ±¼ä_ -= Time.fixedDeltaTime;
 
@@ -1014,28 +1120,31 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
         }
         else
         {
-            if (aSH.³å´Ì³ÖĞøÊ±¼ä_ / aSH.³å´Ì³ÖĞøÊ±¼ä < 1 / 4 && aSH.³å´Ì³ÖĞøÊ±¼ä > 0.2f)
-            {
-                float X = Mathf.Lerp(Velocity.x, 0, 0.5f);
-                Velocity = new Vector2(X, 0);
-            }
-            else
-            {
-                float DashSpeed = (³¯Ïò * aSH.³å´ÌËÙ¶È * aSH.³å´Ì³ÖĞøÊ±¼ä_ / aSH.³å´Ì³ÖĞøÊ±¼ä) + (³¯Ïò * aSH.»ù´¡³å´ÌËÙ¶È);
-                float X = Mathf.Lerp(Velocity.x, DashSpeed, 0.5f);
-                Velocity = new Vector2(X, 0);
-            }
-
+            //if (aSH.³å´Ì³ÖĞøÊ±¼ä_ / aSH.³å´Ì³ÖĞøÊ±¼ä < 1 / 4 && aSH.³å´Ì³ÖĞøÊ±¼ä > 0.2f)
+            //{
+            //    float X = Mathf.Lerp(Velocity.x, 0, 0.5f);
+            //    return    new Vector2(X, 0);
+            //}
+            //else
+            //{
+            //    float DashSpeed = (³¯Ïò * aSH.³å´ÌËÙ¶È * aSH.³å´Ì³ÖĞøÊ±¼ä_ / aSH.³å´Ì³ÖĞøÊ±¼ä) + (³¯Ïò * aSH.»ù´¡³å´ÌËÙ¶È);
+            //    float X = Mathf.Lerp(Velocity.x, DashSpeed, 0.5f);
+            //    return   new Vector2(X, 0);
+            //}
+            float DashSpeed = (³¯Ïò * aSH.³å´ÌËÙ¶È * aSH.³å´Ì³ÖĞøÊ±¼ä_ / aSH.³å´Ì³ÖĞøÊ±¼ä) + (³¯Ïò * aSH.»ù´¡³å´ÌËÙ¶È);
+            //float X = Mathf.Lerp(Velocity.x, DashSpeed, 0.5f);
+            return new Vector2(DashSpeed, 0);
         }
 
-
+        return Vector2.zero;
     }
     //float ¶×ºóOffY = -1.55f;
- 
-    [DisableOnPlay]
-   public BoxCollider2D  Õ¾Á¢box ;
 
-    [SerializeField ][DisableOnPlay]
+    [DisableOnPlay]
+    public BoxCollider2D Õ¾Á¢box;
+
+    [SerializeField]
+    [DisableOnPlay]
     float ¶×ºóSizeY = 1.9f;
     Vector2 Ô­Ê¼Offset;
     Vector2 Ô­Ê¼Size;
@@ -1054,7 +1163,7 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
         {
             po.size = new Vector2(po.size.x, ¶×ºóSizeY);
             var a = (Ô­Ê¼Size.y - ¶×ºóSizeY) / 2;
-            po.offset = new Vector2(po.offset.x, po.offset.y- a);
+            po.offset = new Vector2(po.offset.x, po.offset.y - a);
         }
         else
         {
@@ -1065,7 +1174,7 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
     }
     public void ½øÈëÒ»°ë()
     {
-        Õ¾Á¢box.enabled =false ;
+        Õ¾Á¢box.enabled = false;
         return;
         Ò»°ë(true);
         var a = po;
@@ -1073,7 +1182,7 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
         Vector2 Åö×²µã = Vector2.zero;
         for (int i = 0; ; i++)
         {
-            if (i>1000)
+            if (i > 1000)
             {
                 Debug.LogError("ÀëÆ×ÀëÆ×ÀëÆ×");
                 break;
@@ -1082,7 +1191,7 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
             ×îµÍµã = new Vector2(a.bounds.min.x + C, a.bounds.min.y);
             Åö×²µã = Physics2D.Raycast(×îµÍµã, Vector2.down, 1f, Åö×²¼ì²â²ã).point;//Ã»Åöµ½»á·µ»ØÎªÁã
             if (Åö×²µã != Vector2.zero) break;
-        } 
+        }
         ÀëµØ¾àÀë = (×îµÍµã - Åö×²µã).y;
         //Debug.LogError(ÀëµØ¾àÀë);
         transform.position = new Vector2(transform.position.x, transform.position.y - ÀëµØ¾àÀë);
@@ -1119,7 +1228,7 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
 
     protected override void Àë¿ªµØÃæ_()
     {
-     if(µØÃæµ÷ÊÔ )   Debug.Log("Àë¿ªµØÃæ");
+        if (µØÃæµ÷ÊÔ) Debug.Log("Àë¿ªµØÃæ");
 
         Àë¿ªµØÃæÊÂ¼ş?.Invoke();
     }
@@ -1131,19 +1240,19 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
     protected override void ½Ó´¥µØÃæ_()
     {
         Ô²ĞÎ¹¥»÷¹ıÁË = false;
-           ÉÏÉı¹¥»÷¹ıÁË = false;
+        ÉÏÉı¹¥»÷¹ıÁË = false;
         ¿ÕÖĞ¹¥»÷¹ıÁË = false;
         Íæ¼ÒÊıÖµ.ÌøÔ¾Ê£ÓàÔ¾´ÎÊı = Íæ¼ÒÊıÖµ.×î´óÌøÔ¾´ÎÊı;
         if (µØÃæµ÷ÊÔ) Debug.Log("½Ó´¥µØÃæ");
         ½Ó´¥µØÃæÊÂ¼ş?.Invoke();
 
-        if (Player_input.I.D_I[Player_input.I.ÌøÔ¾].down_State < 0.1)
+        if (Player_input.I.D_I[Player_input.I.k.ÌøÔ¾].down_State < 0.1)
         {
             °´ÏÂÌøÔ¾?.Invoke();
         }
     }
     [SerializeField] LayerMask Åö×²¼ì²â²ã_;
-    public override    LayerMask Åö×²¼ì²â²ã
+    public override LayerMask Åö×²¼ì²â²ã
     {
         get
         {
@@ -1153,65 +1262,68 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
         }
     }
 
-    public bool BigHit=false ;
+    public bool BigHit = false;
 
     int ²»Ò»ÖÂ´ÎÊı;
 
-
+    public RaycastHit2D[] µØÃæ¼ì²â( float ¾àÀë=0.2f)
+    {
+        float DD = Ground ? 0 : 0.3f;
+        return Physics2D.BoxCastAll(
+              new Vector2(po.bounds.center.x, po.bounds.min.y),
+               new Vector2(po.bounds.size.x - DD, 0.1f),
+               0f,
+               Vector2.down,
+                ¾àÀë + po.edgeRadius,
+              Åö×²¼ì²â²ã
+               );
+    }
     protected override void Ç°ºóºÍÍ·(float ¾àÀë, float DIºá)
     {
-  
+
 
         ///¿¨ÔÚ±ßÔµ×©Í·
         ///ÒÆ¶¯Æ½Ì¨µÄis triiger
         ///
         ///  ±¸ÓÃµØÃæµÄ¼Ğ½ÇÇé¿ö 
         ///   ĞüÔÚÇ½ÉÏ
-        float DD = Ground ? 0 : 0.3f;
-         
-        var DIs =
-                         Physics2D.BoxCastAll(
-              new Vector2(po.bounds.center.x, po.bounds.min.y),
-               new Vector2(po.bounds.size.x - DD, 0.1f),
-               0f,
-               Vector2.down,
-                0.2f+po.edgeRadius,
-              Åö×²¼ì²â²ã
-               ) ;
 
-        Collider2D DI=null;
+
+        var DIs = µØÃæ¼ì²â( );
+
+        Collider2D DI = null;
         foreach (var item in DIs)
         {
-            if (item.collider!=null)
+            if (item.collider != null)
             {
-                if (item.collider.isTrigger == false )
+                if (item.collider.isTrigger == false)
                 {
-                    bool BB = Initialize.Get_Åö×²(Initialize .L_Player ,item.collider .gameObject .layer);
+                    bool BB = Initialize.Get_Åö×²(Initialize.L_Player, item.collider.gameObject.layer);
                     if (BB)
                     {//¸Ã²ã±»ºöÂÔÁË
                         break;
                     }
- 
-                    DI= item.collider;
-                    break; 
+
+                    DI = item.collider;
+                    break;
                 }
             }
         }
-        if (µØÃæµ÷ÊÔ) if (DI == null) Debug.LogError( "      ±¸ÓÃ£º" + ±¸ÓÃµØÃæ¼ì²â21);
-        if (µØÃæµ÷ÊÔ)      if (DI != null)     Debug.LogError(DI+"      Trriger:"+DI .isTrigger+"      ±¸ÓÃ£º"+ ±¸ÓÃµØÃæ¼ì²â21);
+        if (µØÃæµ÷ÊÔ) if (DI == null) Debug.LogError("      ±¸ÓÃ£º" + ±¸ÓÃµØÃæ¼ì²â21);
+        if (µØÃæµ÷ÊÔ) if (DI != null) Debug.LogError(DI + "      Trriger:" + DI.isTrigger + "      ±¸ÓÃ£º" + ±¸ÓÃµØÃæ¼ì²â21);
         if (DI != null && DI.isTrigger == false)
         {
-            Ground = true; 
+            Ground = true;
         }
         else
-        {  
+        {
             bool bB = false;
             if (Velocity.y == 0 && ±¸ÓÃµØÃæ¼ì²â21 && e_wall == E_wall.OOOO)
             {
                 bB = true;
             }
 
-            Ground = bB; 
+            Ground = bB;
         }
         //if (±¸ÓÃµØÃæ¼ì²â21 != Ground)
         //{
@@ -1254,7 +1366,7 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
      Åö×²¼ì²â²ã
         )
         .collider;
-        var a = A == null|| A.isTrigger  ;
+        var a = A == null || A.isTrigger;
 
         Collider2D B = Physics2D.BoxCast(
  new Vector2(po.bounds.max.x, po.bounds.center.y),
@@ -1265,7 +1377,7 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
  Åö×²¼ì²â²ã
  )
  .collider;
-        var b =B== null ||  B.isTrigger;
+        var b = B == null || B.isTrigger;
 
         switch (transform.localScale.x)
         {
@@ -1277,6 +1389,43 @@ public     void ·´×÷ÓÃÁ¦(Enemy_base E, float E_¾àÀë, Vector2 E_Ê¸Á¿, Vector2 E_Î
                 Ç°¿Õ_ = b;
                 ºó¿Õ_ = a;
                 break;
+        }
+    }
+    public int ·µ»Ø·½Ïò()
+    {
+        var a = Player_input.I.·½ÏòÕıÁã¸º;
+        if (a == 0)
+        {
+            return 0;
+        }
+        else if (Ò»¸ö³¯Ïò == 0)
+        {
+
+            return a;
+        }
+        else if (Ò»¸ö³¯Ïò == a)
+        {
+            return 0;
+        }
+        else
+        {
+            return a;
+        }
+
+
+    }
+    int Ò»¸ö³¯Ïò = 0;
+    internal void ¼ÇÂ¼a(bool B = false)
+    {
+        if (B)
+        {
+            Ò»¸ö³¯Ïò = 0;
+        }
+        else
+        {
+
+            Initialize_Mono.I.Waite(() => { Ò»¸ö³¯Ïò = 0; }, 0.5f);
+            Ò»¸ö³¯Ïò = LocalScaleX_Int;
         }
     }
 }
@@ -1295,31 +1444,59 @@ public partial class Player3 : I_ÉúÃü, I_¹¥»÷
             return Player3.I.transform.parent == Player3.I.Player_Father;
         }
     }
-    Transform Player_Father;
+    public Transform Player_Father_False { get;private  set; }
+    public Transform Player_Father { get; private set; }
+
+    public  void Changef(Transform f)
+    {
+        transform.SetParent(f);
+
+        //Vector3 po = transform.position;  
+        //Initialize_Mono.I.Waite(() =>
+        //{
+        //    transform.position = po;
+        //}, 0.01f);
+        //transform.position = po; 
+    }
+
+    /// <summary>
+    /// Íâ²¿µ÷ÓÃ   ¸ü¸ÄºÍ»¹Ô­
+    /// </summary>
+    /// <param name="father"></param>
     public void ChangeFather(Transform father = null)
-    { 
+    {
+ 
         if (father == null)
-        {
+        { 
             Debug.Log ("»¹Ô­");
+            if (transform!=null&& transform.parent!=null&& transform.parent.gameObject!=null) 
             if (transform .parent .gameObject .activeInHierarchy ==false )
             {
                 Debug.Log ("¸¸ÎïÌå¹Ø±Õ£¬ÀëÆ×ÁË");
                 GameObject a = new GameObject();
-                a.transform.SetParent(transform .parent );
+                a.transform.SetParent(transform .parent ); ////Ã¤²Â ¸¸ÎïÌå»Ø¹é¶ÔÏó³Ø¹Ø±Õ µ¼ÖÂÒì³£
+                Player_Father_False = null;
+
                 gameObject.transform.SetParent(a.transform );
-                transform.SetParent(Player_Father);
-            }
+                
+                    Player_Father_False = null;
+                Changef(Player_Father); 
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
             else
             {
-                transform.SetParent(Player_Father);
-            }
+                Player_Father_False = null;
+                Changef(Player_Father);
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
 
         }
-        else
+        else ///¸Ä±ä
         {
             Debug.Log ("·ò¶ÔÏó¸Ä±ä");
+            Player_Father_False = father;
 
-            transform.SetParent(father);
+            Changef(father);
         }
     }
     protected override bool Áé»ê
@@ -1364,6 +1541,10 @@ public partial class Player3 : I_ÉúÃü, I_¹¥»÷
     {
         get => HPROCK_; set
         {
+            if (false)
+            {
+                Debug.LogError("ÎŞµĞ×´Ì¬¸Ä±ä" + value);
+            }
             HPROCK_ = value;
         }
     }
@@ -1374,7 +1555,7 @@ public partial class Player3 : I_ÉúÃü, I_¹¥»÷
     {
 
     }
-    void ±äËÙÌØĞ§(float f)
+  public  void ±äËÙÌØĞ§(float f)
     {
         if (MathF.Abs(Player3.Public_Const_Speed - f) > 1)
         {
@@ -1404,6 +1585,18 @@ public partial class Player3 : I_ÉúÃü, I_¹¥»÷
     }
     No_Re RR=new No_Re ();
 
+    public    void SetSpeed(float f)
+    {
+        Public_Const_Speed = f;
+         
+         µ×²ãspeed = f;
+        ×îºóËÙ¶È = f;
+
+ 
+        ±äËÙÊ±¼ä = ÓÎÏ·ÄÚµÄÊ±ÖÓ;
+        ÕæÊµÊ±¼ä = Time.time;
+    }
+
     public void Í¬ËÙ_(I_Speed_Change I)
     {
         if (!RR.Note_Re()) return;
@@ -1422,6 +1615,14 @@ public partial class Player3 : I_ÉúÃü, I_¹¥»÷
         //}
 
         var f = I.Current_Speed_LV;
+
+
+        if (f == 0)
+        {
+            Debug.LogError("³ö´í£º ËÙ¶È Áã      " + f);
+            return;
+        }
+
         if (Player3.Public_Const_Speed == f)
         {
             Debug.Log(Player3.Public_Const_Speed + "      µÈ¼¶Ò»ÖÂ      " + f);
@@ -1429,7 +1630,18 @@ public partial class Player3 : I_ÉúÃü, I_¹¥»÷
         }
 
         ±äËÙÌØĞ§(f);
+        if (Player3.Public_Const_Speed>f)
+        {
+            yalaAudil.I.EffectsPlay("SpeedUp", 3); 
+        }
+        else
+        {
+            yalaAudil.I.EffectsPlay("SpeedDown", 3);
+            
+        }
 
+       
+   
         Player3.Public_Const_Speed = f; 
             µ×²ãspeed = I.Speed_Lv; 
 
@@ -1472,15 +1684,19 @@ public partial class Player3 : I_ÉúÃü, I_¹¥»÷
     /// <param name="obj"></param>
     public override void ±»¿ÛÑª(float i, GameObject obj, int SKey=0)
     { ///²»ÄÜ·´µ¯Åö×²ÉËº¦   
+
+        Debug.LogError("±»¿ÛÑª" + i);
         if (SKey == 0) SKey = Initialize.Get_Ëæ»úInt();
         if (!IIIIIIIB.Add(SKey)) return;
+        Debug.LogError("±»¿ÛÑª" + i);
         if (i!=999)
         {
             if (HPROCK) return;
         }
 
         bool ÊÜÉËÉË = true;
- 
+
+        Debug.LogError("±»¿ÛÑª" + i);
         if (Hit_FuncFSM!=null&& i != 999)
         {
  

@@ -35,7 +35,7 @@ public class gedang : State_Base
     }
     public override void 松开(KeyCode obj)
     {
-        if (obj==IP.格挡)
+        if (obj==IP.k.格挡)
         {
             if (IP.水平操作_==0)
             {
@@ -78,7 +78,7 @@ public class gedang : State_Base
     }
     public override void 按下(KeyCode obj)
     {
-        if (obj==IP.攻击)
+        if (obj==IP.k.攻击)
         {
             if ( Fly != null)
             {

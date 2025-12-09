@@ -11,7 +11,10 @@ protected  Anim2 Next { get; set; }
     public bool 状态消息 { get => 状态消息_; set => 状态消息_ = value; }
     void 播放特效(string s)
     {//动画事件？
-
+        if (s=="特效run")
+        {
+            yalaAudil.I.EffectsPlay("Run", 0);
+        }
         特效_pool_2.I.GetPool(gameObject, s).Speed_Lv=Player3.Public_Const_Speed;
     }
     public Action 当前动画为百分之99 { get; set; }

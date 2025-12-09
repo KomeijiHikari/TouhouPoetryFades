@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using 流程控制;
 public static class T_N
 {
     public static string 特效消弹 { get; } = "特效消弹";
@@ -34,6 +35,12 @@ public static class T_N
 } 
 public static class A_N
 {
+    public static string idle_dundash { get; } = "idle_dundash";
+
+    public static string run_dundash { get; } = "run_dundash";
+
+    public static string dun_dundash { get; } = "dun_dundash";
+
     public static string dead { get; } = "dead";
     public static string hit { get; } = "hit";
     public static string bighit { get; } = "bighit";
@@ -71,6 +78,8 @@ public static class A_N
     public static string atk_2_ { get; } = "atk_2_";
     public static string jump_ { get; } = "jump_";
     public static string dundash_0_ { get; } = "dundash_0_";
+    public static string dundash_1_ { get; } = "dundash_1_";
+    public static string dundash_负1_ { get; } = "dundash_-1_";
     public static string dun_0_ { get; } = "dun_0_";
 
     public static string skyatk_0_ { get; } = "skyatk_0_"; 
@@ -91,10 +100,11 @@ public abstract  class  atkBase: State_Base
         get => f.变速攻击;
         set =>f. 变速攻击 = value;
     }
-    protected  float 碰撞框触发时间=0.1f;
-    public override void ExitState()
+
+    protected float 碰撞框触发时间 { get; set; } = 0.1f;
+    public override void ExitState(E_State e)
     {
-        base.ExitState();
+        base.ExitState( e);
          判定框.开启判定框判定框(false);
 
         Player.方向更新();
@@ -148,8 +158,8 @@ public abstract  class  atkBase: State_Base
     protected CollerValue 上升攻击 { get; set; } = new(new Vector2(1.55f, -1.39f), new Vector2(3.16f, 5.52f));
     protected CollerValue 圆形攻击 { get; set; } = new(new Vector2(0.6f,-0.81f), new Vector2(6.4f,6.12f));
     protected CollerValue   空中 { get; set; } = new(new Vector2(3.42f, -0.6f), new Vector2(3.8f, 3.3f));
-    protected CollerValue 普攻近 { get; set; } = new(new Vector2(2.5f,-0.7f), new Vector2(4.4f,3.1f));
-    protected CollerValue 普攻远 { get; set; } = new(new Vector2(3.98f, -0.6f), new Vector2(5, 3.3f));
+    protected CollerValue 普攻近 { get; set; } = new(new Vector2(2.5f,-0.7f), new Vector2(3.4f,3.1f));
+    protected CollerValue 普攻远 { get; set; } = new(new Vector2(3.98f, -0.6f), new Vector2(4, 3.3f));
     protected CollerValue d蹲 { get; set; } = new(new Vector2(3.98f, -1.3f), new Vector2(5, 1.62f));
     protected CollerValue Down { get; set; } = new(new Vector2(0.44f, -1.52f), new Vector2(1.9f, 4.5f));
     public override void 方向改变(bool obj)  {  }
@@ -199,29 +209,39 @@ public abstract  class  atkBase: State_Base
  
     }
     protected bool  旋转箭失触发(Collider2D  a )
-    {
-        //Debug.LogError("AAA         AAAABBBBBBBBBB" );
-        if (a == null) return false  ;
-        if ( !a.CompareTag(Initialize.One_way))return false ;
+    { 
+        if (a == null) return false  ; 
+        if ( !a.CompareTag(Initialize.One_way))return false ; 
         var F = a.gameObject.GetComponent<Fly_Ground>();
-        if (F==null) return false;
+        if (F==null) return false; 
         ///平台和箭矢的区分  
-        if (!F.可以旋转) return true;
-
-        //Debug.LogError("AFFFFFFFFFFFFFFFFFF");
+        if (!F.可以旋转) return true; 
         if (F != null)
         {
 
-            F.Currrtten =F.L2;
-            //Debug.LogError("AFDDDDDDDDDDDDDDDDDDFFFFFFF");
+            //Debug.LogError("             AAAAAAAAAAAAA"+(x.Sign() == Player.LocalScaleX_Int)  );
+
+            F.Currrtten =F.L2; 
+            //Debug.LogError(state+"      "+f.I_State_L.state);
             switch (state)
             { 
                 case E_State.upatk:
                     F.旋转触发(1);
                     return true;
                 case E_State.cricleatk:
-                    //Debug.LogError("圆圈  圆圈    圆圈   圆圈   圆圈圆    圈");
-                    F.旋转触发(-1);
+                    var x = a.transform.position.x - Player.transform.position.x;
+                    bool 正面 = x.Sign() == Player.LocalScaleX_Int;
+                    //F.旋转触发(-1);
+                    if (正面)
+                    {
+                        F.旋转触发(-1);
+
+                    }
+                    //else
+                    //{
+                    //    F.旋转触发(1);
+                    //}
+
                     return true;
                 default:
                     F.旋转触发(0);
@@ -287,7 +307,11 @@ public abstract  class  atkBase: State_Base
                 Initialize_Mono.I.时缓(0.02f, 0.1f);
                 Player.受伤.镜头晃动(1);
 
-                摄像机.I.FOV_缩放并且还原(摄像机.I.当前场景默认FOV * 0.95f, 0.05f, 0.8f);
+                if (摄像机.I.当前场景默认FOV!=0)
+                {
+                    摄像机.I.FOV_缩放并且还原(摄像机.I.当前场景默认FOV * 0.95f, 0.05f, 0.8f);
+                }
+          
             }
             else
             {
@@ -314,7 +338,7 @@ public abstract  class  atkBase: State_Base
     }
 }
 public class atk : atkBase
-{
+{ 
     public override void 离开地面()
     {
         base.离开地面();
@@ -331,6 +355,8 @@ public class atk : atkBase
         马上下一个攻击 = false;
         Player.Velocity = Vector2.zero;
 
+
+
         播放相应动画();
         if (蓄力攻击 )
         {
@@ -338,9 +364,9 @@ public class atk : atkBase
         }
     }
 
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
-        base.ExitState();
+        base.ExitState(e);
           第N下 = 0;
         当前攻击特效名字 = null;
         马上下一个攻击 = false;
@@ -352,24 +378,31 @@ public class atk : atkBase
     {
         if ( 蓄力攻击 )
         {
+            yalaAudil.I.EffectsPlay("WaiteAtk", 0);
+           
             A.Playanim(A_N.counter_Atk);
             return;
         }
+
+        if (第N下<3)    yalaAudil.I.EffectsPlay("Atk", 0);
+   
         动画阶段 = 阶段.ready;
         当前碰撞Value = 普攻近; 
         if (第N下 == 0)
-        {
+        { 
             当前攻击特效名字 = T_N.atk_0_;
             A.Playanim(A_N.atk_0_);
 
         }
         else if (第N下 == 1)
         {
+ 
             当前攻击特效名字 = T_N.atk_1_;
             A.Playanim(A_N.atk_1_);
         }
         else if (第N下 == 2)
         {
+     
             当前碰撞Value = 普攻远;
             当前攻击特效名字 = T_N.atk_2_;
             A.Playanim(A_N.atk_2_);
@@ -397,11 +430,11 @@ public class atk : atkBase
     } 
     public override void 按下(KeyCode obj)
     {
-        if (obj==IP.攻击)
+        if (obj==IP.k.攻击)
         {
             if (动画阶段 == 阶段.Action)
             {
-                if (IP.按键检测_按住 (IP.上))
+                if (IP.按键检测_按住 (IP.k.上))
                 {
                     f.To_State(E_State.upatk);
                 }
@@ -432,13 +465,13 @@ public class atk : atkBase
             return;
         }
         base.UpdateState();
-        if (IP.按键检测_按下(IP.跳跃))
+        if (IP.按键检测_按下(IP.k.跳跃))
         {
             Player.闪光();
             Player.跳跃触发();
             f.To_State(E_State.sky);
         }
-        if (IP.按键检测_按下(IP.冲刺))
+        if (IP.按键检测_按下(IP.k.冲刺))
         {
             Player.闪光();
             f.To_State(E_State.dash);
@@ -477,9 +510,9 @@ public class skyatk : atkBase
         if ( 蓄力攻击) 第N下 = 1; 
         播放相应动画();
     }
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
-        base.ExitState();
+        base.ExitState(e);
         当前攻击特效名字 = null;  
         判定框.关闭再打开();
         Player.方向更新();
@@ -511,6 +544,8 @@ public class skyatk : atkBase
         动画阶段 = 阶段.ready;
         当前碰撞Value = 空中;
 
+        if (第N下<2)     yalaAudil.I.EffectsPlay("Atk", 0);
+
         if (第N下 ==0)
         {
             当前攻击特效名字 = T_N.skyatk_0_;
@@ -522,6 +557,7 @@ public class skyatk : atkBase
             当前攻击特效名字 = T_N.skyatk_0_;
             A.Playanim(A_N.skyatk_1_);
         }
+
         else
         {
             第N下 = 0;
@@ -539,7 +575,8 @@ public class skyatk : atkBase
     }
     public override void 按下(KeyCode obj)
     {
-        if (obj == IP.攻击)
+        //if (obj == IP.k.攻击)
+            if (obj == IP.k.攻击)
         { 
             if (动画阶段 ==阶段.Action )
             {
@@ -556,9 +593,10 @@ public class skyatk : atkBase
     }
 }
 public class cricleatk : atkBase
-{ 
+{
+    public override bool 能力激活的 { get => Player.N_.圆劈; set => Player.N_.圆劈 = value; }
     public override void 接触地面()
-    {
+    { 
         if (IP.方向正零负 == 0)
         {
             A.Playanim(A_N .idle_jump_to0);
@@ -586,9 +624,9 @@ public class cricleatk : atkBase
         }
         return true;
     }
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
-        base.ExitState();
+        base.ExitState(e);
         当前攻击特效名字 = null;
         判定框.关闭再打开();
         Player.方向更新();
@@ -597,7 +635,7 @@ public class cricleatk : atkBase
     {
         base.EnterState();
         A.Re();
-
+        yalaAudil.I.EffectsPlay("Jump", 0);
         第N下 = 0;
 
         当前攻击特效名字 = "cricleatk_0_";
@@ -632,61 +670,171 @@ public class cricleatk : atkBase
         } 
  
     }
+    Int不重复 BInt=new Int不重复();
     protected override bool 击中效果()
     {
         if (判定框.所有碰撞体 !=null&& 判定框.所有碰撞体.Count>=1)
         {
-            判定框Base.打到的类型 asd ;
+            判定框Base.打到的类型 asd;
             bool RRR = false;
             ///先判定是不是人
             if (判定框.敌人 != null && 判定框.敌人.Count >= 1) asd = 判定框Base.打到的类型.敌人;
             else
             {
-                for (int i = 0; i < 判定框.所有碰撞体.Count; i++)
+                ///  碰撞框框要是碰到了 能踩但是不是OneWay 那么OneWay不会被触发 主角起飞
+                ///  
+                var originalAll = 判定框.所有碰撞体;
+                
+                // If there are any One_way colliders, prefer to process only those; otherwise process all colliders.
+                List<Collider2D> targetList = null;
+                if (originalAll != null && originalAll.Count > 0)
                 {
-                    if (判定框.所有碰撞体[i] == null) continue;
-
-                    var e = 判定框.所有碰撞体[i];
-
-                    //Debug.LogError(e.gameObject .name +"        "+ e.gameObject .transform .position );
-
-                    if (旋转箭失触发(e))
+                    var oneWay = originalAll.FindAll(c => c != null && c.gameObject.CompareTag(Initialize.One_way));
+                    if (oneWay != null && oneWay.Count > 0)
                     {
-                        判定框.所有碰撞体[i] = null;
-                        RRR = false;
+                        targetList = oneWay;
                     }
-
-                    Debug.LogError(LayerMask.LayerToName(e.gameObject.layer));
-
-
-                    if (Initialize_Mono.I.能踩(e) )
-                    { 
-                       var Rs=Player.圆斩判定.发射();
-                        RRR = Rs != -999;
-                        if (RRR)
-                        {
-                            Player.脚底中间.DraClirl(1f,Color.white);
-                    new Vector2 (Player.transform.position.x, Rs).DraClirl(1f, Color.white);
-
-                            //Debug.LogError(Player.脚底中间.y + "Rs:          " + Rs + "positionY :        " + Player.transform.position.y);
-                            var a =Rs - Player.脚底中间.y;
-                            if (a>0)
-                            {
-                               Player.transform.position += new Vector3  (0f, a);
-                            }
-                            判定框.所有碰撞体[i] = null;
-                            //Debug.LogError(Player.transform.position.y);
-
-                            break;
-                        }
-                    } 
+                    else
+                    {
+                        targetList = new List<Collider2D>(originalAll);
+                    }
+                    if (Initialize_Mono.I.打包额外打印)
+                    {
+                        Debug.LogError("到这qqqqqqqqqqqqqqqqqqqqqqqqqwwwwa");
+                    }
                 }
+
+                if (targetList != null)
+                {
+                    for (int ti = 0; ti < targetList.Count; ti++)
+                    {
+                        var col = targetList[ti];
+                        if (col == null) continue;
+
+                        var e = col;
+
+                        bool 不空而且旋转 = false; 
+                        var FF = e.GetComponent<Fly_Ground>();
+                       
+                        if (FF!=null)    if ( FF.旋转1)  不空而且旋转 = true;
+                         
+                            if (旋转箭失触发(e))
+                        { 
+                            // null the corresponding element in the original list so later logic sees it removed
+                            if (originalAll != null)
+                            {
+                                int origIndex = originalAll.IndexOf(e);
+                                if (origIndex >= 0) originalAll[origIndex] = null;
+                            }
+                            RRR = false;
+                        }
+                             
+                        if (Initialize_Mono.I.能踩(e)  )
+                        {
+
+                            if (Initialize_Mono.I.打包额外打印)
+                            {
+                                Debug.LogError("到这里");
+                             }
+                            if (不空而且旋转) {
+                                break;
+                            }
+
+                            var Rs = Player.圆斩判定.发射();
+                            RRR = Rs != -999;
+                            if (RRR)
+                            {
+                                //if (!BInt.Add(Time.frameCount, true)) break;
+                                if (Initialize_Mono.I.打包额外打印)
+                                {
+                                    Debug.LogError("到这里aaa");
+                                }
+
+                                Player.脚底中间.DraClirl(1f,Color.white);
+                                new Vector2 (Player.transform.position.x, Rs).DraClirl(1f, Color.white);
+
+                                if (Initialize_Mono.I.打包额外打印)
+                                {
+                                    Debug.LogError(Player.脚底中间.y + "Rs:          " + Rs + "positionY :        " + Player.transform.position.y); 
+                                }
+
+                                var delta = Rs - Player.脚底中间.y;
+                                if (delta > 0)
+                                {
+                                    var a = sky.双点碰撞(Player.Bounds.size.y + delta + Player.Velocity.y / 15f);
+                                    var B = sky.Find(a);
+
+                                    var aac = sky.双点碰撞(Player.Bounds.size.y + delta  );
+
+                                    if (aac.Count > 0)
+                                    {
+                                        var aa = Initialize.Get碰撞Position(Player.Bounds, aac[0]);
+                                        if (aa == Vector2.zero)
+                                        {
+                                            Player.transform.position += new Vector3(0f, delta);
+                                        }
+                                        else
+                                        {
+                                            Vector3 ca = Player.Bounds.center - (Vector3)aa;
+                                            Player.transform.position -= ca;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Player.transform.position += new Vector3(0f, delta);
+                                    }
+
+
+
+                                    //Player.transform.position += new Vector3(0f, delta);
+
+
+                                    //if (a==null)
+                                    //{
+                                    //    Player.transform.position += new Vector3(0f, delta);
+                                    //}
+                                    //else
+                                    //{ 
+                                    //  if (!sky.Find(a))
+                                    //    {
+                                    //        ///没有雪块 
+                                    //        /// 
+                                    //var aa = Initialize.Get碰撞Position(Player.Bounds, a[0]);
+                                    //        if (aa==Vector2.zero)
+                                    //        {
+                                    //            Player.transform.position += new Vector3(0f, delta);
+                                    //        }
+                                    //    }
+                                    //}
+
+
+
+                                }
+                                if (originalAll != null)
+                                {
+                                    int origIndex = originalAll.IndexOf(e);
+                                    if (origIndex >= 0) originalAll[origIndex] = null;
+                                }
+                                // stop after successful one-way handling
+                                break;
+
+                            }
+                        } 
+                    }
+                }
+
                 Debug.LogError(RRR);
+                if (RRR) 判定框.开启判定框判定框(false, 判定框.Cc);
                 //升起来
                 return RRR;
             }
                 if (判定框.敌人 != null && 判定框.敌人.Count >= 1)
             {
+                if (Initialize_Mono.I.打包额外打印)
+                {
+                    Debug.LogError("到这里wwwwwwwwwwwwwwwwwwa");
+                }
+
                 #region    正常
                 for (int i = 0; i < 判定框.敌人.Count; i++)
                 {
@@ -744,7 +892,7 @@ public class dunatk : atkBase
         Player.End = false;
         播放相应动画();
     }
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
         第N下 = 0;
         当前攻击特效名字 = null;
@@ -779,7 +927,7 @@ public class dunatk : atkBase
     }
     protected override void 单个攻击结束()
     {
-        if (IP.按键检测_按住(IP.下))
+        if (IP.按键检测_按住(IP.k.下))
         {
             f.To_State(E_State.dun);
         }
@@ -790,7 +938,7 @@ public class dunatk : atkBase
     }
     public override void 按下(KeyCode obj)
     {
-        if (obj == IP.攻击)
+        if (obj == IP.k.攻击)
         {
             if (动画阶段 == 阶段.Action)
             {
@@ -816,7 +964,7 @@ public class downatk : atkBase
         当前碰撞Value = 圆形攻击;
     }
 
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
         Initialize.Set_碰撞(Initialize.L_Player, Initialize.L_Only_Ground, false);
         判定框.关闭再打开();
@@ -883,9 +1031,9 @@ public class upatk : atkBase
     bool 立即结束;
     public override void StateStart()
     {
-        碰撞框触发时间 = 0.3f;
+        碰撞框触发时间 = 0.001f;
         当前碰撞Value.Offcet = new Vector2(2, -0.4f);
-        当前碰撞Value.Size = new Vector2(1.5f, 3.7f);
+        当前碰撞Value.Size = new Vector2(3.5f, 3.7f);
     }
     public override bool 可以切换嘛()
     {
@@ -901,7 +1049,7 @@ public class upatk : atkBase
         Player.上升攻击过了 = true; 
   
 
-        Key a = Player_input.I.Get_key(Player_input.I.攻击);
+        Key a = Player_input.I.Get_key(Player_input.I.k.攻击);
 
         //Player.曲线(5, 15, 0.3f, Player.AC);
         if (a.Keeptime > 0.1f)
@@ -931,7 +1079,7 @@ public class upatk : atkBase
         当前攻击特效名字 = T_N.upatk_0_; 
     }
 
-    public override void ExitState()
+    public override void ExitState(E_State e)
     {
         if (立即结束) Player.上升攻击过了 =false;
         时间 = 0;

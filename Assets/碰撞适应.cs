@@ -15,16 +15,50 @@ public class 碰撞适应 : MonoBehaviour
     SpriteRenderer sp;
     BoxCollider2D bc;
 
+    [SerializeField]
+    bool sliced = false;
     public bool 去他喵的;
     private void Awake()
     {
         bc = GetComponent<BoxCollider2D>();
         sp = GetComponent<SpriteRenderer>();
-        sp.drawMode = SpriteDrawMode.Tiled;
+
+        if (sliced)
+        {
+            sp.drawMode = SpriteDrawMode.Sliced;
+        }
+        else
+        {
+            sp.drawMode = SpriteDrawMode.Tiled;
+        }
 
  
-            啊啊啊啊();
  
+        //StartCoroutine(asda());
+    } 
+    IEnumerator asda()
+    {
+       //List<Vector3>Loc = new List<Vector3>();
+        List<Vector3>pos=new List<Vector3>();
+
+        List<Transform> ts = new List<Transform>();
+        foreach (Transform item in transform)
+        {
+            ts.Add(item);
+            pos.Add(item.localPosition);
+            //Loc.Add(item.loc);
+        }
+        yield return null;
+
+        for (int i = 0; i < ts.Count; i++)
+        {
+            //ts[i].position = pos[i];
+            ts[i].localPosition = pos[i];
+        } 
+    }
+    private void Start()
+    {
+        啊啊啊啊();
     }
     void 啊啊啊啊()
     {
@@ -36,7 +70,10 @@ public class 碰撞适应 : MonoBehaviour
         {
  
             sp.size = 排除(sp.size);
-            bc.size = 排除(bc.size);
+
+            var a = 排除(bc.size);
+            bc.size =new Vector2(Mathf.Abs(a.x), Mathf.Abs(a.y)) ;
+            //if (Debug_) Debug.LogError(a+"        sp.size = 排除(sp.size);sp.size = 排除(sp.size);sp.size = 排除(sp.size);            A" + bc.size);
 
             transform.localScale = Vector2.one;
         }

@@ -96,6 +96,7 @@ public class 压缩毛巾 : MonoBehaviour
     float 原始Y坐标;
     private void OnCollisionEnter2D(Collision2D co)
     {
+         
         if (co.gameObject.CompareTag(Initialize.Player))
         {
             for (int i = 0; i < co.contacts.Length; i++)
@@ -141,7 +142,7 @@ public class 压缩毛巾 : MonoBehaviour
                     Initialize_Mono.I.Waite(()=> {
                         GetComponent<One_way>()?.关闭一会儿( Initialize_Mono .I. F_Time_踩上去自爆的时间);
                     }
-                    ,0.5f*Player3.Public_Const_Speed );
+                    ,1f*Player3.Public_Const_Speed );
                 }
             }
             else

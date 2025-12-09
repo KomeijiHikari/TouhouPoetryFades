@@ -155,8 +155,8 @@ public class 判定框Base : MonoBehaviour
 #if UNITY_EDITOR
         Initialize_Mono.残留(bc);
 #endif      
-        yield return 0;
-        //yield return new WaitForSeconds(time);
+        //yield return 0;
+        yield return new WaitForSeconds(time);
         开启判定框判定框(false, B);
     }
     public virtual void 在主角前面( )

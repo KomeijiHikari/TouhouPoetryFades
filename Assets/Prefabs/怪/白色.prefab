@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2307686023164367248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.169, y: 0.814, z: 0}
+  m_LocalPosition: {x: -0.169, y: 0.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -206,9 +206,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab704f4681b6810449b3b1ba0993633d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "\u5355\u65B9\u5411": 0
-  "\u6709\u4EBA1": 0
   "\u5E94\u8BE5\u65E0\u89C6": 0
+  "\u9876\u4E00\u4E0B\u73A9\u5BB6": 0
+  "\u5355\u65B9\u5411": 0
+  Deb: 0
+  "\u6709\u4EBA1": 0
 --- !u!1 &6910734800791939308
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,20 +383,25 @@ MonoBehaviour:
   "\u524D": 0
   "\u540E": 0
   "\u5934": 1
+  "Velocity\u8C03\u8BD5": 0
   "\u901F\u5EA6\u8C03\u8BD5": 0
+  "\u6839\u6027": 0
   debug_: 0
   "\u5F53\u524D": 1
-  Current_Speed_: 0
   "\u79FB\u52A8\u8DDD\u79BB_": 0
-  Speed_: 0
+  "\u663E\u793A_Speed_": 0
   Speed_Lv_: 1
   Move_speed_: 7.53
   Jump_speed_: 0
   "\u7834\u9632": 0
   "\u97E7\u6027__": 0
+  "Max\u97E7\u6027": 0
   "\u78B0\u649E\u5F00\u5173": 0
+  "\u97E7\u6027\u589E\u5E45": 0
+  "\u56DE\u590D\u5230\u6EE1": 0
   BoomSpeed_: {x: 1, y: 1}
-  "\u7A7A\u6C14\u5899\u78B0\u649E_": 1
+  "\u7A7A\u6C14\u5899\u78B0\u649E\u8BBE\u7F6E1_": 1
+  "\u7A7A\u6C14\u5899\u78B0\u649E\u663E\u793A_": 0
   "\u7C92\u5B50\u7CFB\u7EDF": {fileID: 6910734800581654053}
   "\u91CD\u529B\u589E\u5E45_": 1
   atkvalue_: 10
@@ -403,10 +410,11 @@ MonoBehaviour:
   HPROCK_: 0
   "\u7075\u9B42_": 1
   Name: "\u5C0F\u767D"
-  Curttent_Speed_: 0
+  "\u663E\u793A\u8BFB\u53D6\u540E\u5237\u65B0_Curttent_Speed_": 0
   m: {fileID: 0}
   Add: 0
   "\u9650\u5236_": 0
+  "\u88AB\u6253\u65F6\u95F4": 0
   "\u6682\u505C1": 0
   re_: 1
   StartWay: {x: 0, y: 0}
@@ -430,15 +438,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817e5471aac8055408ebbc9767b695a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  "\u6D6E\u7A7A": 0
   "\u901F\u5EA6\u9650\u5236": {x: 0, y: 0}
+  Velocity_: {x: 0, y: 0}
   "\u5F53\u524D_": {x: 0, y: 0}
   Stop: 0
   "\u6469\u64E6\u529B": 20
   Deb: 0
+  Sp: {fileID: 0}
   Speedd: 0
-  Key: 0
-  "\u6D4B\u8BD5\u901F\u5EA6": {x: 0, y: 0}
   "\u5173\u95ED1": 0
+  "\u91CD\u529B\u589E\u5E451": 0
+  ground: 0
+  "\u78B0\u649E\u68C0\u6D4B\u5C421":
+    serializedVersion: 2
+    m_Bits: 0
+  current_Speed_LV: 0
+  speed_Lv: 0
+  "\u5730\u9762": {fileID: 0}
+  s: {fileID: 0}
+  bc: {fileID: 0}
 --- !u!96 &6910734800791940889
 TrailRenderer:
   serializedVersion: 2
@@ -576,11 +595,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bcb9a2c416842646be89ef50dea8621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: "\u6548\u679C_\u6B7B\u4EA1Enter"
+      Entry: 6
+      Data: 
+    - Name: "\u6548\u679C_\u6D3B\u52A8Enter"
+      Entry: 6
+      Data: 
   "\u5F53\u524D":
     stateName: 
     "\u6FC0\u6D3B": 0
     "\u6D3B\u52A8": 0
     time: 0
+    timeCount: 0
     Deb: 0
   DeBuG: 0
   "\u6B7B\u4EA1":
@@ -588,18 +623,21 @@ MonoBehaviour:
     "\u6FC0\u6D3B": 1
     "\u6D3B\u52A8": 0
     time: 0
+    timeCount: 0
     Deb: 0
   "\u6D3B\u52A8":
     stateName: "\u6D3B\u52A8aaaa"
     "\u6FC0\u6D3B": 1
     "\u6D3B\u52A8": 0
     time: 0
+    timeCount: 0
     Deb: 0
   "\u5047\u6B7B":
     stateName: 
     "\u6FC0\u6D3B": 0
     "\u6D3B\u52A8": 0
     time: 0
+    timeCount: 0
     Deb: 0
   E: {fileID: 0}
   tim: 0

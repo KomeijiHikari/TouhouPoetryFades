@@ -6,104 +6,106 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 
-public class ç©å®¶å—ä¼¤æ•ˆæœ : MonoBehaviour
+public class Íæ¼ÒÊÜÉËĞ§¹û : MonoBehaviour
 {
 
-    [Header("å—å‡»æ•ˆæœ")]
+    [Header("ÊÜ»÷Ğ§¹û")]
     [Space]
-    [Tooltip("æ— æ•Œæ—¶é—´ ")]
+    [Tooltip("ÎŞµĞÊ±¼ä ")]
     [SerializeField]
     float godTime = 4.63f;
-    [Tooltip("é—ªçƒé—´éš”æ—¶é—´")]
+    [Tooltip("ÉÁË¸¼ä¸ôÊ±¼ä")]
     public float flickerHZ = 0.15f;
-    [Tooltip("ç¡¬ç›´æ—¶é—´")]
-    public float stiffnessTimeä¸€èˆ¬ = 0.2f;
-    [Tooltip("å¤§ç¡¬ç›´æ—¶é—´")]
-    public float stiffnessTimeå¤§ç¡¬ç›´ =1f;
+    [Tooltip("Ó²Ö±Ê±¼ä")]
+    public float stiffnessTimeÒ»°ã = 0.2f;
+    [Tooltip("´óÓ²Ö±Ê±¼ä")]
+    public float stiffnessTime´óÓ²Ö± = 1f;
     [DisplayOnly]
     CinemachineImpulseSource CIS;
     Light2D LI2D { get; set; }
 
 
-    public Action<bool> æ’­æ”¾å—å‡»åŠ¨ç”» { get; set; }
+    public Action<bool> ²¥·ÅÊÜ»÷¶¯»­ { get; set; }
 
-    bool ä¸å¯ä»¥å—ä¼¤ { get; set; }
-    public   float stiffnessTime_;
+    bool ²»¿ÉÒÔÊÜÉË { get; set; }
+    public float stiffnessTime_;
     float godTime_ { get; set; }
-    WaitForSeconds waitForSeconds { get; set; }//ç¨‹åºç­‰å¾…æ—¶é—´
- 
+    WaitForSeconds waitForSeconds { get; set; }//³ÌĞòµÈ´ıÊ±¼ä
 
 
-    public void EnterHit(float damage, float force, GameObject obj,bool ç¡¬æŠ—=false)
+
+    public void EnterHit(float damage, float force, GameObject obj, bool Ó²¿¹ = false)
     {
         if (Player3.I.HPROCK) return;
-     
-        var c = Initialize.è¿”å›å’Œå¯¹æ–¹ç›¸åæ–¹å‘çš„æ ‡å‡†åŠ›(gameObject, obj);
 
- 
-        EnterHit(damage, ç¡¬æŠ—);
+        var c = Initialize.·µ»ØºÍ¶Ô·½Ïà·´·½ÏòµÄ±ê×¼Á¦(gameObject, obj);
+
+
+        EnterHit(damage, Ó²¿¹);
 
         //if (obj != gameObject) 
         //    Debug.LogError(force+"              AAAAAAAAAAAAAAAAAAA"+Time.frameCount);
 
-        if (Player3.I.å—ä¼¤Force ==Vector2 .zero )
+        if (Player3.I.ÊÜÉËForce == Vector2.zero)
         {
             Player3.I.Velocity = new Vector2(c.x * force, 10f);
         }
         else
         {
-            Player3.I.Velocity = new Vector2(c.x * Player3.I.å—ä¼¤Force.x, Player3.I.å—ä¼¤Force.y);
+            Player3.I.Velocity = new Vector2(c.x * Player3.I.ÊÜÉËForce.x, Player3.I.ÊÜÉËForce.y);
         }
- 
-     
+
+
     }
 
     [DisplayOnly]
-    public bool å—ä¼¤æ•ˆæœ;
-    public void EnterHit(float damage,bool ç¡¬æŠ—=false )
+    public bool ÊÜÉËĞ§¹û;
+    public void EnterHit(float damage, bool Ó²¿¹ = false)
     {
         if (Player3.I.HPROCK) return;
 
-        if (ä¸å¯ä»¥å—ä¼¤) return;
-        Player3.I.é—ªå…‰( );
+        if (²»¿ÉÒÔÊÜÉË) return;
+        Player3.I.ÉÁ¹â();
 
-        if (ç¡¬æŠ—)
+        if (Ó²¿¹)
         {
-            ä¸»UI.I.æ’­æ”¾çº¢åŠ¨ç”»();
-            é•œå¤´æ™ƒåŠ¨(10);
+            Ö÷UI.I.²¥·Åºì¶¯»­();
+            ¾µÍ·»Î¶¯(10);
             Initialize.TimeScale = 0.1f;
             Initialize_Mono.I.Waite(() => Initialize.TimeScale = 1f, 0.5f, true);
 
             return;
         }
-        å—ä¼¤æ•ˆæœ = true;
+        yalaAudil.I.EffectsPlay("PlayerHit",1); 
+
+        ÊÜÉËĞ§¹û = true;
         godTime_ = godTime;
-        stiffnessTime_ = stiffnessTimeä¸€èˆ¬;
-        ä¸å¯ä»¥å—ä¼¤ = true;
+        stiffnessTime_ = stiffnessTimeÒ»°ã;
+        ²»¿ÉÒÔÊÜÉË = true;
 
-        ä¸»UI.I.æ’­æ”¾çº¢åŠ¨ç”»();
-        é•œå¤´æ™ƒåŠ¨(10);
-        Initialize.TimeScale= 0.1f;
-        Initialize_Mono.I.Waite(() => Initialize.TimeScale = 1f,0.5f,true);
-//Initialize_Mono.I.æ—¶ç¼“(0.5f, 0.2f);
+        Ö÷UI.I.²¥·Åºì¶¯»­();
+        ¾µÍ·»Î¶¯(10);
+        Initialize.TimeScale = 0.1f;
+        Initialize_Mono.I.Waite(() => Initialize.TimeScale = 1f, 0.5f, true);
+        //Initialize_Mono.I.Ê±»º(0.5f, 0.2f);
 
-        Player_input.I.è¾“å…¥å¼€å…³ = false; 
+        Player_input.I.ÊäÈë¿ª¹Ø = false;
     }
     private void Update()
     {
 
         GodTime_update();
-        if (å—ä¼¤æ•ˆæœ)
+        if (ÊÜÉËĞ§¹û)
         {
             stiffnessTime_ -= Time.deltaTime;
             Player3.I.an.speed = 0;
-            if (stiffnessTime_ <= 0)//ç¡¬ç›´æ—¶é—´è¿‡å»äº†
+            if (stiffnessTime_ <= 0)//Ó²Ö±Ê±¼ä¹ıÈ¥ÁË
             {
                 StartCoroutine(Flicker());
-                å—ä¼¤æ•ˆæœ = false;
+                ÊÜÉËĞ§¹û = false;
                 Player3.I.an.speed = 1;
-                æ’­æ”¾å—å‡»åŠ¨ç”»?.Invoke(false);
-                Player_input.I.è¾“å…¥å¼€å…³ = true;
+                ²¥·ÅÊÜ»÷¶¯»­?.Invoke(false);
+                Player_input.I.ÊäÈë¿ª¹Ø = true;
 
             }
         }
@@ -113,17 +115,19 @@ public class ç©å®¶å—ä¼¤æ•ˆæœ : MonoBehaviour
     void GodTime_update()
     {
 
-        if (!ä¸å¯ä»¥å—ä¼¤) return;
-        if (godTime_ >  0)
-        {//æ— æ•Œæ—¶é—´ç»§ç»­
+        if (!²»¿ÉÒÔÊÜÉË) return;
+
+        //Debug.LogError(godTime_  +"godTime_ >= 0");
+        if (godTime_ > 0)
+        {//ÎŞµĞÊ±¼ä¼ÌĞø
             godTime_ -= Time.deltaTime;
             Player3.I.HPROCK = true;
- 
+
         }
         else
-        {//æ— æ•Œæ—¶é—´ç»“æŸ 
-            ä¸å¯ä»¥å—ä¼¤ = false;
-            Player3.I.HPROCK = false; 
+        {//ÎŞµĞÊ±¼ä½áÊø 
+            ²»¿ÉÒÔÊÜÉË = false;
+            Player3.I.HPROCK = false;
         }
     }
 
@@ -132,22 +136,23 @@ public class ç©å®¶å—ä¼¤æ•ˆæœ : MonoBehaviour
         for (int i = 0; ; i++)
         {
             //LI2D .enabled = true; 
-            Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b, 0.1f);
+            Player3.I.sp.material.SetFloat(²ÄÖÊ¹ÜÀí._Alpha, 0.1f);
+            //Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b, );
             yield return waitForSeconds;
-
-            Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b, 1f);
+            Player3.I.sp.material.SetFloat(²ÄÖÊ¹ÜÀí._Alpha,  1f);
+            //Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b, 1f);
             //LI2D.enabled = false ;
             yield return waitForSeconds;
 
             if (godTime_ <= 0) break;
         }
-        Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b, 1f); 
+        Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b, 1f);
     }
 
-    Light2D åœ¨è‡ªå·±çš„åº•éƒ¨ç”Ÿæˆç¯å…‰()
+    Light2D ÔÚ×Ô¼ºµÄµ×²¿Éú³ÉµÆ¹â()
     {
         GameObject Light2Dl;
- 
+
         Light2Dl = new GameObject("Light");
         Light2Dl.transform.parent = transform;
         Light2Dl.transform.position = Vector2.zero;
@@ -155,18 +160,19 @@ public class ç©å®¶å—ä¼¤æ•ˆæœ : MonoBehaviour
         return Light2Dl.AddComponent<Light2D>();
     }
     private void Awake()
-    { 
+    {
         LI2D = GetComponentInChildren<Light2D>();
 
 
-        Initialize.ç»„ä»¶(gameObject, ref CIS);
+        Initialize.×é¼ş(gameObject, ref CIS);
 
- 
-   waitForSeconds = new WaitForSeconds(flickerHZ);
-    } 
 
-    public void é•œå¤´æ™ƒåŠ¨(float åŠ›åº¦)
+        waitForSeconds = new WaitForSeconds(flickerHZ);
+    }
+
+    public void ¾µÍ·»Î¶¯(float Á¦¶È)
     {
-        GetComponent<CinemachineImpulseSource>().GenerateImpulse(transform.localScale.x * åŠ›åº¦);
+        GetComponent<CinemachineImpulseSource>().GenerateImpulse(transform.localScale.x * Á¦¶È);
     }
 }
+

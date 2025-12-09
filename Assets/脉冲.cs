@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class 脉冲 : MonoBehaviour
 {
-    SpriteRenderer sp;
+    RawImage RI;
     Material m;
     public static 脉冲 I;
  
@@ -21,6 +22,13 @@ public class 脉冲 : MonoBehaviour
     {
         get => "_t";
     }
+    bool enabled
+    { 
+    set
+        {
+            m.SetInt("_B", value?1:0);
+        }
+    }
     private void Awake()
     {
 
@@ -33,11 +41,11 @@ public class 脉冲 : MonoBehaviour
             I = this;
         }
 
-        sp = GetComponent<SpriteRenderer>();
-        m = sp.material;
+        RI = GetComponent<RawImage>();
+        m = RI.material;
 
         m.SetFloat(t, 0);
-        sp.enabled = false;
+        enabled = false;
     }
 
     private void Start()
@@ -48,14 +56,15 @@ public class 脉冲 : MonoBehaviour
 
     public void End_File()
     {
-        sp.enabled = false;
+         enabled = false;
         StopCoroutine(F);
         Set_Float(0);
         m.SetFloat(强度, defu);
         m.SetFloat(尺寸,0.1f);
     }
-    public void File(Vector2 po,float 脉冲强度=0,bool 正向反向=true,float 时间=1,float 尺寸_=0.1f)
-    { 
+    public void File(Vector3 po,float 脉冲强度=0,bool 正向反向=true,float 时间=1,float 尺寸_=0.1f)
+    {
+        时间 = 0.15f;
         m.SetFloat(尺寸, 尺寸_);
         if (脉冲强度==0)
         {
@@ -65,10 +74,12 @@ public class 脉冲 : MonoBehaviour
         {
             m.SetFloat(强度, 脉冲强度); 
         }
-        transform.position = po;
+        var a = Camera.main.WorldToViewportPoint(po);
+        Vector2 vector2 = new Vector2(Camera.main.WorldToViewportPoint(po).x, Camera.main.WorldToViewportPoint(po).y);
+        m.SetVector("_Raing", vector2);
 
 
-        F= StartCoroutine(ST(正向反向, 时间));
+        F = StartCoroutine(ST(正向反向, 时间));
     }
     Coroutine F;
 
@@ -79,14 +90,14 @@ public class 脉冲 : MonoBehaviour
     {
         if (实验!=0)
         {
-            sp.enabled = true;
+             enabled = true;
             Set_Float(实验);
         }
     }
     IEnumerator ST(bool 正负=true,float 时间=1)
     {
         正负 = true;
-        sp.enabled = true; 
+         enabled = true; 
         var Starttime =Time.time;
         if (正负)
         { 
@@ -117,7 +128,7 @@ public class 脉冲 : MonoBehaviour
 
 
         Set_Float(0);
-        sp.enabled = false ; 
+         enabled = false ; 
         yield return null;
     }
 

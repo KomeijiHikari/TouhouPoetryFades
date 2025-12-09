@@ -64,6 +64,7 @@ public class 残影 : MonoBehaviour
 
     public  void 开启残影(bool b)
     {
+        Debug.LogError(b+"开启残影 DASH                                                      AAAAAAAAAAAAAAAAAAA");
         B = b;
     }
     public void 开启残影(bool b,float time)

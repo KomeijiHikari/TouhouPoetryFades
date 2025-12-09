@@ -5,11 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - "\u4F20\u9001\u70B9"
-  - 'MovePlatform '
   - "\u5267\u60C5\u70B9"
-  - MovePlatform
   - Ground
   - One_way
+  - MovePP
   layers:
   - Default
   - TransparentFX

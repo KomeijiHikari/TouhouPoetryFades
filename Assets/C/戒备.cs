@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class 戒备 : MonoBehaviour, I_暂停
@@ -10,7 +11,8 @@ public class 戒备 : MonoBehaviour, I_暂停
     {
         一长一短,
         单面,
-        扇形,
+        扇形, 
+        距离,
     }
     public 戒备类型 当前戒备类型;
     [SerializeField]
@@ -95,11 +97,43 @@ public class 戒备 : MonoBehaviour, I_暂停
 
                 int 朝向 = (int)transform.localScale.x;
                 检测到的列表 = Initialize.扇形检测(b.Bounds.center, 主检测距离, 朝向 * 角度, 扇形角度, 精度, 检测层, 穿透否, Deb);
+                break; 
+                case 戒备类型.距离:
+                var a = Player3.I.transform.position - transform.position;
+
+       
+                if (Deb) Debug.DrawRay(transform.position, a.normalized* 主检测距离, Color.red, 0.1f);
+                if (a.sqrMagnitude<主检测距离*主检测距离)
+                {
+                    主要s = Physics2D.RaycastAll(transform.position, a.normalized, 主检测距离, 检测层);
+                    for (int i = 0; i < 主要s.Length; i++)
+                    {
+                        var R = 主要s[i];
+                        if (R.collider != null)
+                        {
+                            if (Deb)
+                            {
+                                R.point.DraClirl();
+                            }
+                            if (R.collider.gameObject == gameObject) continue;
+                            if (!检测到的列表.Contains(R.collider.gameObject))
+                            {
+                                检测到的列表.Add(R.collider.gameObject);
+                            }
+                            if (!穿透否) break;
+                        }
+                    }
+                  //bool b=    Physics2D.Raycast(transform.position, a.normalized, 主检测距离, 1 << Initialize.L_Player).collider==null;
+                    //if (!检测到的列表.Contains(Player3.I.gameObject))
+                    //{
+                    //    检测到的列表.Add(Player3.I.gameObject);
+                    //}
+                } 
                 break;
         } 
         发现玩家了吗 = 检测到的列表.Exists(t => t.layer == Initialize.L_Player);
 
-    }
+    } 
     [SerializeField] bool 穿透否 = false;
     [Tooltip("扇形的方向角度  头上为0，顺时针")]
     /// <summary>

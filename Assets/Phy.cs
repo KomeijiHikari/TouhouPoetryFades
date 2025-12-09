@@ -6,6 +6,7 @@ using System;
 
 public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
 {
+    public bool Staticrb { get =>false; }
     [SerializeField]
     public bool 浮空 = false;
 
@@ -17,34 +18,22 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     [SerializeField]
     [DisplayOnly]
     Vector2 Velocity_;
-    /// <summary>
-  //  这是我的物理脚本 该脚本完全替换掉unity自带的Ridbody2D组件
-  //  是通过外部赋值 Velocity 让物体运动 现在我想要在一个有重力的物体上绑定这个脚本
-  //     我想要那个物体 是由小怪或者BOSS发射生成该物体后给该物体Velocity 一个值
-  //     让该物体类似抛物线的形式攻击到指定位置
-  //   同时只给出初始力 请好好研究我的脚本    在我的脚本中生成方法
-  //请好好研究我的脚本    在我的脚本中生成方法
-  //    不要自创脚本， 请好好研究我的脚本 在我的脚本中生成方法
-  //       不要自创脚本， 请好好研究我的脚本 在我的脚本中生成方法
-  //       不要自创脚本， 请好好研究我的脚本 在我的脚本中生成方法
-  //       不要自创脚本， 请好好研究我的脚本 在我的脚本中生成方法
-  //       不要自创脚本， 请好好研究我的脚本 在我的脚本中生成方法
-  //       不要自创脚本， 请好好研究我的脚本 在我的脚本中生成方法
-  //       不要自创脚本， 请好好研究我的脚本 在我的脚本中生成方法
-  //       不要自创脚本， 请好好研究我的脚本 在我的脚本中生成方法
-    /// </summary>
 
-
+ 
     public Vector2 Velocity
     {
         get
         {
             return Velocity_;
-        }
-        set
+        } 
+       set
         {
             if (Velocity_ != value)
             {
+                if (true)
+                {
+
+                }
                 if (Deb) Debug.LogError(value + "                               " + transform.position + "     " + gameObject);
                 Velocity_ = value;
             }
@@ -64,6 +53,12 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     }
     public void Goto_thisWay(Vector2 WoldPosition)
     {
+        if (b.Staticrb)
+        {
+            Debug.Log(gameObject.name + transform.position + "是不动物体");
+            return;
+        }
+  
         var 相对坐标 = WoldPosition - (Vector2)transform.position;
         Velocity = 相对坐标;
         if (Deb)
@@ -93,8 +88,8 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         b = GetComponent<Enemy_base>();
         if (b==null)
         {
-            b = (I_M_Ridbody2D )this;
-           }
+            b =  this;
+        }
 
         Velocity = Vector2.zero;
         if (速度限制 == Vector2.zero) 速度限制 = new Vector2(30, 10);
@@ -130,6 +125,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
 
     No_Re RR = new No_Re();
     int II;
+
     public Vector2 碰撞预测(Vector2 target)
     ///碰撞点， 之间 的距离   返回方向*距离
     {
@@ -194,48 +190,6 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
                 Debug.LogError("走这里");
                 return Vector2.zero;
             }
-
-            //if (碰撞点相对位置.magnitude <= 0.08f)
-            //{ //   零距离  
-            //    if (v.x == v.y)
-            //    {
-            //        var 距离 = (a.point - (Vector2)中心点).magnitude - 0.3f;
-            //        return 方向 * 距离;
-            //    }
-            //    else if (v.x > v.y)
-            //    {
-            //        return new Vector2(碰撞点相对位置.x, v.y);
-            //    }
-            //    else if (v.y > v.x)
-            //    {
-            //        return new Vector2(v.x, 碰撞点相对位置.y);
-            //    }
-            //    else
-            //    {
-            //        return Vector2.zero;
-            //    } 
-            //}
-            //else
-            //{ //   有距离
-
-            //    if (v.x==v.y)
-            //    {
-            //        var 距离 = (a.point - (Vector2)中心点).magnitude - 0.3f;
-            //        return 方向 * 距离;
-            //    }
-            //    else if (v.x > v.y)
-            //    { 
-            //        return new Vector2(碰撞点相对位置.x, v.y);
-            //    }
-            //    else if (v.y > v.x)
-            //    {
-            //        return new Vector2(v.x, 碰撞点相对位置.y);
-            //    }
-            //    else
-            //    {
-            //        return  Vector2 .zero ;
-            //    }
-            //}
         }
         else
         {
@@ -254,7 +208,11 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         get => Velocity;
         set
         {
-            if (Deb) if (value != Vector2.zero) Debug.LogError("Safe:       " + value + "                               ");
+            if (b.Staticrb) {
+                Debug.Log(gameObject .name +transform.position+"是不动物体");
+                return;
+            }
+                if (Deb) if (value != Vector2.zero) Debug.LogError("Safe:       " + value + "                               ");
             Velocity = 碰撞预测(value);
         }
     }
@@ -271,8 +229,31 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     {
         Stop_Velo();
     }
+
+    public Vector2 碰撞预测2(Vector2 target)
+    {
+        if (target == Vector2.zero) return target;
+        Vector3 中心点 = b.Bounds.center;
+        var 方向 = (中心点 - 中心点 + (Vector3)target);
+        方向.Normalize();
+
+        var a = Physics2D.BoxCast(
+         中心点,
+         b.Bounds.size - new Vector3(0.05f, 0.05f),
+         0,
+         方向,
+         target.magnitude * DeltaTime,
+         b.碰撞检测层
+         );
+         
+        return Initialize.Get碰撞Position(b.Bounds, a);
+    }
+
+
+    public float ZZZZZZZ;
     void 模拟()
     { 
+       
         if (Stop) return;
         if (Velocity != Vector2.zero)
         { ///外部进入   
@@ -291,19 +272,28 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
 
             //Initialize_Mono.I.Waite(() => De(), 1f);
         }
-         
+
 
         //if (b.I_S.Speed > 8||  Mathf .Abs(b.I_S.Speed * 当前.y)>=40)
-        //当前 = 碰撞预测(当前);   
+        //当前 = 碰撞预测(当前);    
+      var a=  碰撞预测2(当前);
 
-        var V = (Vector3)当前 * b.I_S.固定等级差;
-        //if (速度限制 != Vector2.zero)
-        //{
-        //    if (速度限制.x != 0) V.x = Mathf.Clamp(V.x, -速度限制.x, 速度限制.x);
-        //    if (速度限制.y != 0) V.y = Mathf.Clamp(V.y, -速度限制.y, 速度限制.y);
-        //}
+        if (a==Vector2.zero)
+        {
+            ZZZZZZZ = Initialize_Mono.I.GetMin(b.I_S.固定等级差);
+            var V = (Vector3)当前 * ZZZZZZZ; 
 
-        b.transform.position += V * Time.fixedDeltaTime;
+            b.transform.position += V * Time.fixedDeltaTime;
+        }
+        else
+        {
+                        Stop_Velo();
+
+            Vector3 ca = b.Bounds.center - (Vector3)a;
+            b.transform.position -= ca;
+        }
+
+
 
         //if (Deb) Debug.LogError("aaaaaaaaa               a");
         ///重力个惯性
@@ -368,8 +358,8 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         }
 
         当前 = new Vector2(X, Y);
-        var a = b.Get_rb();
-        if (a != null) a.velocity = Vector2.zero;
+        var aR = b.Get_rb();
+        if (aR != null) aR.velocity = Vector2.zero;
 
         Velocity = Vector2.zero; 
     } 
@@ -513,6 +503,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
 }
 interface I_M_Ridbody2D
 {
+    bool Staticrb { get; }
     I_Speed_Change I_S { get; }
     LayerMask 碰撞检测层 { get; }
     Bounds Bounds { get; }

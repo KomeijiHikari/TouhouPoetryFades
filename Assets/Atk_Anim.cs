@@ -22,10 +22,15 @@ public class Atk_Anim : MonoBehaviour
     [SerializeField]
     public  GameObject ¹ØµôºÍ¿ªÆô;
     public Action ATK;
+    public Action ATK2;
+    public void Anim_Action2()
+    {
+        ATK2?.Invoke();
+    }
     public void  Anim_Action()
     { 
         ATK?.Invoke();
-    }
+    } 
     private void Awake()
     {
         if (ÉËº¦Åö×²Ïä!=null)

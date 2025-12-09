@@ -4,6 +4,8 @@ using UnityEngine;
 using SampleFSM;
 using System;
 using UnityEngine.Events;
+using Sirenix.OdinInspector;
+using 发射器空间;
 public   interface I_Dead
 {    /// <summary>
      /// 本  管理调用
@@ -31,6 +33,8 @@ public interface I_假死
 
 public  partial  class 生命周期管理 : 泛用状态机, I_假死
 {
+ 
+ 
     public GameObject 对象 => gameObject;
     public struct DeadPla:I_Save
     { 
@@ -44,7 +48,7 @@ public  partial  class 生命周期管理 : 泛用状态机, I_假死
 
                 name = name + "\n" + a;
             }
-            Debug.LogError(name);
+            //Debug.LogError(name);
         }
         public bool 对比(Vector2 V)
         {
@@ -75,8 +79,11 @@ public  partial  class 生命周期管理 : 泛用状态机, I_假死
                 c.Add(v);
             }
             I.DeadList = c;
+ 
             保存(); 
         }
+
+
         public string Name => Save_static.已经死掉的机关;
         public void 保存()
         {
@@ -171,6 +178,14 @@ public state 死亡 = new state("死亡");
             死亡.Deb = true;
         }
     }
+    [Button("Play_", ButtonSizes.Large)]
+    public    void Play_()
+    {
+        if (R != null)
+        {
+            R.重制();
+        }
+    }
     private void Start()
     {
         if (DeBuG) Debug.LogError(gameObject + "         " + transform.position);
@@ -180,9 +195,11 @@ public state 死亡 = new state("死亡");
         假死State();
 
         当前 = new state("Nullll");
-        当前 = 当前.to_state(初始化状态()); 
-    }
+ 
+            ///或许 当有临时存档点的时候 延迟关闭该脚本
 
+            当前 = 当前.to_state(初始化状态());
+        }
     private void 假死State()
     {
         假死.Enter += ()=>{ 
@@ -221,16 +238,22 @@ public state 死亡 = new state("死亡");
         base.Update(); 
     }
     public  void 存()
-    { 
+    {
+        if (DeBuG) Debug.LogError("销毁触发  调用  死亡状态" + gameObject);
         ///把自己放进实体堆
         if (R == null || (!R.Re&&R.Re_Time ==0))
-        { 
+        {
+            if (DeBuG)
+            {
+                Debug.LogError("AAAAAAAA    销毁触发  调用  死亡状态        "+ mypo);
+            }
             DeadPla.I.Add(mypo); 
         }
         
     }
     state 初始化状态()
     {
+        if (DeBuG) Debug.LogError("出出出1");
         if (DeBuG)
         { 
             if (DeadPla.I.DeadList!=null)
@@ -270,12 +293,13 @@ public state 死亡 = new state("死亡");
         if (D == null) return;
 
         D.销毁触发 += () => {
- 
+
+            if (DeBuG) Debug.LogError("销毁触发  调用  死亡状态"+gameObject );
             to_state(死亡); };
 
         死亡.Enter += () =>
         {
- 
+            if (DeBuG) Debug.LogError("销毁触发  调用  死亡状态" + gameObject);
             D.Dead();
             效果_死亡Enter?.Invoke(); 
             isDeadEnter?.Invoke();
@@ -285,6 +309,10 @@ public state 死亡 = new state("死亡");
             存();
         }; 
     }
+    [SerializeField]
+    float 重生时间 = 0f;
+    public bool 更安全的地点 = false;
+    public  bool 重生时不等待玩家 = true;
     public Action<bool> 效果_不复活 { get; set; }
     public Action 效果_死亡Enter;
     public  Action 效果_活动Enter;
@@ -306,23 +334,96 @@ public state 死亡 = new state("死亡");
             } 
             if (R.Re_Time != 0)
             {
-                死亡.FixStay += () =>
-                { 
-                    if (!CanLive())
+ 
+            死亡.Enter += () =>
+                {
+                    重生时间 = 0f; 
+                };
+            死亡.FixStay += () =>
+            {
+                重生时间 += Time.fixedDeltaTime;
+                //if (CanLive())
+                //    {
+                //        // accumulate time while there is no collision
+    
+                //    }
+                //    else
+                //    {
+                //        // If you want the progress to reset when collision happens, uncomment next line:
+                //        // 无碰撞累计 = 0f;
+                //    }
+
+                    var required = R.Re_Time * Player3.Public_Const_Speed;
+                    if (required <= 0f)
                     {
-                        if (DeBuG) Debug.LogError("不能活");
-                        DeadTime = Time.time;
+                        复活进度 = 0f;
+                        return;
                     }
-                    已经过去的 = Time.time;
-                    界限 = DeadTime + (R.Re_Time *  Player3.Public_Const_Speed);
-                    if (已经过去的 > 界限)
+
+                    复活进度 = Mathf.Clamp01(重生时间 / required);
+
+                    // trigger revive when accumulated time reaches required time
+                    if (重生时间 >= required)
+                   {
+                    if ( 重生时不等待玩家)
                     {
-                        if (DeBuG)     Debug.LogError(Time.time +"Dead"+ DeadTime + "Re" + R.Re_Time);
+                        if (!CanLive())
+
+                        {
+                            Player3.I.安全地点();
+                        }
+                
                         Event_复活赛();
+                        杀();
+                    }
+                    else
+                    {
+                        if (CanLive())
+                        {
+                            Event_复活赛();
+                        }
+                    }
+    
                     } 
                 };
             }
     }
+
+    Vector2 复活检测范围
+    {
+        get
+        {
+            if (重生时不等待玩家)
+            {
+                ///干掉玩家
+                return Vector2.one*0.1f;
+            }
+            else
+            {
+                ///等待玩家
+                return Vector2.zero;
+            }
+        }
+    }
+    void 杀()
+    {
+        if (DeBuG)
+        {
+            Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + 盒子.size+盒子);
+        }
+    
+  var a= 盒子.碰撞列表(1 << Initialize.L_Player, 复活检测范围,DeBuG)  ;
+        for (int i = 0; i < a.Length; i++)
+        {
+            if (DeBuG) Debug.LogError(a[i].collider.gameObject.name);
+            var b= a[i] .collider.gameObject.GetComponent<I_生命>();
+            b.被扣血(-50,gameObject ,0);
+        }
+ 
+  
+    }
+    [DisplayOnly]  public  float 复活进度;
+
     [Space ]
     [DisplayOnly ]   [SerializeField ]  float 已经过去的;
     [DisplayOnly] [SerializeField ] float 界限;
@@ -356,11 +457,13 @@ public state 死亡 = new state("死亡");
     bool CanLive()
     { 
         //bool A = Time.frameCount > I + 5;
-        bool B = 盒子.碰撞列表(1 << Initialize.L_Player,1.2f)?.Get_碰撞组<Player3>() == null;
+
+        bool B = 盒子.碰撞列表(1 << Initialize.L_Player,1f)?.Get_碰撞组<Player3>() == null;
         if ( B)
         {
             I = Time.frameCount;
         }
+        if (DeBuG) Debug.LogError(盒子.size + " " + 盒子.center + "      " + I + "  " + B);
         return   B;
     }
 

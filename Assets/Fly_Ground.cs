@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I_Dead,I_假死
 {
@@ -33,33 +35,67 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
 
    
     bool 是我;
+
+     private void OnTriggerStay2D(Collider2D collision)
+    {
+        Debug.LogError("    private void OnTriggerStay2D(Collider2D collision)                " + collision.gameObject.name);
+        return;
+        if (collision .CompareTag(Initialize.Player)) return;
+        if (Initialize.Layer_is(collision.gameObject.layer,Currrtten))
+        {
+            Debug.LogError(LayerMask.LayerToName(collision.gameObject.layer) + "      AAAAAAA ");
+
+            引线爆炸(collision);
+        } 
+
+    }
     private void OnCollisionEnter2D(Collision2D co)
     {
- 
-        bool B = ((1 << co.gameObject.layer) & Currrtten.value) > 0;
-        if (Time.realtimeSinceStartup - tim < 0.5f) return;
+        //开毁();
+        //return;
+        ///超速就让玩家死 
+        ///正常就正常弄出可以爬上去的路（不可以单人路
+        //if (co.gameObject.layer.)
+        //{
+
+        //}
+        //Initialize.Layer_is(co.gameObject.layer,Currrtten);
+        //bool B = ((1 << co.gameObject.layer) & Currrtten.value) > 0;// 何意喂
+        //if (Time.realtimeSinceStartup - tim < 0.5f) return; // 何意喂刚初始化就发生碰撞?
+
+        if(无视) if (无视盒子.Contains(transform.position)) return;
+  
 
         if (co.gameObject.layer == Initialize.L_Player)
-        { 
+        {
             bool 碰到的是上面 = Initialize.Vector2Int比较(co.contacts[0].normal, Vector2.down);
 
-            if (!旋转1) 
+            if (!旋转1)
             {
-            是我 = true;
-            Player3.I.ChangeFather(transform);
+                是我 = true;
+                Player3.I.ChangeFather(transform);
             }
 
             if (不下落) return;
             if (碰到的是上面)
             {
- 
-                TTime1 = Initialize_Mono.I.F_Time_踩上去自爆的时间 ;
+                TTime1 = Initialize_Mono.I.F_Time_踩上去自爆的时间;
+                Debug.LogError(TTime + "          AAAAA           ");
                 方向 = new Vector2(方向.x, -1);
                 是玩家噶的 = true;
+                Debug.LogError("        OnCollisionEnter2D(Collision2D co)OnCollisionEnter2D(Collision2D co)           ");
+
                 开毁();
+
             }
 
 
+        }
+        else
+        {
+            Debug.LogError("        OnCollisionEnter2D(Collision2D co)OnCollisionEnter2D(Collision2D co)           ");
+
+            开毁(); 
         }
     }
     public bool 是玩家噶的;
@@ -67,7 +103,11 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
     {
         if (是我)
         {
-            Player3.I.ChangeFather();
+            if (Player3.I!=null)
+            {
+                Player3.I.ChangeFather();
+            }
+     
         }
     }
     private void OnCollisionExit2D(Collision2D co)
@@ -108,7 +148,15 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
             
         } }
     public bool 是SP而不是BC=true;
+    public bool 可以旋转;
+    public bool 爆炸送走z = false;
+    public  bool  爆炸伤害=true;
+    public bool 触发冰块 = true; 
+    public bool 箭头伤害 = true;
+    private bool 原批触发=false;
 
+    public bool 无视=false;
+    public Bounds 无视盒子=default;
     private void Awake()
     {
         if (sp == null) Initialize.组件(gameObject, ref sp);
@@ -117,30 +165,24 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
         Initialize.组件(gameObject, ref bc);
         gameObject.layer = Initialize.L_M_Ground;
 
-        //变速触发 += () => { sp.闪光(0.02f); };
-        TTime1 = Initialize_Mono.I.F_Time_踩上去自爆的时间;
+        //变速触发 += () => { sp.闪光(0.02f); }; 
 
-        //销毁触发 += () =>
-        //{
-        //    var a = 盒子.阵列盒子();
-        //    for (int i = 0; i < a.Count; i++)
-        //    {
-        //        var B = 特效_pool_2.I.GetPool(a[i], T_N.特效砖块爆炸, Player3.I.sp);
-        //    }
-        //};
+        if (原批触发) Player3.I.圆斩对象 += asd;
 
-        Start();
-         
+        Start(); 
+}
+    void asd(int i)
+    {
+        if (i == gameObject.GetInstanceID())  开毁(); 
     }
-
-    float Selllf_Speed = 2;
+    //float Selllf_Speed = 2;
     public void 初始化(Vector2 方向, Vector2 位置, float SpeedLv = 1, float atkv = 1)
     {
 
         tim = Time.realtimeSinceStartup;
         //atkvalue = atkv;
         transform.position = 位置;
-        self_speed = Selllf_Speed;
+        //self_speed = Selllf_Speed;
         this.方向 = 方向;
         Speed_Lv = SpeedLv;
     }
@@ -196,87 +238,123 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
         get => 销毁_;
         set
         {
+            if ( value)
+            {
+                if (Debul)
+                {
+                    Debug.LogError("         public bool 销毁    public bool 销毁      AAA");
+                }
+
+            }
             销毁_ = value;
         }
     }
 
 
     public bool 暂停 { get => 暂停1; set => 暂停1 = value; }
-    public float TTime1 { get => TTime;private     set => TTime = value; }
+    
+    
+    /// <summary>
+    /// 微妙的 多种不同毁灭情况下多种时间
+    /// 碰到 墙壁
+    /// 和玩家引线爆炸  和玩家箭头
+    /// 箭头没有攻击时候 从上往下不发生 踩发生
+    /// 箭头有的时候 分箭头时间 踩时间
+    /// </summary>
+    public float TTime1 { get => TTime;private set { 
+                if (TTime!=value)
+            {
+                if (Debul)
+                {
+                    Debug.LogError(value+"         vvv   ");
+                }
+             
+                    TTime = value;
+                }
+              
+       
+        } }
     public bool 旋转1 { get => 旋转; set => 旋转 = value; }
 
     public void 反作用力(int i)
-    {
+    { 
         transform.position -= (Vector3)方向.normalized * 帧移动距离 * i;
     }
     void 引线爆炸(Collider2D c)
     {
-        //Debug.LogError("AAAAAAAAAAAAAAAA                "      +c.gameObject .name);
-        bool 方向是上下 = (方向.v2_To方向() == E_方向.上 || 方向.v2_To方向() == E_方向.下);
-        if (Time.realtimeSinceStartup - WakeTime < 0.2f) return;
+
+if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)                " + c.gameObject.name);
+            if (Time.realtimeSinceStartup - WakeTime < 0.2f) return;
         if (Player3.I.transform.parent == gameObject.transform)
         {
         
                Player3.I.ChangeFather();
         }
-        if (方向是上下)
+
+        if(!箭头伤害)
         {
-            if (c.gameObject.layer == Initialize.L_Player)
+            bool 方向是上下 = (方向.v2_To方向() == E_方向.上 || 方向.v2_To方向() == E_方向.下);
+            if (方向是上下)
             {
-                return;
+                if (c.gameObject.layer == Initialize.L_Player)
+                {
+        return;
+                }
             }
         }
+
         开毁();
-        if (c.GetComponent<被打消失>() == null)
+
+        if (!c.TryGetComponent<被打消失>(out var bb)     )
         {
 
-            if (Boss.魔理沙.I.T扫把 == gameObject.transform)
-            { 
-                    Event_M.I.Invoke(Event_M.扫把打到了,c.gameObject);
-          } 
-        
+            if (c.gameObject == Boss.魔理沙.I.gameObject && Boss.魔理沙.I.T扫把 == gameObject.transform)
+            Event_M.I.Invoke(Event_M.扫把打到了, c.gameObject);
+       
 
-            c.GetComponent<I_生命>()?.被扣血(atkvalue, gameObject, Initialize .Get_随机Int());
+
+            if (箭头伤害) if (atkvalue != 0) if (c.TryGetComponent<I_生命>(out var sm))
+              sm.被扣血(atkvalue, gameObject, Initialize.Get_随机Int());
+
+ 
         }
 
         if (c.gameObject.layer != Initialize.L_Player) TTime1 = -0.1f;
     }
  
     [SerializeField]
-    float TTime  ;
-    [SerializeField]
-    [DisplayOnly]
-    GameObject Last;
-    [SerializeField]
-    [DisplayOnly]
-    Collider2D Currtent;
+    float TTime  ; 
 
     [SerializeField]
     [DisplayOnly]
     RaycastHit2D[] Ra;
 
-    public bool 可以旋转;
+
 
     public bool 运动暂停;
 
     bool 旋转;
 
 
-    
+    [SerializeField]
+    float 重力加速度乘= 0.022f;
     Vector2 模拟速度_;
+    [SerializeField]
    Vector2 模拟速度=new Vector2 (0,4f);
     public void 旋转触发(int I)
     {
         Debug.LogError("chufa?");
-        if (!旋转1)
-        {  
-            旋转1 = true;
-            暂停 = true;
-            销毁 = false;
-            方向 = Vector2.up; 
-            模拟速度_ = 模拟速度;
-        }     else  if (I == -1)
+        //if (!旋转1)
+        //{   
+        //    旋转1 = true;
+        //    暂停 = true;
+        //    销毁 = false;
+        //    方向 = Vector2.up; 
+        //    模拟速度_ = 模拟速度;
+        //}  
+           if (I == -1)
         {
+            Debug.LogError("圆圈  圆圈    圆圈   圆圈   圆圈aaaaaaaaaaaaaaa圆    圈");
             特效_pool_2.I.GetPool(transform.position, T_N.特效大爆炸);
             旋转1 = false;
                 暂停 = false;
@@ -294,103 +372,173 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
                 transform.rotation = Quaternion.Euler(0, 0, -90);
         }
         else if (I == 0)
-        {
-            特效_pool_2.I.GetPool(transform .position ,T_N.特效大爆炸);
-            旋转1 = false;
-            暂停 = false;
-            销毁 = false;
-            方向 = new Vector2(Player3.I.LocalScaleX_Set, 0);
-            transform.rotation = Quaternion.Euler(0, 0,0); 
-        }
-        if (旋转1 ==false )
-        {
-            不会碰撞消失 = true;
-            Initialize_Mono.I.Waite(
-                () => { 不会碰撞消失 = false;  },0.5f
-                );
-        }
-    }
-
-    bool 不会碰撞消失;
-    private void FixedUpdate()
-    {
-        //((Vector2)盒子.center).DraClirl(2f,Color.cyan);
-        if (方向 == Vector2.zero) return;
-        if (!gameObject.activeSelf) return;
-        if (!运动暂停) 
-        {
-            if (!旋转1) transform.position += (Vector3)方向.normalized * 帧移动距离;
-            else   transform.position += (Vector3)模拟速度_ *Time.fixedDeltaTime  ;
-        } 
-
-        //var o = GetEdgeCenter(方向 );
-
-        if (方向.x != 0) sp.transform.localScale = new Vector2(方向.x, sp.transform.localScale.y);
-
-
-        //var o = bc.bounds.九个点(方向.v2_To方向()) + 方向 * 0.01f;
-        if (Debul) Debug.LogError(方向.v2_To方向());
-        var L = bc.bounds.边上三点(方向.v2_To方向());
-        //RaycastHit2D Hit;
-        Collider2D Hit = null;
-        for (int i = 0; i < L.Count ; i++)
-        {
-            var item = L[i];
-            if (Debul) Debug.LogError(item);
-            if (Debul) Debug.DrawRay(item, 方向 * 0.1f, Color.blue);
-            if (!不会碰撞消失)
+        { 
+            if (!旋转1)
             {
-                Hit = Physics2D.Raycast(item, 方向, 0.1f, Currrtten).collider;
-            }
-            if (Hit==bc)    break; 
-
-            if (Hit == null)
-            {
-                Currtent = null;
+                旋转1 = true;
+                暂停 = true;
+                销毁 = false;
+                方向 = Vector2.up;
+                模拟速度_ = 模拟速度;
             }
             else
             {
-                if (方向 == Vector2.up && Hit.gameObject.layer == Initialize.L_Player)
-                {
-                    ///被玩家弹飞
-                    是玩家噶的 = true;
-                    Hit = null;
-                }
-                ///碰到了其他东西
-                Currtent = Hit;
-                break;
+                特效_pool_2.I.GetPool(transform.position, T_N.特效大爆炸);
+                旋转1 = false;
+                暂停 = false;
+                销毁 = false;
+                方向 = new Vector2(Player3.I.LocalScaleX_Set, 0);
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            } 
+        }
+        //if (旋转1 ==false )   ///为何要这个功能
+        //{
+        //    不会碰撞消失 = true;
+        //    Initialize_Mono.I.Waite(
+        //        () => { 不会碰撞消失 = false;  },0.5f
+        //        );
+        //}
+    }
+
+    bool 不会碰撞消失;
+    private static readonly RaycastHit2D[] s_hitBuffer = new RaycastHit2D[8];
+    ///返回相对的v2 差值
+    Vector2 aaaa(Vector2 po,Vector2 value)
+    {
+
+        if (value.y==0)
+        {
+            return new Vector2(po.x-value.x  , 0);
+        }
+        if(value.x==0)
+        {
+            return new Vector2(0, po.y-value.y );
+        }
+        Debug.LogError("这不对把啊哈啊哈" + gameObject.name + transform.position);
+        return Vector2.zero;
+    }
+    /// <summary>
+    /// 根据方向剔除  v2分量
+    /// </summary>
+    /// <param name="way"></param>
+    /// <param name="valu"></param>
+    /// <returns></returns>
+    Vector2 asd(Vector2 way,Vector2 valu)
+    {
+        var x = way.x;
+        var y= way.y;
+        if (x==0)
+        {
+            return new Vector2(0,valu.y);
+        }
+        if (y == 0) 
+        {
+            return new Vector2(valu.x,0);
+        }
+        Debug.LogError("这不对把啊哈啊哈"+gameObject.name+transform.position);
+        return Vector2.zero;
+    }
+    private void FixedUpdate()
+    {
+        //transform.position += Vector3.down * Time.fixedDeltaTime;
+        //return;
+        if (方向 == Vector2.zero) return;
+        if (!gameObject.activeSelf) return;
+        lookme = I_S.固定等级差 * self_speed;
+        lookme = Initialize_Mono.I.GetMin(lookme);
+        // 缓存局部变量 
+        销毁倒计时();
+
+        var a = 无视 && 无视盒子.Contains(transform.position);
+   //if(Debul)     Debug.LogError(a +"    "+ 无视盒子.size);
+
+
+        if (!运动暂停)
+        {
+            if (!旋转1)
+            {
+                Vector2 n = 方向.normalized; // 仅一次归一化
+
+                transform.position += (Vector3)n * 帧移动距离;
             }
-        } 
-        if (Currtent == null)
-        {
-            Last = null;
+            else
+            {
+                transform.position += (Vector3)模拟速度_ * 帧移动距离;
+            }
         }
-        else if(Currtent.gameObject != Last)
+        if (!a) 箭头();
+        if (方向.x != 0)
         {
-            Last = Currtent.gameObject;
-            引线爆炸(Currtent);
+            var ls = sp.transform.localScale;
+            sp.transform.localScale = new Vector2(方向.x, ls.y);
         }
 
+        // 只获取一次边界点集合 
 
-        //帧移动距离 = Initialize.返回正负号(帧移动距离) * Mathf.Min(Mathf .Abs (帧移动距离) , Initialize_Mono.I.阀值2_5 * 0.01f);
+        帧移动距离 = lookme * Time.fixedDeltaTime;
+        if (Debul)
+        {
+            Debug.LogError("    WWWWQWQWQQQQ  " + 帧移动距离);
+        }
         if (旋转1)
         {
-            transform.Rotate(帧旋转速度 * Time.fixedDeltaTime);
-            var Y = 模拟速度_.y;
-            Y-=Initialize_Mono .I.假物理重力*0.3f* Time.fixedDeltaTime *  I_S.固定等级差;
+            帧移动距离 *= Initialize.返回正负号(帧移动距离);
 
-            //Debug.LogError(Y);
-            模拟速度_ = new Vector2(模拟速度_.x, Y );
+            transform.Rotate(帧旋转速度 * Initialize_Mono.I.GetMin(I_S.固定等级差) *   Time.fixedDeltaTime * 0.21f);
+            float Y = 模拟速度_.y - Initialize_Mono.I.假物理重力 * 重力加速度乘 *Initialize_Mono.I.GetMin(I_S.固定等级差) * Time.fixedDeltaTime;
+            模拟速度_.y = Y; // 原地更新，不创建新向量
 
             if (Y < -30) 死();
         }
-        else
-        {
-            帧移动距离 = I_S.固定等级差 * self_speed * Time.fixedDeltaTime;
-            帧移动距离 = Mathf.Min(帧移动距离, Initialize_Mono.I.阀值2_5 * 0.01f);
-        } 
-               销毁倒计时();
+
+
     }
+    //private void Update()
+    //{
+    //            NewMethod();
+    //}
+    private void 箭头()
+    {
+        if (旋转) return;
+        var dirEnum = 方向.v2_To方向();
+        var edgePoints = bc.bounds.边上三点(dirEnum,Debul);
+        //if (Debul) Debug.LogError(bc.bounds.size); 
+            if (!不会碰撞消失)
+        {
+            for (int i = 0; i < edgePoints.Count; i++)
+            {
+                Vector2 origin = edgePoints[i];
+#if UNITY_EDITOR
+                //if (Debul) origin.DraClirl(0.1f,Color.red,0.0001f);
+                //if (Debul) Debug.LogError(方向+ origin);
+                    if (Debul) Debug.DrawRay(origin, 方向 * lookme*Time.fixedDeltaTime, Color.blue);
+#endif
+                // 使用非分配 API 并复用缓冲
+                int hitCount = Physics2D.RaycastNonAlloc(origin, 方向 , s_hitBuffer,  lookme * Time.fixedDeltaTime + 0.1f, Currrtten);
+                if (hitCount <= 0) continue;
+
+                for (int q = 0; q < hitCount; q++)
+                {
+                    if (Debul) s_hitBuffer[q].point.DraClirl(0.1f, Color.blue);
+                    var col = s_hitBuffer[q].collider;
+                    if (col.gameObject.TryGetComponent<Fly_Ground>(out var f)) continue;
+                    if (col == null) continue;
+                    if (col == bc) continue;
+                    if (方向 == Vector2.up && col.gameObject.layer == Initialize.L_Player)
+                    {
+                        是玩家噶的 = true;
+                        break;
+                    }
+                    引线爆炸(col);
+                    break;
+                }
+            }
+        }
+    }
+
+    [SerializeField]
+    float lookme;
+    [SerializeField] 
  Vector3 帧旋转速度=new Vector3(0,0,800f) ;
     public float 帧移动距离;
     [SerializeField]
@@ -402,40 +550,64 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
 
     public bool Debul = false;
 
+
     int LastC;
     void 开毁()
-    { 
-        LastC = Time.frameCount;
-
-        销毁 = true; 
+    {
+ 
+        if (!销毁)
+        {
+            LastC = Time.frameCount;
+            销毁 = true;
+        }
+        销毁倒计时();
     }
+
+    /// <summary>
+    /// 当帧距离太快 延迟一帧爆炸    偏移太过明显  当一帧内帧移动距离超过该值  那久不延迟 直接爆炸 
+    /// </summary>
+    static float 延迟爆炸最小距离=0.1f;
+    RaycastHit2D[] Rl;
     void 销毁倒计时()
     {
         if (销毁 && !暂停)
         {
-            TTime1 -= 帧移动距离;
-            if (Debul)    Debug.LogError("TTime TTime TTime +++++" + TTime1);
-        
-        }
+            TTime1 -= 帧移动距离/self_speed;
+            if (Debul)    Debug.LogError("TTime TTime TTime +++++" + TTime1+"   "+ 帧移动距离+transform.position); 
+        } 
 
-        if (TTime1 < 0 && 销毁 && Time.frameCount - LastC > 1 && !暂停)
+        bool 延迟 = Time.frameCount - LastC >= 1 || 帧移动距离 > 0.1f;
+        if (TTime1 < 0 && 销毁 && 延迟 && !暂停)
         {
-            var a = Physics2D.BoxCastAll(盒子.center, 盒子.size * 2, 0, Vector2.zero, 0, 1 << Initialize.L_Ground);
+            Rl = Physics2D.BoxCastAll(盒子.center, 盒子.size * 2, 0, Vector2.zero, 0 );
             if (Debul)
             {
-                foreach (var item in a)
+                foreach (var item in Rl)
                 {
                     Debug.LogError(item.collider.gameObject);
                 }
             }
+            for (int i = 0; i < Rl.Length; i++)
+            {
+                var obj = Rl[i].collider.gameObject;
 
-            a.Get_碰撞组<被打消失>()?.被爆炸物触发();
+
+
+                if (爆炸伤害) if (obj.TryGetComponent<I_生命>(out var s))  s.被扣血(atkvalue, gameObject, Initialize.Get_随机Int()); 
+            
+                if(触发冰块) if (obj.TryGetComponent<被打消失>(out var bb))   bb.被爆炸物触发();
+
+                if (爆炸送走z) if (obj.CompareTag(Initialize.Player)) Player3.I.安全地点();
+                //obj.GetComponent<被打消失>()?.被爆炸物触发();
+            }
+            //a.Get_碰撞组<I_生命>()?.被扣血(atkvalue, gameObject, Initialize.Get_随机Int());
+            //a.Get_碰撞组<被打消失>()?.被爆炸物触发();
             死();
         } 
     } 
     void 死()
     {
-      
+        if (Debul) Debug.LogError("AAAAAAAAAAAAAAA"+transform.position);
 
         if (是玩家噶的) Player3.I.ChangeFather();
 
@@ -485,15 +657,18 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
     private bool 暂停1;
 
     bool is_dead;
+
+
     public void 重制()
     {
+        无视盒子 = default;
         旋转1 = false; 
         transform.rotation = Quaternion.Euler(0, 0, 0);
         is_dead =false ;
           是玩家噶的 = false;
         Currrtten = L1;
-        Debul = false;
-        TTime1 =Initialize_Mono .I.   F_Time_弹反销毁时间;
+        //Debul = false;
+        TTime1 =Initialize_Mono .I.   F_Time_碰到玩家后销毁时间;
         暂停 = false;
         销毁 = false;
         bc.enabled = true;
