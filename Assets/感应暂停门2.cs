@@ -9,8 +9,8 @@ public class 感应暂停门2 : MonoBehaviour
     BoxCollider2D bc;
     SpriteRenderer sp;
 
-
-    private void Awake()
+    MonoMager Mo;
+    private void Start()
     {
           gameObject.layer = Initialize.L_Default;
         gameObject.组件(ref bc);
@@ -24,6 +24,8 @@ public class 感应暂停门2 : MonoBehaviour
             var a = t.GetComponent<Move_P>();
             if (a != null) MoveList.Add(a);
         }
+
+        Mo= MoveList[0].GetComponent<MonoMager>();
     } 
     Int不重复 IN=new Int不重复();
     private void OnCollisionEnter2D(Collision2D collision)
@@ -33,6 +35,8 @@ public class 感应暂停门2 : MonoBehaviour
         if (collision.collider.CompareTag(Initialize.Player))
             {
                 foreach (var item in MoveList) item.重制();
+
+                
                 if (MoveList[0].超速)
                 {
                     消息.I.Come_on_Meesge("如果这个东西慢下来就好了");
@@ -51,9 +55,10 @@ public class 感应暂停门2 : MonoBehaviour
             if (collision.CompareTag(Initialize.Player))
             foreach (var item in MoveList) item.重制();
     }
+    public bool 我暂停;
     void Update()
     {
-        bool 暂停 = false;
+        我暂停 = false;
 
         var a = MoveList[0].I_S.超速等级;
         bc.isTrigger = a== E_超速等级.正常; 
@@ -63,10 +68,10 @@ public class 感应暂停门2 : MonoBehaviour
             {
                 case E_超速等级.静止:
                 case E_超速等级.低速:
-                    暂停 = true;
+                    我暂停 = true;
                     break;
                 case E_超速等级.正常:
-                    暂停 = false;
+                    我暂停 = false;
                     break;
                 case E_超速等级.超速:
                 case E_超速等级.半虚化:
@@ -74,11 +79,16 @@ public class 感应暂停门2 : MonoBehaviour
                 case E_超速等级.虚无:
                Player3.I.To_SafeWay();
                     Player3.I.被扣血(10, gameObject, 0);
-                    暂停 = false;
+                    Initialize_Mono.I.Waite(() =>
+                    {
+                        Player3.I.transform.position += new Vector3(-Player3.I.LocalScaleX_Int * 0.1f, 0, 0); 
+                    }, 0.20000001f);
+
+                    我暂停 = false;
                     break;
             } 
         }
-        foreach (var item in MoveList) item.暂停 = item.暂停&& 暂停;
+        foreach (var item in MoveList) item.暂停 = Mo .关闭|| 我暂停;
         return;
 
 

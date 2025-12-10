@@ -38,7 +38,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/AVS.unity
     guid: 05c52c2e3c16641489286bdeb5e953ba
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/AVS 1.unity
-    guid: 43b5fca89e23bea43aa23550a77ae9fd
+    guid: d04bfe06130f7c945a88638e9d1e56b0
   m_configObjects: {}

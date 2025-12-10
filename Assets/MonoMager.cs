@@ -7,8 +7,8 @@ using UnityEngine;
 public class MonoMager : MonoBehaviour,I_ÔÝÍ£
 {
     ¼à¿Ø¼¤»îÅö×²¿ò ¼à¿Ø;
-    [SerializeField ][DisableOnPlay ]
-      bool ¹Ø±Õ = false;
+  [DisableOnPlay ]
+   public   bool ¹Ø±Õ = false;
 
     List<I_ÔÝÍ£> Is=new List<I_ÔÝÍ£>();
  

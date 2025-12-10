@@ -5,6 +5,7 @@ using UnityEngine;
 using SampleFSM;
 using DG.Tweening;
 using Ink.Parsed;
+using JetBrains.Annotations;
 public class 小地图显示 : MonoBehaviour
 {
     
@@ -52,7 +53,7 @@ public class 小地图显示 : MonoBehaviour
     public static string    机关刷新小地图 { get => "机关刷新小地图"; } 
     private void Awake()
     {
-
+        ///如果目标点没有去过 那就显示颜色 闪光 如果去过那就  正常   
 
         小弟sp = GetComponent<SpriteRenderer>();
         Initialize_Mono.I.小地图刷新 += 机关刷新;
@@ -64,6 +65,7 @@ public class 小地图显示 : MonoBehaviour
         半透明 = new state("半透明");
         不显示 = new state("不显示");
         闪烁 = new state("闪烁", 半透明);
+
 
         不显示.Enter += () =>
         {
@@ -81,7 +83,7 @@ public class 小地图显示 : MonoBehaviour
             quence.Pause();
         };
 
-        半透明.Stay += () =>
+         半透明.Stay += () =>
         {
             if (有东西) 当前 = 当前.to_state(闪烁);
         };

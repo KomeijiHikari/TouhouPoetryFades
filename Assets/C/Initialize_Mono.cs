@@ -1308,6 +1308,70 @@ Debug.LogError( a.ToString());
         return (T)Out;
     }
     /// <summary>
+    /// 根据碰撞盒子 和 方向 和 目标点 判断目标点是否在碰撞盒子指定范围内
+    /// V表示了正方形的9个范围  0表示中间 1，1表示右上角  -1，0表示左边中间
+    /// -1，0表示 pos坐标的X是否小于盒子最小X Y是否小于盒子最大Y大于最小Y  （bounds.min和bounds.max）
+    /// 1，1表示  pos坐标的X是否 大于盒子最大X Y是否大于盒子最大Y   （bounds.min和bounds.max）
+    /// </summary>
+    /// <param name="B">自己的碰撞盒子</param>
+    /// <param name="V">检测的目标  Xy分量只能是正负一或者0</param>
+    /// <param name="pos"> 目标点  </param>
+    /// <returns>目标点是否在指定范围内</returns>
+    public static bool is_Boun判断(Bounds B, Vector2Int V, Vector3 pos)
+    {
+        // 第一步：校验V的合法性（仅允许-1/0/1）
+        if (V.x < -1 || V.x > 1 || V.y < -1 || V.y > 1)
+        {
+            Debug.LogError("Vector2Int V的X/Y分量只能是-1、0、1");
+            return false;
+        }
+
+        // 第二步：提取碰撞盒子的X/Y轴极值（忽略Z轴，按2D逻辑处理）
+        float boundsMinX = B.min.x;
+        float boundsMaxX = B.max.x;
+        float boundsMinY = B.min.y;
+        float boundsMaxY = B.max.y;
+
+        // 第三步：拆解目标点的X/Y坐标
+        float targetX = pos.x;
+        float targetY = pos.y;
+
+        // 第四步：分别判断X、Y轴是否符合V指定的范围规则
+        bool xCheck = false;
+        bool yCheck = false;
+
+        // X轴判断逻辑
+        switch (V.x)
+        {
+            case -1: // 目标点X < 盒子最小X（左边）
+                xCheck = targetX < boundsMinX;
+                break;
+            case 0: // 目标点X 在盒子X范围内（中间）
+                xCheck = targetX >= boundsMinX && targetX <= boundsMaxX;
+                break;
+            case 1: // 目标点X > 盒子最大X（右边）
+                xCheck = targetX > boundsMaxX;
+                break;
+        }
+
+        // Y轴判断逻辑
+        switch (V.y)
+        {
+            case -1: // 目标点Y < 盒子最小Y（下边）
+                yCheck = targetY < boundsMinY;
+                break;
+            case 0: // 目标点Y 在盒子Y范围内（中间）
+                yCheck = targetY >= boundsMinY && targetY <= boundsMaxY;
+                break;
+            case 1: // 目标点Y > 盒子最大Y（上边）
+                yCheck = targetY > boundsMaxY;
+                break;
+        }
+
+        // 第五步：X和Y轴都满足时，返回true
+        return xCheck && yCheck;
+    }
+    /// <summary>
     ///  任意符号相同返回true
     ///  
     /// </summary>

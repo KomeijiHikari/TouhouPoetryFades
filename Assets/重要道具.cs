@@ -82,7 +82,8 @@ public partial  class 重要道具 : MonoBehaviour
         var a = s.GetComponent<相机框>();
         Vector2Int vi= new Vector2Int(gameObject.scene.buildIndex, a.编号);
 
-        //Initialize_Mono.I.重制触发?.Invoke(gameObject.scene.buildIndex,GetComponent<监控激活碰撞框>().所属相机编号);
+    
+        ///如果目标点没有去过 那就显示颜色 闪光 如果去过那就  正常   
         小地图数据.I_.add(vi);  ///添加之后刷新  小地图状态但是不全显示
         消息.I.Come_on_Meesge("下个目标出现，按 M开启地图查看\n(双击M可以打开缩小大地图)");
 
@@ -215,6 +216,8 @@ public partial  class 重要道具 : MonoBehaviour
                 销毁触发?.Invoke();
                 if (获取后保存)
                 {
+                    传送导点.I.最后点 = transform.position;
+                    Player3.I.录入安全地点(true);
                     Player3.SaveAll();
                 } 
  

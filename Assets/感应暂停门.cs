@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using VFolders.Libs;
+//using VFolders.Libs;
 
 [DefaultExecutionOrder(100)]
 public class 感应暂停门 :  MonoBehaviour,I_暂停
@@ -21,7 +21,9 @@ public class 感应暂停门 :  MonoBehaviour,I_暂停
         gameObject.AddComponent<感应暂停门2>();
   enabled = false;
         p = GetComponent<Phy_检测>();
-        if (p!=null)     p.Destroy();
+       
+        if (p!=null) Object.Destroy(p);
+
         return;
         GetComponent<SpriteRenderer>().enabled=false;
         gameObject.layer = Initialize.L_Default; 

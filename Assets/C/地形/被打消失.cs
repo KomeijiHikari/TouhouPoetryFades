@@ -156,21 +156,19 @@ public partial class 被打消失 : MonoBehaviour, I_生命, I_Dead, I_Revive
         {
             TT = Time.time;
             var a = false;
-
-            if (Poin==null)
-            {
-                Debug.LogError("被打方向检测 被打方向检测 被打方向检测 被打方向检测 被打方向检测 被打方向检测 被打方向检测 ");
-                a = 当前方向.方向To_v2().is_四方向比较(transform.你在我的哪里(obj.transform));
-            }
-            else
-            {
-                ///冰块很长玩家在下面用圆劈 但是在冰块右下方 符合右方标准 所以 让“自己”位置偏移到最右侧
-                Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA测 被打方向检测 ");
-                var zzz = PoinPos.你在我的哪里(obj.transform,true);
-                var www = 当前方向.方向To_v2();
-                Debug.LogError(zzz + "              "+ www);
-              a = 当前方向.方向To_v2().is_四方向比较(PoinPos.你在我的哪里(obj.transform));
-            }
+            a = Initialize.is_Boun判断(盒子, 当前方向.方向To_v2(), obj.transform.position);
+            //if (Poin==null)
+            //{ 
+            //    a = 当前方向.方向To_v2().is_四方向比较(transform.你在我的哪里(obj.transform));
+            //}
+            //else
+            //{
+            //    ///冰块很长玩家在下面用圆劈 但是在冰块右下方 符合右方标准 所以 让“自己”位置偏移到最右侧 
+            //    var zzz = PoinPos.你在我的哪里(obj.transform,true);
+            //    var www = 当前方向.方向To_v2();
+            //    Debug.LogError(zzz + "              "+ www);
+            //  a = 当前方向.方向To_v2().is_四方向比较(PoinPos.你在我的哪里(obj.transform));
+            //}
 
             if (a) 扣血效果(i, obj);
         }

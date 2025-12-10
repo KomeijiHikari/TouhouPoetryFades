@@ -58,7 +58,7 @@ public class 提示管理 : MonoBehaviour
     }
     private void Awake()
     {
-        流程控制 .流程控制.I.提示List.Add(this);
+   if(流程控制.流程控制.I!=null)     流程控制 .流程控制.I.提示List.Add(this);
 Event_M.I.Add(Event_M.刷新提示机关, asdasd);
     }
     private void Start()
