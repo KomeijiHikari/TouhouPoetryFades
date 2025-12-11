@@ -1031,8 +1031,8 @@ public class upatk : atkBase
     bool 立即结束;
     public override void StateStart()
     {
-        碰撞框触发时间 = 0.001f;
-        当前碰撞Value.Offcet = new Vector2(2, -0.4f);
+        碰撞框触发时间 = 0.1f;
+        当前碰撞Value.Offcet = new Vector2(2.4f, -0.4f);
         当前碰撞Value.Size = new Vector2(3.5f, 3.7f);
     }
     public override bool 可以切换嘛()

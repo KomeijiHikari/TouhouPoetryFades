@@ -21,10 +21,11 @@ public class 感应: MonoBehaviour
         get => 玩家进入了检测范围1;
         set {
 
-            if (Deb)
-            {
-                Debug.LogError("玩家进入了检测范围1"+value+gameObject.name+transform.position);
+            if (玩家进入了检测范围1 != value)
+            { 
+                if (Deb) Debug.LogError("玩家进入了检测范围1" + value + gameObject.name + transform.position);
             }
+        
             玩家进入了检测范围1 = value;
         } }
 
@@ -50,6 +51,7 @@ public class 感应: MonoBehaviour
    protected Color StartC;
     protected   virtual  void Update()
     {
+        玩家进入了检测范围 = StayTrue;
         if (玩家进入了检测范围)
         {
          sp.color = Color.black;
@@ -69,32 +71,51 @@ public class 感应: MonoBehaviour
     }
     int EFc;
     int Fc;
-    private void OnTriggerEnter2D(Collider2D collision)
-    { 
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{ 
  
-        if (collision.gameObject ==Player3 .I.gameObject && Fc != Time.frameCount)
-        {  
-            Fc = Time.frameCount; 
+    //    if (collision.gameObject ==Player3 .I.gameObject && Fc != Time.frameCount)
+    //    {  
+    //        Fc = Time.frameCount; 
+    //        if (玩家检测范围 != 0) return;
+    //        if (Deb) Debug.LogError("玩家进入了检测范围1" + gameObject.name + transform.position);
+    //        if (Deb)
+    //        {
+    //            Debug.LogError(bc+" "+ bc.enabled);
+    //        }
+    //        if (bc==null||!bc.enabled) return; 
+    //        玩家进入了检测范围 = true; 
+    //    }
+    //}
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject == Player3.I.gameObject && Fc != Time.frameCount)
+        {
+            Fc = Time.frameCount;
             if (玩家检测范围 != 0) return;
             if (Deb) Debug.LogError("玩家进入了检测范围1" + gameObject.name + transform.position);
             if (Deb)
             {
-                Debug.LogError(bc+" "+ bc.enabled);
+                Debug.LogError(bc + " " + bc.enabled);
             }
-            if (bc==null||!bc.enabled) return; 
-            玩家进入了检测范围 = true; 
+            if (bc == null || !bc.enabled) return;
+            StayTrue = true;
         }
     }
-
-    private void OnTriggerExit2D(Collider2D collision)
+    bool StayTrue;
+    private void LateUpdate()
     {
-        if (collision.gameObject ==  Player3.I.gameObject && EFc != Time.frameCount&&collision==Player3.I.站立box)
-        {
-            EFc = Time.frameCount;
-            if (玩家检测范围 != 0) return;
-            玩家进入了检测范围 = false;
-        }
+        StayTrue = false;
     }
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject ==  Player3.I.gameObject && EFc != Time.frameCount&&collision==Player3.I.站立box)
+    //    {
+    //        EFc = Time.frameCount;
+    //        if (玩家检测范围 != 0) return;
+    //        玩家进入了检测范围 = false;
+    //    }
+    //}
 }
 interface I_Inter_action
 {

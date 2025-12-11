@@ -39,11 +39,11 @@ public class 感应暂停门2 : MonoBehaviour
                 
                 if (MoveList[0].超速)
                 {
-                    消息.I.Come_on_Meesge("如果这个东西慢下来就好了");
+                    消息.I.Come_on_Meesge("如果我更快一些就好了");
                 }
                 else
                 {
-                    消息.I.Come_on_Meesge("是这我太慢了嘛。。。。。");
+                    消息.I.Come_on_Meesge("如果我更慢一些就好了");
                 }
 
             }

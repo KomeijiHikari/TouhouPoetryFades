@@ -32,12 +32,14 @@ public class 开发者调试 : MonoBehaviour
     [Button("Save", ButtonSizes.Large)]
     public void Save()
     {
+    
         Player3.I.当前hp = Player3.I.hpMax; 
         传送导点.I.最后点 = transform.position;
         Player3.I.录入安全地点(true); 
         Player3.SaveAll();
     }
-    public bool 开发者模式;
+    [SerializeField]
+    private bool 开发者模式1;
     [Button("修改速度", ButtonSizes.Large)]
     public void Set(float i)
     {
@@ -57,6 +59,17 @@ public class 开发者调试 : MonoBehaviour
     public bool 能力覆盖 { get {
             return 能力覆盖1&& 开发者模式;
         }  set => 能力覆盖1 = value; }
+
+    public bool 开发者模式 { get {
+            if (Application.platform!=RuntimePlatform.WindowsEditor)
+            {
+                return false;
+            }
+            else
+            {
+                return 开发者模式1;
+            } 
+        }  set => 开发者模式1 = value; }
 }
 
 public static class RuntimeEnvironment

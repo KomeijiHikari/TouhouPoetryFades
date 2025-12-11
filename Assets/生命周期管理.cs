@@ -316,6 +316,8 @@ public state 死亡 = new state("死亡");
     public Action<bool> 效果_不复活 { get; set; }
     public Action 效果_死亡Enter;
     public  Action 效果_活动Enter;
+
+    public bool  真实时间复活 = false;
     void RR()
     { 
         if (R == null) return; 
@@ -345,16 +347,18 @@ public state 死亡 = new state("死亡");
                 //if (CanLive())
                 //    {
                 //        // accumulate time while there is no collision
-    
+
                 //    }
                 //    else
                 //    {
                 //        // If you want the progress to reset when collision happens, uncomment next line:
                 //        // 无碰撞累计 = 0f;
                 //    }
+                var required = R.Re_Time  ;
+                if (!真实时间复活)
+                    required*= Player3.Public_Const_Speed;
 
-                    var required = R.Re_Time * Player3.Public_Const_Speed;
-                    if (required <= 0f)
+                if (required <= 0f)
                     {
                         复活进度 = 0f;
                         return;
@@ -370,6 +374,7 @@ public state 死亡 = new state("死亡");
                         if (!CanLive())
 
                         {
+ 
                             Player3.I.安全地点();
                         }
                 
@@ -417,7 +422,12 @@ public state 死亡 = new state("死亡");
         {
             if (DeBuG) Debug.LogError(a[i].collider.gameObject.name);
             var b= a[i] .collider.gameObject.GetComponent<I_生命>();
-            b.被扣血(-50,gameObject ,0);
+            Debug.LogError(a[i].collider.gameObject.name+ "        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA      ");
+            if (b!=null)
+            {
+                b.被扣血(-50, gameObject, 0);
+            }
+
         }
  
   

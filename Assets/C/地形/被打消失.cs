@@ -154,9 +154,15 @@ public partial class 被打消失 : MonoBehaviour, I_生命, I_Dead, I_Revive
     {
         if (Time.time-TT> 最小收击时间间隔)
         {
+
             TT = Time.time;
             var a = false;
-            a = Initialize.is_Boun判断(盒子, 当前方向.方向To_v2(), obj.transform.position);
+            if (盒子.size.y < 3f)
+            { 
+                a = 当前方向.方向To_v2().is_四方向比较(transform.你在我的哪里(obj.transform)); 
+            }
+            else a = Initialize.is_Boun判断(盒子, 当前方向.方向To_v2(), obj.transform.position);
+
             //if (Poin==null)
             //{ 
             //    a = 当前方向.方向To_v2().is_四方向比较(transform.你在我的哪里(obj.transform));

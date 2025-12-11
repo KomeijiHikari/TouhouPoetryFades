@@ -41,6 +41,9 @@ public class hit : State_Base
     public override    void ExitState(E_State e )
     {
         Initialize.Set_Åö×²(Initialize.L_Player, Initialize.L_Air_wall,true);
+        Initialize_Mono.I.Waite(() => {
+            Initialize.Set_Åö×²(Initialize.L_Player, Initialize.L_Air_wall, true);
+            },0.1f);
         if (Dead)
         {
         Player3.I.ÉúÃü¹éÁã?.Invoke();

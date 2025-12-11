@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityPlayerPrefs;
 using Cinemachine;
 using Ink.Parsed;
 using Sirenix.OdinInspector;
@@ -55,6 +56,7 @@ public struct   Value
 }
 public partial class Player3 : BiologyBase
 {
+    public bool DashDeb;
     public Action<int> Dash传送触发;
     public 控制粒子 子弹发射;
     public 圆斩跳 圆斩判定;
@@ -80,6 +82,7 @@ public partial class Player3 : BiologyBase
         {
             Player3.I.加速(false);
         }
+        Player3.I.冷却全部好();
         Player3.I.N_.保存();
         Player3.I.玩家数值.保存();
         DeadPla.I.保存();
@@ -231,6 +234,11 @@ public partial class Player3 : BiologyBase
     public 玩家受伤效果 受伤 { get; set; }
     public static Player3 I { get; private set; }
 
+    public void 冷却全部好()
+    {
+        dundash.冷却好了 = true;
+        skydash.冷却好了 = true;
+    }
     public DASH dundash { get; set; } = new DASH(0.07f, 40f, 20f, 1f, E_dash.下铲);
     public DASH skydash { get; set; } = new DASH(0.3f, 30f, 10, 1f, E_dash.空中);
     [NonSerialized]
@@ -1337,11 +1345,13 @@ public partial class Player3 : BiologyBase
         //{
         //    不一致次数 = 0;
         //}
+
+        //new Vector2(po.bounds.size.x - 0.5f, 1),
       ((Vector2)po.bounds.max).DraClirl();
         var tou =
         Physics2D.BoxCast(
        new Vector2(po.bounds.center.x, po.bounds.max.y),
-        new Vector2(po.bounds.size.x - 0.5f, 1),
+        new Vector2(po.bounds.size.x , 1),
         0f,
         Vector2.up,
          距离,
@@ -1687,16 +1697,14 @@ public partial class Player3 : I_生命, I_攻击
 
         Debug.LogError("被扣血" + i);
         if (SKey == 0) SKey = Initialize.Get_随机Int();
-        if (!IIIIIIIB.Add(SKey)) return;
-        Debug.LogError("被扣血" + i);
+        if (!IIIIIIIB.Add(SKey)) return; 
         if (i!=999)
         {
             if (HPROCK) return;
         }
 
         bool 受伤伤 = true;
-
-        Debug.LogError("被扣血" + i);
+ 
         if (Hit_FuncFSM!=null&& i != 999)
         {
  
@@ -1705,8 +1713,9 @@ public partial class Player3 : I_生命, I_攻击
         if (受伤伤)
         {  
             受伤.EnterHit(i,0, obj,硬抗);
-             
+            Debug.LogError("被扣血  前" + 当前hp);
             当前hp -= i;
+            Debug.LogError("被扣血  后" + 当前hp);
             if (!硬抗) 受伤了?.Invoke(); 
         }
         硬抗 = false;

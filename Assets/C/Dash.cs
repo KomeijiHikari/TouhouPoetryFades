@@ -54,6 +54,7 @@ public class DASH
             }
             else
             {
+                
                 return false;
             }
 
@@ -64,6 +65,15 @@ public class DASH
             //{
             //    Debug.LogError("改变改变改变改变改变改变改变改变改变");
             //}
+
+            if (Player3.I. N_.空中Dash)
+            {
+                if (Player3.I.DashDeb)
+                {
+                    Debug.LogError("                                         冷却好了改变改变改变改变改变改变改变改变改变" + value);
+                }
+            }
+
             冷却好了_  = value;
         }
     }
@@ -320,8 +330,10 @@ public class Dash : MonoBehaviour
             Player_input.I.输入开关 = true;
         }
         yield return new WaitForSeconds(当前dASH.冲刺冷却时间 - 当前dASH.冲刺持续时间);
-        当前dASH.冷却好了 = true;
+
         Debug.LogError("触发触发触发触发触发触发触发触发触发触发触发触发");
+        当前dASH.冷却好了 = true;
+
     }
 
 

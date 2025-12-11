@@ -4,11 +4,14 @@ using UnityEngine;
 using SampleFSM;
 using Sirenix.OdinInspector;
 using System;
+using Unity.VisualScripting;
 
 namespace Enemmy
 {
-    public class 滚刺 : MonoBehaviour 
+    public class 滚刺 : MonoBehaviour ,I_攻击
     {
+
+       
         生命周期管理 ss;
         [SerializeField]
         SpriteRenderer sr;
@@ -20,6 +23,9 @@ namespace Enemmy
         bool 顺时针;
  
         float movespeed=>e.Speed_Lv*e.Move_speed;
+
+        public float atkvalue { get => atkvalue1; set => atkvalue1 = value; }
+
         // 存储 bounds 的四个端点（顺序：左上、右上、右下、左下）
         Vector3[] corners;
 
@@ -88,7 +94,15 @@ namespace Enemmy
         }
         [SerializeField]
         float speed;
+        [SerializeField]
+        private float atkvalue1=10;
 
+        //private void OnTriggerEnter2D(Collider2D collision)
+        //{
+        //    if (collision.CompareTag(Initialize.Player)) 
+        //        Player3.I.被扣血(10,gameObject,Time.frameCount);
+ 
+        //}
         private void FixedUpdate()
         { 
             // 如果没有角点或速度为0则不移动
@@ -107,6 +121,11 @@ namespace Enemmy
                 int delta = 顺时针 ? 1 : -1;
                 currentTargetIndex = (currentTargetIndex + delta + corners.Length) % corners.Length;
             }
+        }
+
+        public void 扣攻击(float i)
+        {
+            throw new NotImplementedException();
         }
     }
 

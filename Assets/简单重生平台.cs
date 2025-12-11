@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
  
 public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead 
 {
@@ -14,7 +15,7 @@ public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead
     [DisplayOnly]
     [SerializeField]
     private float live_Time_;
-    [SerializeField]
+    //[SerializeField]
     private float re_Time=1;
     public Bounds 盒子 => sr.bounds;
     //public Bounds 盒子 => new Bounds (transform.position, sr.size);
@@ -92,7 +93,10 @@ public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead
     {
         Player3.I.圆斩对象 += asd;
 
-        GetComponent<生命周期管理>().重生时不等待玩家 = false ;
+    var a=   GetComponent<生命周期管理>();
+        a.重生时不等待玩家 = false;
+        a.真实时间复活 = true;
+        //Re_Time
     }
     void asd(int i)
     {
