@@ -104,7 +104,7 @@ transform.DetachChildren();
         }
         else
         {
-            transform.localScale = new Vector2(-1, 1);
+            transform.localScale = new Vector3(-1, 1,1);
         }
     }
 

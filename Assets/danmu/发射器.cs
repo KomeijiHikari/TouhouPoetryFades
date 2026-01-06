@@ -212,8 +212,10 @@ namespace 发射器空间
                 var VVV = a[i];
                 Phy aa = SendP();
                 aa.目标炮(VVV, B.生命周期);
-
+                aa.Speed_Lv = Speed_Lv;
+                aa.暂停 = false;
                 var P = aa.GetComponent<Phy_检测>();
+                 
                 P.Enter += () =>
                 {
                        if (P.Rs.Length >= 1)

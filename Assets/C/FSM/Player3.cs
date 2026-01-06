@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine; 
 using UnityEngine.Rendering.Universal;
 using static 生命周期管理;
@@ -73,10 +74,11 @@ public partial class Player3 : BiologyBase
         }
     }
     public bool 地面调试;
-    public static string Public_Const_Speed_Name => "Public_Speed";
+
     public static void SaveAll()
     {
-        Save_D.Add(Public_Const_Speed_Name, Player3.Public_Const_Speed);
+        Save_D.Add(SpeedMager.Public_Const_Speed_Name, Player3.Public_Const_Speed);
+        Save_D.Add(SpeedMager.Public_Const辅助_Speed_Name, SpeedMager.I.Last副Speed1Leve);
         Event_M.I.Invoke(Event_M.场景保存触发, Player3.I.gameObject);
         if (Player3.I.加速了)
         {
@@ -102,52 +104,19 @@ public partial class Player3 : BiologyBase
     {
         get => base.transform;
     }
-    [DisplayOnly]
-    public float 变速时间;
-    float 真实时间;
-    float 最后速度;
-    float Speed_fixDeltaTime
-    {
-        get => Time.fixedDeltaTime / Public_Const_Speed;
-    }
-    [DisplayOnly]
-    public float 游戏内的时钟;
-    [DisplayOnly]
-    [SerializeField]
-    float 底层speed;
+
+
 
     [SerializeField]
     [DisplayOnly]
-    float Public_Const_SpeedASD; 
+    float Public_Const_SpeedASD;
 
-    public bool 持续提升速度;
-    public float 提升速度;
-     
-    static float Public_Const_Speed_ = 1;
-    public Action Public_Speed_;
+
     public static float Public_Const_Speed
     {
-        get
-        {
-            return Public_Const_Speed_;
-        }
-     private   set
-        {
-            if (value == 0||value==float.NaN)
-            {
-                Debug.LogError("到底是哪里让我变成零？？");
-                Public_Const_Speed_ = 1;
-                return;
-            }
-            if (Public_Const_Speed_ != value)
-            {
-                Debug.LogError("变速，由" + Public_Const_Speed_ + "变成" + value);
-                Public_Const_Speed_ = value;
-                Player3.I.Public_Speed_?.Invoke();
-
-            }
-        }
+        get { return SpeedMager.Public_Const_Speed; }
     }
+
 
     public 功能数值Base 玩家数值;
     [SerializeField]
@@ -179,6 +148,7 @@ public partial class Player3 : BiologyBase
             悬浮 = b;
             格挡 = b;
             时缓 = b;
+            速度切换 = b;
         }
         public string Name { get => "玩家能力数据"; }
         public void 保存()
@@ -228,6 +198,8 @@ public partial class Player3 : BiologyBase
         [SerializeField] public bool 时缓;
         [SerializeField] public bool 圆劈;
         [SerializeField] public bool Dash加速;
+        [SerializeField] public bool 速度切换;
+        [SerializeField] public bool 箭矢弹反;
     }
 
     public 判定框Base 判定框 { get; set; }
@@ -282,7 +254,7 @@ public partial class Player3 : BiologyBase
 
 
 
-    public BoxCollider2D po;
+    public BoxCollider2D 蹲BOX;
     //void 播放特效(string s)
     //{
     //    特效_pool.I.GetPool(gameObject, s);
@@ -323,9 +295,9 @@ public partial class Player3 : BiologyBase
         float 百分比 = MathF.Abs(Velocity.x) / 玩家数值.常态速度;
 
         //百分比 = Mathf.Clamp( 百分比, 最低点, 1f);
-        Debug.LogError(百分比);
+        //Debug.LogError(百分比);
         //百分比 = 1;
-        AddForce(Time.fixedDeltaTime   *LocalScaleX_Set * Vector2.right * 玩家数值.水平相反力 * 百分比);
+        AddForce(Time.fixedDeltaTime * LocalScaleX_Set * Vector2.right * 玩家数值.水平相反力 * 百分比);
         //Debug.LogError(百分比 + "  力度   " + LocalScaleX_Set * Vector2.right * 玩家数值.水平相反力* 倍率 * 百分比);
     }
     protected override void Awake()
@@ -340,7 +312,7 @@ public partial class Player3 : BiologyBase
         //朝向 = 1; 
         受伤 = GetComponent<玩家受伤效果>();
         判定框 = GetComponentInChildren<判定框Base>();
-        po = GetComponent<BoxCollider2D>();
+        蹲BOX = GetComponent<BoxCollider2D>();
         F = GetComponent<FSM>();
 
         if (Player_input.I != null)
@@ -363,22 +335,21 @@ public partial class Player3 : BiologyBase
 
 
 
-        原始Offset = po.offset;
-        原始Size = po.size;
+        原始Offset = 蹲BOX.offset;
+        原始Size = 蹲BOX.size;
 
         Player_Father = transform.parent;
 
         Player3.I.玩家数值.读取();
         Player3.I.N_.读取();
-        Public_Const_Speed = Save_D.Load_Value_D<float>(Public_Const_Speed_Name);
 
-        Initialize_Mono.I.重制触发 += (int i,int L) =>
+        Initialize_Mono.I.重制触发 += (int i, int L) =>
         {
             More_SafeWay_ = Vector2.zero;
             Initialize_Mono.I.Waite(() =>
             {
                 SafeWay_ = Player3.I.transform.position;
-            },0f);
+            }, 0f);
         };
 
         原速度 = 玩家数值.常态速度;
@@ -386,13 +357,22 @@ public partial class Player3 : BiologyBase
     }
     float 原速度;
     float 加速度;
+    private void Start()
+    {
+        Initialize_Mono.I.重制触发 += (int i, int l) => {
+            Initialize_Mono.I.Waite(() =>
+            {
+                安全地点(true);
+            }, 0.02f);
 
+        };
+
+    }
     public bool 加速了;
     public void 加速(bool f)
     {
         if (Player3.I.N_.Dash加速)
         {
-            Debug.LogError("AAAA  if (Player3.I.N_.Dash加速)  if (Player3.I.N_.Dash加速)            AAAAAAAAAA");
             if (f)
             {
 
@@ -453,24 +433,16 @@ public partial class Player3 : BiologyBase
     }
     public void 闪光()
     {
-        Light2D light2D = GetComponentInChildren<Light2D>();
-        if (light2D != null)
-        {
-            StartCoroutine(开闪一下(light2D));
-        }
-        else
-        {
-            Debug.LogError("灯光为空但是被调用，这是个空引用");
-        }
-
+        Debug.Log("闪光");
+        Initialize.闪光(sp, 0.1f, true);
     }
 
-    IEnumerator 开闪一下(Light2D light2D)
-    {
-        light2D.enabled = true;
-        yield return new WaitForSeconds(0.03f);
-        light2D.enabled = false;
-    }
+    //IEnumerator 开闪一下(Light2D light2D)
+    //{
+    //    light2D.enabled = true;
+    //    yield return new WaitForSeconds(0.03f);
+    //    light2D.enabled = false;
+    //}
 
 
     private void 按下_(KeyCode obj)
@@ -510,7 +482,7 @@ public partial class Player3 : BiologyBase
     }
     public void 方向改变(bool b)
     {
-        transform.localScale = new Vector2((b ? 1 : -1), transform.localScale.y);
+        transform.localScale = new Vector3((b ? 1 : -1), transform.localScale.y, 1);
     }
 
 
@@ -524,14 +496,16 @@ public partial class Player3 : BiologyBase
         {
             方向改变_Action?.Invoke(true);
         }
-        Velocity = new Vector2(0, Velocity.y);
+        if (is土狼时间_Wall == 0)
+            if (禁止朝向 == 0)
+                Velocity = new Vector2(0, Velocity.y);
 
     }
 
 
     public float 距离 = 0.5f;
 
-    public void To_SafeWay( )
+    public void To_SafeWay()
     {
         yalaAudil.I.EffectsPlay("PlayerHit", 1);
 
@@ -544,8 +518,8 @@ public partial class Player3 : BiologyBase
 
         主UI.I.遮罩动画();
     }
- 
- 
+
+
     [SerializeField]
     [DisplayOnly]
     private Vector2 SafeWay_;
@@ -554,64 +528,32 @@ public partial class Player3 : BiologyBase
     [DisplayOnly]
     [SerializeField]
     private Move_P 脚下1;
-    public Move_P 脚下 { get => 脚下1; set => 脚下1 = value; }
 
-    void FixedUpdate()
+    public int MovePTimef;
+     
+ public void 对齐脚下()
     {
-        游戏内的时钟 += Time.fixedDeltaTime / Public_Const_Speed;
+        var v2 = Physics2D.BoxCast(new Vector2(Bounds.center.x, Bounds.min.y),
+new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Ground).point;
 
-        if (持续提升速度)
+        if (v2 != Vector2.zero)
         {
-            Public_Const_Speed += 提升速度 * Time.fixedDeltaTime;
+            var va = Bounds.min.y - v2.y;
+            Debug.LogError(va + "  set脚下(Move_P s) ");
+            transform.position -= new Vector3(0, va  , 0);
         }
-
- 
-        if (Time.time - 真实时间 > 1.5f)  ///何意喂
-        {
-            var 差值 = Player3.Public_Const_Speed - 底层speed;
-            int 正负号 = Initialize.返回正负号(差值);
-            var 绝对值 = MathF.Abs(差值);
-            if (变速时间 != 0 && 绝对值 >= 0.02f)
-            {
-                ///上一秒经过的时间
-                var ttt = 游戏内的时钟 - 变速时间;  //  游戏内时间上次 同速到现在的时间
-                var b = (ttt - (1.5f / 最后速度));
- 
-                var a = 绝对值 * b * b;
-                var aaaaa = 正负号 * a;
-                 
-          
-           
-                    var val = Player3.Public_Const_Speed -  aaaaa;
-               if (val<0)
-                {              
-                    ///两个问题  一        直接=的话底层speed不会变  有底层的情况设置
-                      ///问题二  蜜汁负数 
-                    Debug.LogError("负数设置发生"+
-                        "\n游戏内的时钟:" + 游戏内的时钟 +
-                        " \n变速时间: " + 变速时间
-                 + "\nSpeed: " + Public_Const_Speed
-                    + "\n经过的: " + b
-                 + "\n减去: " + 正负号 * a
-                 + "\n最后速度: " + 最后速度
-                    + "\n差值: " + 差值
-                + "\n底层speed: " + 底层speed
-                   ); 
-                    真实时间 = Time.time;
-                        return;
-                    }
-                    Player3.Public_Const_Speed = val;
-
-                    if (绝对值 <= 0.02f)
-                    {
-                        Player3.Public_Const_Speed = 底层speed;
-                    }
- 
-         
-            }
-        }
-
-
+    }
+    public void set脚下(Move_P s)
+    {
+        MovePTimef = Time.frameCount;
+        脚下 = s;
+        Ground=true;
+        //float f=Physics2D.Raycast(new Vector2(Bounds.center.x, Bounds.min.y), Vector2.down, 3f, 1 << Initialize.L_M_Ground).distance;
+        对齐脚下();
+    }
+    public Move_P 脚下 { get => 脚下1; set => 脚下1 = value; }
+    void FixedUpdate()
+    { 
         if (备用地面 == 备用地面_Laset)
         {
             备用地面检测21 = false;
@@ -628,7 +570,7 @@ public partial class Player3 : BiologyBase
         Debug.DrawRay(Player3.I.Bounds.center, chaox * 10f, Color.blue);
     }
     public Action<int> 圆斩对象;
-    public void 安全地点(bool b=false)
+    public void 安全地点(bool b = false)
     {
         if (b)
         {
@@ -636,11 +578,11 @@ public partial class Player3 : BiologyBase
         }
         else
         {
-            if (More_SafeWay_==Vector2.zero) More_SafeWay_ = SafeWay_;
-           
+            if (More_SafeWay_ == Vector2.zero) More_SafeWay_ = SafeWay_;
+
             transform.position = More_SafeWay_;
         }
-    
+
     }
     public void 录入安全地点(bool 长 = false)
     {
@@ -739,7 +681,7 @@ public partial class Player3 : BiologyBase
 
             if (Contains(co.gameObject.layer, 碰撞检测层)
                 && 方向正确
-                && co.contacts[0].collider == po
+                && co.contacts[0].collider == 蹲BOX
                 )
             {
                 备用地面++;
@@ -754,37 +696,20 @@ public partial class Player3 : BiologyBase
     //public BoxCollider2D 前档板;
 
     public static float 前档板距离 = 0.05f;
+
+
+    [SerializeField]
+
+
+    public float Last副Speed1
+    { get { return SpeedMager.I.Last副Speed1Leve; }
+        set { SpeedMager.I.Last副Speed1Leve = value; } }
+
     protected void Update()
     {
+        if (Player_input.I.按键检测_按下(Player_input.I.k.变速)) SpeedMager.I.切换();
 
-        {
-            if (Player_input.I.按键检测_按下(Player_input.I.k.变速))
-            {
-                if (主 == null)
-                {
-                    Debug.LogError("主为空");
-                    return;
-                }
-                I_假死 a;
-                if (辅 != null)
-                {
-                    a = 主;
-
-                    主 = 辅;
-                    辅 = a;
-                    Public_Const_Speed = 主.对象.GetComponent<I_Speed_Change>().Speed_Lv;
-                }
-                else
-                {
-                    辅 = 主;
-
-                    Public_Const_Speed = 1;
-                }
-
-
-            }
-        }
-
+        if (Player_input.I.按键检测_按下(Player_input.I.k.视野)) 切换Shader.I.isSpeed = !切换Shader.I.isSpeed;
 
         if (Ground && !HPROCK && (FSM.f.I_State_C.state == E_State.run || FSM.f.I_State_C.state == E_State.idle))
         {
@@ -792,7 +717,7 @@ public partial class Player3 : BiologyBase
         }
         前后和头(1f, 0.1f);
         显示 = N_;
-        Public_Const_SpeedASD = Public_Const_Speed; 
+        Public_Const_SpeedASD = Public_Const_Speed;
 
         冲刺伤害();
 
@@ -820,30 +745,27 @@ public partial class Player3 : BiologyBase
         {
             e_wall = E_wall.OOOO;
         }
-        //else if (!顶上 && 上 && !中 && !下)
-        //{
-        //    e_wall = E_wall.OIOO;
-        //}
-        //else
-        //{
-
-        //    e_wall = E_wall.OOOO;
-        //}
-        //else if (顶上 && 上 && 中 && !下
-        //    || 顶上 && 上 && !中 && !下)
-        //{
-        //    e_wall = E_wall.IIIO;
-
-        //}
-        //else if (!顶上 && 上 && 中 && 下
-        //    || (!顶上 &&! 上 && 中 && 下))
-        //{
-        //    e_wall = E_wall.OIII;
-        //}
         顶死 = e_wall == E_wall.IIII /*|| e_wall == E_wall.OIOO*/;
 
         Last_Velocity = Velocity;
         监控 = Velocity;
+    }
+
+    public Vector3 假检测(float value)
+    {
+        Vector3 上 = Physics2D.Raycast(上检测.position, Vector2.right * LocalScaleX_Int, value, 碰撞检测层).point;
+        Vector3 中 = Physics2D.Raycast(中检测.position, Vector2.right * LocalScaleX_Int, value, 碰撞检测层).point;
+        Vector3 下 = Physics2D.Raycast(下检测.position, Vector2.right * LocalScaleX_Int, value, 碰撞检测层).point;
+        bool b = 上 != Vector3.zero && 上.x._is(中.x) && 中.x._is(下.x);
+        //Debug.LogError("        " + b +上+中+下);
+        if (b)
+        {
+            return 中;
+        }
+        else
+        {
+            return Vector3.zero;
+        }
     }
     public float 距离墙面的距离 => MathF.Abs(中检测.transform.localScale.x + 前档板距离 * 2);
     public void LastV_Velocity()
@@ -871,18 +793,6 @@ public partial class Player3 : BiologyBase
             Velocity = new Vector2(玩家数值.常态速度 * Player_input.I.方向正零负, Velocity.y);
         }
     }
-    public void 朝向update()
-    {
-        transform.localScale = new Vector2(Player_input.I.方向正负, transform.localScale.y);
-    }
-
-    public void 减速()
-    {
-
-    }
-
-
-
 
     /// <summary>
     /// 现在STAy中调用  只能当接触地面， 侧面和脚底一起接触会失效
@@ -958,6 +868,7 @@ public partial class Player3 : BiologyBase
     {
         if (MathF.Abs(Velocity.x) > 玩家数值.常态速度)
         {
+            //Debug.LogError(Velocity.x+ "水平限制()");
             Velocity = new Vector2(玩家数值.常态速度 * Mathf.Sign(Velocity.x), Velocity.y);
         }
     }
@@ -1063,10 +974,10 @@ public partial class Player3 : BiologyBase
         }
         return b.point;
     }
-    public Vector2 脚底发射(float 距离)
+    public Vector2 脚底发射(float 距离,float value=0)
     {
 
-        Vector2 a = 脚底中间;
+        Vector2 a = 脚底中间+Vector2.up*value;
         var b = Physics2D.Raycast(a, Vector2.down, 距离, 碰撞检测层);
         if (b.collider == null)
         {
@@ -1169,14 +1080,14 @@ public partial class Player3 : BiologyBase
     {
         if (b)
         {
-            po.size = new Vector2(po.size.x, 蹲后SizeY);
+            蹲BOX.size = new Vector2(蹲BOX.size.x, 蹲后SizeY);
             var a = (原始Size.y - 蹲后SizeY) / 2;
-            po.offset = new Vector2(po.offset.x, po.offset.y - a);
+            蹲BOX.offset = new Vector2(蹲BOX.offset.x, 蹲BOX.offset.y - a);
         }
         else
         {
-            po.offset = 原始Offset;
-            po.size = 原始Size;
+            蹲BOX.offset = 原始Offset;
+            蹲BOX.size = 原始Size;
         }
 
     }
@@ -1185,7 +1096,7 @@ public partial class Player3 : BiologyBase
         站立box.enabled = false;
         return;
         一半(true);
-        var a = po;
+        var a = 蹲BOX;
         Vector2 最低点 = Vector2.zero;
         Vector2 碰撞点 = Vector2.zero;
         for (int i = 0; ; i++)
@@ -1225,8 +1136,12 @@ public partial class Player3 : BiologyBase
             return true;
         }
     }
-    public void 跳跃触发(Vector2 v)
+    public void 跳跃触发(Vector2 v, string s = null)
     {
+        if (s != null)
+        {
+            Debug.LogError(s + v);
+        }
         I.Velocity = v;
     }
     public void 跳跃触发()
@@ -1237,7 +1152,6 @@ public partial class Player3 : BiologyBase
     protected override void 离开地面_()
     {
         if (地面调试) Debug.Log("离开地面");
-
         离开地面事件?.Invoke();
     }
 
@@ -1259,6 +1173,7 @@ public partial class Player3 : BiologyBase
             按下跳跃?.Invoke();
         }
     }
+    //public LayerMask 可以原批碰撞检测层_;
     [SerializeField] LayerMask 碰撞检测层_;
     public override LayerMask 碰撞检测层
     {
@@ -1270,20 +1185,45 @@ public partial class Player3 : BiologyBase
         }
     }
 
+
+
     public bool BigHit = false;
 
     int 不一致次数;
-
-    public RaycastHit2D[] 地面检测( float 距离=0.2f)
+    public void 差价()
     {
+
+        //return;
+        蹲BOX.isTrigger = false;
+        float Yc = 站立box.bounds.min.y - sp.bounds.min.y - 0.1f;
+        transform.position += Vector3.up * Yc;
+        //站立box.size = sky.Startsize;
+        //站立box.offset = sky.StartOff;
+    }
+public     BoxCollider2D 最低点()
+    {
+        BoxCollider2D B = 蹲BOX;
+        if (!蹲BOX.enabled||  蹲BOX.isTrigger) B = 站立box;
+        return B;
+    }
+    public RaycastHit2D[] 地面检测(LayerMask L, float 距离=0.2f)
+    {
+ 
         float DD = Ground ? 0 : 0.3f;
+
+        if (Initialize_Mono.I.MoveP_优化)
+            if (Ground&&脚下!=null)
+        { 
+            //距离 += 脚下.帧移动距离*2+1f;
+        }
+        BoxCollider2D B = 最低点();
         return Physics2D.BoxCastAll(
-              new Vector2(po.bounds.center.x, po.bounds.min.y),
-               new Vector2(po.bounds.size.x - DD, 0.1f),
+              new Vector2(B.bounds.center.x, B.bounds.min.y),
+               new Vector2(B.bounds.size.x - DD, 0.1f),
                0f,
                Vector2.down,
-                距离 + po.edgeRadius,
-              碰撞检测层
+                距离 + B.edgeRadius,
+             L
                );
     }
     protected override void 前后和头(float 距离, float DI横)
@@ -1296,9 +1236,9 @@ public partial class Player3 : BiologyBase
         ///  备用地面的夹角情况 
         ///   悬在墙上
 
-
-        var DIs = 地面检测( );
-
+        bool LastGr = Ground;
+        var DIs = 地面检测(碰撞检测层);
+        bool NowGround=false;
         Collider2D DI = null;
         foreach (var item in DIs)
         {
@@ -1313,6 +1253,7 @@ public partial class Player3 : BiologyBase
                     }
 
                     DI = item.collider;
+                     
                     break;
                 }
             }
@@ -1321,7 +1262,7 @@ public partial class Player3 : BiologyBase
         if (地面调试) if (DI != null) Debug.LogError(DI + "      Trriger:" + DI.isTrigger + "      备用：" + 备用地面检测21);
         if (DI != null && DI.isTrigger == false)
         {
-            Ground = true;
+            NowGround = true;
         }
         else
         {
@@ -1331,8 +1272,70 @@ public partial class Player3 : BiologyBase
                 bB = true;
             }
 
-            Ground = bB;
+            NowGround = bB;
+
+
         }
+        if (Initialize_Mono.I.MoveP_优化)
+        {
+            if (脚下 != null)
+            {
+                if (!NowGround)
+                    if (MovePTimef + 2 >= Time.frameCount)
+                    {///一种是接触后并且父类后 自己没跟上（怀疑
+                     ///一种是接触前认为Ground
+                        Debug.LogError("吃" + Time.frameCount);
+                        NowGround = true;
+                    }
+            }
+            else
+            {
+                if (NowGround)
+                {
+                    if (NowGround != LastGr)
+                    {
+                        foreach (var item in DIs)
+                        {
+                            if (item.collider.CompareTag(Initialize.MovePlatform))
+                            {
+                                NowGround = true;
+                                var aaa = item.collider.GetComponent<Move_P>();
+                                if (aaa != null) set脚下(aaa);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (false)
+        {
+            BoxCollider2D Bx = 最低点();
+            var Av = Bx.bounds.min;
+            var Bv = new Vector2(Bx.bounds.max.x, Bx.bounds.min.y);
+            var Cv = new Vector2(Bx.bounds.center.x, Bx.bounds.min.y);
+        bool Ab=    Physics2D.CircleCast(Av,0.001f,Vector2.zero,0, 碰撞检测层).point == Vector2.zero;
+            bool Cb = Physics2D.CircleCast(Cv, 0.001f, Vector2.zero, 0, 碰撞检测层).point == Vector2.zero;
+            bool Bb = Physics2D.CircleCast(Bv, 0.001f, Vector2.zero, 0, 碰撞检测层).point==Vector2.zero;
+
+            Deb(Av,Ab);
+            Deb(Bv, Bb);
+            Deb(Cv,  Cb);
+            void Deb(Vector2 v,bool b)
+            {
+                Color c = Color.red;
+                if(b)c=Color.white;
+                v.DraClirl(0.1f, c, 2f);
+            }
+            if ( Cb)
+            {///没东西
+            //if(Bb != Ab)
+                    //GroundGround = false;
+            }
+        }
+        Ground = NowGround;
         //if (备用地面检测21 != Ground)
         //{
         //    不一致次数++;
@@ -1347,11 +1350,11 @@ public partial class Player3 : BiologyBase
         //}
 
         //new Vector2(po.bounds.size.x - 0.5f, 1),
-      ((Vector2)po.bounds.max).DraClirl();
+        ((Vector2)蹲BOX.bounds.max).DraClirl();
         var tou =
         Physics2D.BoxCast(
-       new Vector2(po.bounds.center.x, po.bounds.max.y),
-        new Vector2(po.bounds.size.x , 1),
+       new Vector2(蹲BOX.bounds.center.x, 蹲BOX.bounds.max.y),
+        new Vector2(蹲BOX.bounds.size.x , 1),
         0f,
         Vector2.up,
          距离,
@@ -1368,8 +1371,8 @@ public partial class Player3 : BiologyBase
         }
 
         Collider2D A = Physics2D.BoxCast(
-        new Vector2(po.bounds.min.x, po.bounds.center.y),
-        new Vector2(0.001f, po.bounds.size.y - 0.4f),
+        new Vector2(蹲BOX.bounds.min.x, 蹲BOX.bounds.center.y),
+        new Vector2(0.001f, 蹲BOX.bounds.size.y - 0.4f),
         0f,
       Vector2.left,
    0.05f,
@@ -1379,8 +1382,8 @@ public partial class Player3 : BiologyBase
         var a = A == null || A.isTrigger;
 
         Collider2D B = Physics2D.BoxCast(
- new Vector2(po.bounds.max.x, po.bounds.center.y),
- new Vector2(0.001f, po.bounds.size.y - 0.4f),
+ new Vector2(蹲BOX.bounds.max.x, 蹲BOX.bounds.center.y),
+ new Vector2(0.001f, 蹲BOX.bounds.size.y - 0.4f),
  0f,
        Vector2.right,
  0.05f,
@@ -1403,41 +1406,61 @@ public partial class Player3 : BiologyBase
     }
     public int 返回方向()
     {
-        var a = Player_input.I.方向正零负;
-        if (a == 0)
+        var a键盘输入方向 = Player_input.I.方向正零负;
+        if (a键盘输入方向 == 0)
         {
-            return 0;
+            ///无输入 啥都不干
+            return -禁止朝向1;
         }
-        else if (一个朝向 == 0)
+        else if (禁止朝向1 == 0)
         {
+            ///禁用时间过了 
+            return a键盘输入方向;
+        }
+        else if (禁止朝向1 == a键盘输入方向)
+        {
+            ///想要输入禁止的  不能
+            return -禁止朝向1;
+        }
+        else if(a键盘输入方向==-禁止朝向1)
+        {//相反   那就对了，
 
-            return a;
-        }
-        else if (一个朝向 == a)
+            return a键盘输入方向;
+        }else
         {
-            return 0;
-        }
-        else
-        {
-            return a;
+            return -禁止朝向1;
         }
 
 
     }
-    int 一个朝向 = 0;
-    internal void 记录a(bool B = false)
+    public int 禁止朝向1 { get { return 禁止朝向; } private set { if (禁止朝向 != value) {
+          
+            }   禁止朝向 = value; } }
+    int 禁止朝向 = 0;
+    internal void 记录a(float t )
     {
-        if (B)
+        if (t==0)
         {
-            一个朝向 = 0;
+            禁止朝向1 = 0;
+            transform.position.DraClirl(1, Color.yellow, 1);
         }
         else
         {
-
-            Initialize_Mono.I.Waite(() => { 一个朝向 = 0; }, 0.5f);
-            一个朝向 = LocalScaleX_Int;
+            if(禁止!=null) StopCoroutine(禁止);
+            禁止朝向1 = wall_进入为正面;
+            禁止 = StartCoroutine(ads(t));  
         }
     }
+    Coroutine 禁止;
+    IEnumerator ads(float t)
+    { 
+        yield return new WaitForSeconds(t);
+        记录a(0);
+        禁止 = null;
+    }
+    public float 反登time = 0.3f;
+    internal int is土狼时间_Wall=0;
+    internal int wall_进入为正面;
 }
 
 public partial class Player3 : I_生命, I_攻击
@@ -1474,8 +1497,9 @@ public partial class Player3 : I_生命, I_攻击
     /// </summary>
     /// <param name="father"></param>
     public void ChangeFather(Transform father = null)
-    {
- 
+    { 
+        if (!Initialize_Mono.I.MoveP_优化) return;
+            Debug.LogError("ChangeFather"+Time.frameCount+father);
         if (father == null)
         { 
             Debug.Log ("还原");
@@ -1580,86 +1604,15 @@ public partial class Player3 : I_生命, I_攻击
     }
     I_假死 辅;
     I_假死 主;
-    I_假死 当前;
-    void 切换(I_Speed_Change I)
-    {
-        if (当前 != null)
-        {
-            当前.假死了(false);
-        }
-        ///假死
-        var a = I.对象.GetComponent<I_假死>();
-        if (a != null) a.假死了(true);
-        主 = a;
-        当前 = a;
-    }
-    No_Re RR=new No_Re ();
+    I_假死 当前; 
+
 
     public    void SetSpeed(float f)
     {
-        Public_Const_Speed = f;
-         
-         底层speed = f;
-        最后速度 = f;
-
- 
-        变速时间 = 游戏内的时钟;
-        真实时间 = Time.time;
+        SpeedMager.I.SetSpeed(f,f); 
     }
 
-    public void 同速_(I_Speed_Change I)
-    {
-        if (!RR.Note_Re()) return;
 
-        ///切换相关
-        //var f = I.Current_Speed_LV;
-        //if (f == 0)
-        //{
-        //    f = I.Speed_Lv;
-        //}  
-
-        //切换(I);
-        //if (I.Speed_Lv== I.Current_Speed_LV)
-        //{
-        //    底层speed
-        //}
-
-        var f = I.Current_Speed_LV;
-
-
-        if (f == 0)
-        {
-            Debug.LogError("出错： 速度 零      " + f);
-            return;
-        }
-
-        if (Player3.Public_Const_Speed == f)
-        {
-            Debug.Log(Player3.Public_Const_Speed + "      等级一致      " + f);
-            return;
-        }
-
-        变速特效(f);
-        if (Player3.Public_Const_Speed>f)
-        {
-            yalaAudil.I.EffectsPlay("SpeedUp", 3); 
-        }
-        else
-        {
-            yalaAudil.I.EffectsPlay("SpeedDown", 3);
-            
-        }
-
-       
-   
-        Player3.Public_Const_Speed = f; 
-            底层speed = I.Speed_Lv; 
-
-        I.变速触发?.Invoke();
-        变速时间 = 游戏内的时钟;
-        最后速度 = f;
-       真实时间 = Time.time;
-    }
 
     public enum 防御   //最开始的小兵大量消耗格挡条  第二个消耗小  让各党，拿了第二个之后i第二个简单第一个难了
     {
@@ -1694,7 +1647,7 @@ public partial class Player3 : I_生命, I_攻击
     /// <param name="obj"></param>
     public override void 被扣血(float i, GameObject obj, int SKey=0)
     { ///不能反弹碰撞伤害   
-
+        
         Debug.LogError("被扣血" + i);
         if (SKey == 0) SKey = Initialize.Get_随机Int();
         if (!IIIIIIIB.Add(SKey)) return; 

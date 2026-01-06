@@ -247,7 +247,7 @@ public class Enemy_atk : MonoBehaviour, I_攻击
         脚底 = new Vector2(c.bounds.center.x, c.bounds.min.y);
         脚的原点 = new Vector2(脚底.x, 脚底.y + Initialize.打腿);
         战立的原点 = new Vector2(脚底.x, 脚底.y + Initialize.打胸);
-        朝向 = new Vector2(transform.localScale.x, 0);
+        朝向 = new Vector3(transform.localScale.x, 0);
         反向 = new Vector2(-transform.localScale.x, 0);
         if (e.攻击目标!=null)
         {

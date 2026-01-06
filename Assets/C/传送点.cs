@@ -48,6 +48,7 @@ public  partial  class 传送点 : MonoBehaviour
             玩家走到了外面 =true;
             传送导点.I.最后点 = transform.position;
             Player3.I.录入安全地点(true );
+            Player3.I.安全地点(true);
             if (可被销毁)
             {
                 销毁触发?.Invoke();

@@ -81,7 +81,7 @@ public class 摄像机 : MonoBehaviour
     //    get { return Fov * Initialize.屏幕横纵比 * 2; }
     //}
 
-    public float 全局默认Fov { get => 原Fov1; set => 原Fov1 = value; }
+    public float 全局默认Fov { get =>Initialize_Mono.I. 全局默认Fov; set => Initialize_Mono.I.全局默认Fov = value; }
 
     [SerializeField]
     CinemachineVirtualCamera 默认;
@@ -95,12 +95,13 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
     {
         FFOV = Fov;
     }
+    [DisplayOnly]
     public float FFOV;
   public   float Fov {  get {
 
         if(wt!=null) return Initialize.GetCarmeraAngle2_SIze(W, c.m_Lens.FieldOfView) ;
             return c.m_Lens.OrthographicSize; }
-       private  set {
+       private  set { 
             if (value==0)
             {
                 Debug.LogError("输入了0");
@@ -114,7 +115,7 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
  //   {
  //       Fov = f;
  //   }
-
+ 
 
     public  void FOV_缓动至( float FOV,float time, bool 用直线 = false)
     {
@@ -231,7 +232,8 @@ public void setFov(float v)
                 else
                 {
                     //Debug.LogError(TargetFov+"      "+ 插值);
-                    Fov = Mathf.Lerp(Fov, TargetFov, 插值); 
+                    //Fov = Mathf.Lerp(Fov, TargetFov, 插值); 
+                    //Fov
                 }
                 yield return new WaitForSecondsRealtime(迭代时间) ;
             }
@@ -278,10 +280,10 @@ public void setFov(float v)
         C_k = null;
     }
 
-    float Target_Fov;
+    float 碰撞框目标FOV;
     public void Set_Target_Fov(float FovValue)
     {
-        Target_Fov = FovValue; 
+        碰撞框目标FOV = FovValue; 
     }
     private void Start()
     {
@@ -327,8 +329,8 @@ public void setFov(float v)
     }
  
     public void 设置相机碰撞体(PolygonCollider2D po)
-    { 
-        var a = po.GetComponent<相机框>(); 
+    {
+          var a = po.GetComponent<相机框>(); 
         摄像机.I.刷新碰撞框(a);
         if (c == null)
         {
@@ -348,10 +350,12 @@ public void setFov(float v)
 
  
         var Value = Initialize.返回兼容相机碰撞框的摄像机尺寸(碰撞组件.m_BoundingShape2D.bounds.size ,1000);
+
+        //Debug.LogError(Value);
         当前场景真正最大FOV = Value; 
 
         //Fov = 当前场景真正最大FOV;
-        float Result_Fov = Target_Fov;
+        float Result_Fov = 碰撞框目标FOV;
         ///有没有目标
         if (Result_Fov == 0) 当前场景默认FOV = 全局默认Fov;
         else 当前场景默认FOV = Result_Fov;
@@ -359,8 +363,9 @@ public void setFov(float v)
         ///允不允许
         if (当前场景真正最大FOV > 当前场景默认FOV) Result_Fov = 当前场景默认FOV;
         else Result_Fov = 当前场景真正最大FOV;
-        Fov = Result_Fov;
-        Target_Fov = 0;
+         
+        Fov = Result_Fov; 
+        碰撞框目标FOV = 0;
 
         //Fov = 3;
 
@@ -369,7 +374,7 @@ public void setFov(float v)
     {
         if (c == null) { 
         c = GetComponent<CinemachineVirtualCamera>();
-            Debug.LogError("看样子是重新获取了");
+            //Debug.LogError("看样子是重新获取了");
         }
  
         设置摄像机位置(p.transform.position);
@@ -377,9 +382,6 @@ public void setFov(float v)
                 c.Follow = p.transform; 
     }
  
-    [DisplayOnly]
-    [SerializeField ]
-    private float 原Fov1;
 
     [DisplayOnly]
     [SerializeField]

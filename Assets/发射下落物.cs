@@ -153,9 +153,10 @@ f.销毁触发 += handler;
     private void FixedUpdate()
     {
         if (暂停) return;
-        帧 = I_S.固定等级差;
-        //帧 = Initialize_Mono.I.GetMin(帧);
-        Ti += Time.fixedDeltaTime* 帧/F.self_speed;
+        //帧 = I_S.固定等级差; 
+        //Ti += Time.fixedDeltaTime* 帧/F.self_speed;
+        float t = Initialize_Mono.I.Mi.GetFlyGMin(F.self_speed * I_S.固定等级差);
+        Ti += t * Time.fixedDeltaTime;
         if (LastC!=Time.frameCount)
         {
             LastC = Time.frameCount;

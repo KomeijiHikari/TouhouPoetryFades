@@ -461,6 +461,8 @@ MonoBehaviour:
   - {fileID: 9071527184253740114}
   - {fileID: 4580059011917247909}
   - {fileID: 3925602197521854065}
+  - {fileID: 9071527184867001345}
+  - {fileID: 1965261163247315286}
   is_Dead: 0
 --- !u!61 &1965261163247315286
 BoxCollider2D:
@@ -667,6 +669,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  f: {fileID: 3925602197521854065}
 --- !u!1 &9071527185265470320
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,7 +725,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5137be1a0ce90a44b8fc8bf2a7f1d709, type: 2}
+  - {fileID: 2100000, guid: 0078378f955cae04f831dbd50672b074, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -810,13 +813,9 @@ MonoBehaviour:
   f: 0
   c: {r: 0, g: 0, b: 0, a: 0}
   "\u6FC0\u6D3B\u7684": 0
-  Current_Speed_: 0
-  Speed_: 0
-  "\u8D85\u901F\u7B49\u7EA7": 0
-  "\u900F\u660E\u5EA6": 0
-  "\u53BB\u8272": 0
-  "\u95EA\u70C1\u5F00\u5173": 0
-  "\u95F4\u9694": 0.2
+  Sb: {fileID: 0}
+  Deb: 0
+  SpeedInt: 0
 --- !u!1 &9071527185273599600
 GameObject:
   m_ObjectHideFlags: 0

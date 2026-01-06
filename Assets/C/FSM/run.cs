@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Cysharp.Threading.Tasks;
 public class run : State_Base 
 {
     public override void AweakStatebase()
@@ -15,7 +15,7 @@ public class run : State_Base
     {
         //Player.脚下 = null;
         var sc = Player.transform.localScale;
-        Player.transform.localScale = new Vector2(Mathf .Sign (sc.x),1);
+        Player.transform.localScale = new Vector3(Mathf .Sign (sc.x),1,1);
         //if (f.I_State_L.state == E_State.dun)
         //{
         //    A.Playanim("run_idle_to0");
@@ -50,7 +50,9 @@ public class run : State_Base
                 else
                 {
                     //Player .方向更新 ()
-                    A.Playanim(A_N.run_idle_to0); 
+                    A.Playanim(A_N.run_idle_to0);
+                        
+                       
                 }
         }
         break; 
@@ -98,7 +100,7 @@ public class run : State_Base
      
                 Player.transform.localPosition += new Vector3(IP.方向正零负 * Player.玩家数值.常态速度, 0, 0) * Time.fixedDeltaTime;
 
-            if (Player.脚下 != null && Player.脚下.移动方式 == Move_P.方式.水平)
+            if (Player.脚下 != null && Player.脚下.移动方式 ==  E_移动方式.水平)
             {
                 Debug.LogError("水平移动平台上");
                 if (Player.脚下.方向 == Player.LocalScaleX_Set)
@@ -121,10 +123,18 @@ public class run : State_Base
         {
             Player.Velocity = new Vector2(IP.方向正零负 * Player.玩家数值.常态速度, Player.Velocity.y);
         }
-        Player.Velocity = new Vector2(IP.方向正零负 * Player.玩家数值.常态速度, Player.Velocity.y);
+        //Player.Velocity = new Vector2(IP.方向正零负 * Player.玩家数值.常态速度, Player.Velocity.y);
 
-        //Debug.LogError( "速度" + Player.玩家数值.常态速度);
+
  
+            Player.AddForce(new Vector2(Player.玩家数值.起步速度 * 0.8f * IP.方向正负, 0));
+
+        if (EnterTime > 0.1f)
+        {
+            Player.水平限制();
+        }
+        //Debug.LogError( "速度" + Player.玩家数值.常态速度);
+
         //玩家水平运动设置空物体    静止和竖直 是父物体
         //if (Player.Player_Father_False != null)
         //{
@@ -133,22 +143,19 @@ public class run : State_Base
 
         //Player.Velocity = new Vector2(IP.方向正零负 * Player.玩家数值.常态速度, Player.Velocity.y);
         //Player. AddForce(new Vector2(IP.方向正零负 * Player.玩家数值.起步速度, 0));
-        if (  EnterTime>0.1f  )
-        {
-            Player.水平限制();
-        }
+
 
         //if (Player.脚下 != null && Player.脚下.移动方式 == Move_P.方式.水平)
         //{
-            //var a = -Player.脚下.帧移动距离 * Player.脚下.方向;
-            //if (Player.脚下.方向 == Player.LocalScaleX_Set)
-            //{
-            //    Player.transform.position -= new Vector3(a * 3, 0, 0);
-            //}
-            //else if (Player.脚下.方向 == -Player.LocalScaleX_Set)
-            //{
-            //    Player.transform.position += new Vector3(a, 0, 0);
-            //}
+        //var a = -Player.脚下.帧移动距离 * Player.脚下.方向;
+        //if (Player.脚下.方向 == Player.LocalScaleX_Set)
+        //{
+        //    Player.transform.position -= new Vector3(a * 3, 0, 0);
+        //}
+        //else if (Player.脚下.方向 == -Player.LocalScaleX_Set)
+        //{
+        //    Player.transform.position += new Vector3(a, 0, 0);
+        //}
 
         //}
     }
@@ -215,13 +222,18 @@ public class run : State_Base
         //{
         //    加速(false);
         //}
-
+        //return;
         if (IP.方向正零负==0)
         {
-            if (IP.方向正零负_非零计时器>1f)
+            if (Time.time- EnterTime>1 )
+            //if (IP.方向正零负_非零计时器>1f)
             {
                 //A.Playanim("run_0_");
-                Player.Velocity = new Vector2(8f * IP.方向正负, Player.Velocity.y);
+                //Player.Velocity = new Vector2(8f * IP.方向正负, Player.Velocity.y);
+            }
+            else
+            {
+                //Player.AddForce(new Vector2(Player.玩家数值.起步速度 * IP.方向正负, 0) );
             }
             //Debug.LogError("ASDASDASDADS"+ IP.方向正零负_非零计时器);
             f.To_State(E_State.idle);

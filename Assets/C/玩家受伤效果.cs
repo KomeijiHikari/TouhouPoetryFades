@@ -78,7 +78,7 @@ public class 玩家受伤效果 : MonoBehaviour
         }
         yalaAudil.I.EffectsPlay("PlayerHit",1); 
 
-        受伤效果 = true;
+        受伤效果 = true; 
         godTime_ = godTime;
         stiffnessTime_ = stiffnessTime一般;
         不可以受伤 = true;
@@ -97,10 +97,11 @@ public class 玩家受伤效果 : MonoBehaviour
         GodTime_update();
         if (受伤效果)
         {
+
             stiffnessTime_ -= Time.deltaTime;
             Player3.I.an.speed = 0;
             if (stiffnessTime_ <= 0)//硬直时间过去了
-            {
+            { 
                 StartCoroutine(Flicker());
                 受伤效果 = false;
                 Player3.I.an.speed = 1;
@@ -136,11 +137,13 @@ public class 玩家受伤效果 : MonoBehaviour
         for (int i = 0; ; i++)
         {
             //LI2D .enabled = true; 
-            Player3.I.sp.material.SetFloat(材质管理._Alpha, 0.1f);
-            //Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b, );
+            //Player3.I.sp.material.SetFloat(材质管理._Alpha, 0.1f);
+
+            Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b,0 );
             yield return waitForSeconds;
-            Player3.I.sp.material.SetFloat(材质管理._Alpha,  1f);
-            //Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b, 1f);
+
+            //Player3.I.sp.material.SetFloat(材质管理._Alpha,  1f);
+            Player3.I.sp.color = new Color(Player3.I.sp.color.r, Player3.I.sp.color.g, Player3.I.sp.color.b, 1f);
             //LI2D.enabled = false ;
             yield return waitForSeconds;
 

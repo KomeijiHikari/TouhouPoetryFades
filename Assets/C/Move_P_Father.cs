@@ -35,25 +35,25 @@ public class Move_P_Father : MonoBehaviour
         float poX = 0, poY = 0;
         switch (主.移动方式)
         {
-            case Move_P.方式.竖直:
+            case  E_移动方式.竖直:
                 y = Mathf.Abs(trA.position.y - trB.position.y); 
                 x = 主.sp.size.x;
 
                 poY = ASD(trA.localPosition.y, trB.localPosition.y);
                 break;
-            case Move_P.方式.水平:
+            case E_移动方式.水平:
                 y = Mathf.Abs(trA.position.x - trB.position.x);
                 x = 主.sp.size.y;
 
                 poX = ASD(trA.localPosition.x , trB.localPosition.x) ;
                 break;
-            case Move_P.方式.自由:
+            case  E_移动方式.自由:
                 break;
         }
         switch (主.移动方式)
         {
-            case Move_P.方式.竖直:
-            case Move_P.方式.水平:
+            case  E_移动方式.竖直:
+            case  E_移动方式.水平:
                 //Debug.LogError(poX+"        "+ poY);
                 超速碰撞框.transform.localPosition  = new Vector2(poX, poY);
                 超速碰撞框.size = new Vector2(x+0.2f,y + 0.2f);

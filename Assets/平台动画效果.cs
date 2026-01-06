@@ -58,7 +58,11 @@ public class 平台动画效果 : MonoBehaviour
             var a = D.盒子.阵列盒子();
             for (int i = 0; i < a.Count; i++)
             {
-                var B = 特效_pool_2.I.GetPool(a[i], T_N.特效砖块爆炸, Player3.I.sp);
+                var aa = 特效_pool_2.I.GetPool(a[i], T_N.特效砖块爆炸, Player3.I.sp);
+                if (P!=null&&S!=null)
+                {
+                    aa.Speed_Lv = P.S.Speed_Lv;
+                }  
             }
         };
 
@@ -83,7 +87,7 @@ public class 平台动画效果 : MonoBehaviour
         var a = Bb.阵列盒子();
         for (int i = 0; i < a.Count; i++)
         {
-            var B = 特效_pool_2.I.GetPool(a[i], T_N.特效砖块爆炸, Player3.I.sp);
+         特效_pool_2.I.GetPool(a[i], T_N.特效砖块爆炸, Player3.I.sp).Speed_Lv = P.S.Speed_Lv;
         }
     }
 }

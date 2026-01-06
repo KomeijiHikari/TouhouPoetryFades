@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,7 +45,12 @@ public class wall : State_Base
     bool 挂在move_P上;
 
     bool 按下了相反;
-    int 第一次进来的时间_ { get; set; }
+
+    float 缓冲时间Max_长=0.3f;
+
+    float 缓冲时间Max_短 = 0.1f;
+    float 缓冲时间Max2 = 1f;
+    float 第一次进来的时间_ { get; set; }
     //public override bool 能力激活的 { 
     //    get {
     //     能力激活的_显示 = Player.N_.爬墙; 
@@ -88,6 +94,7 @@ public class wall : State_Base
         }
         else  
         {
+          
             c.point.DraClirl(100,Color.green,10);
             return new Vector2(c.point.x, 1);
         } 
@@ -100,15 +107,15 @@ public class wall : State_Base
            , 1 << Initialize.L_M_Ground | 1 << Initialize.L_Ground);
     }
  bool 距离地面很近(float jul)
-    {
-        //return false;
-        var a= Player.地面检测(jul);
-      
+    { 
+        var a = Player.地面检测(1 << Initialize.L_Ground | 1 << Initialize.L_M_Ground, jul);
         return a .Length>0;
     }
     public override bool 可以切换嘛()
-    { 
-        if (距离地面很近(1.8f)) return false; 
+    {
+
+        if (距离地面很近(1.8f)) return false;
+        return true;
         var a = asd();
         if (a==Vector2.zero)
         {
@@ -151,12 +158,15 @@ public class wall : State_Base
         按下了相反 = false;
 
         if (!is_wall_surfing)
-            Player3.I.ChangeFather();
+            Player3.I.ChangeFather(); 
+    }
 
-    } 
-    
+
     public override void EnterState()
-    { 
+    {
+      Player.  wall_进入为正面 = Player.LocalScaleX_Int ;
+        Debug.LogError("   Player.  wall_进入为正面  " + Player.wall_进入为正面);
+        //return;
         is_wall_surfing = false;
       var c=  Physics2D.Raycast(Player.Bounds.center,new Vector2(Player.LocalScaleX_Int,0),1f,1<<Initialize .L_M_Ground   ).collider;
         if (c!=null)
@@ -183,38 +193,23 @@ public class wall : State_Base
         //Debug.LogError(Player.transform.position);
     }
     Vector2 Last { get; set; }
-    void 录入(KeyCode obj, bool b)
+    void 录入(KeyCode obj, bool 按下)
     {
-        if (obj == IP.k.左)
-        {
-            if (Player.LocalScaleX_Int == -1)
-            {
-                if (b)
-                {
-                    Last = Player.transform.localPosition;
-                }
-                else
-                {
-                    Last = Vector2.zero;
-                }
+        bool 同向 = false;
+        if (obj == IP.k.左&& Player.LocalScaleX_Int == -1)
+            同向 = true;
+        else if (obj == IP.k.右&& Player.LocalScaleX_Int == 1) 
+            同向 = true; 
 
-            }
-        }
-        else if (obj == IP.k.右)
+        if (同向)
         {
-            if (Player.LocalScaleX_Int == 1)
-            {
-                if (b)
-                {
-                    Last = Player.transform.localPosition;
-                }
-                else
-                {
-                    Last = Vector2.zero;
-                }
- 
-            }
-        } 
+            if (按下) 
+
+                Last = Player.transform.localPosition;
+   
+            else 
+                Last = Vector2.zero; 
+        }
     }
     public override void 按下(KeyCode obj)
     {
@@ -226,117 +221,166 @@ public class wall : State_Base
         录入(obj, false);
     }
     bool is_wall_surfing;
+     
     public override void UpdateState()
     {
-
+        ///上一半打开 有没有  没有
+        ///下一班打开有没有  没有
+        ///全开有 
+        ///上一半打开 有没有  有
+        /// 上三有没有  没有
+        /// 上一二关 三开有没有     有
+        /// 后if 有没有
+        if (距离地面很近(1.7f))
+        {
+            f.To_State(E_State.sky);//滑落，下坠 
+            return;
+        }
         //Debug.LogError(Player.transform.position);
-
+        //if (false)
         if (!Player.顶死)
         {
 
             f.To_State(E_State.sky);//滑落，下坠 
             return;
         }
-        //Debug.LogError(Player.transform.position);
-        if (IP.按键检测_按下(IP.k.冲刺))
-        {
-
+ 
+            if (IP.按键检测_按下(IP.k.冲刺))
+        { 
             is_wall_surfing = true;
             f.To_State(E_State.wall_surfing);//滑落，下坠 
-        } 
-        if (IP.方向正零负== Player.transform.localScale.x   )
+        }
+        bool 同输入 = ( IP.按键检测_按住(IP.k.左) &&  IP.按键检测_按住(IP.k.右));
+ if (同输入) Last = Player.transform.localPosition;
+        if (IP.方向正零负== Player.transform.localScale.x
+            //因为左右一起按也是返回为0
+             )
         {
             if (Last!=Vector2.zero)
-            {
-               Player.transform.localPosition  = Last;
+            {////可能大部分位置为题在这里
+                Player.transform.localPosition = new Vector2(Last.x, Last.y);
+         
+ 
             }
             Player.Velocity = Vector2 .zero;
-            //Debug.LogError(Player.transform.position);
+             
         }
         else
         {
-            //Debug.LogError(Player.transform.position);
+            //Debug.LogError(Player.transform.position); 
+  
+                Player.Velocity = new Vector2(Player.Velocity.x, Mathf.Clamp(Player.Velocity.y, -1f, float.MaxValue));
  
-            Player.Velocity = new Vector2(Player.Velocity.x, Mathf.Clamp(Player.Velocity.y, -1f, float.MaxValue));
 
             //Debug.LogError(Player.transform.position);
         }
-
- 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //return;
         //Debug.LogError(Player.transform.position);
  
-        if (!按下了相反)
+            if (!按下了相反)
         {
-            if (Player.transform.localScale.x != IP.方向正负&& IP.按键检测_按下(IP.k.跳跃))
+
+            if (Player.transform.localScale.x != IP.方向正负 
+                && IP.按键检测_按下(IP.k.跳跃)
+             )
             {
-                金庸();
-                //一起按下                    Player.方向更新();
-                Debug.LogError("情况1"); 
-
-                Player.跳跃触发();
-
-
-           
-                f.To_State(E_State.sky);
+                //反方向键和跳跃一起按下                 
+                Debug.LogError("          && IP.按键检测_按下(IP.k.跳跃)");
+                登墙跳(E_方式.反向);
+  
             }
-          else  if (Player.transform.localScale.x != IP.方向正负)
+            else if (Player.transform.localScale.x != IP.方向正负)
             {//第一次进来
              //相反
- 
-                Debug.LogError("按下了相反方向键");
                 按下了相反 = true;
-                第一次进来的时间_ =Time .frameCount;
+                第一次进来的时间_ = Time.time;
                 Player_input.假装相反方向键();
-                 
+                Player.StartCoroutine(土狼(缓冲时间Max_长, 1));
                 return;
             }
-            else if (IP.按键检测_按下(IP.k.跳跃))
+            else if (IP.按键检测_按下(IP.k.跳跃)  )
             {
-                金庸();
-                Debug.LogError("只按了跳跃");
-                //只按了跳跃 
-                Player.跳跃触发(new Vector2(-Player.transform.localScale.x * 8f, Player.玩家数值.跳跃瞬间速度));
-                Player.方向更新();
+                //只按了跳跃
+                Debug.LogError("       键检测_按下(IP.k.跳跃) && Enter   ");
+                if(IP.方向正零负!=0) 
+                    登墙跳(E_方式.同向); 
+             else   登墙跳(E_方式.无操作);
 
-      
-                f.To_State(E_State.sky);
             }
         }
         else
         {//第二次进来
-            var a = Time.frameCount - 第一次进来的时间_<10;
-            if (a)
-            {//时间之内
-                if (IP.按键检测_按下(IP.k.跳跃))
-                {
-                    Debug.LogError("一起按下");
-                    金庸();
-                    Player.方向更新();
- 
-                    Player.跳跃触发( );
+            //var a = Time.time- 第一次进来的时间_ < 缓冲时间Max;
+            //if (a)
+            //{//时间之内 
+            //    if (IP.按键检测_按下(IP.k.跳跃))
+            //    {
+            //        Debug.LogError("       = Time.time- 第一次进来的时间_ < 缓冲时间Max;   ");
 
+            //        登墙跳(E_方式.反向);
 
-                    f.To_State(E_State.sky); 
-                }
-            }
-            else
+            //    }
+            //}
+            //else
             {//时间之外 
-                Debug.LogError("没有按");
+                Player.StartCoroutine(土狼(缓冲时间Max_长,1));
                 Player.方向更新();
                 f.To_State(E_State.sky);
             }
         }
-
-        if (距离地面很近(1.7f))
-        {
-            Player.方向更新();
-            f.To_State(E_State.sky);
-        } 
     }
 
-    private void 金庸()
+   enum E_方式
     {
-        Player3.I.记录a(); 
+    无操作,反向,同向
+    }
+
+   void 登墙跳(E_方式 E)
+    {
+        Debug.LogError("    void 登墙跳(E_方式 E)    void 登墙跳(E_方式 E)");
+        switch (E)
+        { 
+         case E_方式.反向:
+                金庸(0.3f);
+                Player.方向更新();
+                ///又分成 方向已经改变和方向没有改变俩情况   关键字段进入为正面
+                Player.跳跃触发(new Vector2(-Player.wall_进入为正面 * 8f, Player.玩家数值.跳跃瞬间速度));
+                f.To_State(E_State.sky);
+                break;
+        case E_方式.无操作:
+                金庸(0.2f);
+                Player.StartCoroutine(土狼(缓冲时间Max_短, -1));
+                Player.跳跃触发(new Vector2(-Player.transform.localScale.x * 8f, Player.玩家数值.跳跃瞬间速度) *3/4);
+                Player.方向更新();
+                f.To_State(E_State.sky);
+                break;
+            case E_方式.同向:
+                金庸(0.1f);
+                Player.StartCoroutine(土狼(缓冲时间Max_短, -1));
+                Player.跳跃触发(new Vector2(-Player.transform.localScale.x * 8f, Player.玩家数值.跳跃瞬间速度)/4);
+                Player.方向更新();
+                f.To_State(E_State.sky);
+                break; 
+        }
+        Debug.LogError(E);
+      
+    } 
+
+    IEnumerator 土狼(float t,int i)
+    {
+        Debug.LogError("进入"+i +"    "+t);
+        ///先反方向然后空格  1   B
+        ///先空格然后方向键  -1  A
+        ///A 短B长
+
+      Player.  is土狼时间_Wall = i;
+        yield return new  WaitForSeconds(t);
+        Player.is土狼时间_Wall = 0;
+    }
+    public  void 金庸(float time)
+    {
+        Player3.I.记录a(time); 
     }
 
     public override void 接触地面()

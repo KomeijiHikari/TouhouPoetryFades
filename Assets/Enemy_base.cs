@@ -82,6 +82,7 @@ public interface I_Speed_Change: I_Speed_Is
     /// </summary>
     float Curttent_Speed { get
         {
+
             return Current_Speed_LV / Player3.Public_Const_Speed;
         } }
     /// <summary>
@@ -411,7 +412,11 @@ public  float Max韧性;
 
     public Phy p { get; set; }
     //public new Vector2 Velocity { get; set; }
-    public new Vector2 Velocity { get => p.当前; set => p.Velocity = value; }
+    public new Vector2 Velocity { get { 
+            if (p == null)return Vector2.zero;
+            return p.当前; } set {
+            if (p != null) 
+            p.Velocity = value;  } }
     public float 移动距离
     {
         get
@@ -442,7 +447,7 @@ public  float Max韧性;
     }
     public 生物数据 m;
     public bool Add;
-
+    MonoMager mo;
     protected override void Awake()
     {
         if (sp == null)
@@ -451,8 +456,7 @@ public  float Max韧性;
             an = GetComponentInChildren<Animator>();
 
         base.Awake();
-
-    if(!Debug_ )    gameObject.AddComponent<MonoMager>();
+        gameObject.组件(ref mo); 
         co = GetComponent<Collider2D>();
         p = GetComponent<Phy>();
 
@@ -466,7 +470,7 @@ public  float Max韧性;
         开箱();
 
        GravityScale = 0;
-        sp.material = 材质管理.Get_Material(材质管理.Other);
+        //sp.material = 材质管理.Get_Material(材质管理.Other);
         //边缘颜色更新();
         //Color .blue 
 
@@ -533,16 +537,16 @@ public  float Max韧性;
         }
 
         if (!暂停)
-        {
-
+        { 
             前后和头(0.1f, 0.1f);
         }
 
         韧性(0);  
         if (!is_Dead)
         {
+            if (p!=null) 
             p.Stop = I_S.限制;
-            co.enabled = !I_S.限制;
+            //co.enabled = !I_S.限制;
         }
 
         if (I_S.限制 || 暂停)
@@ -675,12 +679,12 @@ public  float Max韧性;
         {
             if (空气墙碰撞)
             {
-                return 1 << Initialize.L_Ground | 1 << Initialize.L_Air_wall| 1 << Initialize.L_M_Ground;
+                return 1 << Initialize.L_Ground | 1 << Initialize.L_Air_wall;
 
             }
             else
             {
-                return 1 << Initialize.L_Ground | 1 << Initialize.L_M_Ground;
+                return 1 << Initialize.L_Ground ;
             }
         }
     }

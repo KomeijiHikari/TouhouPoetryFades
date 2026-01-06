@@ -70,7 +70,10 @@ public class 戒备 : MonoBehaviour, I_暂停
     {
 
         检测到的列表.Clear();
-        if (暂停) return;
+        if (暂停) {
+            发现玩家了吗 = false;
+        return;
+        }
         switch (当前戒备类型)
         {
             case 戒备类型.单面:

@@ -27,7 +27,7 @@ public class NB_Pool :MonoBehaviour
     {
         obj.gameObject.SetActive(false);
         obj.transform.position = Vector2.zero;
-        obj.transform.localScale = Vector2.one;
+        obj.transform.localScale = Vector3.one;
         obj.transform.SetParent(transform);
         Q.Enqueue(obj);
     }

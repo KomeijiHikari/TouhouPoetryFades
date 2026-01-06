@@ -29,6 +29,7 @@ public class 碰撞伤害 : MonoBehaviour
         }
               //乘数 =(   Initialize.ScaleValue(e.I_S.Speed, Initialize_Mono.I.负阀值,  1))* e.I_S.Curttent_Speed; 
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!灵魂) return;   

@@ -10,6 +10,8 @@ public class 垃圾桶无头 : 泛用状态机
     [SerializeField]
     float 弹道速度 = 1;
 
+        监控激活碰撞框 jj;
+
     protected state dead = new state("dead");
     protected state atk = new state("atk");
     protected state idle = new state("idle");
@@ -49,14 +51,17 @@ public class 垃圾桶无头 : 泛用状态机
     { 
         j = GetComponent<戒备>();
         e = GetComponent<Enemy_base>();
+            gameObject.组件(ref jj);
         当前 = idle;
 
         if (e != null)
             e.销毁触发 += () => { to_state(dead); };
 
+
+
         dead.Enter += () =>
         {
-            Player3.I.被扣血(20,gameObject);
+ 
             //sp.color = Color.green;
             if (e != null && e.an != null)
                 e.an.Play(idle.StateName);
@@ -77,6 +82,17 @@ public class 垃圾桶无头 : 泛用状态机
 
             ATKENTER();
     }
+        private void Start()
+        {
+            jj.是我 += (bool b) =>
+            {
+                if (!b)
+                {
+                    to_state(idle);
+                }
+            };
+
+        }
         protected virtual void ATKENTER()
         {
             idle.Enter += () =>

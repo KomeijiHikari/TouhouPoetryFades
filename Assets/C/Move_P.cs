@@ -2,7 +2,12 @@ using System.Collections;
 using System.Collections.Generic; 
 using UnityEngine;
 using UnityEngine.Events;
-
+public enum E_移动方式
+{
+    竖直,
+    水平,
+    自由
+}
 
 /// <summary>
 ///  一种碰到了停下来
@@ -28,14 +33,9 @@ public partial  class Move_P : Groundbase, I_Speed_Change,I_攻击, I_暂停
     public One_way O;
     public bool 超速_;
     public System.Action 变速触发 { get; set; }
-    public enum 方式
-    {
-        竖直,
-        水平,
-        自由
-    } 
+
     [SerializeField]
-public     方式 移动方式;
+public     E_移动方式 移动方式;
 
     [SerializeField ][DisplayOnly]
     Vector3 a;
@@ -46,8 +46,12 @@ public     方式 移动方式;
   [SerializeField ]  Transform Pla;
     public Transform A;
     public Transform moveto;
-    [SerializeField] float Self_speed = 1;
-
+     float Self_speed { get {
+            if (Self_speed_Overrrider==0)   return 3;
+             else   return Self_speed_Overrrider; 
+            }  }
+    [SerializeField]
+    float Self_speed_Overrrider = 0;
     [SerializeField] bool   Loop= true;
 
  
@@ -116,7 +120,7 @@ public     方式 移动方式;
     }
     private void Start()
     {
-        Player3.I.Public_Speed_ += () => {
+        SpeedMager.I.Public_Speed_ += () => {
             //if (Player3.Public_Const_Speed > speed_Lv) 
                 重制();
         };
@@ -158,9 +162,12 @@ public     方式 移动方式;
         }
         Speed_Lv = Speed_原先;
     }
+    MonoMager mo;
     private new void Awake()
     {
         if (p==null)        p = gameObject.AddComponent<平台动画效果>();
+
+         gameObject.组件(ref mo);
         gameObject.AddComponent<MonoMager >();
         StatWay = transform.position;
         base.Awake();
@@ -174,11 +181,7 @@ public     方式 移动方式;
         if (Speed_Lv == 0)
         {
             Speed_Lv = 1;
-        }
-            if (Self_speed ==1)
-        {
-            Self_speed = 1;
-        }
+        } 
          transform.localPosition = 过滤(transform.localPosition); 
     }
     Vector2 getlo(Vector2 worldpos)
@@ -193,26 +196,27 @@ public     方式 移动方式;
         if (LastPlayerLV!=Player3.Public_Const_Speed )
         {
             LastPlayerLV = Player3.Public_Const_Speed;
-            刷刷新();
+            Trriger(超速);
         }
         if (LastLV!=speed_Lv)
         {
             LastLV = speed_Lv;
-            刷刷新();
+            Trriger(超速);
         }
         if (!超速&& O!=null )
         {
-            bc.isTrigger = O .应该无视;
+            Trriger(O.应该无视); 
         }
-    }
-    void 刷刷新()
+    } 
+    void Trriger( bool b)
     {
-        bc.isTrigger = 超速;
+        return;
+        bc.isTrigger = b;
     }
+
     void move()
     {
-
-      if( !I_S. 限制)   Pla.localPosition = Vector3.MoveTowards(Pla.localPosition, next_,   帧移动距离);
+    Pla.localPosition = Vector3.MoveTowards(Pla.localPosition, next_,   帧移动距离);
         if (Vector3.Distance(Pla.localPosition, next_) <= 0.1) change();  
     }
     public int 方向
@@ -230,20 +234,22 @@ public     方式 移动方式;
     {
         get
         {
-            return (I_S.固定等级差) * Time.fixedDeltaTime*Self_speed;
+            
+            return Initialize_Mono.I.Mi.GetMin(I_S.固定等级差) * Time.fixedDeltaTime*Self_speed;
         }
     }
+    public float FloatSeeMe;
     IEnumerator  Waite(float time)
-    {
-        while (time>0)
-        {
-            time -= Time.fixedDeltaTime* I_S.固定等级差 * Self_speed;
-
-            yield return new WaitForFixedUpdate( );
+    { 
+        while (time >= 0)
+        { 
+            yield return one;
+            time -= Time.fixedDeltaTime * I_S.固定等级差 * Self_speed;
+            FloatSeeMe = time;
         }
- 
         可以移动 = true;
     }
+    WaitForFixedUpdate one= new WaitForFixedUpdate();
     void change()
     {
         if (Deb)    Debug.LogError("AAAAAAA         WWWWW"+gameObject.name+transform.position);
@@ -265,7 +271,11 @@ public     方式 移动方式;
         }
         else
         {
-            可以移动 = false;   
+            可以移动 = false;
+            if (Player3.I.脚下!=null&& Player3.I.脚下==this)
+            {
+                Player3.I.ChangeFather();
+            }
             Pla.localPosition = 过滤(b);
             if (WaitTime != 999) StartCoroutine(Waite(WaitTime));
         }
@@ -279,13 +289,13 @@ public     方式 移动方式;
         if (Deb) Debug.LogError("AAAAQQQQQQQA         WWWWW");
         switch (移动方式)
         {
-            case 方式.竖直:
+            case E_移动方式.竖直:
                 if (Deb) Debug.LogError("AAAAWWWW    WWWWW");
                 return new Vector3(0, ini.y, 0); 
-            case 方式.水平:
+            case E_移动方式.水平:
                 if (Deb) Debug.LogError("AAEEEEEEEEA         WWWWW");
                 return new Vector3(ini.x, 0, 0);
-            case 方式.自由:
+            case E_移动方式.自由:
                 return ini;
             default:
                 return Vector2.zero;
@@ -307,12 +317,18 @@ public     方式 移动方式;
         Player3.I.To_SafeWay();
         Player3.I.被扣血(I_S.固定等级差, gameObject, 0);
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.LogError("触发器碰到了"+collision.gameObject.name );
+    }
     private void OnCollisionEnter2D(Collision2D c)
     {
-        //if (gameObject.layer!=Initialize .L_Ground) return;
-         
-        bool 碰到的是玩家 = c.collider ==Player3.I.po;
-        if (碰到的是玩家) 
+        //if (gameObject.layer!=Initialize .L_Ground) return;s
+
+        bool 碰到的是玩家 = c.collider.CompareTag(Initialize.Player  );
+        Debug.LogError("碰到了"+碰到的是玩家+gameObject.name + Time.frameCount);
+        if (Initialize_Mono.I.MoveP_优化)
+            if (碰到的是玩家) 
         { 
             bool 碰到的是上面 = Initialize.Vector2Int比较(c.contacts[0].normal,Vector2 .down); 
  
@@ -323,21 +339,39 @@ public     方式 移动方式;
                     因为玩家我不该动 = true;
                     }
                     else
-                { 
+                   { 
                     Debug.LogError(Initialize.Vector2Int比较(c.contacts[0].normal, Vector2.down, true));
-                    Player3.I.脚下 = this;
+                    Player3.I.set脚下(this); 
                     Debug.LogError("脚下是这个平台");
-                    Player3.I.ChangeFather(transform );
+                    Player3.I.ChangeFather(transform ); 
+
+
                     }
                 } 
              
         } 
     }
     [SerializeField ][DisplayOnly ]
-    float 帧移动距离_;
-    private void Update()
-    {
+    float 帧移动距离_; 
+    private void FixedUpdate()
+    { 
+
         if (暂停) return;
+
+        if (Pla == transform)
+        {
+            if (因为玩家我不该动) return;
+            if (!可以移动) return;
+            move();
+        }
+        else
+        {
+            move();
+            if (因为玩家我不该动) return;
+            if (!可以移动) return;
+            transform.position = Pla.position;//同步
+        }
+
         碰撞情况刷新();
         帧移动距离_ = 帧移动距离;
         超速_ = 超速;
@@ -354,37 +388,14 @@ public     方式 移动方式;
     { 
         if (collision.gameObject.CompareTag(Initialize.Player))
         {
-        因为玩家我不该动 = false;
+            if (Player3.I.MovePTimef +10 >= Time.frameCount) return;
+            Debug.LogError("离开了"+gameObject.name + Time.frameCount);
+            因为玩家我不该动 = false;
 
             Player3.I.脚下 =null;
-            //Player3.I.ChangeFather();  ///横向移动时意外调用EXITE   注释掉之后意外的啥BUG都没有了
+            Player3.I.ChangeFather();  ///横向移动时意外调用EXITE   注释掉之后意外的啥BUG都没有了
         }
-    } 
-
-    private void FixedUpdate()
-    {
-        //if (I_S.超速等级== E_超速等级.半虚化)
-        //{
-        //    假死了(true);
-        //    return;
-        //}
-        if (暂停) return;
-        if (Pla==transform )
-        {
-            if (因为玩家我不该动) return;
-            if (!可以移动) return;
-            move();
-        }
-        else
-        {
-            move();
-            if (因为玩家我不该动) return;
-            if (!可以移动) return;
-            transform.position = Pla.position;//同步
-        } 
-    }
-
-
+    }  
 }
 public partial class Move_P : I_Revive,I_假死
 {

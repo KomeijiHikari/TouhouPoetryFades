@@ -73,7 +73,7 @@ public class 小地图额外指引 : MonoBehaviour
         sp.sortingLayerID = Initialize.S_小地图;
         sp.sortingOrder = 3;
         a.transform.position = transform.position;
-        a.transform.localScale = Vector2.one * 6f;
+        a.transform.localScale = Vector3.one * 6f;
         sp.material.SetColor(材质管理._SpriteColor, Initialize_Mono.I.搜集物品指示颜色);
         sp.enabled = false;
         这才是小地图 = a;

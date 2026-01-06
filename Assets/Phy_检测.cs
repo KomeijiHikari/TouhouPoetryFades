@@ -51,13 +51,10 @@ public class Phy_检测 : MonoBehaviour , I_暂停
         遇见了 = false;
         //Debug.LogError("关掉");
     }
+    MonoMager mo;
     private void Awake()
     {
-
-        if (GetComponent<MonoMager>() == null)
-        {
-            gameObject.AddComponent<MonoMager>();
-        }
+        gameObject.组件(ref mo); 
          
         //if (I_暂停的OBJ!=null) I_ = I_暂停的OBJ.GetComponent<I_暂停>();
     }

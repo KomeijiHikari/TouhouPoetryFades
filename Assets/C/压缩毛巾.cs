@@ -47,7 +47,7 @@ public class 压缩毛巾 : MonoBehaviour
         set
         {
 
-            an.gameObject.transform.localScale = new Vector2(an.gameObject.transform.localScale.x, value);
+            an.gameObject.transform.localScale = new Vector3(an.gameObject.transform.localScale.x, value,1);
         }
     }
     float an_X尺寸
@@ -58,7 +58,7 @@ public class 压缩毛巾 : MonoBehaviour
         }
         set
         { 
-            an.gameObject.transform.localScale = new Vector2(value, an.gameObject.transform.localScale.y);
+            an.gameObject.transform.localScale = new Vector3(value, an.gameObject.transform.localScale.y,1);
         }
     }
 

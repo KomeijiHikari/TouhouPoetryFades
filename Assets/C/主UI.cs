@@ -1,12 +1,13 @@
 using DG.Tweening;
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Trisibo;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class 主UI : MonoBehaviour
 {
@@ -22,9 +23,10 @@ public class 主UI : MonoBehaviour
     public Text 灵魂;
 
 
-
-
-    public Text Speed_Lv;
+    public Text Speed ;
+    public Text Speed_LV_辅 ;
+    public Text Speed_LV;
+    public Text GameTime;
 
     public Text 场景名;
     private void Awake()
@@ -163,19 +165,55 @@ public class 主UI : MonoBehaviour
         // 使用 "F3" 格式化字符串，保留三位小数  
         return value.ToString("F3");
     }
-
+ 
+    public static string TwoInt(float  value)
+    {
+        int num= (int)value;
+        if (num < 0) return "00"; // 负数兜底
+        if (num < 10)
+        {
+            return "0" + num; // 一位数补0
+        }
+        else if (num <= 99)
+        {
+            return num.ToString(); // 两位数直接转
+        }
+        else
+        {
+            return num.ToString(); // 超99保留原数字（或按需返回"99"）
+        }
+    }
+    //StringBuilder Sb=new StringBuilder();
     private void Update()
     {
-        if (Speed_Lv != null)
-            Speed_Lv.text = FormatFloat(Player3.Public_Const_Speed);
-        //Speed_Lv.text = (Math.Round(Player3.Public_Const_Speed, 3)).ToString()+".000"; 
+        if (Player_input.I.按键检测_按下(Player_input.I.k.背包))
+        {
+            Debug.LogError("AAAAAAAAAAAAAAAAAAAA");
+            展开(背包菜单);
+        }
+        if (Speed!=null)
+        {
+            Speed .text= FormatFloat(Player3.Public_Const_Speed) ;
+        }
+        if (Speed_LV!=null)
+        {
+            Speed_LV_辅 .text= Initialize_Mono.I.GetSpeedInt(Player3.I.Last副Speed1).ToString();
+            Speed_LV.text = Initialize_Mono.I.GetSpeedInt(Player3.Public_Const_Speed).ToString();
+        }
+        if (GameTime != null)
+        {
+ string itemTip = $"{TwoInt(我的光照2.I.HourseVector.x)}:{TwoInt(我的光照2.I.HourseVector.y) }:{TwoInt(我的光照2.I.HourseVector.z)}";
+            GameTime.text = itemTip; 
+        }
 
         大地图.SetActive(Player_input.I.按键检测_按住(Player_input.I.k.地图));
 
         //Initialize   设置  地图   背包
-        //if (Input.GetButtonDown(Initialize.Bag))
+        //if (Input.GetButtonDown(Player_input.I.k.背包))
+
+        //if(Input.GetKeyDown(KeyCode.B))
         //{
-        //    展开(背包菜单);
+        //    Debug.LogError("BBBBBBBBBBBBBBB");
         //}
 
         if (Input.GetButtonDown(Initialize.Exite))
@@ -193,20 +231,19 @@ public class 主UI : MonoBehaviour
             {
                 消息.I.Come_on_Meesge("无法在空中打开菜单！");
 
-            }
-
-            if (钱币 != null)
-            {
-                钱币.text = Player3.I.玩家数值.钱.ToString();
-            }
-
-            if (灵魂 != null)
-            {
-                灵魂.text = Player3.I.玩家数值.灵魂碎片.ToString();
-            }
-            场景名.text = SceneManager.GetActiveScene().name;
+            } 
 
         }
+        if (钱币 != null)
+        {
+            钱币.text = Player3.I.玩家数值.钱.ToString();
+        }
+
+        if (灵魂 != null)
+        {
+            灵魂.text = Player3.I.玩家数值.灵魂碎片.ToString();
+        }
+        场景名.text = SceneManager.GetActiveScene().name;
     }
 }
 

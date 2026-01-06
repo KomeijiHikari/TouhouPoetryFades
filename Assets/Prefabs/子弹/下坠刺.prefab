@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 893229436452513747}
   - component: {fileID: -282989576740664070}
   - component: {fileID: 6527176411269407515}
-  m_Layer: 13
+  m_Layer: 20
   m_Name: "\u4E0B\u5760\u523A"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,6 +149,7 @@ MonoBehaviour:
   "\u8FD0\u52A8\u6682\u505C": 0
   "\u91CD\u529B\u52A0\u901F\u5EA6\u4E58": 0.022
   "\u6A21\u62DF\u901F\u5EA6": {x: 0, y: 4}
+  "\u7528Fly\u9650\u5236": 0
   lookme: 0
   "\u5E27\u65CB\u8F6C\u901F\u5EA6": {x: 0, y: 0, z: 800}
   "\u5E27\u79FB\u52A8\u8DDD\u79BB": 0
@@ -212,10 +213,5 @@ MonoBehaviour:
   f: 0
   c: {r: 0, g: 0, b: 0, a: 0}
   "\u6FC0\u6D3B\u7684": 0
-  Current_Speed_: 0
-  Speed_: 0
-  "\u8D85\u901F\u7B49\u7EA7": 0
-  "\u900F\u660E\u5EA6": 0
-  "\u53BB\u8272": 0
-  "\u95EA\u70C1\u5F00\u5173": 0
-  "\u95F4\u9694": 0.2
+  Sb: {fileID: 0}
+  Deb: 0

@@ -15,7 +15,11 @@ public class MonoMager : MonoBehaviour,I_暂停
   [SerializeField ][DisableOnPlay ]
     int 数量;
 
-    public bool 暂停 { get => 关闭; set {Debug.LogError("外部不可以设置到这里  反省"); } }
+    public bool 暂停 { get => 关闭; set 
+        {
+            //Debug.LogError("外部不可以设置到这里  反省");
+        
+        } }
 
     private void Awake()
     { 

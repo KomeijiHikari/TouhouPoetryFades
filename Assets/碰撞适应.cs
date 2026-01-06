@@ -75,7 +75,7 @@ public class 碰撞适应 : MonoBehaviour
             bc.size =new Vector2(Mathf.Abs(a.x), Mathf.Abs(a.y)) ;
             //if (Debug_) Debug.LogError(a+"        sp.size = 排除(sp.size);sp.size = 排除(sp.size);sp.size = 排除(sp.size);            A" + bc.size);
 
-            transform.localScale = Vector2.one;
+            transform.localScale = Vector3.one;
         }
     }
     Vector2 排除(Vector2  输入)

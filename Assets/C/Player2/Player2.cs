@@ -123,7 +123,7 @@ public class Player2 :MonoBehaviour
     {
         if (Math.Abs(rb.velocity.x) >= 主角数值.常态速度)
         {
-            rb.velocity = new Vector2(主角数值.常态速度 * Player_input.I.方向正零负, rb.velocity.y);
+            rb.velocity = new Vector3(主角数值.常态速度 * Player_input.I.方向正零负, rb.velocity.y,1);
         }
     }
     public void 朝向update()

@@ -24,7 +24,7 @@ namespace 流程控制
     public class 流程控制 : MonoBehaviour
     {
  
-     public    List<提示管理> 提示List;
+ 
 
         [SerializeField]
         流程 L;

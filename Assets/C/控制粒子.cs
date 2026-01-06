@@ -90,11 +90,11 @@ public ParticleSystem pa;
             {
                 float a = pas[i].startLifetime / pas[i].remainingLifetime + 1;
                 pas[i].position += (Vector3)MoveToPosition_(pas[i].position, 飞向的target.position, speed * a * Time.fixedDeltaTime);
-
+                //pas[i].position = 飞向的target.position;
                 //pas[i].position = MoveToPosition(pas[i].position, 飞向的target.position, speed * a * Time.fixedDeltaTime); 
             }
-        } 
-
+        }
+        //飞向的target.position.DraClirl();
         //重新赋值粒子.
         pa.SetParticles(pas, 数量);
     }

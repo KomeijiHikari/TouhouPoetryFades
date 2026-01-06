@@ -104,6 +104,12 @@ public partial  class 重要道具 : MonoBehaviour
         N.格挡=true;
         消息.I.Come_on_Meesge("你获得了新的能力");
     }
+    public void 开启切换()
+    {
+
+        N.速度切换 = true;
+        消息.I.Come_on_Meesge("你获得了新的能力");
+    }
     public void 开启圆劈()
     {
 

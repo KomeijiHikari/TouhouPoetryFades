@@ -49,7 +49,7 @@ public class 判定框Base : MonoBehaviour
                     if (FSM.f.变速攻击)
                     {
                         Debug.LogWarning("进入CCCCCCCCCCCCCCCCC");
-                        Player3.I.同速_(变速);
+                        SpeedMager.I.同速_(变速);
                     }
                 }
                 ADD(敌人);
@@ -60,7 +60,7 @@ public class 判定框Base : MonoBehaviour
             case 打到的类型.移动平台:
                 if (FSM.f.变速攻击)
                 {
-                    Player3.I.同速_(变速);
+                    SpeedMager.I.同速_(变速);
                 }
                 break;
             case 打到的类型.地面:

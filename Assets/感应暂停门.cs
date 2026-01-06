@@ -18,7 +18,7 @@ public class 感应暂停门 :  MonoBehaviour,I_暂停
     BoxCollider2D bc;
     private void Awake()
     {
-        gameObject.AddComponent<感应暂停门2>();
+        gameObject.AddComponent<感应暂停门2 >();
   enabled = false;
         p = GetComponent<Phy_检测>();
        

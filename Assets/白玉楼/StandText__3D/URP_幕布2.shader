@@ -23,9 +23,10 @@ Shader "Custom/URP_Unlit_Transparent"
         }
  
         // ����͸����ϣ�SrcAlpha��Դ��ɫ͸���ȣ�OneMinusSrcAlpha��1 - ͸���ȣ�
-// Blend DstColor Zero,
-
 Blend DstColor Zero
+// Blend OneMinusDstColor One
+// Blend One OneMinusDstColor
+         // Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
         // ��д����ȣ���ѡ���������󣬰�͸������ͨ����д����Ȼ�ѡ����д�룩
         ZWrite Off
 
@@ -161,11 +162,11 @@ Blend DstColor Zero
 					Emission, 
 			    	texColor.a);
             	
- 
-	 color.rgb = sqrt(sqrt(color.rgb)) -1; //提取亮度信息
+ 	 // color.rgb = color.rgb -1 -0.5; //提取亮度信息
+	 color.rgb = sqrt(sqrt(color.rgb)) -1 -0.5; //提取亮度信息
  
                 color.a*=color.rgb;   //剔除  （让黑色变成透明
- 
+           // return  float4(1,1,1,1) ;  //*5为了光照效果更强    +1为了 0的地方  缓冲颜色不会×0变成透明
                 return  (color *5)+1 ;  //*5为了光照效果更强    +1为了 0的地方  缓冲颜色不会×0变成透明
             }
             ENDHLSL

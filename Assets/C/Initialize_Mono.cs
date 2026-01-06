@@ -42,8 +42,21 @@ public class DisplayOnly : PropertyAttribute
 [DefaultExecutionOrder(-100)]
 public class Initialize_Mono : MonoBehaviour
 {
+ 
     [SerializeField]
     Transform 焦点;
+    public List<提示管理设置> TsL = new List<提示管理设置>();
+    private void Start()
+    {
+         Event_M.I.Add(Event_M.刷新提示机关, 提示机关刷新);
+        重制触发 += (int i, int q) => { Waite(提示机关刷新, 0.01f); };
+        切换Shader.I.SpeedAction += (bool b) => { Waite(提示机关刷新, 0.01f); };
+        Waite(提示机关刷新, 0.01f); 
+    }
+    void 提示机关刷新 ()
+    {
+          foreach (var item in TsL)    item.刷新(); 
+    }
     public void BOSS模式(GameObject boss, bool b)
     {
         主UI.I.Boss血条_(boss, boss.name, b);
@@ -68,6 +81,7 @@ public class Initialize_Mono : MonoBehaviour
 
     //public Action<int, int> 机关重制触发 { get; set; }
     public Action  小地图刷新 { get; set; }
+ 
     public Action<int, int> 重制触发 { get; set; }
     public AnimationCurve defaul_Curve;
 
@@ -83,6 +97,7 @@ public class Initialize_Mono : MonoBehaviour
     [SerializeField]
     float Speed;
     public float 敌人回耐久速度;
+    public float 重生平台存活时间 = 1;
     public List<消息> 消息列表 = new List<消息>();
     //public List<消息> 消息列表 { get {
     //        消息列表显示 = 消息列表1;
@@ -131,8 +146,97 @@ public class Initialize_Mono : MonoBehaviour
         return (C.IsTouchingLayers(Initialize.L_Player) || C.CompareTag(Initialize.One_way)) && Initialize.Layer_is(C.gameObject.layer, Player3.I.碰撞检测层);
         //return C.IsTouchingLayers(Player3.I.碰撞检测层) || C.CompareTag(Initialize.Ground);
     }
+
+
+    public class 数值范围
+    {
+        // 基数（例如示例中的 5）
+        public readonly float Speed;  
+      public readonly  List<float > YesPowers = new List<float>();
+        public readonly List<float> NoPowers = new List<float>();
+
+
+        public 数值范围(float baseValue, int maxPositive )
+        {
+            Speed=baseValue;
+            for (int i = 0; i < maxPositive; i++)
+            {
+                YesPowers.Add( Mathf.Pow(Speed,i)  );
+                NoPowers.Add(1/YesPowers[i]);
+                 
+            }
+        }
+
+        /// <summary>
+        /// 返回 n 使得 base^n <= value < base^(n+1)
+        /// n 可为负（例如 base=5，value=0.2 返回 -1，因为 5^-1 == 0.2）
+        /// 若 value < 最小缓存返回 -MaxNegative；若 value >= 最大缓存返回 MaxPositive
+        /// </summary>
+        public int GetInt(float value)
+        {
+            if ( value>YesPowers[YesPowers.Count - 1]|| value < NoPowers[NoPowers.Count - 1])
+            {
+                return BugInt;
+            }
+            if (value>1)
+            { 
+                for (int i = 0; i < YesPowers.Count; i++)
+                {
+                    //Debug.LogError(YesPowers[i]);
+                    if (value+0.001f< YesPowers[i] )
+                    {
+                        return i-1;
+                    }
+                }
+            } else if(value < 1)
+            {
+                for (int i = 0; i <NoPowers.Count; i++)
+                {
+                    //Debug.LogError(NoPowers[i]);
+                    if (value - 0.0000001f > NoPowers[i] )
+                    {
+                        return -(i - 1);
+                    }
+                }
+            }
+          return 0;
+        }
+
+ 
+    }
+
+    //public static Speed数值到Int;
+    // public     class 数值范围 
+    // {
+    //public float Speed;
+    //     private readonly List<float> Powers;
+    //     private readonly List<float> 负Powers;
+    //     public 数值范围(float Sp,int I)
+    //     {
+    //         Speed= Sp;
+    //         for (int i = 0; i < I; i++)
+    //         {
+    //             Powers[i] = Mathf.Pow(Speed, I);
+    //             负Powers[i] = 1 / Powers[i];
+    //         }
+    //     }
+    //     public int GetInt(float Sp)
+    //     { 
+    //         if (Sp>1)
+    //         {
+    //             /// sp为5返回为1 为25 返回为2  sp为6返回1  sp为2 返回为0
+    //         }
+    //         else if(Sp < 1)
+    //         {
+    //             /// sp为0.2返回为1 为0.04 返回为2    sp为0.19 返回为1   sp为0.1返回为0 
+    //         }
+    //         return 0;
+    //     }
+    // }
+
     private void Awake()
     {
+        
         事件字典显示 = Event_M.I.事件列表;
         if (I != null && I != this)
         {
@@ -158,7 +262,10 @@ public class Initialize_Mono : MonoBehaviour
         DeadPla.I.DeadList = null;
         DeadPla.I.读取();
         DeadPla.I.DE();
+
+        Sz = new 数值范围(阀值,8 );
     }
+   public 数值范围 Sz { get; private set; }
     public void 改变一会儿时间(float 真实时间, float 速率)
     {
         改变时间 = StartCoroutine(asd(真实时间, 速率));
@@ -244,7 +351,7 @@ public class Initialize_Mono : MonoBehaviour
         SPP.color = Color.red;
         SPP.DOFade(0, 1);
         ga.transform.localPosition = a;
-        ga.transform.localScale = b;
+        ga.transform.localScale =new Vector3(b.x, b.y,1) ;
         ga.transform.SetParent(null);
     }
 
@@ -416,20 +523,49 @@ public class Initialize_Mono : MonoBehaviour
    public bool   打包额外打印;
     [SerializeField]
     float 物理阀值 = 50;
-
+    [SerializeField]
+    float Flyground物理阀值 = 10;
     public float 负阀值 { get => 1 / 负阀值_; }
     public float 阀值2 { get => 阀值* 阀值; }
     public float 阀值2_5 { get => (阀值3 + 阀值2) / 2; }
     public float 阀值3 { get => 阀值 * 阀值 * 阀值  ; }
     public float F_Time_踩上去自爆的时间 { get => f_Time_踩上去自爆的时间; private  set => f_Time_踩上去自爆的时间 = value; }
     public float F_Time_碰到玩家后销毁时间 { get => f_Time_碰到玩家后销毁时间; private set => f_Time_碰到玩家后销毁时间 = value; }
-    public float 物理阀值1 { get => 物理阀值; set => 物理阀值 = value; } 
+    public float 物理阀值1 { get => 物理阀值; set => 物理阀值 = value; }
+    public float Flyground物理阀值1 { get => Flyground物理阀值; set => Flyground物理阀值 = value; }
+    public class GetMinFloat
+    {
+        public float GetFlyGMin(float Spee )
+        {
+           var a= Mathf.Min(Spee, Initialize_Mono.I.Flyground物理阀值1);
+ 
+            return a;
+        }
+        public float GetMin(float Speed)
+        {
+            return Mathf.Min(Speed, Initialize_Mono.I.物理阀值1);
+        }
+    }
+    public GetMinFloat Mi=new GetMinFloat();
     public   float GetMin(   float Speed)
     {
         return Mathf.Min(Speed,   物理阀值1);
     }
+  public static int BugInt { get; set; } = 1145 ;
+    public bool Updatee;
+    public float 全局默认Fov=12f;
+    public float 光照最大速度=9999;
+    public float 最大箭矢坠落速度=-1.8f;
+    public bool 动态跳跃碰撞=true;
+    public  float 下落动画速度=8;
+    public bool MoveP_优化;
+
+    public int GetSpeedInt(float Speed)
+    { 
+        return Sz.GetInt(Speed);
+    } 
     private void Update()
-    {
+    { 
         阀值2_5_ = 阀值2_5;
         阀值3_ = 阀值3;
         阀值2_ = 阀值2;
@@ -445,7 +581,7 @@ public class Initialize_Mono : MonoBehaviour
 
 public enum E_方向
 {
-    Null, 上, 下, 左, 右, 左上, 左下, 右上, 右下,
+    Null, 上, 下, 左, 右, 左上, 左下, 右上, 右下, 上上,下下,左左, 右右
 }
 public class No_假Fix
 {
@@ -622,6 +758,34 @@ public static class Initialize
         }
 
         return fieldDict;
+    }
+    
+    public static  int Speed_toIntSpeed(float g固定等级差)
+    {
+        var a = Speed_toESpeed( g固定等级差);
+
+        //switch (a)
+        //{
+        //    case E_超速等级.静止:
+        //    case E_超速等级.低速:
+        //        return -1;
+        //        break;
+        //    case E_超速等级.低速:
+        //        return -1; 
+        //    case E_超速等级.正常:
+        //        return 0; 
+        //    case E_超速等级.超速:
+        //        break;
+        //    case E_超速等级.半虚化:
+        //        break;
+        //    case E_超速等级.虚化:
+        //        break;
+        //    case E_超速等级.虚无:
+        //        break;
+        //    default:
+        //        break;
+        //}
+        return 0;
     }
     public  static E_超速等级  Speed_toESpeed(float g固定等级差)
     {
@@ -1215,7 +1379,7 @@ Debug.LogError( a.ToString());
 
         return a;
     }
-    public static RaycastHit2D[] 碰撞列表(this Bounds s, int layer, Vector2 size ,bool Deb)
+    public static RaycastHit2D[] 碰撞列表(this Bounds s, int layer, Vector2 size ,bool Deb=false)
     {
         var a = Physics2D.BoxCastAll(s.center, s.size+ (Vector3)size, 0, Vector2.zero, 0, layer);
         if (Deb)
@@ -1238,6 +1402,12 @@ Debug.LogError( a.ToString());
             Mathf.Lerp(color.b, colorNext.b, speed)
                           );
         return color;
+    }
+    public static bool _is(this Vector2 a, Vector2 b,bool 或=false, float 精度 = 0.0001f)
+    {
+        if (或) return a.x._is(b.x) || a.y._is(b.y);
+        return a.x._is(b.x)&&a.y._is(b.y);
+        //return Mathf.Abs(Mathf.Abs(a) - Mathf.Abs(b)) < 精度;
     }
     public static bool _is(this float a, float b, float 精度 = 0.0001f)
     { 
@@ -1320,11 +1490,11 @@ Debug.LogError( a.ToString());
     public static bool is_Boun判断(Bounds B, Vector2Int V, Vector3 pos)
     {
         // 第一步：校验V的合法性（仅允许-1/0/1）
-        if (V.x < -1 || V.x > 1 || V.y < -1 || V.y > 1)
-        {
-            Debug.LogError("Vector2Int V的X/Y分量只能是-1、0、1");
-            return false;
-        }
+        //if (V.x < -1 || V.x > 1 || V.y < -1 || V.y > 1)
+        //{
+        //    Debug.LogError("Vector2Int V的X/Y分量只能是-1、0、1");
+        //    return false;
+        //}
 
         // 第二步：提取碰撞盒子的X/Y轴极值（忽略Z轴，按2D逻辑处理）
         float boundsMinX = B.min.x;
@@ -1343,6 +1513,10 @@ Debug.LogError( a.ToString());
         // X轴判断逻辑
         switch (V.x)
         {
+            case -2:
+                return targetX < boundsMinX;
+            case 2:
+               return targetX > boundsMaxX;
             case -1: // 目标点X < 盒子最小X（左边）
                 xCheck = targetX < boundsMinX;
                 break;
@@ -1357,6 +1531,10 @@ Debug.LogError( a.ToString());
         // Y轴判断逻辑
         switch (V.y)
         {
+            case -2: 
+                return targetY < boundsMinY;
+            case 2: 
+                return targetY > boundsMaxY;
             case -1: // 目标点Y < 盒子最小Y（下边）
                 yCheck = targetY < boundsMinY;
                 break;
@@ -1366,6 +1544,7 @@ Debug.LogError( a.ToString());
             case 1: // 目标点Y > 盒子最大Y（上边）
                 yCheck = targetY > boundsMaxY;
                 break;
+
         }
 
         // 第五步：X和Y轴都满足时，返回true
@@ -1631,6 +1810,14 @@ Debug.LogError( a.ToString());
                 return Vector2Int.one;
             case E_方向.右下:
                 return new Vector2Int(1, -1);
+            case E_方向.上上:
+                return Vector2Int.up*2; 
+            case E_方向.下下:
+                return Vector2Int.down * 2;
+            case E_方向.左左:
+                return Vector2Int.left * 2;
+            case E_方向.右右:
+                return Vector2Int.right * 2;
         }
         return Vector2Int.zero;
     }
@@ -1665,6 +1852,16 @@ Debug.LogError( a.ToString());
                 return B.max;
             case E_方向.右下:
                 y = -y;
+                break;
+            case E_方向.Null:
+                break;
+            case E_方向.上上:
+                break;
+            case E_方向.下下:
+                break;
+            case E_方向.左左:
+                break;
+            case E_方向.右右:
                 break;
         }
         c += new Vector2(x, y);
@@ -2215,25 +2412,43 @@ Debug.LogError( a.ToString());
     //    }
     //    EditorBuildSettings.scenes = scenes;
     //}
-    public static Vector2 朝向对象(GameObject my, GameObject target)
+    public static Vector3 朝向对象(GameObject my, GameObject target)
     {
         var a = my.transform.position.x;
         var b = target.transform.position.x;
         int I = a - b > 0 ? -1 : 1;
-        return new Vector2(I, 1);
+        return new Vector3(I, 1, 1);
     }
+    //public static void 闪光(this SpriteRenderer sp, float time, bool b = true)
+    //{
+
+    //    //sp.color = Color.white;
+    //    sp.material.SetColor(材质管理._SpriteColor, Color.white);
+    //    Initialize_Mono.I.Waite(() => {
+    //        if (sp != null) 
+    //            sp.material.SetColor(材质管理._SpriteColor, new Color(1, 1, 1, 0));
+    //    }
+    //    , time, b
+    //    ); 
+    //}
+
+
     public static void 闪光(this SpriteRenderer sp, float time, bool b = true)
     { 
-        sp.material.SetColor(材质管理._SpriteColor, Color.white);
-        Initialize_Mono.I.Waite(() => {
-            if (sp != null)
-
-                sp.material.SetColor(材质管理._SpriteColor, new Color(1, 1, 1, 0));
+        Material  M= sp.sharedMaterial;
+        if (M.name == 材质管理.闪光) return;
+       
+        sp.material = 材质管理.Get_Material(材质管理.闪光);
+        Initialize_Mono.I.Waite(() => 
+        {
+        sp.material = M;
         }
-        , time, b
+        ,time
+        ,b 
         );
-
     }
+    //IEnumerator
+    public static Color 透明= new Color(1, 1, 1,1);
 
     public static Vector2 返回和对方相反方向的标准力(Vector2 m, Vector2 y)
     {
@@ -2410,7 +2625,7 @@ Vector2.down,
 
 public class Event_M
 {
-    public static string 刷新提示机关 { get; } = "地图解锁";
+    public static string 刷新提示机关 { get; } = "刷新提示机关";
     public static string 扫把打到了 { get; } = "扫把打到了";
   
     public static string 场景保存触发 { get; } = "场景保存触发";
@@ -2507,7 +2722,7 @@ public class Event_M
 
     public void Invoke(string eventName)
     {
-        UnityEvent thisEvent = null;
+         UnityEvent thisEvent = null;
         if (eventManager.eventDictionary.TryGetValue(eventName, out thisEvent))
         {
             thisEvent.Invoke();

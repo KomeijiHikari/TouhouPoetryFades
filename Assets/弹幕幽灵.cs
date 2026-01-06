@@ -40,6 +40,7 @@ namespace Enemmy
             e.E_重制 += () =>
             {
                 time = 0;
+                to_state(move);
             };
 
             atk.Enter += () =>

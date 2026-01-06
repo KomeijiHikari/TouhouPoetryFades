@@ -242,8 +242,8 @@ public class counter : State_Base
 
                     if (蓄力状态_ == E_蓄力状态.蓄力OK && Player.N_.时缓)
                     {
-                        if (E != null) Player.同速_(E);
-                        else if (Fly != null) Player.同速_(Fly);
+                        if (E != null) SpeedMager.I.同速_(E);
+                        else if (Fly != null) SpeedMager.I.同速_(Fly);
                     }
 
 

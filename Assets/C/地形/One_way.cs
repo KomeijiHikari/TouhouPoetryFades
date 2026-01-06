@@ -32,15 +32,31 @@ public class One_way :MonoBehaviour,I_暂停
     [SerializeField]
     private bool 暂停1;
 
+    public bool KeepAlive;
     public bool 有人 { get => 有人1; set {
+
             if (有人1 != value)
             {
                 Enter_Exite?.Invoke(value );
                 有人1 = value;
             }
-             } }
+             }
+    }
+            //    if (KeepAlive)
+            //{
+            //    有人1 = value;
+            //    return;
+            //} 
+    public bool 暂停 { get
+        {
+ if (KeepAlive) return false;
+      return  暂停1;
+        }
 
-    public bool 暂停 { get => 暂停1; set => 暂停1 = value; }
+        set {
+            暂停1 = value;
+        }
+       }
 
     //private void OnCollisionExit2D(Collision2D collision)
     //{
@@ -56,7 +72,7 @@ public class One_way :MonoBehaviour,I_暂停
     //}
 
 
-
+    int count=0;
     void Update()
     {
         if (暂停) return;
@@ -64,12 +80,21 @@ public class One_way :MonoBehaviour,I_暂停
         {
             有人 = true;
         }
-        var AAA = (Vector2)Player3.I.po.bounds.min;
-        var P = Player3.I.po.bounds.min.y;
-        var m = bc.bounds.max.y; 
-       
-        if (Player3.I.Velocity.y >2.5f|| (P < m))
+        BoxCollider2D min = Player3.I.最低点();
+        var AAA = (Vector2)min.bounds.min;
+        var P = min.bounds.min.y;
+        var m = bc.bounds.max.y;
+
+        if (P > m) count = 0;
+        if (Player3.I.Velocity.y >2.5f|| (P < m  ))
         {
+            if (count==0) 
+            {
+                ///跳跃的动态碰撞   落地一帧会 穿到地里面
+                count++;
+                return;
+            }
+
             ///玩家在平台下面
             //玩家上升
             if (有人)
@@ -93,7 +118,7 @@ public class One_way :MonoBehaviour,I_暂停
         { 
             ///玩家在平台上面
             //玩家上升
-            应该无视 = false;
+            应该无视 = false; 
             if (Deb)
             {
                 AAA.DraClirl(1,Color.grey);

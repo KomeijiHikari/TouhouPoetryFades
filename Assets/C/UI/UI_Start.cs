@@ -14,9 +14,35 @@ public class UI_Start : MonoBehaviour
     public List<GameObject> 开始界面的所有=new List<GameObject> ();
     public List<SceneField> 要加载的场景=new List<SceneField> ();
     public Text_button 继续按钮;
-    public GameObject 子菜单;
+    public GameObject 子菜单; 
+    private void Awake()
+    {
+        ///只有新玩家能测出来的
+        var value = PlayerPrefs.GetInt(第一次, 0);
+        if (value == 0)
+        {
+            ///  第一次
+            SettingMager.修改(FullScreenMode.FullScreenWindow);
+            SettingMager.Set_分辨率(1960, 1080);
 
+            PlayerPrefs.SetInt(第一次, 2);
+            PlayerPrefs.Save();
+        }
+        else if(value==2)
+        {
+            Debug.LogError("正常");
+        }
+        else
+        {
+            Debug.LogError("啊？");
+        }
+     
+    }
+    const string 第一次= "第一次";
+    class 设置
+    {
 
+    }
     private void Start()
     {
 

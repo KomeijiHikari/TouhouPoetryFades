@@ -154,7 +154,7 @@ public class enemy : BiologyBase, I_攻击,I_生命
         if (Initialize.方向_A是否在B的左边或者下面(this.gameObject, target, false))
         {
             Velocity=(new Vector2(1 * 数值.常态速度, 0));
-            transform.localScale = new Vector2(1, 1);
+            transform.localScale = new Vector3(1, 1,1);
         }
         else
         {

@@ -54,7 +54,7 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
         get { return Mathf.Sign(transform.localScale.x) ; }
         set { 
             if ((int)Mathf.Sign(value ) != (int)Mathf.Sign(LocalScaleX_Int))        
-                transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);   
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y,1);   
         }
     }
     /// <summary>
@@ -72,7 +72,7 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
             {
                 Debug.LogError("我勒个去与");
             }
-            transform.localScale = new Vector2((int)value, transform.localScale.y); 
+            transform.localScale = new Vector3((int)value, transform.localScale.y,1); 
         }
     }
 
@@ -152,22 +152,28 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
 
             if (Ground !=value)
             {
+                if (gameObject == Player3.I.gameObject)
+                    Debug.LogError(value._Color(Color.green)+Time.frameCount);
                 if (速度调试)
                 { 
                     Debug.LogError(value ._Color (Color.green));
                 }
+                //bool LastGround_ = Ground_;
+
+                if (!Ground_ && value)
+                {
+                    接触地面_();
+                }
+                if (Ground_ && !value)
+                {
+                    //if (gameObject==Player3.I.gameObject)
+                    //    if (Player3.I.脚下==null)
+                    离开地面_();
+                }
+                Ground_ = value;
             }
-            if ( !Ground_  && value )
-            {  
-                接触地面_();
-                Ground_ = value; 
-            }
-            if ( Ground_   && !value  )
-            { 
-                离开地面_();
-                Ground_ = value; 
-            }
-        
+
+
         } 
     }
     public Animator an;
@@ -261,6 +267,11 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
     }
     public void AddForce(Vector2 vector2)
     {
+        if (gameObject.CompareTag(Initialize.Player)&& Initialize_Mono.I.MoveP_优化 && Player3.I.脚下 != null)
+        {
+            Player3.I.transform.localPosition += new Vector3(Player_input.I.方向正零负 * Player3.I.玩家数值.常态速度, 0, 0) * Time.fixedDeltaTime;
+            return;
+        }
         //if (vector2 !=Vector2 .zero )
         //{
         //    Debug.LogError("加力"+ vector2);
@@ -289,10 +300,16 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
 protected    bool 速度调试;
     public virtual Vector2 Velocity
     {
-        get { return rb.velocity; }
-        set {   rb.velocity = value;
+        get {
+            if (Velocity调试) Debug.LogWarning("Get"+rb.velocity + "obj   name:" + gameObject);
+            return rb.velocity; 
+        
+        }
+        set {
+            if (Velocity调试) Debug.Log(rb.velocity+"改后" +value+ "obj   name:" + gameObject);
+            rb.velocity = value;
 
-            if (Velocity调试) Debug.Log(rb.velocity+"obj   name:"+gameObject); }
+            }
     }
 
     public virtual float atkvalue { get; set; }

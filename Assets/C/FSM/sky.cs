@@ -3,28 +3,59 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class sky : State_Base  
-{ 
+{
     //float 原始碰撞;
+  public static  Vector2 Startsize;
+    public static Vector2 StartOff;
+    private Vector2 StartDunOff;
+    private Vector2 StartDunSize;
+
     public override void AweakStatebase()
     {
         base.AweakStatebase();
         //原始碰撞 = Player.po.size.x;
+        Startsize = Player.站立box.size;
+        StartOff = Player.站立box.offset;
+
+        StartDunOff= Player.蹲BOX .offset;
+        StartDunSize= Player.蹲BOX.size;
     }
+    float 贴墙时间max = 0.1f;
+    float 贴墙时间 = 0;
     public override void EnterState()
     {
-   前空  =Player.前空_ ;
-        if (!Player3.I.is原Parent)
-        {
-            Player3.I.ChangeFather();
-        }
+        if (Initialize_Mono.I.动态跳跃碰撞)
+            Player.蹲BOX.isTrigger = true;
+        贴墙时间 = 0;
+       前空  =Player.前空_ ;
+        Player3.I.脚下 = null;
+        //if (!Player3.I.is原Parent)
+ 
+            //Player3.I.ChangeFather();
+            //Initialize_Mono.I.Waite(() =>
+            //{
+            //    if (Player.脚下==null)
+            //    {
+            //        Player3.I.ChangeFather();
+            //    } 
+            //},0.1f);
+ 
         //Player.po.size  = new Vector2(Player.po.size.x*0.4f, Player.po.size.y);
         不是第一次悬浮 = false;
            第一次跳跃 = false;
         //Player.前档板.enabled = true;
 
-
+        if (f.I_State_L.state==E_State. wall)
+        { 
+            Wall_Y = transform.position.y;
+        }
+        else
+        {
+            Wall_Y = 0; 
+        }
         switch (f.I_State_L .state)
         { 
             case E_State.upatk: 
@@ -63,7 +94,7 @@ public class sky : State_Base
             case E_State.idle:
                case E_State.skydash:
 
-                Vector2 dian = Player.脚底发射(0.9f);
+                Vector2 dian = Player.脚底发射(2f);
                 if (dian!=Vector2 .zero)
                 {
                     yalaAudil.I.EffectsPlay("Jump", 0);
@@ -91,7 +122,9 @@ public class sky : State_Base
                 A.Playanim(JUMAP_name.中间);
                 break;
             case E_State.dash:
-                A.Playanim(JUMAP_name.下去);
+                Player.加速(true);
+                Player.dundash.冷却好了 = true; 
+                //A.Playanim(JUMAP_name.下去);
                 break;
         }
 
@@ -99,10 +132,16 @@ public class sky : State_Base
         //A.Playanim(animname);
  
     }
+
     public override void ExitState(E_State e)
     {
         base.ExitState(e);
-        Player.记录a(true);
+        Player.记录a(0);
+        //transform.position += Vector3.up * 0.1f;
+        if (Initialize_Mono.I.动态跳跃碰撞)
+            Player.差价();
+
+
         //Player.前档板.enabled = false;
         //Player.po.size = new Vector2(原始碰撞, Player.po.size.y);
     }
@@ -147,12 +186,15 @@ public class sky : State_Base
 
     bool 不是第一次悬浮;
     float 悬浮速度=-1;
+
+    float Wall_Y = 0;
     public override void FixedState()
     { 
 
         if (IP.方向正零负!=0)
         {
-            if (Player.前空_) Player.AddForce(new Vector2(Player.返回方向 ()* Player.玩家数值.起步速度, 0));
+            var a = Player.返回方向(); 
+            if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0)); 
         }
         if (IP.水平操作_ == 0 && Player.Velocity.y < 0)
         {
@@ -163,21 +205,9 @@ public class sky : State_Base
             {
                 Player.AddForce(-Player.LocalScaleX_Set * Vector2.right *7.5f * 百分比);
             } 
-        }
-
-
-        if (f.I_State_L.state!=E_State.hit||IP.方向正零负!=0)
-        {
-            Player.水平限制();
-            Player.竖直限制();
-        }
-   
-
-    
-
+        } 
         if (Player.N_.悬浮)
-        {
-            //Debug.LogError("  if (Player.N.悬浮)  if (Player.N.悬浮)  if (Player.N.悬浮)");
+        { 
         if (IP.按键检测_按住(IP.k.跳跃)&& IP.Get_key( IP.k.跳跃).Keeptime>0.2f)
         {
                 if (false )
@@ -200,20 +230,7 @@ public class sky : State_Base
             }
         }
         }
-        if (Player_input .I .方向正零负!=0
-            &&Player.顶死
-            &&!Player.Ground
-                        && Player.Velocity.y<0
-            //&&IP.按键检测_按住(IP.上)
-            //&&IP.按键检测_按住 (IP.跳跃)
-            )
-        { 
-            if (Time.frameCount- f.Getstate(E_State.wall).ExiteFramet>6)
-            {
-                     f.To_State(E_State.wall);
-                return;
-            } 
-        }
+
         if (IP.竖直正负零!=0)
         {
             if (Player.ladder)
@@ -241,8 +258,8 @@ public class sky : State_Base
     }
 
     public override void 接触地面()
-    {
-        Vector2 dian = Player.脚底发射(0.9f);
+    { 
+        Vector2 dian = Player.脚底发射(2.9f, 2);
         if (dian != Vector2.zero)
         {
             特效_pool_2.I.GetPool(dian, T_N.特效落地).Speed_Lv = Player3.Public_Const_Speed;
@@ -260,14 +277,17 @@ public class sky : State_Base
         }
         else
         {
-            if (IP.方向正零负 == 0)
-            { 
-                f.To_State(E_State.idle);
-            }
-            else
-            { 
-                f.To_State(E_State.run);
-            }
+ 
+                if (IP.方向正零负 == 0)
+                {
+                    f.To_State(E_State.idle);
+                }
+                else
+                {
+                    f.To_State(E_State.run);
+                }
+ 
+
         }
 
  
@@ -279,8 +299,8 @@ public class sky : State_Base
     {
         if (Player.Velocity ==Vector2 .zero )
         {
-            var a = Player.Bounds.min-new Vector3 (0,Player.po .edgeRadius );
-            var b = new Vector3(Player.Bounds.max.x , Player.Bounds.min.y)-new Vector3 (0,Player.po .edgeRadius );
+            var a = Player.Bounds.min-new Vector3 (0,Player.蹲BOX .edgeRadius );
+            var b = new Vector3(Player.Bounds.max.x , Player.Bounds.min.y)-new Vector3 (0,Player.蹲BOX .edgeRadius );
 
         var pa=    Physics2D.OverlapCircle(a, 0.1f, Player.碰撞检测层);
             var pb=     Physics2D.OverlapCircle(b, 0.1f, Player.碰撞检测层);
@@ -293,15 +313,136 @@ public class sky : State_Base
         }
     }
     bool 前空=true;
+    Sprite targetSprite;
+
+    
+    void asd()
+    {
+        ///内部尺寸80  box 尺寸5*5  16倍
+        ///80= boxsize*16
+        ///size可以求
+        ///offst
+      Vector4 v=  targetSprite.border;
+        //X=左边框、Y=下边框、Z=右边框、W=上边框
+
+    }
+    Sprite lastsp;
+    Vector2Int SPsize=Vector2Int.one*80;
+
     public override void UpdateState()
     {
-        if (IP.按键检测_按下(IP.k.跳跃)) 
-        if (EnterTime > 0.1f || f.I_State_L.state == E_State.cricleatk)
+        if (Initialize_Mono.I.MoveP_优化)
         {
-            f.To_State(E_State.cricleatk);
-
-            return;
+            Player3.I.ChangeFather();
         }
+ 
+        if (Initialize_Mono.I.动态跳跃碰撞) 
+        if (lastsp!=Player.sp.sprite)
+        {
+            //更新并且改变尺寸
+            lastsp = Player.sp.sprite; 
+            Vector4 v = 删除_图片物理.Get_图片Bor(lastsp.border, SPsize,16);
+            if (v.x!=5)
+            {
+
+                Player.站立box.size = new Vector2(Startsize.x, v.y);
+                Player.站立box.offset = new Vector2(StartOff.x, v.w);
+
+                    Player.蹲BOX.offset = StartDunOff;
+                    Player.蹲BOX.size =   StartDunSize;
+                }
+        }
+        //targetSprite.border
+        //Vector2[] physicsShape = targetSprite.GetPhysicsShape
+        //if (IP.按键检测_按住(IP.k.攻击))
+        {
+            if (
+                Player_input.I.方向正零负 != 0 &&
+ !Player.Ground
+    && Player.Velocity.y < 0 
+                )
+            {
+                if (Time.frameCount - f.Getstate(E_State.wall).ExiteFramet > 6)
+                {
+                    if (false)
+                    //if (Player.顶死)
+                    {
+                        ///  原先bool判断为Player.顶死
+                        f.To_State(E_State.wall);
+                        return;
+                    } 
+                    else
+                    {
+                        //if(false)
+                        {
+                            var a = Player.假检测(0.3f);
+                            if (a != Vector3.zero)
+                            {
+                                贴墙时间 += Time.deltaTime;
+                            }
+                            //Debug.LogError(贴墙时间); 
+                            if (贴墙时间 > 贴墙时间max)
+                            {
+                                var 差 = MathF.Abs(a.x - Player.Bounds.center.x) - (Player.Bounds.size.x / 2);
+
+                                var Y = transform.position.y;
+                                if (Wall_Y != 0 &&
+                                    transform.position.y > Wall_Y///现在的值大于过去的值     比以前小不触发
+                                                                 ///并且 当现在比过去的值大的太多了也不触发      
+                                    && transform.position.y < Wall_Y + 1)
+                                {
+                                    Debug.LogError("触发AAA" + Y + transform.position.y);
+                                    Y = Wall_Y;
+                                }
+
+                                transform.position =
+                                    new Vector3(transform.position.x + 差 * Player.LocalScaleX_Int, Y, transform.position.z);
+
+                                f.To_State(E_State.wall);
+                                return;
+                            }
+
+                        }
+                    } 
+                }
+            }
+        }
+
+        if (Player.is土狼时间_Wall == -1)
+        {
+            bool 按下了相同 = (IP.按键检测_按下(IP.k.左) && -Player.wall_进入为正面 == -1)
+    || (IP.按键检测_按下(IP.k.右) && -Player.wall_进入为正面  == 1);
+            if (按下了相同)
+            { 
+                ((wall)f.Getstate(E_State.wall)).金庸(0.3f);///不知道为啥没用
+                A.Playanim(JUMAP_name.上去); 
+                Player.跳跃触发(new Vector2(-Player.wall_进入为正面 * 8f, Player.玩家数值.跳跃瞬间速度 )
+                    , "登墙跳，AAAA土狼_先空格后方向");
+            }
+        }
+
+ 
+        if (IP.按键检测_按住(IP.k.跳跃))
+            if (Player.is土狼时间_Wall == 1)
+            {
+                ((wall)f.Getstate(E_State.wall)).金庸(0.3f);
+                Player.is土狼时间_Wall = 0;
+                A.Playanim(JUMAP_name.上去); 
+                Player.跳跃触发(new Vector2(-Player.wall_进入为正面 * 8f, Player.玩家数值.跳跃瞬间速度)
+                 , "登墙跳，BBBB土狼_先方向后空格 __持续触发");
+                return;
+            }
+  if (IP.按键检测_按下(IP.k.跳跃))
+        {  
+            if (EnterTime > 0.1f || f.I_State_L.state == E_State.cricleatk)
+            {
+                f.To_State(E_State.cricleatk);
+
+                return;
+            }
+
+        }
+
         if (Player.悬挂.满足)
         {
             if (IP.方向正零负 == Player.LocalScaleX_Set)
@@ -342,11 +483,12 @@ public class sky : State_Base
 
         if (!第一次跳跃)
         {
-        if (Player.Velocity .y<8 )
+        if (Player.Velocity .y<Initialize_Mono.I.下落动画速度 )
         {
                 if (A.当前anim.name == A_N.jump_ )
                 {
                     第一次跳跃 = true;
+                    Debug.LogError("");
                     A.Playanim(JUMAP_name.中间 ); 
                 } 
             } 
@@ -367,11 +509,17 @@ public class sky : State_Base
         //{
 
         //}
+
+        if (f.I_State_L.state != E_State.hit || IP.方向正零负 != 0)
+        {
+            Player.水平限制();
+            Player.竖直限制();
+        }
     }
     Vector2 Velocity => Player.Velocity;
     LayerMask 碰撞检测层 => Player.碰撞检测层;
     Transform transform => Player.transform;
-    BoxCollider2D po => Player.po;
+    BoxCollider2D po => Player.蹲BOX;
     void 下落降落平台检测()
     {
         if (Velocity.y > -0.5f) return;
@@ -457,7 +605,9 @@ public class sky : State_Base
         }
 
         if (obj == IP.k.跳跃)
-        {
+        { 
+         
+            
             var y = 0f;
             if (Player.Velocity.y > 0) y = Player.Velocity.y;
             var a = y / Player.玩家数值.跳跃瞬间速度;

@@ -127,7 +127,7 @@ public state 死亡 = new state("死亡");
 
     [SerializeField]
     UnityEvent isDeadEnter;
- bool 不参与场景复活()
+ public    bool 不参与场景复活()
     { 
             if (R==null)
             {
@@ -260,27 +260,22 @@ public state 死亡 = new state("死亡");
             {
                 Debug.LogError("    " + DeadPla.I.DeadList.Count);
             }
-        } 
-        if (DeadPla.I.DeadList == null)
-        {
-            if (DeBuG) Debug.LogError("出出出1");
-            return 活动;
         }
-        else
-        { 
-            if (DeadPla.I.DeadList.Contains(mypo))
-            { 
-
-                if (DeBuG) Debug.LogError("出出出2");
-                    D?.Dead(); 
-                return 死亡;
-            }
-            else
-            {
-                if (DeBuG) Debug.LogError("出出出3");
-                return 活动;
-            }
-        } 
+        bool zai = 在死亡笔记里面();
+        if (zai)
+        {
+            return 死亡;
+        }
+        return 活动;
+         
+    }
+    public bool 在死亡笔记里面()
+    {
+        if (DeadPla.I.DeadList==null)
+        {
+            return false;
+        }
+        return DeadPla.I.DeadList.Contains(mypo);
     }
     public void Event_销毁()
     {

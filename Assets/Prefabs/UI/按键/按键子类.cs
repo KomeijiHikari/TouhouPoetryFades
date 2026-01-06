@@ -12,7 +12,7 @@ public class 按键子类 : MonoBehaviour
     public KeyCode k;
     Text_button T;
     private void Awake()
-    {
+    { 
         T = GetComponent<Text_button>();
         t = GetComponent<Text>();
 

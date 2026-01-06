@@ -382,12 +382,12 @@ public class FSM : MonoBehaviour
 
         if (!D_State[E].可以切换嘛())
         {
-            Player3.I.闪光();
+            //Player3.I.闪光();
             return false;
         } 
         if (!D_State[E].能力激活的)
         {
-            Player3.I.闪光();
+            //Player3.I.闪光();
             Debug.LogWarning("下一个状态"+E+"未激活，当前状态"+ I_State_C.state);
             return  false;
         }
@@ -414,7 +414,7 @@ public class FSM : MonoBehaviour
         状态 = I_State_C.state;
         if (状态消息)
         {
-            Debug.Log(   Time.time + "        状态情况=        "+ I_State_C +
+            Debug.Log( Time.frameCount+"    "+  Time.time + "        状态情况=        "+ I_State_C +
                            "\n上一个状态：" + I_State_L       + 
                             "\n上上个状态：" + I_State_LL +
                           "\n上上上个状态：" + I_State_LLL

@@ -8,10 +8,10 @@ using Unity.VisualScripting;
 
 namespace Enemmy
 {
-    public class 滚刺 : MonoBehaviour ,I_攻击
+    public class 滚刺 : MonoBehaviour, I_攻击
     {
 
-       
+
         生命周期管理 ss;
         [SerializeField]
         SpriteRenderer sr;
@@ -20,9 +20,7 @@ namespace Enemmy
         Bounds s;
 
         [SerializeField]
-        bool 顺时针;
- 
-        float movespeed=>e.Speed_Lv*e.Move_speed;
+        float movespeed => e.Speed_Lv * e.Move_speed;
 
         public float atkvalue { get => atkvalue1; set => atkvalue1 = value; }
 
@@ -33,17 +31,19 @@ namespace Enemmy
         int currentTargetIndex = 0;
         // 到达目标的容差（平方距离）
         const float arriveSqrThreshold = 0.001f;
-         
-         
+
+
         private void Start()
         {
-            ss=GetComponent<生命周期管理>(); 
-
-            p =GetComponent<Phy>();
+            ss = GetComponent<生命周期管理>();
+             
             e = GetComponent<Enemy_base>();
-             s=new Bounds(sr.bounds.center, sr.bounds.size+(e.co.bounds.size +Vector3.one*0.08f));
+            s = new Bounds(sr.bounds.center, sr.bounds.size + (e.co.bounds.size + Vector3.one * 0.08f));
 
-            e.E_重制 += () => { currentTargetIndex = startInx; };
+            e.E_重制 += () => {
+                // 重置时重新计算最近的点
+                刷新();
+            };
 
             // 计算四个端点并保存到 corners
             Vector3 min = s.min;
@@ -66,10 +66,9 @@ namespace Enemmy
             刷新();
         }
 
-        int startInx;
         private void 刷新()
         {
-            // 选取最近的角作为起点，并设置下一个目标为顺时针/逆时针方向的角
+            // 选取最近的角作为起点
             if (corners.Length > 0)
             {
                 int nearest = 0;
@@ -78,48 +77,47 @@ namespace Enemmy
                 {
                     float d = (transform.position - corners[i]).sqrMagnitude;
                     if (d < minDist)
-                    {
-                        Debug.LogError(i + "      "+d + "      " + minDist + "   ");
+                    { 
                         minDist = d;
                         nearest = i;
-
-                    }
-                    Debug.LogError(i+"      "+d+"   ");
+                    } 
                 }
-                startInx = currentTargetIndex; 
-                // 目标为 nearest 的下一个点（按顺时针或逆时针）
-                //currentTargetIndex = 顺时针 ? (nearest + 1) % corners.Length : (nearest - 1 + corners.Length) % corners.Length;
-                //Debug.LogError(currentTargetIndex);
+
+                // 设置当前目标为最近的角点
+                currentTargetIndex = nearest;
+                //Debug.LogError("最近点索引: " + currentTargetIndex);
             }
         }
+
         [SerializeField]
         float speed;
         [SerializeField]
-        private float atkvalue1=10;
+        private float atkvalue1 = 10;
 
         //private void OnTriggerEnter2D(Collider2D collision)
         //{
         //    if (collision.CompareTag(Initialize.Player)) 
         //        Player3.I.被扣血(10,gameObject,Time.frameCount);
- 
+
         //}
+
         private void FixedUpdate()
-        { 
+        {
+            if (e.暂停) return;
             // 如果没有角点或速度为0则不移动
             if (corners == null || corners.Length == 0) return;
             if (Mathf.Approximately(movespeed, 0f)) return;
 
             Vector3 target = corners[currentTargetIndex];
-            ((Vector2)target).DraClirl(3,Color.blue,3f);
+            ((Vector2)target).DraClirl(3, Color.blue, 3f);
             speed = movespeed * Time.fixedDeltaTime;
-             
-            transform.position = Vector3.MoveTowards(transform.position, target, speed); 
-            //transform.position += Vector3.one * 0.01f;
-            // 到达目标后切换到下一个目标
+
+            transform.position = Vector3.MoveTowards(transform.position, target, speed);
+
+            // 到达目标后切换到下一个目标（固定顺时针顺序）
             if ((transform.position - target).sqrMagnitude <= arriveSqrThreshold)
             {
-                int delta = 顺时针 ? 1 : -1;
-                currentTargetIndex = (currentTargetIndex + delta + corners.Length) % corners.Length;
+                currentTargetIndex = (currentTargetIndex + 1) % corners.Length;
             }
         }
 
@@ -128,6 +126,4 @@ namespace Enemmy
             throw new NotImplementedException();
         }
     }
-
-
 }

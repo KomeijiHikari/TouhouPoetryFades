@@ -48,7 +48,7 @@ public class 相机框 : MonoBehaviour
     }
     private void Start()
     { 
-        Event_M.I.Add(Event_M.切换场景触发_obj,来这是我的碰撞箱); 
+        //Event_M.I.Add(Event_M.切换场景触发_obj,来这是我的碰撞箱); ///何意喂？？？  所有碰撞箱都来一遍？？？
     }
 void     来这是我的碰撞箱(GameObject  obj)
     {
@@ -62,7 +62,7 @@ void     来这是我的碰撞箱(GameObject  obj)
         if (上一个碰撞框_!=null&& (PolygonCollider2D)上一个碰撞框_ != 碰撞框_)
         {
 
-            if (collision == Player3.I.po  )
+            if (collision == Player3.I.蹲BOX  )
             { 
                 摄像机.I.设置相机碰撞体((PolygonCollider2D)上一个碰撞框_);
             }
@@ -72,7 +72,7 @@ void     来这是我的碰撞箱(GameObject  obj)
 
     private void OnTriggerEnter2D(Collider2D collision)
     {  //一半在A   一半在B    赋值B  然后回到A   ，相机框还是B
-        if (collision == Player3.I.po  )
+        if (collision == Player3.I.蹲BOX  )
         {
 
             if (摄像机.I.当前碰撞框 != null)
@@ -110,7 +110,7 @@ void     来这是我的碰撞箱(GameObject  obj)
         if (No.Note_Re())
         {
       
-            Initialize_Mono.I.重制触发?.Invoke(gameObject.scene.buildIndex, 编号);
+            Initialize_Mono.I.重制触发?.Invoke(gameObject.scene.buildIndex, 编号); 
             //Debug.LogError(gameObject.scene.buildIndex+"__"+ 编号);
         }
     }

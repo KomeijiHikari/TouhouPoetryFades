@@ -79,6 +79,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     {
         get
         {
+            if (Initialize_Mono.I.Updatee) return Time.deltaTime * b.I_S.固定等级差;
             return Time.fixedDeltaTime * b.I_S.固定等级差;
         }
     }
@@ -197,8 +198,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
             Debug.LogError("离谱情况出现了");
             return target;
         }
-    }
-
+    } 
     public float Get_矢量长度()
     {
         return 当前.magnitude;
@@ -277,13 +277,15 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         //if (b.I_S.Speed > 8||  Mathf .Abs(b.I_S.Speed * 当前.y)>=40)
         //当前 = 碰撞预测(当前);    
       var a=  碰撞预测2(当前);
-
+ 
         if (a==Vector2.zero)
         {
-            ZZZZZZZ = Initialize_Mono.I.GetMin(b.I_S.固定等级差);
-            var V = (Vector3)当前 * ZZZZZZZ; 
 
-            b.transform.position += V * Time.fixedDeltaTime;
+            ZZZZZZZ = Initialize_Mono.I.Mi.GetMin(b.I_S.固定等级差);
+            var V = (Vector3)当前 * ZZZZZZZ;
+             
+            if (Initialize_Mono.I.Updatee) b.transform.position += V * Time.deltaTime;
+            else   b.transform.position += V * Time.fixedDeltaTime;
         }
         else
         {
@@ -365,17 +367,25 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     } 
     public bool Deb;
     [SerializeField]
-    SpriteRenderer Sp; 
+    SpriteRenderer Sp;
+
+    
     private void FixedUpdate()
-    { 
+    {
+        if (Initialize_Mono.I.Updatee) return;
+        FixeUpdate();
+    }
+    private void FixeUpdate()
+    {
+
         if (关闭1 || b.I_S.限制)
         { 
             return;
-        }
-
+        } 
         if (Sp!=null )
         {
-            Sp.transform.rotation = Quaternion.Euler( Initialize .Z1*Time.fixedTime*1000f);
+            if(Initialize_Mono.I.Updatee) Sp.transform.rotation = Quaternion.Euler(Initialize.Z1 * Time.deltaTime * 1000f);
+         else   Sp.transform.rotation = Quaternion.Euler( Initialize .Z1*Time.fixedTime*1000f);
         }
         ///脚底在地面下面
         var a = Physics2D.Raycast(
@@ -449,6 +459,9 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     private void Update()
     { 
         Speedd = b.I_S.固定等级差;
+
+        if (Initialize_Mono.I.Updatee)
+            FixeUpdate();
     }
     [SerializeField]
     [DisplayOnly]

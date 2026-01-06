@@ -24,7 +24,7 @@ public class 假装平地 : MonoBehaviour
     [SerializeField ]
     Vector2 VA,VB;
     private void 适应()
-    {
+    { 
         var R = BB.九个点(E_方向.右上) + new Vector2(1, 1) * 0.2f;
         var L = BB.九个点(E_方向.左上) + new Vector2(-1, 1) * 0.2f;
 
@@ -74,8 +74,12 @@ public class 假装平地 : MonoBehaviour
         else if (VA == VB && VA == Vector2.zero)
         {
             消息 = "两头在";
+        }else if(VA != VB)
+        {
+            y = (VA + VB)/2;
+            消息 = " 两边高度不一样";
         }
-
+         
         if (y != Vector2.zero)
         {
             var YY = y.y - bc.bounds.size.y / 2 - bc.offset.y;
@@ -85,7 +89,7 @@ public class 假装平地 : MonoBehaviour
         }
  
     }
-
+    public bool Deb;
     [SerializeField ][DisplayOnly ]
     string 消息;
     public bool Updat;
@@ -98,8 +102,7 @@ public class 假装平地 : MonoBehaviour
     }
     void Start()
     {  
-        gameObject.组件(ref bc);
-
+        gameObject.组件(ref bc); 
         Initialize_Mono.I.Waite(()=> 适应());
           
 

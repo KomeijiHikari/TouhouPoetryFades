@@ -63,7 +63,7 @@ namespace Boss
        int 普通攻击最大次数=2;
         public int 普通攻击次数;
         void 远距离()
-        {
+        { 
             ///四分之二几率触发  失败触发 几率上升
             if (!蘑菇管理.I.有蘑菇在场)
             {
@@ -415,7 +415,7 @@ namespace Boss
         {
            var BB= Target .x- X;
             var a = Initialize.返回正负号( Target.x - X);
-            transform.localScale = new Vector2(a, 1);
+            transform.localScale = new Vector3(a, 1,1);
             P.Velocity = Vector2.right * E.Move_speed * a;
         }
         [SerializeField]
@@ -1232,7 +1232,7 @@ namespace Boss
         int 刷新翻转()
         {
             var a = Initialize.返回正负号(距离);
-            transform.localScale = new Vector2(a, 1);
+            transform.localScale = new Vector3(a, 1,1);
             return a;
         }
     }

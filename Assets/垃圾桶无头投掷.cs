@@ -8,7 +8,14 @@ namespace Enemmy
     public class 垃圾桶无头投掷 : 垃圾桶无头
     {
         [SerializeField]
-        UnityEvent EVENt;
+        UnityEvent EVENt; 
+        [SerializeField]
+        发射器空间.发射器 f;
+
+        private void Start()
+        {
+            f.Speed_Lv = e.Speed_Lv;
+        }
         protected override void ATKENTER()
         {
             idle.Enter += () =>

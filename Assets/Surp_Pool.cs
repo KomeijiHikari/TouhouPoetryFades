@@ -5,6 +5,21 @@ using UnityEngine;
 
 public class Surp_Pool : SerializedMonoBehaviour
 {
+    public static GameObject Get_Gameobject(string s)
+    {
+
+        GameObject a = Resources.Load("Gameobject/" + s) as GameObject;
+        if (a == null)
+        {
+            Debug.LogError("寻找Obj路径没找到：" + "GameObject/" + s);
+            return null;
+        }
+        else
+        {
+            return a;
+        }
+    }
+    public static string 三角 { get => "三角"; }
     public static string 白块 { get => "白块"; }
     public static string 地图白块 { get => "地图白块"; }
     public static string 下坠刺 { get => "下坠刺"; }
@@ -105,7 +120,7 @@ public  GameObject GetPool(string 哪一个池子)
         }
         obj.SetActive(false);
         obj.transform.position = Vector2.zero;
-        obj.transform.localScale = Vector2.one;
+        obj.transform.localScale = Vector3.one;
         obj.transform.SetParent(transform);
         池子字典_[哪一个池子].Enqueue(obj);
     }

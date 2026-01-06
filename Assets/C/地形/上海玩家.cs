@@ -57,14 +57,13 @@ public class 上海玩家 : MonoBehaviour,I_攻击
 
     private void OnTriggerStay2D(Collider2D co )
     {
-        if (co.gameObject.layer == Initialize.L_Player)
-        {
-            if (co != Player3.I.站立box) return;
+        if (!co.CompareTag(Initialize.Player)) return;
+        //if (co != Player3.I.蹲BOX) return;
             if (!N.Note_Re()) return;
 
             if (Player3.I.HPROCK)
             {
-                Player3.I.To_SafeWay();
+                Player3.I.安全地点();
                 Player3.I.Velocity = Vector2.zero;
             }
             else
@@ -73,14 +72,14 @@ public class 上海玩家 : MonoBehaviour,I_攻击
 
                 if (Player3.I.当前hp <= 0)
                 {
-                    Initialize_Mono.I.Waite(() => Player3.I.To_SafeWay(), 1.2f);
+                    Initialize_Mono.I.Waite(() => Player3.I.安全地点(), 1.2f);
                 }
                 else
                 {
-                    Initialize_Mono.I.Waite(() => Player3.I.To_SafeWay(), 0.1f);
+                    Initialize_Mono.I.Waite(() => Player3.I.安全地点(), 0.1f);
                 } 
             } 
-        }
+ 
     }
     public void 扣攻击(float i)
     {

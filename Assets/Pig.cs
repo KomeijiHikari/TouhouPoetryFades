@@ -27,7 +27,7 @@ public class Pig : MonoBehaviour,I_Speed_Is
     void asd()
     {
 
-        transform.localScale =  new Vector2(Mathf.Abs(transform.localScale.x) , Mathf.Abs(transform.localScale.y));
+        transform.localScale =  new Vector3(Mathf.Abs(transform.localScale.x) , Mathf.Abs(transform.localScale.y),1);
         float X=厚度;
         X = Mathf.Min(transform.localScale.x);
         X = Mathf.Min(transform.localScale.y);
@@ -41,11 +41,11 @@ public class Pig : MonoBehaviour,I_Speed_Is
     {
         asd();
 
-
+ 
         sp.drawMode = SpriteDrawMode.Sliced;
         sp.size = transform.localScale;
         bc.size = sp.size;
-        transform.localScale = Vector2.one;
+        transform.localScale = Vector3.one;
         start = sp.size;
     }
 
@@ -66,18 +66,22 @@ public class Pig : MonoBehaviour,I_Speed_Is
     [SerializeField]
     E_超速等级 e_;
 
-    Color 半透明 = new Color(1, 1, 1, 0.1f);
+  
     void 开关(bool b)
     { 
         开关_ = b;
             bc.enabled = b;
          if (b)
         {
-            sp.color = Color.white;
+ if(!切换Shader.I.isSpeed)
+            {
+                sp.color = Color.white;
+            }
+
         }
         else
         {
-            sp.color = 半透明;
+            sp.color = new Color(sp.color.r, sp.color.g, sp.color.b,0.4f);
 
         }
     }

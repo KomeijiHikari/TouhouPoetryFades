@@ -20,6 +20,70 @@ public class 我的光照2 : MonoBehaviour
 {
     [SerializeField]
     private 一天色彩管理 Y;
+    public List<光照注册> LisTT;
+    public void SetLight(float time)
+    {
+        // 1. 归一化时间到0~86400秒（处理超出范围的情况，如负数/超过86400）
+        float totalSeconds = Mathf.Repeat(time, 86400f);
+        // 转换为0~24的浮点小时数（便于时段计算）
+        float totalHours = totalSeconds / 3600f;
+
+        // 2. 昼夜时段配置（可根据游戏需求调整）
+        const float sunriseHour = 6f;   // 日出时间（6点）
+        const float sunsetHour = 18f;   // 日落时间（18点）
+        const float transitionHour = 1f;// 晨昏过渡时长（1小时，避免灯光突变）
+
+        float lightIntensity = 0f;
+
+        // 3. 夜晚时段（18:00~次日6:00）：强度0→1→0平滑过渡
+        if (totalHours >= sunsetHour || totalHours < sunriseHour)
+        {
+            if (totalHours >= sunsetHour)
+            {
+                // 日落→24点：强度从0线性增加到1（18:00=0，24:00=1）
+                float t = (totalHours - sunsetHour) / (24f - sunsetHour);
+                lightIntensity = Mathf.Lerp(0f, 1f, t);
+            }
+            else
+            {
+                // 0点→日出：强度从1线性减少到0（0:00=1，6:00=0）
+                float t = totalHours / sunriseHour;
+                lightIntensity = Mathf.Lerp(1f, 0f, t);
+            }
+        }
+        // 4. 白天时段（6:00~18:00）：强度接近0，晨昏过渡区弱强度
+        else
+        {
+            // 日出后过渡区（6:00~7:00）：强度从0.1→0
+            if (totalHours <= sunriseHour + transitionHour)
+            {
+                float t = (totalHours - sunriseHour) / transitionHour;
+                lightIntensity = Mathf.Lerp(0.1f, 0f, t);
+            }
+            // 日落前过渡区（17:00~18:00）：强度从0→0.1
+            else if (totalHours >= sunsetHour - transitionHour)
+            {
+                float t = (totalHours - (sunsetHour - transitionHour)) / transitionHour;
+                lightIntensity = Mathf.Lerp(0f, 0.1f, t);
+            }
+            // 白天核心时段（7:00~17:00）：强度为0
+            else
+            {
+                lightIntensity = 0f;
+            }
+        }
+
+        // 5. 限制强度范围0~1，调用已实现的SetLight方法
+        lightIntensity = Mathf.Clamp01(lightIntensity);
+        SetLightIntensity(lightIntensity);
+    }
+    void SetLightIntensity(float speed)
+    { 
+        for (int i = 0; i < LisTT.Count; i++)
+        { 
+            LisTT[i].In = speed;
+        }
+    }
     public static 我的光照2 I { get; private set; }
     public List<SpriteRenderer>  ForgSprites;
     public List< Renderer> 受影响;
@@ -88,7 +152,9 @@ void FixedUpdate()
         
         if (speed != 0&& !Stop)
         {
-            Fixtime += Time.fixedDeltaTime* speed;
+          var A=  MathF.Min(speed * (1 / Player3.Public_Const_Speed)
+                , Initialize_Mono.I.光照最大速度);
+            Fixtime += Time.fixedDeltaTime* A;
       
             TimeVector=   Time_Tool. FixTimeToTimeVector3(Fixtime); 
             
@@ -137,13 +203,24 @@ void FixedUpdate()
     {
         幕布Color = Y.Get_FogColor(Time_Tool.TimeVector3ToFixTime(HourseVector));
         NorWay =      Chlri.position - Way.position;
+
+        SetLight(Time_Tool.TimeVector3ToFixTime(HourseVector) );
+        for (int i = 0; i < 我的光照3.I.set.Count; i++)
+        {
+            var a = 我的光照3.I.set[i];
+            a.SetVector(WayName, -NorWay);
+            a.SetColor(WayColorName, Out_SunColor);
+            a.SetColor(DarkName, CHHC.Flip(Out_ShaowColor));
+        } 
+
+        return;
         if (受影响 != null)
         {
             for (int ML = 0; ML < 受影响.Count; ML++)
             { 
                 var M精灵图材质 = 受影响[ML];
               if(!M精灵图材质.enabled)return;
-              SpriteRenderer sp =  M精灵图材质 as      SpriteRenderer ;
+              SpriteRenderer sp =  M精灵图材质 as      SpriteRenderer ;         ///何意喂
               
               Vector2 Ori = M精灵图材质.bounds.min;
               Vector2 Size = (Vector2)(M精灵图材质.bounds.max) - Ori;

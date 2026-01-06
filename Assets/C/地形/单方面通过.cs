@@ -59,7 +59,17 @@ public partial class 单方面通过 : MonoBehaviour
 
             });
 
+        GetComponent<生命周期管理>().重生时不等待玩家 = false;
+        Player3.I.圆斩对象 += asd;
+    }
 
+    private void asd(int obj)
+    {
+        if (obj == gameObject.GetInstanceID())
+        {
+            if (被破坏方向 == E_方向.上)
+                销毁触发?.Invoke();
+        }
 
     }
 
@@ -134,13 +144,13 @@ public partial class 单方面通过 : MonoBehaviour
             if (bug) Debug.LogError(Initialize.方向To_v2(被破坏方向) + "" + co.contacts[0].normal);
             if (b)
             {
-                Debug.LogError("  (co.contacts[0].normal, -Initialize.方向To_v2(被破坏方向));");
+                if (bug) Debug.LogError("  (co.contacts[0].normal, -Initialize.方向To_v2(被破坏方向));");
 
                 延迟销毁();
             }
             else
             {
-                Debug.LogError("  NONONONONO");
+                if (bug) Debug.LogError("  NONONONONO");
             }
         }
 

@@ -7,6 +7,7 @@ using UnityEngine;
 public class flow : MonoBehaviour
 {
     public bool 简单跟随;
+    public bool 校准;
    
     public bool can_lerp = true;
     public bool can_moveSpeedAstrict = false;
@@ -26,7 +27,9 @@ public class flow : MonoBehaviour
     Vector3 差;
     private void Awake()
     {
+        if (校准) transform.position=new Vector3(TargetTransform.position.x, TargetTransform.position.y, transform.position.z) ;
         if (简单跟随) 差 = transform.position-TargetTransform.position ;
+
     }
     private void Update()
     {

@@ -76,6 +76,9 @@ namespace  SampleFSM
         [DisplayOnly]
         public bool 活动;
 
+        /// <summary>
+        ///进入的Time.time
+        /// </summary>
         [DisplayOnly]
         public float time;
         [DisplayOnly]

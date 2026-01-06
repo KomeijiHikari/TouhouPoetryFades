@@ -16,7 +16,7 @@ public class hit : State_Base
         {
             A.Playanim(A_N.dead);
             Player.站立box.isTrigger = true ;
-            Player.po.isTrigger = true;
+            Player.蹲BOX.isTrigger = true;
             Dead = true;
             Player.Velocity = Vector2.zero;
             原重力 = Player.GravityScale;
@@ -56,7 +56,7 @@ public class hit : State_Base
             
 
             this.Player.站立box.isTrigger =false ;
-            Player.po.isTrigger =false ;
+            Player.蹲BOX.isTrigger =false ;
 
             Player.当前hp = Player.hpMax;
 

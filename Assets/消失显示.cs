@@ -36,7 +36,9 @@ public class 消失显示 : MonoBehaviour
     }
     private void OnEnable()
     {
+        if (sp != null)
         sp.transform.localPosition = _initialLocalPos;
+
         _shakeCoroutine = null;
     }
     private void Update()

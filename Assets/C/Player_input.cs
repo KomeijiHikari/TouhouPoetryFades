@@ -436,6 +436,8 @@ public class Player_input : Input_base
         public KeyCode 格挡;
         public KeyCode 交互;
         public KeyCode 变速;
+        public KeyCode 视野;
+        public KeyCode 背包;
 
         public KeyCode 上;
         public KeyCode 下;
@@ -463,8 +465,10 @@ public class Player_input : Input_base
     A.格挡 = KeyCode.K;
     A.交互 = KeyCode.E;
     A.变速 = KeyCode.F;
-    
-    A.上 = KeyCode.W;
+     A.视野 = KeyCode.Tab    ;
+  A.背包 = KeyCode.B;
+
+                A.上 = KeyCode.W;
     A.下 = KeyCode.S;
     A.左 = KeyCode.A;
     A.右 = KeyCode.D;
@@ -506,6 +510,7 @@ public class Player_input : Input_base
 
         读取();
 
+
         New_(k.上,"上");
         New_(k.下, "下");
         New_(k.右, "右");
@@ -518,6 +523,8 @@ public class Player_input : Input_base
         New_(k.格挡, "冲刺");
         New_(k.交互, "交互");
         New_(k.变速, "冲刺");
+        New_(k.视野, "视野");
+        New_(k.背包 ,"背包");
 
         跳 = D_I[k.跳跃];
         foreach (Key D in D_I.Values)
@@ -555,7 +562,22 @@ public class Player_input : Input_base
             方向正零负 = 0;
         }
 
-        水平操作插值 = Mathf.Lerp(水平操作插值, 方向正零负, 0.2f * Time.deltaTime);
+        if (方向正零负 == 0) 水平操作插值 = 0;
+        else
+        {
+            if (方向正零负==1)
+            {
+                if (水平操作插值<0)   水平操作插值 = 0;
+     
+                水平操作插值 += Time.deltaTime;
+            }else if(方向正零负==-1)
+            {
+                if (水平操作插值  > 0) 水平操作插值 = 0;
+                水平操作插值 -= Time.deltaTime;
+            }
+            水平操作插值 = Math.Clamp(水平操作插值,-1,1);
+        }
+        //水平操作插值 = Mathf.Lerp(水平操作插值, 方向正零负, 0.2f * Time.deltaTime);
     }
     public int 原生正负零()
     {

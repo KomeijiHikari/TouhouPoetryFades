@@ -4,31 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 
  
-public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead 
+public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead ,I_Speed_Is
 {
     [SerializeField]
     SpriteRenderer sr;
     BoxCollider2D bc;
-    [SerializeField]
-    private float Live_Time_Max=1;
-
-    [DisplayOnly]
-    [SerializeField]
-    private float live_Time_;
+    //[SerializeField] 
+ 
+ 
     //[SerializeField]
-    private float re_Time=1;
+    private float re_Time=2.8f;
     public Bounds 盒子 => sr.bounds;
     //public Bounds 盒子 => new Bounds (transform.position, sr.size);
 
     public bool Re { get =>true; set { } }
     public float Re_Time { get => re_Time; set => re_Time = value; }
     public Action 销毁触发 { get  ; set   ; }
-    public bool 是 { get { return 是1; }  set { Debug.LogError(value);
-            
+    public bool 是 { get { return 是1; }  set {
+            if (Deb)
+            {
+                Debug.LogError(value);
+            }
+             
             是1 = value; } }
 
-    public float Live_Time_ { get => live_Time_; set => live_Time_ = value; }
-    public float Live_Time_Max1 { get => Live_Time_Max; }
+    public bool Deb;
+    public float Live_Time_ { get; set; } = 0;
+    public float Live_Time_Max1 { get  => Initialize_Mono.I.重生平台存活时间; }
+    public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
 
     [DisplayOnly]
     [SerializeField]
@@ -40,26 +43,31 @@ public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead
      
 
     I_Speed_Is I;
+    [SerializeField]
+    private float speed_Lv;
+
     //private void OnCollisionExit2D(Collision2D collision)
     //{
     //    if (collision.gameObject.CompareTag(Initialize.Player))
     //        是 = false;
     //}
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
+        Debug.LogError(collision+"      AAAAAAAAAAA");
         if (collision.gameObject.CompareTag(Initialize.Player))
             if (collision.transform.position.y>transform.position.y)
             {
                 是 = true;
             }
     }
+
     private void FixedUpdate()
     {
         if (bc.enabled)
         {
             if (是)
             {
-                Live_Time_ -= Time.fixedDeltaTime*(1/ Player3.Public_Const_Speed)   ;
+                Live_Time_ -= Time.fixedDeltaTime* ((I_Speed_Is)this).固定等级差;
                 if (进度 > 1)
                 {
                     销毁触发?.Invoke();
@@ -101,10 +109,8 @@ public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead
     void asd(int i)
     {
         if (i==gameObject.GetInstanceID())
-        {
-            Debug.LogError("AAAAAAAAAAAAAAAAAAAA");
-            是 = true;
-            Debug.LogError(是);
+        { 
+            是 = true; 
         }
     }
     public bool Dead()

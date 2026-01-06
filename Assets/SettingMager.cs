@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SettingMager : MonoBehaviour
-{ 
- public void Set_分辨率(int x,int y)
+{
+ 
+    private void Awake()
+    {
+        
+    }
+    public static void Set_分辨率(int x,int y)
     {
         Screen.SetResolution( x,  y, Screen.fullScreen);
     }  
-    public void 修改(FullScreenMode f)
+    public static void 修改(FullScreenMode f)
     {
         Screen.fullScreenMode = f;
     }   

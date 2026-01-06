@@ -28,6 +28,7 @@ public class skydash : State_Base
     }
     public override bool 可以切换嘛()
     {
+
         if (Player.skydash.冷却好了)
         {
             return true;
@@ -94,8 +95,8 @@ public class skydash : State_Base
         //{
         //    Player.LocalScaleX_Int = a; 
         //}  
-        残影.I.开启残影(false);
-        Player.加速(true);
+        残影.I.开启残影(false); 
+ 
     }
     bool 圆斩; 
     public override void UpdateState()
@@ -134,6 +135,7 @@ public class dash : State_Base
 
     public override bool 可以切换嘛()
     {
+        Debug.LogError(Player.dundash.冷却好了+ "override bool 可以切换嘛()override bool 可以切换嘛()");
         if (Player.dundash.冷却好了)
         {
             return true;
@@ -180,6 +182,17 @@ public class dash : State_Base
             //{
 
             //}
+        }
+        if ( Input.GetKeyDown (IP.k.跳跃))
+        {
+            if (Player.头空_)
+            {
+                //Player.强行退出DASH = true;
+                A.Playanim(JUMAP_name.上去);
+
+                Player.跳跃触发();
+                f.To_State(E_State.sky);
+            }
         }
     }
   Vector2  EnterV;
@@ -238,7 +251,7 @@ public class dash : State_Base
                 Vector2 tar= Vector2.zero; 
                 if (IP.方向正零负_原生 != 0) tar = new Vector2(Player.LocalScaleX_Int * Player.玩家数值.常态速度, Player.Velocity.y);
 
-                Debug.LogError(tar+"  "+ IP.方向正零负_原生);
+                //Debug.LogError(tar+"  "+ IP.方向正零负_原生);
                 经过 = 1 - (1 - 经过)*(1 - 经过);
                 outt = Vector2.Lerp(a, tar,   经过);
 
@@ -346,14 +359,14 @@ public class dash : State_Base
         Player.强行退出DASH = false;
 
 
-        残影.I.开启残影(false);
-        Player.加速(true);
+        残影.I.开启残影(false); 
 
         Player.退出一半();
     }
 
     public override void 离开地面()
     {
+        A.Playanim(JUMAP_name.下去);
         Player.强行退出DASH = true;
  //       Player.dun.冲刺持续时间 = 0f;
  //Player.dun.冲刺显示 = false;

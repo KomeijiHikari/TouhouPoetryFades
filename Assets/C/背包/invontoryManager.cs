@@ -9,7 +9,7 @@ public class invontoryManager : MonoBehaviour
 {
     public static invontoryManager I { get; private set; }
 
-    public invontory 我的背包;
+    public invontory 我的背包; 
     public GameObject  单元格父类;//在什么地方生成单元格
     public GameObject 被复制的单元格;//空单元格    必须包含solt脚本
 
@@ -47,6 +47,7 @@ private void Start()
     //更新UI数据
     public static void RefreshItem()
     {
+        var aa = I.我的背包.读取能力();
         for (int i = 0; i < I.单元格父类.transform.childCount; i++) //遍历soltGrid所有子集
         {
             if (I.单元格父类.transform.childCount == 0)
@@ -58,7 +59,7 @@ private void Start()
             Destroy(I.单元格父类.transform.GetChild(i).gameObject);//毁灭所有子集    
         }
         Debug.LogError("销毁一次了");
-        for (int i = 0; i < I.我的背包.itemList.Count; i++)
+        for (int i = 0; i < aa.Count; i++)
         {
             I.临时单元格列表.Add(Instantiate(I.被复制的单元格));//将  单元格 增加到   单元格列表  当中
             var a = I.临时单元格列表[i].GetComponent<背包格子>();
@@ -66,7 +67,7 @@ private void Start()
 
             //I.单元格父类.ADD( I.临时单元格列表[i].GetComponent<背包专用按钮>());
 
-            a.SetupSlot(I.我的背包.itemList[i]);//    背包格子丢入item单元
+            a.SetupSlot(aa[i]);//    背包格子丢入item单元
             a.soltID = i;//将solts类 ID序号 赋予 背包的序号
         }
         //I.单元格父类.添加完成调用(); 

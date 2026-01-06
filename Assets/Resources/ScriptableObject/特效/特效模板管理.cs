@@ -95,7 +95,7 @@ public class 特效模板管理 : MonoBehaviour, I_Speed_Change
         }
 
         int I = 朝向 ? 1 : -1;
-        transform.localScale = new Vector2(I, 1);
+        transform.localScale = new Vector3(I, 1,1);
         return this;
     }
     public string A_name { get; set; }
@@ -127,7 +127,7 @@ public class 特效模板管理 : MonoBehaviour, I_Speed_Change
 
 
         transform.SetParent(tt);
-        transform.localScale = Vector2.one;
+        transform.localScale = Vector3.one;
         switch (当前特效模板.位置类型)        //中心点
         {
             case 特效模板.位置中心类型.原点:

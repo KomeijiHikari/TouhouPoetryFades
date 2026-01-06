@@ -182,7 +182,7 @@ public class Dash : MonoBehaviour
                 {//前面有东西
                     Debug.LogError("ASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
                     Player.I.LocalScaleX_Int = -Player.I.LocalScaleX_Int;
-                    Player.I.transform.localScale = new Vector2(-Player.I.transform.localScale.x, Player.I.transform.localScale.y);
+                    Player.I.transform.localScale = new Vector3(-Player.I.transform.localScale.x, Player.I.transform.localScale.y,1);
                 }
             }
 

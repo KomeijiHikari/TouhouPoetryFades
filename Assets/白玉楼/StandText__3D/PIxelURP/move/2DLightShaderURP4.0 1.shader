@@ -2,6 +2,7 @@
 {
     Properties
     {
+          [Toggle]  _NoSpeed (" No      Speed", Float) = 0
         [Toggle]_NoShader("No shader", Float) = 0
         _SpriteColor("Oirdin color", Color) = (1,1,1,1)
         [Header( BlurDepth)]
@@ -39,8 +40,8 @@
         [Space(15)]
         _LerpDarkLight("Dark Or Light?", Range(0,1)) = 0
         [Space(15)]
-        [HideInInspector] _X("x Texture", 2D) = "Black" {}
-        [HideInInspector] _Y("Y Texture", 2D) = "Black" {}
+        [HideInInspector] _X("x Texture", 2D) = "white" {}
+        [HideInInspector] _Y("Y Texture", 2D) = "white" {}
         [HideInInspector] _Z("Z Texture", 2D) = "white" {}
 
                 [HideInInspector] _BlurTexx("Normal Texture", 2D) = "white" {}
@@ -55,7 +56,7 @@
         [Toggle]_WayDeb("Way Debug", Float) = 0
         [Space(15)]
         _Alpha(" Alpha", Range(0,1)) = 1
-        _EdgeColor("Edge Color", Color) = (1,1,1,1)
+        _EdgeColor("Edge Color", Color) = (0,0,0,0)
         _NoColor("No Color", Range(0,1)) = 0
         [Space(15)]
         _NormalIntensity("Normal Intensity", Range(-10,10)) = 2
@@ -98,7 +99,7 @@
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma vertex vert
             #pragma fragment frag
-
+             #pragma multi_compile _ SHOW_RED
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
@@ -107,6 +108,7 @@
 
             struct VertexInput
             {
+                float4 color : COLOR; // 顶点颜色
                 float4 vertex : POSITION;
                 float3 ase_normal : NORMAL;
                 float4 ase_tangent : TANGENT;
@@ -117,6 +119,7 @@
 
             struct VertexOutput
             {
+                 float4 vertColor : TEXCOORD9;
                 float W : TEXCOORD8;
                 float4 clipPos : SV_POSITION;
                 float4 lightmapUVOrVertexSH : TEXCOORD0;
@@ -134,7 +137,7 @@
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
             };
-
+             float _NoSpeed;
             float4 _MainTex_ST;
             float4 _NorTex_ST;
             float _NormalIntensity;
@@ -183,7 +186,8 @@
             float4 OC(sampler2D tex, float2 UV)
             {
                 float4 c=tex2D(tex, UV) ;
-                return float4(c.rgb* _SpriteColor.rgb,c.a);
+                 return float4(c.rgb* _SpriteColor.rgb,c.a*_SpriteColor.a);
+                // return float4(c.rgb* _SpriteColor.rgb,c.a);
             }
 
             // 定向光（半兰伯特风格）
@@ -281,6 +285,9 @@
                 UNITY_TRANSFER_INSTANCE_ID(v, o);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 o.ase_texcoord7.xy = v.texcoord.xy;
+
+                                o.vertColor = v.color; // 传递顶点颜色
+
                 o.W = TransformObjectToHClip(v.vertex).z;
                 float3 positionWS = TransformObjectToWorld(v.vertex.xyz);
                 float4 positionCS = TransformWorldToHClip(positionWS);
@@ -313,6 +320,8 @@
                 UNITY_SETUP_INSTANCE_ID(IN);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
 
+
+
                 #if defined(ENABLE_TERRAIN_PERPIXEL_NORMAL)
                 #else
                 half3 WorldNormal = normalize(IN.tSpace0.xyz);
@@ -325,6 +334,8 @@
                 WorldViewDirection = SafeNormalize(WorldViewDirection);
 
                 float2 uv_MainTex = IN.ase_texcoord7.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+
+                _SpriteColor= IN.vertColor;
                 float4 tex2DNode1 = OC(_MainTex, uv_MainTex);
 
                 float2 uv_NorTex = IN.ase_texcoord7.xy * _NorTex_ST.xy + _NorTex_ST.zw;
@@ -348,6 +359,38 @@
                 }
                 if(_NoShader)return  tex2DNode1 ;
                 if (_NormalDebug) { return half4(N_toPn_Zip(Normal), tex2DNode1.a); }
+
+
+                float4 Spcolor= IN.vertColor;
+                Spcolor.a=tex2DNode1.a;
+
+
+#ifdef SHOW_RED 
+
+    half E = clamp(MiaoBian(tex2DNode1.a, uv_MainTex), 0.0, 1.0);
+    
+    // 计算边缘颜色贡献
+    half3 edgeContribution = E * _EdgeColor.rgb;
+    Spcolor.a += edgeContribution.r; // 假设alpha通道使用r分量或需要调整
+    
+    // 混合颜色
+    Spcolor.rgb = lerp(Spcolor.rgb, _EdgeColor.rgb, E);
+    
+    // 处理完全边缘且_EdgeColor.a为0的情况
+    Spcolor.a = lerp(Spcolor.a, 0.0, E * (1.0 - _EdgeColor.a));
+    
+    // 根据_NoSpeed混合到灰色
+    Spcolor = lerp(Spcolor, float4(0.5, 0.5, 0.5, tex2DNode1.a), _NoSpeed);
+    
+    return Spcolor;
+    
+#else
+    // return Spcolor; 
+#endif
+                    
+
+
+
 
                 InputData inputData;
                 inputData.positionWS = WorldPosition;
@@ -375,8 +418,8 @@
 
 
                 // 描边：当既不模糊又透明时才检测边缘
-                if (_BlurBlend + tex2DNode1.a == 0)
-                    return half4(MiaoBian(tex2DNode1.a, uv_MainTex) * _EdgeColor.rgb, _EdgeColor.a);
+                // if (_BlurBlend + tex2DNode1.a == 0)
+                //     return half4(MiaoBian(tex2DNode1.a, uv_MainTex) * _EdgeColor.rgb, _EdgeColor.a*tex2DNode1.a);
 
                 // 像素光照
                 inputData.positionWS.xy = PixelPos(inputData.positionWS);

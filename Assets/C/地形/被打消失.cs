@@ -8,16 +8,8 @@ using Unity.VisualScripting;
 
 
 
-public partial class    被打消失
-{
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    sp.color = Color.red;
-    //    Initialize_Mono.I.Waite(() => { 
-    //        sp.color = Color.white;
-    //    },0.1f);
-   
-    //}
+public partial class    被打消失 
+{ 
     private void Update()
     {
         if (主动出发)
@@ -48,8 +40,7 @@ public partial class    被打消失
 
         Re_Time =    re_Time/ Seed_lv_计算;
     }
- public Bounds 盒子 { get => sp.bounds; }
-
+ public Bounds 盒子 { get => sp.bounds; } 
     void Start()
     {
         sp = GetComponent<SpriteRenderer>();
@@ -106,11 +97,7 @@ public partial class    被打消失
 }
 
 public partial class 被打消失 : MonoBehaviour, I_生命, I_Dead, I_Revive
-{
-
-
-
-
+{ 
     public float hpMax_;
     public float hpMax { get {
             if (hpMax_==0)
@@ -187,9 +174,16 @@ public partial class 被打消失 : MonoBehaviour, I_生命, I_Dead, I_Revive
     public Action 销毁触发 { get; set; }
 
     [SerializeField ]   private bool re;
-    [SerializeField] private float re_Time;
+     private float re_Time=2;
     public bool Re { get => re; set => re = value; }
-    public float Re_Time { get => re_Time; set => re_Time = value; }
+    public float Re_Time { 
+        get {
+            if (re == false|| Seed_lv_计算==0) return 0;
+            return re_Time; }
+        set { re_Time = value; }
+     
+
+         }
 
     public  float    Seed_lv_计算=1;
     public bool Dead()

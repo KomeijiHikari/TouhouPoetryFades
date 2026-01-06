@@ -15,7 +15,14 @@ public class interaction : State_Base
 
 public class idle : State_Base
 {
-
+    public override void UpdateState()
+    {
+        base.UpdateState();
+        if (Initialize_Mono.I. MoveP_优化)
+        {
+            Player3.I.对齐脚下();
+        }
+    }
 public override void StateStart()
     {
         base.StateStart();
@@ -92,8 +99,8 @@ public override void StateStart()
                         {
                             name = (A_N.idle_run_to0);
                         }
-                        //Player.Velocity = Vector2.zero;
-                        Player.缓慢反向力(0.3f);
+                        Player.Velocity = Vector2.zero;
+                        //Player.缓慢反向力(0.3f);
                         A.Playanim(name);
 
                     }
@@ -104,8 +111,8 @@ public override void StateStart()
                 case E_State.sky:
                     if(IP.方向正零负 ==0)
                         yalaAudil.I.EffectsPlay("DallGround", 0);
-                    
-                    { Player.Velocity = new Vector2(Player.Velocity.x/3,0); }
+                    Player.Velocity = Vector2.zero;
+                    //Player.Velocity = new Vector2(Player.Velocity.x/3,0); 
                     A.Playanim(A_N.idle_jump_to0 ); 
                     break;
                 case E_State.dash:

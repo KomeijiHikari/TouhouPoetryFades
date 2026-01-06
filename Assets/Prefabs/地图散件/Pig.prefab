@@ -50,8 +50,11 @@ MonoBehaviour:
   speed_Lv: 0
   "\u539A\u5EA6": 2
   bc: {fileID: 103497328239996523}
+  sp: {fileID: 0}
   "\u7F29\u5C0F": 0
   "\u9891\u7387": 3
+  e_: 0
+  Curttent_: 0
 --- !u!61 &103497328239996523
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -98,7 +101,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0078378f955cae04f831dbd50672b074, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
