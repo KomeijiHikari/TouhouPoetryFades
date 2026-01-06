@@ -1550,7 +1550,7 @@ public partial class Player3 : I_生命, I_攻击
     [SerializeField]
  
 
-    public override float 当前hp
+    public override int 当前hp
     {
         get { return 玩家数值.当前Hp; }
         set
@@ -1568,7 +1568,7 @@ public partial class Player3 : I_生命, I_攻击
             }
         }
     }
-    public override float hpMax { get => 玩家数值.Max_Hp; set => 玩家数值.Max_Hp = value; }
+    public override int hpMax { get => 玩家数值.Max_Hp; set => 玩家数值.Max_Hp = value; }
     [SerializeField]
     bool HPROCK_;
     public override bool HPROCK
@@ -1582,10 +1582,10 @@ public partial class Player3 : I_生命, I_攻击
             HPROCK_ = value;
         }
     }
-    public override float atkvalue { get => 玩家数值.Atk; set => 玩家数值.Atk = value; }
+    public override int atkvalue { get => 玩家数值.Atk; set => 玩家数值.Atk = value; }
 
 
-    public override void 扣最大上限(float i)
+    public override void 扣最大上限(int i)
     {
 
     }
@@ -1645,7 +1645,7 @@ public partial class Player3 : I_生命, I_攻击
     /// </summary>
     /// <param name="i"></param>
     /// <param name="obj"></param>
-    public override void 被扣血(float i, GameObject obj, int SKey=0)
+    public override void 被扣血(int i, GameObject obj, int SKey=0)
     { ///不能反弹碰撞伤害   
         
         Debug.LogError("被扣血" + i);
@@ -1675,7 +1675,7 @@ public partial class Player3 : I_生命, I_攻击
         受伤Force = Vector2.zero;
     }
 
-    public override void 扣攻击(float i)
+    public override void 扣攻击(int i)
     {
 
     }

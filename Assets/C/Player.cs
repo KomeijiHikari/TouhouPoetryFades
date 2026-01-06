@@ -179,8 +179,8 @@ public class Biology : BiologyBase
 
     public override Action 生命归零 { get ; set ; }
     public override Action 被打 { get ; set ; }
-    public override float 当前hp { get ; set ; }
-    public override float hpMax { get ; set ; }
+    public override int 当前hp { get ; set ; }
+    public override int hpMax { get ; set ; }
 
     private void 水平和竖直速度限制()
     {
@@ -234,21 +234,21 @@ public class Biology : BiologyBase
 
 public interface I_攻击
 { 
-    public float atkvalue { get; set; }
+    public int atkvalue { get; set; }
 
-    public void 扣攻击(float  i);
+    public void 扣攻击(int  i);
 
 }
 public  interface I_生命
 {
     public Action 生命归零 { get; set; }
-    public float 当前hp { get; set; }
-    public float hpMax { get; set; }
+    public int 当前hp { get; set; }
+    public int hpMax { get; set; }
     public bool HPROCK { get; set; }
  
 
-    public void 被扣血(float  i,GameObject obj,int key);
-    public void 扣最大上限(float i);
+    public void 被扣血(int  i,GameObject obj,int key);
+    public void 扣最大上限(int i);
 }
 
 [System.Serializable]
@@ -354,9 +354,9 @@ public class 功能数值Base : I_Save
             else return 水平相反力1;
         }
         set => 水平相反力1 = value; }
-    public float 当前Hp;
-    public float Max_Hp;
-    public float Atk;
+    public int 当前Hp;
+    public int Max_Hp;
+    public int Atk;
 
     public int 钱;
     public int 灵魂碎片;
@@ -488,12 +488,12 @@ public partial class   Player : Biology, I_生命, I_攻击
 
     [DisplayOnly]
     [SerializeField]
-    float 当前hp_;
+    int 当前hp_;
     bool HPROCK_;
     public  override  bool   HPROCK { get { return HPROCK_; }
         set { HPROCK_ = value; }
     }
-    public override float     当前hp
+    public override int 当前hp
     {
         get
         {
@@ -534,7 +534,7 @@ public partial class   Player : Biology, I_生命, I_攻击
     public 玩家受伤效果 受伤;
 
  
-    public override void 被扣血(float i,GameObject obj,int SKey)
+    public override void 被扣血(int i,GameObject obj,int SKey)
     { 
             受伤.EnterHit(i, 10, obj);
 

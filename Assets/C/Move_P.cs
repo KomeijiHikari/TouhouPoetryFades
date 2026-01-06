@@ -81,7 +81,7 @@ public     E_移动方式 移动方式;
             return next; } set { 
             next = value; } }
 
-    public float atkvalue { get => atkvalue; set => atkvalue=value; }
+    public int atkvalue { get ; set  ; }
 
     public void 重新设置点位()
     {
@@ -315,7 +315,7 @@ public     E_移动方式 移动方式;
     void 平台伤害()
     {
         Player3.I.To_SafeWay();
-        Player3.I.被扣血(I_S.固定等级差, gameObject, 0);
+        Player3.I.被扣血(1, gameObject, 0);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -400,9 +400,8 @@ public     E_移动方式 移动方式;
 public partial class Move_P : I_Revive,I_假死
 {
   
-    public void 扣攻击(float i)
-    {
-        throw new System.NotImplementedException();
+    public void 扣攻击(int i)
+    { 
     }
     public bool 超速 { get { return I_S.固定等级差 >= Initialize_Mono.I.阀值; } }
 

@@ -312,12 +312,12 @@ protected    bool 速度调试;
             }
     }
 
-    public virtual float atkvalue { get; set; }
+    public virtual int atkvalue { get; set; }
     public abstract Action 生命归零 { get; set; }
 
     public abstract Action 被打 { get; set; }
-    public abstract float 当前hp { get; set; }
-    public abstract float hpMax { get; set; }
+    public abstract int 当前hp { get; set; }
+    public abstract int hpMax { get; set; }
     public virtual bool HPROCK { get; set; }
 
     protected virtual void Awake()
@@ -451,15 +451,15 @@ protected virtual void 前后和头(float 距离,float DI横)
 
     }
 
-    public virtual void 扣攻击(float i)
+    public virtual void 扣攻击(int i)
     {
     }
 
-    public virtual void 被扣血(float i, GameObject obj,int Key)
+    public virtual void 被扣血(int i, GameObject obj,int Key)
     {
     }
 
-    public virtual void 扣最大上限(float i)
+    public virtual void 扣最大上限(int i)
     {
     }
 }
