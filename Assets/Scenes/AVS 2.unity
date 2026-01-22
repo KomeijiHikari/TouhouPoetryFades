@@ -1955,6 +1955,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &21684165
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2078,6 +2079,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!95 &23613486
 Animator:
   serializedVersion: 5
@@ -8193,6 +8195,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!114 &73118873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10973,6 +10976,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &112346459
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12199,6 +12203,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!1 &126421396
 GameObject:
   m_ObjectHideFlags: 0
@@ -19328,6 +19333,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &195261576
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19521,6 +19527,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &195753877
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -29509,6 +29516,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &323131433
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -30690,6 +30698,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &335198407
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -47334,6 +47343,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &469127477
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -50473,6 +50483,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &513899391
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -53483,6 +53494,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &547586646
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -54917,6 +54929,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &578030294
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -58547,6 +58560,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &619791555
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -59287,6 +59301,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &630606578
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -62542,6 +62557,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!95 &657929752
 Animator:
   serializedVersion: 5
@@ -62989,6 +63005,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &663863480
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -67052,6 +67069,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &718089641
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -74009,6 +74027,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &783929714
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -75530,6 +75549,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &807458107
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -75590,7 +75610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 807458105}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.63, y: 0, z: 0}
   m_LocalScale: {x: 10.0721, y: 7.6421, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -75637,6 +75657,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &809881551
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -77165,6 +77186,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &829698940
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -78101,6 +78123,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &849439497
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -81195,6 +81218,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &881608888
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -83047,6 +83071,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &900907557
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -92418,6 +92443,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1003588284
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -104626,6 +104652,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1121913563
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -108913,6 +108940,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!4 &1165967116
 Transform:
   m_ObjectHideFlags: 0
@@ -122260,6 +122288,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1298729327
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -127619,6 +127648,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1355247297
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -129729,6 +129759,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!95 &1374723725
 Animator:
   serializedVersion: 5
@@ -138949,6 +138980,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1465670586
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -150698,6 +150730,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1600465542
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -150938,6 +150971,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1604820639
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -151740,6 +151774,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1611387943
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -153586,6 +153621,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1637000296
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -155448,6 +155484,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!95 &1657392717
 Animator:
   serializedVersion: 5
@@ -165139,6 +165176,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1762650816
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -167907,11 +167945,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6910734800897818238, guid: 1000b40e45b874d4aac6bee2e7f56f53, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -608.2115
+      value: -621.23
       objectReference: {fileID: 0}
     - target: {fileID: 6910734800897818238, guid: 1000b40e45b874d4aac6bee2e7f56f53, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -402.4626
+      value: -413.04
       objectReference: {fileID: 0}
     - target: {fileID: 6910734800897818238, guid: 1000b40e45b874d4aac6bee2e7f56f53, type: 3}
       propertyPath: m_LocalPosition.z
@@ -170518,6 +170556,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1819912978
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -174122,6 +174161,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1862210785
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -174450,6 +174490,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1873310390
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -180081,6 +180122,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1942228090
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -181291,6 +181333,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &1955556362
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -183881,6 +183924,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!95 &1981379034
 Animator:
   serializedVersion: 5
@@ -186690,11 +186734,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6910734800897818238, guid: 1000b40e45b874d4aac6bee2e7f56f53, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -595.7001
+      value: -622.45
       objectReference: {fileID: 0}
     - target: {fileID: 6910734800897818238, guid: 1000b40e45b874d4aac6bee2e7f56f53, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -402.4626
+      value: -414.82
       objectReference: {fileID: 0}
     - target: {fileID: 6910734800897818238, guid: 1000b40e45b874d4aac6bee2e7f56f53, type: 3}
       propertyPath: m_LocalPosition.z
@@ -187617,6 +187661,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!212 &2009168700
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -188275,6 +188320,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!95 &2013364616
 Animator:
   serializedVersion: 5
