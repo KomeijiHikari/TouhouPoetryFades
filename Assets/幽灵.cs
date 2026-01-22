@@ -22,7 +22,7 @@ public class 幽灵 : MonoBehaviour
     { 
             Vector2 mo;
             Vector3 target;
-            if (j.发现玩家了吗)
+            if (j.发现玩家了吗_)
             {
                 target = Player3.I.transform.position;
             }

@@ -50,12 +50,12 @@ public class 相机框 : MonoBehaviour
     { 
         //Event_M.I.Add(Event_M.切换场景触发_obj,来这是我的碰撞箱); ///何意喂？？？  所有碰撞箱都来一遍？？？
     }
-void     来这是我的碰撞箱(GameObject  obj)
-    {
-        //一个场景有多个碰撞箱子就会被反复调用
-        if (obj.scene != gameObject.scene) return;
-        摄像机.I.设置相机碰撞体(碰撞框_);
-    }
+//void     来这是我的碰撞箱(GameObject  obj)
+//    {
+//        //一个场景有多个碰撞箱子就会被反复调用
+//        if (obj.scene != gameObject.scene) return;
+//        摄像机.I.设置相机碰撞体(碰撞框_);
+//    }
     
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -63,7 +63,8 @@ void     来这是我的碰撞箱(GameObject  obj)
         {
 
             if (collision == Player3.I.蹲BOX  )
-            { 
+            {
+                摄像机.I.Set_Target_Fov( 上一个碰撞框_.GetComponent<相机框 >().Fov);
                 摄像机.I.设置相机碰撞体((PolygonCollider2D)上一个碰撞框_);
             }
         }

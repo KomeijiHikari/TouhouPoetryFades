@@ -1,11 +1,14 @@
 using BehaviorDesigner.Runtime.Tasks.Unity.UnityPlayerPrefs;
 using Cinemachine;
+using Cysharp.Threading.Tasks;
 using Ink.Parsed;
+using ItemMager;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine; 
 using UnityEngine.Rendering.Universal;
@@ -84,14 +87,17 @@ public partial class Player3 : BiologyBase
         {
             Player3.I.加速(false);
         }
+        Save假tr实例(TsL_I); 
         Player3.I.冷却全部好();
         Player3.I.N_.保存();
         Player3.I.玩家数值.保存();
         DeadPla.I.保存();
+        所有物品管理.I.save();
         Save_D.Save();
     }
 
 
+    [Obsolete("已经被弃用了", false )]
     public Vector2 屏幕上的坐标
     {
         get
@@ -99,14 +105,7 @@ public partial class Player3 : BiologyBase
             var a = 摄像机.I.Camera_Bounds;
             return 摄像机.to_屏幕坐标(a, Player3.I.transform.position);
         }
-    }
-    new public Transform transform
-    {
-        get => base.transform;
-    }
-
-
-
+    }  
     [SerializeField]
     [DisplayOnly]
     float Public_Const_SpeedASD;
@@ -188,18 +187,24 @@ public partial class Player3 : BiologyBase
 
         [SerializeField] private bool 地图道具解锁1;
 
-        [SerializeField] public bool 空中Dash;
         [SerializeField] public bool Dash;
+        [SerializeField] public bool 空中Dash;
         [SerializeField] public bool 墙冲浪;
-        [SerializeField] public bool 下落攻击;
         [SerializeField] public bool 上升攻击;
         [SerializeField] public bool 悬浮;
+        [SerializeField] public bool 半灵;
         [SerializeField] public bool 格挡;
-        [SerializeField] public bool 时缓;
+
+        [SerializeField] public bool 时缓; 
         [SerializeField] public bool 圆劈;
-        [SerializeField] public bool Dash加速;
         [SerializeField] public bool 速度切换;
         [SerializeField] public bool 箭矢弹反;
+
+        [SerializeField] public bool 攻击打断;
+        [SerializeField] public bool 下落攻击;
+        [SerializeField] public bool Dash加速;
+        [SerializeField] public bool 无限圆劈;
+        [SerializeField] public bool 速度视野;
     }
 
     public 判定框Base 判定框 { get; set; }
@@ -221,7 +226,10 @@ public partial class Player3 : BiologyBase
     [DisplayOnly]
     public Vector2 监控;
 
-
+    public void 消弹()
+    {
+  ((atk)F.Getstate(E_State.atk))  .   消弹();
+    }
     public float Wall_Way_Y;
     public float LastWall { get; set; }
     [DisplayOnly]
@@ -302,11 +310,12 @@ public partial class Player3 : BiologyBase
     }
     protected override void Awake()
     {
+        if (I != null && I != this) Destroy(this);
+        else I = this;
         base.Awake();
 
 
-        if (I != null && I != this) Destroy(this);
-        else I = this;
+   
         _4 = GetComponent<AniContr_4>();
         悬挂 = GetComponentInChildren<悬挂检测>();
         //朝向 = 1; 
@@ -339,10 +348,16 @@ public partial class Player3 : BiologyBase
         原始Size = 蹲BOX.size;
 
         Player_Father = transform.parent;
+        生命归零 += () => {
+            Debug.LogError("AAAAAAAAAAAAAA");
 
-        Player3.I.玩家数值.读取();
-        Player3.I.N_.读取();
+            Vector2Int V = 摄像机.I.相机框Int;
+            Initialize_Mono.I.重制触发?.Invoke(V.x,V.y);
 
+            LoadAll().Forget(); 
+        };
+
+        
         Initialize_Mono.I.重制触发 += (int i, int L) =>
         {
             More_SafeWay_ = Vector2.zero;
@@ -355,10 +370,19 @@ public partial class Player3 : BiologyBase
         原速度 = 玩家数值.常态速度;
         加速度 = 原速度 * 1.5f;
     }
+    public async UniTask LoadAll()
+    {
+        Initialize_Mono.LoadPla_and_D();
+        所有物品管理.I.从存档刷新();
+        Player3.I.玩家数值.读取();
+        Player3.I.N_.读取(); 
+        SpeedMager.I.Load(); ///玩家前，SM这会儿没有
+    }
     float 原速度;
     float 加速度;
     private void Start()
     {
+        LoadAll().Forget();
         Initialize_Mono.I.重制触发 += (int i, int l) => {
             Initialize_Mono.I.Waite(() =>
             {
@@ -433,8 +457,8 @@ public partial class Player3 : BiologyBase
     }
     public void 闪光()
     {
-        Debug.Log("闪光");
-        Initialize.闪光(sp, 0.1f, true);
+        Debug.LogError("AAAAAAAAAAAAAAA");
+        Initialize.闪光(sp, 0.2f, true);
     }
 
     //IEnumerator 开闪一下(Light2D light2D)
@@ -473,16 +497,36 @@ public partial class Player3 : BiologyBase
     public void 方向更新()
     {
 
-        if (LocalScaleX_Int != Player_input.I.方向正负)
+        ///方向不一样 
+        if (LocalScaleX_Set != Player_input.I.方向正负)
         {
+             ///方向不一样，尺寸正确了
+            Debug.LogError(Player_input.I.方向正负+"        "+ LocalScaleX_Set);
             LocalScaleX_Int = Player_input.I.方向正负;
             Debug.Log("方向更新触发");
+        }
+        else
+        {
+            ///方向 一样 
+            if (MathF.Abs(transform.lossyScale.x) != 1)
+            {
+                // 尺寸   不对对 
+                LocalScaleX_Int = Player_input.I.方向正负;
+            }
         }
 
     }
     public void 方向改变(bool b)
     {
-        transform.localScale = new Vector3((b ? 1 : -1), transform.localScale.y, 1);
+        if (transform.lossyScale.x == transform.localScale.x)
+        {
+            transform.localScale = new Vector3((b ? 1 : -1), transform.localScale.y, 1);
+        }
+        else
+        {
+
+        transform.localScale = new Vector3((b ? -1 :  1), transform.localScale.y, 1);
+        }
     }
 
 
@@ -533,14 +577,24 @@ public partial class Player3 : BiologyBase
      
  public void 对齐脚下()
     {
-        var v2 = Physics2D.BoxCast(new Vector2(Bounds.center.x, Bounds.min.y),
-new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Ground).point;
+        var hit = Physics2D.BoxCast(new Vector2(Bounds.center.x, Bounds.min.y),
+new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Ground |Initialize.L_Ground);
+
+        if (hit.point == Vector2.zero) return;
+        if (hit.collider.gameObject.layer!=Initialize.L_M_Ground) return;
+        var v2 = hit.point;
 
         if (v2 != Vector2.zero)
         {
             var va = Bounds.min.y - v2.y;
-            Debug.LogError(va + "  set脚下(Move_P s) ");
-            transform.position -= new Vector3(0, va  , 0);
+
+            if (va>0.061f)
+            {
+                transform.position -= new Vector3(0, va, 0);
+
+                Debug.LogError(va + "  set脚下(Move_P s) ");
+            }
+
         }
     }
     public void set脚下(Move_P s)
@@ -551,7 +605,12 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
         //float f=Physics2D.Raycast(new Vector2(Bounds.center.x, Bounds.min.y), Vector2.down, 3f, 1 << Initialize.L_M_Ground).distance;
         对齐脚下();
     }
-    public Move_P 脚下 { get => 脚下1; set => 脚下1 = value; }
+    public Move_P 脚下 { get {
+            return   脚下1; } set {
+            Debug.LogError("哪里AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+value);
+            脚下1 = value;
+        
+        } }
     void FixedUpdate()
     { 
         if (备用地面 == 备用地面_Laset)
@@ -667,6 +726,7 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
             }
         }
     }
+
     public static bool Contains(int layer, LayerMask layerMask)
     {
         return (layerMask & 1 << layer) > 0;
@@ -705,11 +765,14 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
     { get { return SpeedMager.I.Last副Speed1Leve; }
         set { SpeedMager.I.Last副Speed1Leve = value; } }
 
-    protected void Update()
-    {
-        if (Player_input.I.按键检测_按下(Player_input.I.k.变速)) SpeedMager.I.切换();
+    //public new  SpriteRenderer sp;
+    protected override  void Update()
+    { 
+        base.Update(); 
 
-        if (Player_input.I.按键检测_按下(Player_input.I.k.视野)) 切换Shader.I.isSpeed = !切换Shader.I.isSpeed;
+        if (Player_input.I.按键检测_按下(Player_input.I.k.变速)) SpeedMager.I.切换();
+ 
+         if(N_.速度视野)if (Player_input.I.按键检测_按下(Player_input.I.k.视野)) 切换Shader.I.isSpeed = !切换Shader.I.isSpeed;
 
         if (Ground && !HPROCK && (FSM.f.I_State_C.state == E_State.run || FSM.f.I_State_C.state == E_State.idle))
         {
@@ -867,8 +930,7 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
     public void 水平限制()
     {
         if (MathF.Abs(Velocity.x) > 玩家数值.常态速度)
-        {
-            //Debug.LogError(Velocity.x+ "水平限制()");
+        { 
             Velocity = new Vector2(玩家数值.常态速度 * Mathf.Sign(Velocity.x), Velocity.y);
         }
     }
@@ -1464,11 +1526,13 @@ public     BoxCollider2D 最低点()
 }
 
 public partial class Player3 : I_生命, I_攻击
-{ 
-    public void   伤害(I_生命 e,float value=0)
+{
+    public void 伤害(I_生命 e, float value = 0)
     {
         if (value == 0) value = atkvalue;
-        e.被扣血(value,Player3.I.gameObject,0);
+
+
+        e.被扣血(value, Player3.I.gameObject, 0);
     }
     public bool is原Parent
     {
@@ -1477,10 +1541,10 @@ public partial class Player3 : I_生命, I_攻击
             return Player3.I.transform.parent == Player3.I.Player_Father;
         }
     }
-    public Transform Player_Father_False { get;private  set; }
+    public Transform Player_Father_False { get; private set; }
     public Transform Player_Father { get; private set; }
 
-    public  void Changef(Transform f)
+    public void Changef(Transform f)
     {
         transform.SetParent(f);
 
@@ -1497,37 +1561,35 @@ public partial class Player3 : I_生命, I_攻击
     /// </summary>
     /// <param name="father"></param>
     public void ChangeFather(Transform father = null)
-    { 
-        if (!Initialize_Mono.I.MoveP_优化) return;
-            Debug.LogError("ChangeFather"+Time.frameCount+father);
+    {
+        if (!Initialize_Mono.I.MoveP_优化) return; 
         if (father == null)
         { 
-            Debug.Log ("还原");
-            if (transform!=null&& transform.parent!=null&& transform.parent.gameObject!=null) 
-            if (transform .parent .gameObject .activeInHierarchy ==false )
-            {
-                Debug.Log ("父物体关闭，离谱了");
-                GameObject a = new GameObject();
-                a.transform.SetParent(transform .parent ); ////盲猜 父物体回归对象池关闭 导致异常
-                Player_Father_False = null;
-
-                gameObject.transform.SetParent(a.transform );
-                
+            if (transform != null && transform.parent != null && transform.parent.gameObject != null)
+                if (transform.parent.gameObject.activeInHierarchy == false)
+                {
+                    Debug.Log("父物体关闭，离谱了");
+                    GameObject a = new GameObject();
+                    a.transform.SetParent(transform.parent); ////盲猜 父物体回归对象池关闭 导致异常
                     Player_Father_False = null;
-                Changef(Player_Father); 
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
+
+                    gameObject.transform.SetParent(a.transform);
+
+                    Player_Father_False = null;
+                    Changef(Player_Father);
+                    //transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
-            else
-            {
-                Player_Father_False = null;
-                Changef(Player_Father);
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                else
+                {
+                    Player_Father_False = null;
+                    Changef(Player_Father);
+                    //transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
 
         }
         else ///改变
         {
-            Debug.Log ("夫对象改变");
+            Debug.Log("夫对象改变");
             Player_Father_False = father;
 
             Changef(father);
@@ -1548,7 +1610,7 @@ public partial class Player3 : I_生命, I_攻击
     }
     public override Action 生命归零 { get; set; }
     [SerializeField]
- 
+
 
     public override float 当前hp
     {
@@ -1589,7 +1651,7 @@ public partial class Player3 : I_生命, I_攻击
     {
 
     }
-  public  void 变速特效(float f)
+    public void 变速特效(float f)
     {
         if (MathF.Abs(Player3.Public_Const_Speed - f) > 1)
         {
@@ -1604,15 +1666,13 @@ public partial class Player3 : I_生命, I_攻击
     }
     I_假死 辅;
     I_假死 主;
-    I_假死 当前; 
+    I_假死 当前;
 
 
-    public    void SetSpeed(float f)
+    public void SetSpeed(float f)
     {
-        SpeedMager.I.SetSpeed(f,f); 
-    }
-
-
+        SpeedMager.I.有变速(f,true ); 
+    } 
 
     public enum 防御   //最开始的小兵大量消耗格挡条  第二个消耗小  让各党，拿了第二个之后i第二个简单第一个难了
     {
@@ -1632,25 +1692,34 @@ public partial class Player3 : I_生命, I_攻击
     public Fly_Ground Fly;
 
 
-    public Func<  GameObject, bool> Hit_FuncFSM;
+    public Func<GameObject, bool> Hit_FuncFSM;
 
     No_Re RRR = new No_Re();
 
-    public Vector2  受伤Force; 
+    public Vector2 受伤Force;
     public bool 硬抗;
 
     Int不重复 IIIIIIIB = new Int不重复();
+
+
+    GameObject LastGame;
     /// <summary>
     /// 999 秒杀
     /// </summary>
     /// <param name="i"></param>
     /// <param name="obj"></param>
-    public override void 被扣血(float i, GameObject obj, int SKey=0)
-    { ///不能反弹碰撞伤害   
-        
+    public override void 被扣血(float i, GameObject obj, int SKey = 0)
+    { ///不能反弹碰撞伤害    
         Debug.LogError("被扣血" + i);
         if (SKey == 0) SKey = Initialize.Get_随机Int();
-        if (!IIIIIIIB.Add(SKey)) return; 
+        if (!IIIIIIIB.Add(SKey)) return;
+
+        if (LastGame != obj  )
+        {
+            LastGame = obj;
+            Initialize_Mono.I.Waite(() => { LastGame = null; },0.2f);
+        }else return;
+
         if (i!=999)
         {
             if (HPROCK) return;
@@ -1667,7 +1736,8 @@ public partial class Player3 : I_生命, I_攻击
         {  
             受伤.EnterHit(i,0, obj,硬抗);
             Debug.LogError("被扣血  前" + 当前hp);
-            当前hp -= i;
+            //当前hp -= i;
+            当前hp -= 1;
             Debug.LogError("被扣血  后" + 当前hp);
             if (!硬抗) 受伤了?.Invoke(); 
         }

@@ -10,14 +10,18 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
     监控激活碰撞框 J;
     MonoMager M;
     public bool Deb;
+
+    [SerializeField]
+    SpriteRenderer sp;
     public bool 暂停 { get  ; set  ; }
     public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
 
     List<Fly_Ground> Flist = new List<Fly_Ground>();
     private void Awake()
     {
-        gameObject.组件<监控激活碰撞框>(ref J);
-        gameObject.组件<MonoMager>(ref M); 
+        gameObject.组件 (ref sp);
+        gameObject.组件 (ref J);
+        gameObject.组件 (ref M); 
 
         J.是我 += (b) =>
         {
@@ -55,6 +59,20 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
     private float speed_Lv=1;
     I_Speed_Is I => this;
 
+    private void Update()
+    {
+        if (被机关触发)
+        {
+            if (开启)
+            {
+                sp.color = Color.white;
+            }
+            else
+            {
+                sp.color = Color.black;
+            }
+        }
+    }
     private void FixedUpdate()
     { 
         if (暂停) return; 
@@ -67,6 +85,9 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
 
             触发();
         }
+        float ff = time / 间隔;
+        ff = Mathf.Clamp(ff,0.2f,1) * 2f;
+        transform.localScale = new Vector3(transform.localScale.x, ff);
     }
     bool 开启 = true;
     public bool 被机关触发;

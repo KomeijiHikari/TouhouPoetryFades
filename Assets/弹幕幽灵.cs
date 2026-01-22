@@ -53,8 +53,7 @@ namespace Enemmy
             at.ATK += () => {
                 EVENt?.Invoke();
             };
-            at.ATK2 += () => {
-                Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            at.ATK2 += () => { 
                 to_state(move);
             };
             move.Enter += () =>
@@ -68,7 +67,7 @@ namespace Enemmy
                 movestartTime += Time.fixedDeltaTime;
                 time -= Time.fixedDeltaTime;
                 Vector3 target;
-                if (j.发现玩家了吗 && time < 0)
+                if (j.发现玩家了吗_ && time < 0)
                 {
                     target = Player3.I.transform.position;
                 }

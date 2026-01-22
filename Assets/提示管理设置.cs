@@ -8,13 +8,7 @@ using UnityEngine;
 public class 提示管理设置 : MonoBehaviour
 {
 
-    public List<I_BOOL> BBs;
-
-    //private void Awake()
-    //{
-    //    Initialize_Mono.I.TsL.Add(this);
-    //    BBs = new List<I_BOOL>(GetComponents<I_BOOL>());
-    //}
+    public List<I_BOOL> BBs; 
     private void Start()
     {
         Initialize_Mono.I.TsL.Add(this);
@@ -30,7 +24,7 @@ public class 提示管理设置 : MonoBehaviour
 
             var a = BBs[i];
             bool 好 = a.好嘛();
-            if (a.反转) 好 = !a.好嘛();
+            //if (a.反转) 好 = !a.好嘛();
             if (!好)
             {
                 ///不好就关掉

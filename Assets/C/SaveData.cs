@@ -137,6 +137,13 @@ public static class Save_D
     //    }
     //    存档字典_.Add(name,value);
     //}
+    /// <summary>
+    ///  Jes表示是否需要 文字转换成杰森
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <param name="Jes"></param>
+    /// <returns></returns>
     public static T Load_Value_D<T>(string name,bool Jes=false )
     {
         if (存档字典_ != null)
@@ -266,6 +273,7 @@ public static class Save_D
 }
 public static class Save_static
 {
+    public static string 假tr实例 { get; } = "假tr实例";
     public static string 按键 { get; } = "按键";
     public static string 已经死掉的机关 { get; } = "机关";
     public static string text { get; } = "text";
@@ -289,6 +297,7 @@ public static class Save_static
 
     public static void 删除所有()
     {
+        //DeletsText(假tr实例+ ".txt");
         DeletsText(小地图 + ".txt");
         DeletsText(存档点位+".txt");
         DeletsText(text + ".txt");
@@ -310,16 +319,19 @@ public static class Save_static
         PlayerPrefs.Save();
     }
 
-    public static void SaveinText( this  object obj, string saveFileName)
+    public static void SaveinText( this  object obj, string saveFileName,bool Deb=false)
     {
-        SaveinText( saveFileName,  obj);
+        SaveinText( saveFileName,  obj,Deb);
     }
-    public static void SaveinText(string  saveFileName,object obj)
+    public static void SaveinText(string  saveFileName,object obj, bool Deb = false)
     { 
    
         //如果已经存在，就会覆盖掉
-        var j = JsonUtility.ToJson(obj,true); 
-        var path = Path.Combine (Application.persistentDataPath,saveFileName+".txt");
+        var j = JsonUtility.ToJson(obj,true);
+        if (Deb)
+            Debug.LogError( "内容" + j);
+   
+            var path = Path.Combine (Application.persistentDataPath,saveFileName+".txt");
         if (Initialize_Mono.I.打包额外打印)
         {
             Debug.LogError("文件名字:" + saveFileName + "路径    " + path+"内容 "+j);
@@ -329,8 +341,8 @@ public static class Save_static
         try
         {
             File.WriteAllText(path, j);
-#if UNITY_EDITOR
-            Debug.Log("存到了" + path);
+#if UNITY_EDITOR 
+                Debug.Log("存到了" + path  ); 
 #endif
         }
         catch (System.Exception   e)

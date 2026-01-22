@@ -72,7 +72,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 874774346955418561}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -4406.165}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0001993, y: 1.0001993, z: 1.0001993}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -125,4 +125,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.61
-  m_Text: "\u672A\u83B7\u5F97\u7684\u82B1\u74E3\u53EF\u4EE5 \u6309M\u6253\u5F00\u5730\u56FE\u67E5\u770B"
+  m_Text: "\u76EE\u6807\u51FA\u73B0 \u6309M\u6253\u5F00\u5730\u56FE\u67E5\u770B \u9EC4\u8272\u56FE\u6807\u662F\u65B0\u7684\u76EE\u6807"

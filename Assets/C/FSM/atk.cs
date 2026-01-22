@@ -96,6 +96,7 @@ public static class A_N
 }
 public abstract  class  atkBase: State_Base
 {
+    protected virtual float AtkSpeed => Player3.I.玩家数值.攻击速度加成;
     protected bool 蓄力攻击
     {
         get => f.变速攻击;
@@ -158,9 +159,9 @@ public abstract  class  atkBase: State_Base
 
     protected CollerValue 上升攻击 { get; set; } = new(new Vector2(1.55f, -1.39f), new Vector2(3.16f, 5.52f));
     protected CollerValue 圆形攻击 { get; set; } = new(new Vector2(0.6f,-0.81f), new Vector2(6.4f,6.12f));
-    protected CollerValue   空中 { get; set; } = new(new Vector2(3.42f, -0.6f), new Vector2(3.8f, 3.3f));
-    protected CollerValue 普攻近 { get; set; } = new(new Vector2(2.5f,-0.7f), new Vector2(3.4f,3.1f));
-    protected CollerValue 普攻远 { get; set; } = new(new Vector2(3.98f, -0.6f), new Vector2(4, 3.3f));
+    protected CollerValue   空中 { get; set; } = new(new Vector2(2.7f, -0.6f), new Vector2(5.3f, 3.3f));
+    protected CollerValue 普攻近 { get; set; } = new(new Vector2(1.84f,-0.7f), new Vector2(4.7f,3.1f));
+    protected CollerValue 普攻远 { get; set; } = new(new Vector2(2.77f, -0.6f), new Vector2(6.41f, 3.3f));
     protected CollerValue d蹲 { get; set; } = new(new Vector2(3.98f, -1.3f), new Vector2(5, 1.62f));
     protected CollerValue Down { get; set; } = new(new Vector2(0.44f, -1.52f), new Vector2(1.9f, 4.5f));
     public override void 方向改变(bool obj)  {  }
@@ -188,7 +189,7 @@ public abstract  class  atkBase: State_Base
     }
     public override void UpdateState()
     {
- 
+        A.AnimSpeed = AtkSpeed + 1;
         if (Player.Atk)
         {
             动画阶段 = 阶段.Action;
@@ -219,12 +220,13 @@ public abstract  class  atkBase: State_Base
         if (a == null) return false  ; 
         if ( !a.CompareTag(Initialize.One_way))return false ; 
         var F = a.gameObject.GetComponent<Fly_Ground>();
+        if (F == null) return false;
         if (!Player3.I.N_.箭矢弹反)
         {
             F.旋转触发(0);
             return false;
         }
-        if (F==null) return false;
+
         ///平台和箭矢的区分  
         if (!F.可以旋转)    return true; 
     
@@ -263,7 +265,7 @@ public abstract  class  atkBase: State_Base
         }
         else return false;
     } 
-    protected bool 消弹()
+    public bool 消弹()
     {
         bool a = false;
         if (判定框.所有碰撞体 != null && 判定框.所有碰撞体.Count > 0)
@@ -274,7 +276,7 @@ public abstract  class  atkBase: State_Base
 
                 if (CC!=null)
                 {
-                    var A = CC.GetComponent<Bullet>();
+                    var A = CC.GetComponent<I_消弹>();
                     if (A != null)
                     {  
                     if (A.被消弹())
@@ -303,8 +305,12 @@ public abstract  class  atkBase: State_Base
         
         for (int i = 0; i < 判定框.敌人.Count; i++)
         {
-            if (判定框.敌人[i] == null) Debug.LogError("A null" );
-            if (判定框.敌人[i] == null)      continue;
+            if (判定框.敌人[i] == null)
+            {
+            Debug.LogError("A null" );
+                continue; 
+            }
+            
            
             var e = 判定框.敌人[i];
 
@@ -345,16 +351,27 @@ public abstract  class  atkBase: State_Base
     {
 
     }
-    protected void 提一下(float Y)
+    protected void 提一下(float Y,float 水平约束_最慢乘值=0,float 水平约束_最大乘值 = 1)
     {
-      var Lerp=  Mathf.Clamp(IP.方向正零负_非零计时器,0.7f,1); 
-        Player.Velocity = new Vector2(Player.Velocity.x * Lerp, Y);
-        //if (IP.水平操作_==0)   Player.Velocity = new Vector2(Player.Velocity.x * IP.水平操作插值, Y);
+        Y = MathF.Max(Y, Player.Velocity.y-1);
+    
+            if (水平约束_最慢乘值==0)
+        {
+            //if (Player.加速了) Player.Velocity = new Vector2(Player.Velocity.x, Y);
+            //else Player.Velocity = new Vector2(Player.Velocity.x / 4, Y);
 
-        //else Player.Velocity = new Vector2(Player.Velocity.x, Y);
-        return;
-        if (Player.加速了) Player.Velocity = new Vector2(Player.Velocity.x, Y);
-        else Player.Velocity = new Vector2(Player.Velocity.x/4, Y); 
+ 
+            Player.Velocity = new Vector2(0, Y);
+        }
+        else
+        {
+            var Lerp = Mathf.Clamp(IP.方向正零负_非零计时器, 水平约束_最慢乘值, 水平约束_最大乘值);
+
+
+                Player.Velocity = new Vector2(Player.Velocity.x * Lerp, Y);
+        }
+ 
+
     }
 }
 public class atk : atkBase
@@ -485,18 +502,22 @@ public class atk : atkBase
             return;
         }
         base.UpdateState();
+        if (Player.N_. 攻击打断)
+        { 
         if (IP.按键检测_按下(IP.k.跳跃))
         {
             Player.闪光();
             Player.跳跃触发();
             f.To_State(E_State.sky);
-        }
+                return;
+            }
         if (IP.按键检测_按下(IP.k.冲刺))
         {
             Player.闪光();
             f.To_State(E_State.dash);
+                return;
+            }
         }
-
         击中效果();
     }
 
@@ -540,8 +561,23 @@ public class skyatk : atkBase
     public override void UpdateState()
     {
         base.UpdateState();
+        if (Player.N_.攻击打断)
+        {
+            if (IP.按键检测_按下(IP.k.跳跃))
+            {
+                f.To_State(E_State.cricleatk);
+                return;
+            }
+            if (IP.按键检测_按下(IP.k.冲刺))
+            {
+                f.To_State(E_State.skydash); return;
+            }
+        }    
 
-        if (击中效果()) 提一下(7); 
+        if (击中效果())
+        {
+            提一下(7, 0.2f,0.5f);
+        } 
     }
     public override void 接触地面()
     {
@@ -557,7 +593,7 @@ public class skyatk : atkBase
     protected override void 开启碰撞框播放特效()
     {
         base.开启碰撞框播放特效();
-        提一下(5);
+        提一下(5, 0.2f, 0.5f);
     }
     protected override void 播放相应动画()
     {
@@ -614,9 +650,13 @@ public class skyatk : atkBase
 }
 public class cricleatk : atkBase
 {
+    public override void 方向改变(bool obj) { 
+        Player.方向改变(obj); 
+    }
     public override bool 能力激活的 { get => Player.N_.圆劈; set => Player.N_.圆劈 = value; }
     public override void 接触地面()
     { 
+        消弹 ();
         if (IP.方向正零负 == 0)
         {
             A.Playanim(A_N .idle_jump_to0);
@@ -638,15 +678,21 @@ public class cricleatk : atkBase
         {
             return true;
         }
-        //if (Player.圆形攻击过了)
-        //{
-        //    return false;
-        //}
+        if (!Player.N_.无限圆劈)
+        {
+            if (Player.圆形攻击过了)
+            {
+                return false;
+            }
+        }
+
         return true;
     }
+    bool 击中生物;
     public override void ExitState(E_State e)
     {
         base.ExitState(e);
+        击中生物 = false;
         当前攻击特效名字 = null;
         判定框.关闭再打开();
         Player.方向更新();
@@ -683,32 +729,54 @@ public class cricleatk : atkBase
     public override void UpdateState()
     {
         base.UpdateState();
+        if (Player.N_.攻击打断)
+        {
+            if (IP.按键检测_按下(IP.k.攻击))
+            {
+                f.To_State(E_State.skyatk);
+                return;
+            }
+            if (IP.按键检测_按下(IP.k.冲刺))
+            {
+                f.To_State(E_State.skydash);
+                return;
+            }
+        }
+   
 
         if (击中效果()) {
             ///击中后重置
+
+            Player.空中攻击过了 = false;
             Player.圆形攻击过了 = false;
-            提一下(Player.玩家数值.圆斩上升力);
-        } 
- 
+            //提一下(Player.玩家数值.圆斩上升力);
+            提一下(Player.玩家数值.圆斩上升力, 0.7f); 
+             
+        }
+        if (IP.方向正零负 != 0)  Player.水平限制();
     }
     Int不重复 BInt=new Int不重复();
     protected override bool 击中效果()
-    {
+    { 
+        for (int ti = 0; ti < 判定框.所有碰撞体.Count; ti++)
+        {
+            var col = 判定框.所有碰撞体[ti];
+            Debug.LogError(col.name);
+        }
         if (判定框.所有碰撞体 !=null&& 判定框.所有碰撞体.Count>=1)
         {
             判定框Base.打到的类型 asd;
             bool RRR = false;
-            ///先判定是不是人
+            ///先判定是不是人 
             if (判定框.敌人 != null && 判定框.敌人.Count >= 1) asd = 判定框Base.打到的类型.敌人;
             else
             {
                 ///  碰撞框框要是碰到了 能踩但是不是OneWay 那么OneWay不会被触发 主角起飞
                 ///  
                 var originalAll = 判定框.所有碰撞体;
-                
+  
                 // If there are any One_way colliders, prefer to process only those; otherwise process all colliders.
-                List<Collider2D> targetList = null;
-                Debug.LogError(判定框.所有碰撞体.Count);
+                List<Collider2D> targetList = null; 
                 if (originalAll != null && originalAll.Count > 0)
                 {
                     var oneWay = originalAll.FindAll(c => c != null && c.gameObject.CompareTag(Initialize.One_way));
@@ -728,18 +796,19 @@ public class cricleatk : atkBase
 
                 if (targetList != null)
                 {
- 
-                        for (int ti = 0; ti < targetList.Count; ti++)
+    
+                    for (int ti = 0; ti < targetList.Count; ti++)
                     {
                         var col = targetList[ti];
+
+
                         if (col == null) continue; 
                          var e = col;
 
                         bool 不空而且旋转 = false; 
                         var FF = e.GetComponent<Fly_Ground>();
                        
-                        if (FF!=null)    if ( FF.旋转1)  不空而且旋转 = true;
-                        Debug.LogError(col.gameObject + "AAAAAAAAAAAAAAAAAAAAAAAA");
+                        if (FF!=null)    if ( FF.旋转1)  不空而且旋转 = true; 
                         if (旋转箭失触发(e))
                         { 
                             // null the corresponding element in the original list so later logic sees it removed
@@ -749,8 +818,7 @@ public class cricleatk : atkBase
                                 if (origIndex >= 0) originalAll[origIndex] = null;
                             }
                             RRR = false;
-                        }
-                        Debug.LogError(col.gameObject + "BBBBBBBBBBBBBBBBBBBBBB");
+                        } 
                         if (Initialize_Mono.I.能踩(e)  )
                         {
 
@@ -807,8 +875,7 @@ public class cricleatk : atkBase
                                     //    Player.transform.position += new Vector3(0f, delta);
                                     //}
                                     Player.transform.position += new Vector3(0f, delta);
-                                    Debug.LogError("上升上升上升上升上升上升上升上升上升上升上升上升上升上升    "+Time.frameCount);
-
+                                 
                                     //Player.transform.position += new Vector3(0f, delta);
 
 
@@ -857,21 +924,18 @@ public class cricleatk : atkBase
                                 return false;
                             } 
                         }
-
-                        Debug.LogError(col.gameObject + "CCCCCCCCCCCCCCCCCCCCCCCC");
+                         
 
                         //if (RRR)
                         //{
                         //    判定框.开启判定框判定框(false, 判定框.Cc); ///为何要继续？？
                         //    //升起来
                         //    return RRR;
-                        //}
-                            
-                
-                    }
-                    Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAA"+ RRR);
+                        //} 
+                    } 
                     if (RRR)
                     {
+               
                         判定框.开启判定框判定框(false, 判定框.Cc); ///为何要继续？？
                         //升起来
                         return RRR;
@@ -897,9 +961,12 @@ public class cricleatk : atkBase
                 }
 
                 //Debug.LogError(RRR);
-                if (RRR) 判定框.开启判定框判定框(false, 判定框.Cc); ///为何要继续？？
-                //升起来
+                if (RRR) 
+                { 
+                    判定框.开启判定框判定框(false, 判定框.Cc); ///为何要继续？？
                 return RRR;
+                }
+                //升起来
             }
                 if (判定框.敌人 != null && 判定框.敌人.Count >= 1)
             {
@@ -918,8 +985,8 @@ public class cricleatk : atkBase
 
                     var a = e.gameObject.GetComponent<Phy>();
                     Player.伤害(e);
-                    a.Goto_thisWay(new Vector2(Player.Bounds.center.x, Player.Bounds.center.y - 3f));
-
+                    a.Goto_thisWay(new Vector2(Player.Bounds.center.x, Player.Bounds.center.y - 6f));
+                    击中生物 = true;
                     bool b = e.当前hp <= 0;  //    是扣血之后判断
                     if (b)
                     {
@@ -953,7 +1020,7 @@ public class cricleatk : atkBase
         Debug.LogError(Player.圆形攻击过了);
 
         if (!Player.圆形攻击过了)
-            提一下(5);
+            提一下(5, 0.7f);
         Player.圆形攻击过了 = true;
   
         A.Playanim(A_N.cricleatk_0_ );
@@ -1152,7 +1219,7 @@ public class upatk : atkBase
         A.Playanim(A_N.upatk_0_);
         if (立即结束)
         {
-            A.AnimSpeed = 1.5f;
+            A.AnimSpeed = 1.5f* AtkSpeed;
         }
         动画阶段 = 阶段.ready;
 
@@ -1178,7 +1245,32 @@ public class upatk : atkBase
    /// </summary>
     float Velocity_Y = -1;
     public override void UpdateState()
-    { 
+    {
+        if (Player.N_.攻击打断)
+        {
+            if (IP.按键检测_按下(IP.k.冲刺))
+            {
+                Player.闪光();
+                if (Player.Ground)
+                {
+                    f.To_State(E_State.dash);
+                    return;
+                }
+                else 
+                {
+                f.To_State(E_State.skydash);
+                    return;
+                }
+            }
+
+          
+                if (IP.按键检测_按下(IP.k.攻击))
+            {
+                Player.闪光();
+                if (Player.Ground) f.To_State(E_State.atk);
+                   else f.To_State(E_State.skyatk);
+                } 
+        }
             switch (动画阶段)
         {
             case 阶段.ready:
@@ -1259,8 +1351,7 @@ public class upatk : atkBase
         return false;
     }
     protected override void 单个攻击结束()
-    {
-       
+    { 
         if (Player.Ground)
         {
             Debug.LogError("AZZZZZZZZZZZZZ");
@@ -1270,7 +1361,6 @@ public class upatk : atkBase
         {
             Debug.LogError("BBBBBBBBBBA");
             f.To_State(E_State.sky);
-        }
-
+        } 
     } 
 }

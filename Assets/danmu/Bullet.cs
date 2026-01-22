@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 
-public class Bullet_base : MonoBehaviour, I_Speed_Change
+interface I_消弹
 {
-
+    public bool 被消弹();
+}
+public class Bullet_base : MonoBehaviour, I_Speed_Change
+{ 
     /// <summary>
     ///  应该是一个列表
     ///  
@@ -49,7 +52,8 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     public bool Deb;
     private void Awake()
     {
-        gameObject.layer = Initialize.L_Box_Ground;
+        
+        //gameObject.layer = Initialize.L_Box_Ground;
     }
     public float L线速度;
     public float A角速度
@@ -109,7 +113,7 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
             }
             方向1 = value; } }
 
-    float speed_Lv = 1f;
+ public    float speed_Lv = 1f;
     [Range(0, 1)]
     public  float 追踪玩家=0;
 
@@ -125,6 +129,7 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     }
     [SerializeField ]
   protected   LayerMask 子弹碰撞;
+ 
     /// <summary>
     /// 碰到  地面  玩家
     /// 申明周期无
@@ -144,15 +149,37 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
                 方向 = Vector2.Lerp(Initialize.To_角度到方向(A角速度 * Time.fixedDeltaTime), 玩家方向, 追踪玩家);
 
             var 下一目标 = transform.position + L线速度 * (Vector3)方向 * Time.fixedDeltaTime * I_S.固定等级差;
-        var a=    Initialize.碰撞射线(transform.position, 下一目标, 子弹碰撞);
 
-            if (a==Vector2 .zero)  transform.position = 下一目标; 
-            else   transform.position = a;
+            var Ray = Initialize.碰撞两点检测(transform.position, 下一目标, 子弹碰撞);
+        var a= Ray.point;
+
+            if (a == Vector2.zero)
+            { 
+ 
+                transform.position = 下一目标;
+            }
+            else
+            {
+                ////下一帧将会发生碰撞 
+                ///
+                if (Ray.collider.CompareTag(Initialize.Player))
+                {
+                    transform.position = 下一目标;
+                }
+                else
+                {
+                    ///停止
+                    transform.position = a;
+                }
+  
+                //Initialize_Mono.I.Waite(() => { });
+            }
+
        
 
         }
         else
-        {
+        { 
             transform.rotation *= Quaternion.Euler(new Vector3(0, 0, 1f) * A角速度 * Time.fixedDeltaTime * I_S.固定等级差);
             transform.Translate(L线速度 * Vector2.right * Time.fixedDeltaTime * I_S.固定等级差, Space.Self); 
             //if (Deb) Debug.LogError("");
@@ -178,7 +205,7 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
 
 }
 
-public class Bullet : Bullet_base, I_攻击, I_ReturnPool
+public class Bullet : Bullet_base, I_攻击, I_ReturnPool, I_消弹, I_消失进度
 {
     [SerializeField]
     float deadtime = -1;
@@ -187,18 +214,10 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool
     ///    难崩
     /// </summary>
     /// <param name="collision"></param>
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.layer == Initialize.L_Player && deadtime == -1f)
-    //    {
-    //        if (collision.collider.gameObject == Player3.I.gameObject) 
-    //            deadtime = 0; 
-    //    }
-    //}
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
 
+        base.FixedUpdate();
         var a = Physics2D.BoxCast(transform.position, transform.localScale, 0f, Vector2.zero, 0f,  子弹碰撞);
         if (a)
         {
@@ -217,13 +236,19 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool
          
         if (deadtime >= 0)
         {
+   
             deadtime += Time.fixedDeltaTime * I_S.固定等级差;
-            if (deadtime > 0.3f)
+            进度 = deadtime / Initialize_Mono.I.子弹引线时间;
+ 
+            if (deadtime > Initialize_Mono.I.子弹引线时间)
             {
                 我死了();
             }
         }
+        是 = deadtime >= 0;
     }
+    public bool 是 { get; set; }
+    public float 进度 { get; set; }
     public float atkvalue { get; set; } = 10f;
     public string Pool_Key_name { get; set; } = Surp_Pool.能量子弹;
     public void 扣攻击(float i)
@@ -238,8 +263,7 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool
     /// </summary>
     /// <returns></returns>
     public bool 被消弹()
-    {
-        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+ 可以被消灭);
+    { 
         if (可以被消灭)
         {
             特效_pool_2.I.GetPool(transform.position, T_N.特效消弹);
@@ -254,14 +278,15 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool
     }
     void 无了()
         {
-        deadtime = -1;
+        deadtime = -1; 
         结束?.Invoke(this);
         Surp_Pool.I.ReturnPool(gameObject);
 
     }
+    
   protected override void 我死了()
     {
-;
+ 
     var a=    Physics2D.OverlapCircle(transform.position,0.5f,1<<Initialize .L_Player );
         if (a!=null) Player3.I.被扣血(atkvalue, gameObject, 0);
 

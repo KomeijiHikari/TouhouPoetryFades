@@ -115,7 +115,26 @@ public class 荆棘 : 泛用状态机
             开关(false);
         };
     }
- 
+    bool LastDead;
+    protected override void Update()
+    {
+        
+        base.Update();
+
+        if (E.is_Dead!= LastDead)
+        {
+            LastDead = E.is_Dead;
+            if (E.is_Dead)
+            {
+                UniTask.Delay(TimeSpan.FromSeconds(0.1f)).ContinueWith(() => {
+                    for (int i = 0; i < 固定ObjList.Count; i++)
+                    {
+                        固定ObjList[i].关闭();
+                    }
+                }).Forget();
+            }
+        }
+    }
     void 开关( bool b)
     {
         for (int i = 0; i < 固定ObjList.Count; i++)

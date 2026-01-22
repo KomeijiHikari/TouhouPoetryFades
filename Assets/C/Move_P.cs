@@ -213,9 +213,32 @@ public     E_移动方式 移动方式;
         return;
         bc.isTrigger = b;
     }
-
-    void move()
+    public Vector2  Lerp
     {
+        get {
+            var vax = transform.localPosition.x - next_.x;
+            var vay = transform.localPosition.y - next_.y; 
+            static float asd(float 总, float value)
+            {
+                value=Mathf.Abs(value);
+                if (value> 总)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return value / 总;
+                } 
+            }
+            return new Vector2(asd(单位速度,vax), asd(单位速度, vay)); 
+        }
+    }
+    public Vector2Int 移动方向
+    {
+        get => Pla.localPosition.你在我的哪里(next_);
+    }
+    void move()
+    { 
     Pla.localPosition = Vector3.MoveTowards(Pla.localPosition, next_,   帧移动距离);
         if (Vector3.Distance(Pla.localPosition, next_) <= 0.1) change();  
     }
@@ -225,7 +248,12 @@ public     E_移动方式 移动方式;
         {
             return     (int)Initialize.返回和对方相反方向的标准力(Pla.localPosition,next_) .x         ;
         }
+    } 
+    public float 单位速度
+    {
+        get => Initialize_Mono.I.Mi.GetMin(I_S.固定等级差) * Self_speed;
     }
+
     /// <summary>
     ///      过快，会闪动 
     ///      Update 里  Player 抵消，PlayerForce里会卡
@@ -233,9 +261,8 @@ public     E_移动方式 移动方式;
    public float 帧移动距离
     {
         get
-        {
-            
-            return Initialize_Mono.I.Mi.GetMin(I_S.固定等级差) * Time.fixedDeltaTime*Self_speed;
+        { 
+            return 单位速度 * Time.fixedDeltaTime;
         }
     }
     public float FloatSeeMe;
@@ -326,7 +353,7 @@ public     E_移动方式 移动方式;
         //if (gameObject.layer!=Initialize .L_Ground) return;s
 
         bool 碰到的是玩家 = c.collider.CompareTag(Initialize.Player  );
-        Debug.LogError("碰到了"+碰到的是玩家+gameObject.name + Time.frameCount);
+  if(Deb)      Debug.LogError("碰到了"+碰到的是玩家+gameObject.name + Time.frameCount);
         if (Initialize_Mono.I.MoveP_优化)
             if (碰到的是玩家) 
         { 
@@ -389,7 +416,7 @@ public     E_移动方式 移动方式;
         if (collision.gameObject.CompareTag(Initialize.Player))
         {
             if (Player3.I.MovePTimef +10 >= Time.frameCount) return;
-            Debug.LogError("离开了"+gameObject.name + Time.frameCount);
+       if(Deb)     Debug.LogError("离开了"+gameObject.name + Time.frameCount);
             因为玩家我不该动 = false;
 
             Player3.I.脚下 =null;
@@ -430,15 +457,21 @@ public partial class Move_P : I_Revive,I_假死
     }
     平台动画效果 p;
     public bool 重制()
-    { 
-        p.重置特效(盒子);
-        if (gameObject.activeSelf)
+    {
+        if (盒子!=null)
         {
-            transform.position = StatWay;
-            假死了(false);
+            p.重置特效(盒子);
+            if (gameObject.activeSelf)
+            {
+                transform.position = StatWay;
+                假死了(false);
+            }
+            return true;
         }
- 
-        return true;
+        else
+        {
+            return false;
+        } 
     }
 
     public void 假死了(bool 假死不)

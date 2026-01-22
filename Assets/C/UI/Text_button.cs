@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,10 @@ public class Text_button : Selectable, ISubmitHandler
 {
     [SerializeField]
  public NB方法  Enter;
+    [Tooltip("经过")]
     [SerializeField]
     public NB方法 EnterSelect;
+    [Tooltip("过去")]
     [SerializeField]
     public NB方法 EnterExit;
     public override void OnPointerDown(PointerEventData eventData)//鼠标按下
@@ -31,7 +34,7 @@ public class Text_button : Selectable, ISubmitHandler
             eventData.selectedObject = sel.gameObject;
         base.OnDeselect(eventData);
             选中=false;
-            Initialize_Mono.I.Debug_(this.GetType(), "取消了" + gameObject.name);
+            Initialize_Mono.I.DebugList_(this.GetType(), "取消了" + gameObject.name);
  
         } 
     }
@@ -65,7 +68,7 @@ public class Text_button : Selectable, ISubmitHandler
 
         }
 
- 
+    public Action<MoveDirection> MoveAction;
     public override void OnMove(AxisEventData eventData)
     {
         base.OnMove(eventData);
@@ -88,6 +91,7 @@ public class Text_button : Selectable, ISubmitHandler
                 Navigate(eventData, FindSelectableOnDown());
                 break;
         }
+        MoveAction?.Invoke(eventData.moveDir);
         //base.OnDeselect(eventData);    因为移动到边缘在移动，当前SELE  没有被改变但是调用所以要判断        要不要用                      
         //旁边没有就不用取消
     }

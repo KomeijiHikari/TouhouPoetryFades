@@ -124,7 +124,7 @@ MonoBehaviour:
   "Velocity\u8C03\u8BD5": 0
   "\u901F\u5EA6\u8C03\u8BD5": 0
   "\u6839\u6027": 0
-  debug_: 1
+  debug_: 0
   "\u5F53\u524D": 1
   "\u79FB\u52A8\u8DDD\u79BB_": 0
   "\u663E\u793A_Speed_": 0
@@ -206,6 +206,7 @@ MonoBehaviour:
   "\u5F53\u524D_": {x: 0, y: 0}
   Stop: 0
   "\u6469\u64E6\u529B": 20
+  ZZZZZZZ: 0
   Deb: 0
   Sp: {fileID: 0}
   Speedd: 0
@@ -285,6 +286,11 @@ MonoBehaviour:
   "\u7279\u6548\u5217\u8868": []
   "\u9700\u8981\u52A8\u753B": 1
   mypo: {x: 0, y: 0}
+  "\u91CD\u751F\u65F6\u95F4": 0
+  "\u66F4\u5B89\u5168\u7684\u5730\u70B9": 0
+  "\u91CD\u751F\u65F6\u4E0D\u7B49\u5F85\u73A9\u5BB6": 1
+  "\u771F\u5B9E\u65F6\u95F4\u590D\u6D3B": 0
+  "\u590D\u6D3B\u8FDB\u5EA6": 0
   "\u5DF2\u7ECF\u8FC7\u53BB\u7684": 0
   "\u754C\u9650": 0
   "\u4EC5\u6D3B\u7740": 0
@@ -324,6 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u5173\u95ED": 0
   "\u6570\u91CF": 0
+  Deb: 0
 --- !u!114 &6459563326737340085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,7 +475,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d982df44c08409241967eb20fb5059cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "I_\u6682\u505C\u7684OBJ": {fileID: 6459563326737340051}
   sp: {fileID: 6459563326898090354}
   L:
     serializedVersion: 2
@@ -476,6 +482,7 @@ MonoBehaviour:
   "\u9047\u89C1\u4E86_": 0
   PoinDeb: 0
   Deb: 0
+  "\u6682\u505C1": 0
 --- !u!1 &6459563328372634138
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,13 +626,9 @@ MonoBehaviour:
   f: 0
   c: {r: 0, g: 0, b: 0, a: 0}
   "\u6FC0\u6D3B\u7684": 0
-  Current_Speed_: 0
-  Speed_: 0
-  "\u8D85\u901F\u7B49\u7EA7": 0
-  "\u900F\u660E\u5EA6": 0
-  "\u53BB\u8272": 0
-  "\u95EA\u70C1\u5F00\u5173": 0
-  "\u95F4\u9694": 0.2
+  Sb: {fileID: 0}
+  Deb: 0
+  SpeedInt: 0
 --- !u!1 &6552181449424526622
 GameObject:
   m_ObjectHideFlags: 0

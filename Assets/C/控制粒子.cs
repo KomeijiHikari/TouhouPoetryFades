@@ -84,11 +84,13 @@ public ParticleSystem pa;
         //int En = pa.GetTriggerParticles(ParticleSystemTriggerEventType.Enter,enter);
         //int Ex = pa.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, exite);
         //设置粒子移动.
+        if(飞向的target!=null)
         if (time>1)
         {
             for (int i = 0; i < 数量; i++)
             {
                 float a = pas[i].startLifetime / pas[i].remainingLifetime + 1;
+
                 pas[i].position += (Vector3)MoveToPosition_(pas[i].position, 飞向的target.position, speed * a * Time.fixedDeltaTime);
                 //pas[i].position = 飞向的target.position;
                 //pas[i].position = MoveToPosition(pas[i].position, 飞向的target.position, speed * a * Time.fixedDeltaTime); 

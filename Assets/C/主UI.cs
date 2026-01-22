@@ -125,10 +125,16 @@ public class 主UI : MonoBehaviour
     public GameObject 大地图;
     [SerializeField]
     SceneField 主菜单场景;
+    public Button_Father_base 战斗加点;
     public Button_Father_base 背包菜单;
     public Button_Father_base 战斗菜单;
     [DisplayOnly]
     public Button_Father_base 当前子菜单;
+
+    public void 加点展开()
+    { 
+        展开(战斗加点);
+    }
     public Button_Father_base 展开(Button_Father_base obj, bool 地面限制 = true)
     {
         if (地面限制) if (!Player.Ground) return null;//玩家站在地上 
@@ -183,12 +189,19 @@ public class 主UI : MonoBehaviour
             return num.ToString(); // 超99保留原数字（或按需返回"99"）
         }
     }
-    //StringBuilder Sb=new StringBuilder();
+    //StringBuilder Sb=new StringBuilder(); 
     private void Update()
     {
+        //if(Player_input.I.按键检测_按下(KeyCode.P))
+        //{
+
+        //    Debug.LogError("AAAAAAAAAAAAAAAAAAAA");
+        //    展开(战斗加点);
+            
+        //}
+
         if (Player_input.I.按键检测_按下(Player_input.I.k.背包))
         {
-            Debug.LogError("AAAAAAAAAAAAAAAAAAAA");
             展开(背包菜单);
         }
         if (Speed!=null)
@@ -218,14 +231,14 @@ public class 主UI : MonoBehaviour
 
         if (Input.GetButtonDown(Initialize.Exite))
         {//从菜单里切回来的时候这个会触发
-            if (Player.Ground)
+
+            if (true|| Player.Ground)
             {
 
                 Player.关闭灵魂();
                 Initialize.时间暂停();
-                //测试.被展开();
-
-                展开(战斗菜单);
+                //测试.被展开(); 
+                展开(战斗菜单,false);
             }
             else
             {

@@ -203,7 +203,7 @@ public class Idle_enemy : State_enemy_Base
     {
         if (时间结束了嘛)
         {
-            if (e.戒备.发现玩家了吗)
+            if (e.戒备.发现玩家了吗_)
             {
 
             } 
@@ -214,7 +214,7 @@ public class Idle_enemy : State_enemy_Base
     {
         if (e_ != state) return;
         时间结束了嘛 = true;
-        if (e.戒备.发现玩家了吗)
+        if (e.戒备.发现玩家了吗_)
         {
             f.To_State(E_enemyState.find);
             return;
@@ -278,7 +278,7 @@ public class Move_enemy : State_enemy_Base
     public override void UpdateState()
     {
 
-            if (e.戒备.发现玩家了吗)
+            if (e.戒备.发现玩家了吗_)
             {
                 f.To_State(E_enemyState.find);
             }
@@ -416,7 +416,7 @@ public class FSM_enemy : FSM_enemy_base
         if (状态消息)
         {
             string a = "敌人状态情况=\n" + "上一个状态：" + I_Enemy_State_L + "当前状态：" + I_Enemy_State_C;
-            Initialize_Mono.I.Debug_(this.GetType(), a);
+            Initialize_Mono.I.DebugList_(this.GetType(), a);
         }
 
 

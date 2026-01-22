@@ -143,13 +143,9 @@ MonoBehaviour:
   f: 0
   c: {r: 0, g: 0, b: 0, a: 0}
   "\u6FC0\u6D3B\u7684": 0
-  Current_Speed_: 0
-  Speed_: 0
-  "\u8D85\u901F\u7B49\u7EA7": 0
-  "\u900F\u660E\u5EA6": 0
-  "\u53BB\u8272": 0
-  "\u95EA\u70C1\u5F00\u5173": 0
-  "\u95F4\u9694": 0.2
+  Sb: {fileID: 0}
+  Deb: 0
+  SpeedInt: 0
 --- !u!1 &3623118884425328883
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +343,7 @@ MonoBehaviour:
   "Velocity\u8C03\u8BD5": 0
   "\u901F\u5EA6\u8C03\u8BD5": 0
   "\u6839\u6027": 0
-  debug_: 1
+  debug_: 0
   "\u5F53\u524D": 1
   "\u79FB\u52A8\u8DDD\u79BB_": 0
   "\u663E\u793A_Speed_": 0

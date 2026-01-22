@@ -76,8 +76,9 @@ public class enemy : BiologyBase, I_¹¥»÷,I_ÉúÃü
     public GameObject ¹¥»÷Ä¿±ê { get;set; }
 
     
-   private void Update()
-    { 
+   protected override void Update()
+    {
+        base.Update();
        A_ .enabled =Áé»ê;
         ½ä±¸.enabled = Áé»ê;
         if (Åö×².Åöµ½)

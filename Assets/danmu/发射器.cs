@@ -202,21 +202,20 @@ namespace 发射器空间
             {
                 Send().transform.position = i;
             }
-        }
+        } 
         public void 炸弹_p_()
         {
-            var a = Initialize.中间并列点(Player3.I.transform.position, B.Count, B.LineAnle);
+            var a = Initialize.中间并列点(Player3.I.Bounds.九个点(E_方向.下), B.Count, B.LineAnle);
             for (int i = 0; i < B.Count; ++i)
             {
                 if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
                 var VVV = a[i];
                 Phy aa = SendP();
-                aa.目标炮(VVV, B.生命周期);
                 aa.Speed_Lv = Speed_Lv;
+                aa.目标炮_方向(VVV,new Vector2(transform.lossyScale.x*1,2));
                 aa.暂停 = false;
-                var P = aa.GetComponent<Phy_检测>();
-                 
-                P.Enter += () =>
+                var P = aa.GetComponent<Phy_检测>(); 
+                P.Stay += () =>
                 {
                        if (P.Rs.Length >= 1)
                     {
@@ -225,25 +224,22 @@ namespace 发射器空间
                         {
                              //var Targgget = P.Rs[0].point;
                             var a = Physics2D.OverlapCircle(aa.transform.position, 3f, 1 << Initialize.L_Player);
-                            if (a != null)        Player3.I.被扣血(10, gameObject, 0);
-                            
-                          
+                            if (a != null)        Player3.I.被扣血(10, gameObject, 0); 
                         }
-                    }
-
+                    } 
                 };
             }
         }
         public void 发射组_p_定位_()
         {
-            var a = Initialize.中间并列点(Player3.I.transform.position, B.Count, B.LineAnle);
+            var a = Initialize.中间并列点(Player3.I.Bounds.九个点(E_方向.下), B.Count, B.LineAnle);
             for (int i = 0; i < B.Count; ++i)
             {
                 a[i].DraClirl(1, Color.blue);
                 if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
                 var VVV = a[i];
                 Phy aa = SendP();
-                aa.目标炮(VVV, B.生命周期);
+                aa.目标炮_时间(VVV, B.生命周期);
             }
         }
         [Button("重力跟踪", ButtonSizes.Large)]
@@ -255,7 +251,7 @@ namespace 发射器空间
                 if (Mathf.Abs(a[i].x - Boss.魔理沙.I.transform.position.x) < 5) continue;
                 var VVV = a[i];
                 Phy aa = SendP();
-                aa.目标炮(VVV, B.生命周期);
+                aa.目标炮_时间(VVV, B.生命周期);
 
                 var P = aa.GetComponent<Phy_检测>();
                 P.Enter += () =>
@@ -581,7 +577,15 @@ namespace 发射器空间
             var Bb = Surp_Pool.I.GetPool(B.pre.name).GetComponent<Phy>();
             var B_ = Bb.GetComponent<Phy_检测>();
             Bb.transform.position = transform.position;
-            B_.Enter += () => {
+            B_.AliveStay += () =>
+            {
+                if (Time.time - B_.EnableTime > 10 / Speed_Lv / Player3.Public_Const_Speed)
+                {
+                    特效_pool_2.I.GetPool(B_.transform.position, T_N.特效闪光爆炸);
+                    Surp_Pool.I.ReturnPool(B_.gameObject, B.pre.name);
+                }
+            };
+            B_.Stay += () => {
                 for (int i = 0; i < B_.Rs.Length; i++)
                 {
                     var aa = B_.Rs[i];
@@ -615,7 +619,7 @@ namespace 发射器空间
         {
 
             var Bb = Surp_Pool.I.GetPool(B.pre.name).GetComponent<Bullet_base>();
-
+  
             初始化子弹(Bb);
 
             if (发射角度指向玩家)

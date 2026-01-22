@@ -27,7 +27,7 @@ public interface I_Speed_Is
     public float 固定等级差
     {
         get
-        {
+        { 
             var f = Speed_Lv / Player3.Public_Const_Speed;
             //var  V = Math.Clamp(f, Initialize_Mono.I.Speed_Min, Initialize_Mono.I.Speed_Max);
             return f;
@@ -183,8 +183,15 @@ public partial class Enemy_base : BiologyBase, I_Speed_Change, I_暂停, I_M_Ridbo
         }
         set
         {
+            if (value!=0&&Debug_)
+            {
+                Debug.LogError(韧性__+value);
+            }
             韧性__ = Mathf.Clamp(value, -Max韧性, Max韧性);
-
+            if (value != 0 && Debug_)
+            {
+                Debug.LogError(韧性__+gameObject.name + value);
+            }
         }
     }
 public  float Max韧性;
@@ -250,7 +257,19 @@ public  float Max韧性;
         ///满    加速度归零  破防为flase;
         ///大于零，每帧回韧性，砍一刀扣韧性
         ///小于零   破防为true  每帧回韧性；        v<0发射  砍一刀扣韧性    
-        韧性_ += v;
+        ///
+
+        韧性_ = 韧性_+ v;
+        if (Debug_)
+        {
+            if (v != 0)
+            {
+
+                Debug.LogError(v +"     后"+韧性_ + "    public int   韧性(float v )"  );
+            }
+        }
+
+
         if (韧性_ == Max韧性)
         {
             回复到满 = false;
@@ -516,9 +535,9 @@ public  float Max韧性;
 
     [SerializeField] [DisplayOnly]
     bool 限制_;
-    private void Update()
+    protected override void Update()
     {
-  
+  base.Update();
         限制_ = I_S.限制;
         if (Debug_)
         {
@@ -627,15 +646,7 @@ public  float Max韧性;
                 {
                     Debug.LogError(i+ "            if (Debug_)      if (Debug_)      if (Debug_)    ");
                 }
-            }
-            //if (SKey == 0)
-            //{
-            //    韧性(-i);
-            //}
-            //else
-            //{
-            //    韧性(-SKey);
-            //}
+            } 
              韧性(-i);
             ///血液特效
             if (粒子系统!=null)
@@ -767,7 +778,10 @@ public partial class Enemy_base : I_Dead, I_Revive
         StartWay = transform.position;
 
         StartWay.DraClirl(5, Color.blue, 20);
-
+        if (Max韧性==0)
+        {
+            Max韧性 = 2;
+        }
     }
     [UnityEngine.Tooltip(" 死亡时候关闭  复活时候开启的组件　")]
     [SerializeField]
@@ -800,7 +814,8 @@ public partial class Enemy_base : I_Dead, I_Revive
         E_重制?.Invoke();
        v?.EnableBehavior(); ///恢复
 
-        an.Play(idle);
+ 
+        an.TryPlay(idle);
         HPROCK = false; //和死亡状态相对应
         is_Dead = false;
         开箱();

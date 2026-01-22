@@ -32,6 +32,7 @@ public class 摄像机 : MonoBehaviour
         return (90 - angleA) * 2;
     }
 
+    [Obsolete("已经被弃用了", false)]
     public static Vector2 to_屏幕坐标(Bounds b, Vector2 va)
     { 
         // 计算Bounds的左下角和右上角坐标  
@@ -56,11 +57,24 @@ public class 摄像机 : MonoBehaviour
         }
     }
     public static 摄像机 I { get; private set; }
-     
+
+    [Obsolete("已经被弃用了", false)]
     public Vector2  返回对应屏幕尺寸(float 尺寸)
     {
+
+
         return new Vector2(尺寸 * Initialize.屏幕横纵比 , 尺寸) * 2f;
     }
+    public Bounds GetBouns()
+    {
+        Vector2 v2 = Camera.main.transform.position;
+        return new Bounds(v2, GetSize()); 
+    }
+    public Vector2 GetSize( )
+    {
+        return Camera.main.GetCarmeraSize(W);
+    }
+    [Obsolete("已经被弃用了", false)]
     public   Bounds Camera_Bounds
     {
         get
@@ -114,9 +128,7 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
  //public void FOV_直接至(float  f)
  //   {
  //       Fov = f;
- //   }
- 
-
+ //   } 
     public  void FOV_缓动至( float FOV,float time, bool 用直线 = false)
     {
         if (Coroutine_缓动 != null)
@@ -125,11 +137,7 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
             Coroutine_缓动 = StartCoroutine(IE_FOV(FOV, time )); 
     }
  
-[Button("设置一下", ButtonSizes.Large)]
-public void setFov(float v)
-    {
-        Fov = v;
-    }
+ 
     //IEnumerator IE_FOV2(float FOV, float time, bool 用直线 = false,float time2=0 )
     //{
     //    float TargetFov = (FOV > 当前场景真正最大FOV) ? 当前场景真正最大FOV : FOV;
@@ -283,8 +291,10 @@ public void setFov(float v)
     float 碰撞框目标FOV;
     public void Set_Target_Fov(float FovValue)
     {
+        Debug.LogError("Set                 "+ FovValue);
         碰撞框目标FOV = FovValue; 
     }
+public Vector2Int 相机框Int { get; private set; }
     private void Start()
     {
         //c = GetComponent<CinemachineVirtualCamera>();
@@ -292,7 +302,7 @@ public void setFov(float v)
         {
             设置相机跟随(GameObject .FindGameObjectWithTag    ("Player"));
         }
-
+        Initialize_Mono.I.重制触发 += (int j, int i) => { 相机框Int = new Vector2Int(j, i); };
         //Initialize_Mono.I.Waite(() => FOV_缩放并且还原(5, 3, 1), 2f);
         //EventManager.I.Invoke(EventManager.切换场景触发, gameObject);
     }  
@@ -352,18 +362,29 @@ public void setFov(float v)
         var Value = Initialize.返回兼容相机碰撞框的摄像机尺寸(碰撞组件.m_BoundingShape2D.bounds.size ,1000);
 
         //Debug.LogError(Value);
-        当前场景真正最大FOV = Value; 
+        当前场景真正最大FOV = Value;
+
+        Debug.LogError(当前场景真正最大FOV);
+
+
 
         //Fov = 当前场景真正最大FOV;
         float Result_Fov = 碰撞框目标FOV;
+
+        Debug.LogError(Result_Fov);
+
         ///有没有目标
         if (Result_Fov == 0) 当前场景默认FOV = 全局默认Fov;
         else 当前场景默认FOV = Result_Fov;
 
+        Debug.LogError(当前场景默认FOV);
         ///允不允许
         if (当前场景真正最大FOV > 当前场景默认FOV) Result_Fov = 当前场景默认FOV;
         else Result_Fov = 当前场景真正最大FOV;
-         
+
+ 
+
+        Debug.LogError(Result_Fov);
         Fov = Result_Fov; 
         碰撞框目标FOV = 0;
 

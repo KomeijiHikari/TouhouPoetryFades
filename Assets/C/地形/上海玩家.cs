@@ -60,7 +60,7 @@ public class 上海玩家 : MonoBehaviour,I_攻击
         if (!co.CompareTag(Initialize.Player)) return;
         //if (co != Player3.I.蹲BOX) return;
             if (!N.Note_Re()) return;
-
+            
             if (Player3.I.HPROCK)
             {
                 Player3.I.安全地点();
@@ -82,7 +82,6 @@ public class 上海玩家 : MonoBehaviour,I_攻击
  
     }
     public void 扣攻击(float i)
-    {
-        throw new System.NotImplementedException();
+    { 
     }
 }

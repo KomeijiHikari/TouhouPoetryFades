@@ -7,10 +7,10 @@ public class CunemachineTarget咕噜咕噜 : MonoBehaviour
     CinemachineTargetGroup g; 
     public void SetPlayer()
     {
-        g.AddMember(Player3.I.transform, 1, 7);
+        g.AddMember(Player3.I.transform.transform, 1, 7);
     }
     public void RemovePlayer()
     {
-        g.RemoveMember(Player3.I.transform);
+        g.RemoveMember(Player3.I.transform.transform);
     }
 }

@@ -8,7 +8,7 @@ public static class JUMAP_name
  
     public static string 上去 { get; private set; } = "jump_";
     public static string 中间 { get;  private set; } = "jump_max";
-    public static string 下去 { get; private set; } = "jump_down";
+    public static string 下去 { get; private set; } = "jump_down"; 
 }
 public class AniContr_4 : AnimBase
 {

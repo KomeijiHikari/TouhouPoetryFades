@@ -1,3 +1,4 @@
+using ItemMager;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -104,10 +105,24 @@ public partial  class 重要道具 : MonoBehaviour
         N.格挡=true;
         消息.I.Come_on_Meesge("你获得了新的能力");
     }
+    public void 开启半灵()
+    {
+
+        N.半灵 = true; 
+        消息.I.Come_on_Meesge("你的半灵回来了");
+    }
+    public void 开启视野()
+    {
+
+        N.速度视野 = true;
+        所有物品管理.I.PlayerAdd(所有物品管理.I.GetCompleteItem("速度视野"));
+        消息.I.Come_on_Meesge("你获得了新的能力,按B打开背包可以查看说明");
+    }
     public void 开启切换()
     {
 
         N.速度切换 = true;
+        所有物品管理.I.PlayerAdd(所有物品管理.I.GetCompleteItem("速度切换")); 
         消息.I.Come_on_Meesge("你获得了新的能力");
     }
     public void 开启圆劈()
@@ -241,6 +256,7 @@ public partial class 重要道具 : I_Dead, I_ReturnPool, I_deadTo_Re
      
     public bool Dead()
     {
+        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         特效_pool_2.I.GetPool(transform.position, T_N.特效小Get).同步玩家 = true;
         if (sp == null ||bc==null)
         {

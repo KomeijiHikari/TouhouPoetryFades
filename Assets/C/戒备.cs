@@ -29,8 +29,8 @@ public class 戒备 : MonoBehaviour, I_暂停
     RaycastHit2D[] 次要s = new RaycastHit2D[0];
 
     public Action<bool> 发现玩家了嘛;
-    public bool 发现玩家了吗_;
-    public bool 发现玩家了吗
+     [SerializeField][DisplayOnly]public  bool 发现玩家了吗_;
+      bool 发现玩家了吗
     {
         get => 发现玩家了吗_;
         set
@@ -136,7 +136,11 @@ public class 戒备 : MonoBehaviour, I_暂停
         } 
         发现玩家了吗 = 检测到的列表.Exists(t => t.layer == Initialize.L_Player);
 
-    } 
+    }
+    private void OnDisable()
+    {
+        发现玩家了吗 = false; 
+    }
     [SerializeField] bool 穿透否 = false;
     [Tooltip("扇形的方向角度  头上为0，顺时针")]
     /// <summary>

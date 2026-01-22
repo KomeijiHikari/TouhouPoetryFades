@@ -8,7 +8,7 @@ using static Player_input;
 public class 按键子类 : MonoBehaviour
 {
     Text t;
-    public string Nam;
+    public string Nam=>gameObject.name;
     public KeyCode k;
     Text_button T;
     private void Awake()

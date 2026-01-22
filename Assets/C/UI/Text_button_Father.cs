@@ -21,7 +21,7 @@ public class Text_button_Father : Button_Father_base
     [SerializeField]
     E_展开情景 展开情景;
     public E_展开情景 展开情景1 { get => 展开情景; set => 展开情景 = value; }
-    Text_button[] 子类按钮列表;
+  public Text_button[] 子类按钮列表 { get; private set; }
  
  
 
@@ -92,6 +92,8 @@ public class Text_button_Father : Button_Father_base
             case E_展开情景.零号菜单://开始场景展开
                 break; 
             case E_展开情景.一号菜单://战斗场景展开
+                if (Target == null) Debug.LogError("空目标被打开   一号菜单"+gameObject);
+                
                 Target.SetActive(true);
                 break;
         }
@@ -106,7 +108,7 @@ public class Text_button_Father : Button_Father_base
 
             }
         }
-        Initialize_Mono.I.Debug_(this.GetType(), gameObject + "被展开展开触发完毕         当前展开场景是" + 展开情景1
+        Initialize_Mono.I.DebugList_(this.GetType(), gameObject + "被展开展开触发完毕         当前展开场景是" + 展开情景1
             +"     自己开关是"+ Target.activeSelf
             +"    面板开关是"+ Target.activeInHierarchy); 
         重新获得焦点();
@@ -174,7 +176,7 @@ public class Text_button_Father : Button_Father_base
 
         this.上一个 = 上一个;
         上一个.Target.SetActive(false );
-        Initialize_Mono.I.Debug_(this.GetType(), "被展开" + gameObject.name);
+        Initialize_Mono.I.DebugList_(this.GetType(), "被展开" + gameObject.name);
  
         Target.SetActive(true);
         重新获得焦点();
@@ -187,7 +189,7 @@ public class Text_button_Father : Button_Father_base
         {
             if (item.选中&& item!=null&& item.interactable )
             {
-                Initialize_Mono.I.Debug_(this.GetType(), gameObject + "重新获得焦点准备设置悬着"  );
+                Initialize_Mono.I.DebugList_(this.GetType(), gameObject + "重新获得焦点准备设置悬着"  );
                 StartCoroutine(Initialize.Waite(()=> 
                 {
                     item.Select(); 
@@ -226,7 +228,7 @@ public class Text_button_Father : Button_Father_base
                 Target.SetActive(false);
                 break; 
         } 
-        Initialize_Mono.I.Debug_(this.GetType(), gameObject +"回退触发当前展开场景是"+ 展开情景1);
+        Initialize_Mono.I.DebugList_(this.GetType(), gameObject +"回退触发当前展开场景是"+ 展开情景1);
     }
     public Action Action_回退;
     private void Update()

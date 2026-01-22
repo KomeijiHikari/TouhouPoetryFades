@@ -43,8 +43,7 @@ public class FPSDisplay : MonoBehaviour
         style.fontSize = h * 2 / size;
         style.normal.textColor = new Color(0.0f, 0.0f, 0.5f, 1.0f);
 
-
-        string text = string.Format("{0:0.} FPS | {1:0.} ms", FPS, MS);
+        string text = string.Format("{0:0.} FPS | {1:0.} ms | FC£º{2}", FPS, MS, Time.frameCount);
         GUI.Label(rect, text, style);
     }
 }

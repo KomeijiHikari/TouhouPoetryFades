@@ -16,6 +16,7 @@ public class 提示速度视野 : MonoBehaviour, I_BOOL
     public bool 好嘛()
     {
         好 = 切换Shader.I.isSpeed;
+        好 = 反转 ? !好 : 好;
         return 好;
     }
 }

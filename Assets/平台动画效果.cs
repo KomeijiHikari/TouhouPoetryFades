@@ -35,15 +35,18 @@ public class 平台动画效果 : MonoBehaviour
                     if (P.DeBuG )     DDD(); 
                 }
                 else
-                {
-                    var a = D.盒子.阵列盒子();
-                    for (int i = 0; i < a.Count; i++)
+                { 
+                        if (D.盒子 != default)
                     {
-                        var B = 特效_pool_2.I.GetPool(a[i], T_N.特效闪闪);
-                        B.代理回归 = true;
-                        B.transform.SetParent(transform);
-                        特效列表.Add(B.gameObject);
-                    }
+                        var a = D.盒子.阵列盒子();
+                        for (int i = 0; i < a.Count; i++)
+                        {
+                            var B = 特效_pool_2.I.GetPool(a[i], T_N.特效闪闪);
+                            B.代理回归 = true;
+                            B.transform.SetParent(transform);
+                            特效列表.Add(B.gameObject);
+                        }
+                    } 
                 }
 
             }
@@ -54,16 +57,21 @@ public class 平台动画效果 : MonoBehaviour
 
         };
 
-        P.效果_死亡Enter += ( ) => { 
-            var a = D.盒子.阵列盒子();
-            for (int i = 0; i < a.Count; i++)
+        P.效果_死亡Enter += ( ) => {
+            if(D!=null)
+            if (D.盒子!=default)
             {
-                var aa = 特效_pool_2.I.GetPool(a[i], T_N.特效砖块爆炸, Player3.I.sp);
-                if (P!=null&&S!=null)
+                var a = D.盒子.阵列盒子();
+                for (int i = 0; i < a.Count; i++)
                 {
-                    aa.Speed_Lv = P.S.Speed_Lv;
-                }  
+                    var aa = 特效_pool_2.I.GetPool(a[i], T_N.特效砖块爆炸, Player3.I.sp);
+                    if (P != null && S != null)
+                    {
+                        aa.Speed_Lv = P.S.Speed_Lv;
+                    }
+                }
             }
+
         };
 
         P.效果_活动Enter += () => {

@@ -134,8 +134,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 80
-        height: 80
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,10 +153,10 @@ TextureImporter:
       name: Cricle_texiao_1
       rect:
         serializedVersion: 2
-        x: 80
+        x: 120
         y: 0
-        width: 80
-        height: 80
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,10 +174,10 @@ TextureImporter:
       name: Cricle_texiao_2
       rect:
         serializedVersion: 2
-        x: 160
+        x: 240
         y: 0
-        width: 80
-        height: 80
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,10 +195,10 @@ TextureImporter:
       name: Cricle_texiao_3
       rect:
         serializedVersion: 2
-        x: 240
+        x: 360
         y: 0
-        width: 80
-        height: 80
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,10 +216,10 @@ TextureImporter:
       name: Cricle_texiao_4
       rect:
         serializedVersion: 2
-        x: 320
+        x: 480
         y: 0
-        width: 80
-        height: 80
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -229,48 +229,6 @@ TextureImporter:
       bones: []
       spriteID: 18000602cba2c5a4588054fb04bfa1e5
       internalID: 1639895000
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cricle_texiao_5
-      rect:
-        serializedVersion: 2
-        x: 400
-        y: 0
-        width: 80
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: be4882628f6e6c444a4d3a90e98103d7
-      internalID: -1705705123
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cricle_texiao_6
-      rect:
-        serializedVersion: 2
-        x: 480
-        y: 0
-        width: 80
-        height: 80
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3e8ecf25c02fc524a883320925033b20
-      internalID: 2028838163
       vertices: []
       indices: 
       edges: []
@@ -291,8 +249,6 @@ TextureImporter:
       Cricle_texiao_2: 94789179
       Cricle_texiao_3: -111368519
       Cricle_texiao_4: 1639895000
-      Cricle_texiao_5: -1705705123
-      Cricle_texiao_6: 2028838163
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

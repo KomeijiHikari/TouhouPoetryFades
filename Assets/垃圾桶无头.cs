@@ -119,9 +119,9 @@ public class 垃圾桶无头 : 泛用状态机
             // 如果发现玩家并且在攻击范围内则攻击，否则保持idle
 
             if ( 当前!=dead) 
-        if (j != null && j.发现玩家了吗)
+        if (j != null && j.发现玩家了吗_)
         {
-                if (j.发现玩家了吗)
+                if (j.发现玩家了吗_)
                 {
 
                     to_state(atk);

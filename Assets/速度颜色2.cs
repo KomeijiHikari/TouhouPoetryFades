@@ -7,7 +7,7 @@ public class 速度颜色2 : MonoBehaviour
     Material M;
     public bool asdasd;
 
-
+    public bool Deb;
     I_Speed_Is Is;
 
 public  SpriteRenderer sp;
@@ -28,17 +28,21 @@ public  SpriteRenderer sp;
         //return;
         M = sp.material;
         Is= GetComponent<I_Speed_Is>();
+ 
     }
     public bool BB;
+
+  [DisplayOnly]  public float 固定等级差;
     private void Update()
     {
-        return;
+        //return;
         if (Is==null)
         {
             Debug.LogError(gameObject.name+transform.position+"空 速度接口");
             return;
         }
-        E = Initialize.Speed_toESpeed(Is.固定等级差);
+        固定等级差 = Is.固定等级差;
+        E = Initialize.Speed_toESpeed( 固定等级差);
         if (BB !=  切换Shader.I.isSpeed)
         {
             BB = 切换Shader.I.isSpeed; 
@@ -47,11 +51,7 @@ public  SpriteRenderer sp;
                 sp.material = M;
             } 
         }
-
-        if (BB)
-        {
-
-        }
+ 
  
     }
 

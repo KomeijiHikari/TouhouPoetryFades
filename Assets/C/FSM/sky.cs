@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using static BiologyBase;
 
 public class sky : State_Base  
 {
@@ -25,13 +26,42 @@ public class sky : State_Base
     }
     float 贴墙时间max = 0.1f;
     float 贴墙时间 = 0;
+
+    float X速度加成;
+    float Y速度加成;
     public override void EnterState()
     {
         if (Initialize_Mono.I.动态跳跃碰撞)
-            Player.蹲BOX.isTrigger = true;
+         Player.蹲BOX.isTrigger = true;
         贴墙时间 = 0;
        前空  =Player.前空_ ;
-        Player3.I.脚下 = null;
+        Y速度加成 = 0;
+        X速度加成 = 0;
+
+        if (Player.Velocity.y > 0)
+            if (Player3.I.脚下 != null)
+        {
+
+         if(Player3.I.脚下.移动方向.y>0)
+            {   
+                Y速度加成 = Player3.I.脚下.单位速度* Player3.I.脚下.Lerp.y;
+                var a = Player.Get_rb();
+                Y速度加成= a.Next(1,new Vector2(0, Y速度加成)).y;
+
+                Player.跳跃触发(new Vector2(Player.Velocity.x, Player.玩家数值.跳跃瞬间速度 + Y速度加成));
+                //Debug.LogError(Player.玩家数值.跳跃瞬间速度 +"AAAAAAAAAAAAAAAA" + Y速度加成);
+            }
+            //Debug.LogError("WWWWWWWWWWBBBBBB" + Player3.I.脚下.移动方向.x);
+            if (Player3.I.脚下.移动方向 .x!=0&&Player.LocalScaleX_Int== Player3.I.脚下.移动方向.x)
+            {
+                X速度加成 = Player3.I.脚下.移动方向.x* Player3.I.脚下.单位速度 * Player3.I.脚下.Lerp.x;
+                //Debug.LogError( "BBBBBBBBBBBBBBBBBBBB" + X速度加成);
+ 
+            }
+            Player3.I.脚下 = null;
+        
+        }
+
         //if (!Player3.I.is原Parent)
  
             //Player3.I.ChangeFather();
@@ -116,6 +146,8 @@ public class sky : State_Base
                 }
                 break;
             case E_State.cricleatk:
+                A.Playanim(JUMAP_name.下去);
+                break;
             case E_State.pa:
             case E_State.wall_surfing:
                 //Debug.LogError("AAAAAAAAAAAAAAAA");
@@ -331,6 +363,11 @@ public class sky : State_Base
 
     public override void UpdateState()
     {
+        if (Player3.I.脚下 != null )
+        {
+            Player3.I.脚下  = null;
+        }
+
         if (Initialize_Mono.I.MoveP_优化)
         {
             Player3.I.ChangeFather();
@@ -374,8 +411,8 @@ public class sky : State_Base
                     else
                     {
                         //if(false)
-                        {
-                            var a = Player.假检测(0.3f);
+                        { 
+                            var a = Player.假检测(0.5f);
                             if (a != Vector3.zero)
                             {
                                 贴墙时间 += Time.deltaTime;
@@ -394,9 +431,14 @@ public class sky : State_Base
                                     Debug.LogError("触发AAA" + Y + transform.position.y);
                                     Y = Wall_Y;
                                 }
-
+                                if(差>1)
+                                {
+                                    Debug.LogError("触发   瞬移  差是" + 差 + "位置:" + transform.position.x+"方向int"+ Player.LocalScaleX_Int
+                                        + "  碰撞点位置  "+a+"v2差" + (transform.position - a));
+                                    return;
+                                }
                                 transform.position =
-                                    new Vector3(transform.position.x + 差 * Player.LocalScaleX_Int, Y, transform.position.z);
+                                    new Vector3(transform.position.x + 差 * MathF.Sign(Player.LocalScaleX_Int), Y, transform.position.z);
 
                                 f.To_State(E_State.wall);
                                 return;
@@ -513,12 +555,31 @@ public class sky : State_Base
         if (f.I_State_L.state != E_State.hit || IP.方向正零负 != 0)
         {
             Player.水平限制();
-            Player.竖直限制();
+            Player.竖直限制(); 
         }
+        if (IP.方向正零负 == 0)
+        {
+            X速度加成 = 0;
+        }
+
+        if (X速度加成!=0)
+        {
+
+            X速度加成 -= Mathf.Sign(X速度加成) * Time.deltaTime;
+            Debug.LogError(Time.frameCount + "  AAAAAWAAAA  " + X速度加成);
+            Player.transform.position += (Vector3)(Vector2.right * X速度加成 * Time.deltaTime);
+        }
+        if (IP.方向正零负 != 0) Player.水平限制();
+    }
+
+    public override void 方向改变(bool obj)
+    {
+        base.方向改变(obj);
+        X速度加成 = 0;
     }
     Vector2 Velocity => Player.Velocity;
     LayerMask 碰撞检测层 => Player.碰撞检测层;
-    Transform transform => Player.transform;
+   m_transform transform => Player.transform;
     BoxCollider2D po => Player.蹲BOX;
     void 下落降落平台检测()
     {
@@ -605,8 +666,8 @@ public class sky : State_Base
         }
 
         if (obj == IP.k.跳跃)
-        { 
-         
+        {
+            Debug.Log("向下力被触发");
             
             var y = 0f;
             if (Player.Velocity.y > 0) y = Player.Velocity.y;

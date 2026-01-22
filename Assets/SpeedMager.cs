@@ -23,7 +23,7 @@ public class SpeedMager : MonoBehaviour
         {
             if (value == 0 || float.IsNaN(value))
             {
-       Debug.LogError("到底是哪里让我变成零？？");
+       //Debug.LogError("到底是哪里让我变成零？？");
                 Public_Const_Speed_ = 1;
                 return;
             }
@@ -77,16 +77,18 @@ public class SpeedMager : MonoBehaviour
         if (I != null && I != this)
             Destroy(this);
         else
-            I = this;
-
+            I = this; 
+        // 可选：注册速度变化事件
+        // SpeedMager.I.Public_Speed_ += 变速了;
+    }
+    public void Load()
+    {
         // 加载保存的速度值
         Public_Const_Speed = Save_D.Load_Value_D<float>(Public_Const_Speed_Name);
         Speed_Leve1 = Public_Const_Speed;
         Last副Speed1Leve = Save_D.Load_Value_D<float>(Public_Const辅助_Speed_Name);
-        // 可选：注册速度变化事件
-        // SpeedMager.I.Public_Speed_ += 变速了;
+        Debug.LogError(Last副Speed1Leve+ "Last副Speed1LeveLast副Speed1Leve");
     }
-
 
     public bool 速度不一致开始;
     public float 间隔=3;
@@ -156,13 +158,18 @@ public class SpeedMager : MonoBehaviour
     }
     [Button("Play_", ButtonSizes.Large)]
     /// <summary>
+    /// 
+    /// 到底要不要上衣个速度变成当前速度   
     /// 直接设置速度（覆盖当前速度）
     /// </summary>
-    public void SetSpeed(float CutternSpeed,float SpeedLv)
+    public void SetSpeed(float CutternSpeed,float SpeedLv,bool t替换副手=false)
     {
+        //Last副Speed1Leve = Speed_Leve1;
 
-       Public_Const_Speed = CutternSpeed;
+        if(t替换副手)       Last副Speed1Leve = Speed_Leve1;
+            Public_Const_Speed = CutternSpeed;
         Speed_Leve1 = SpeedLv;
+         
     }
 
     // ========== 私有辅助方法 ==========
@@ -239,6 +246,29 @@ public class SpeedMager : MonoBehaviour
         speedInterface.变速触发?.Invoke();
     }
 
+    public void 有变速(float targetSpeed,bool B=false)
+    {
+        if (targetSpeed== Speed_Leve1)
+        {
+            ///和主速度一致 
+            if (SpeedMager.I.Deb) Debug.LogError("！QQQQQQQQQAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        } 
+       else if (targetSpeed._is(Last副Speed1Leve, 0.001f))
+        {            // 和辅速度
+                     // 一致，不需要做任何事  但是不大可能
+            if (SpeedMager.I.Deb) Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            切换(); // 切换主副速度
+        }else if (targetSpeed._is(Public_Const_Speed, 0.001f))
+        {
+            if (SpeedMager.I.Deb) Debug.LogError("BBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+            // 和主表面一致，不需要做任何事  但是不大可能
+        }
+        // 情况3：全新的速度等级
+        else
+        {
+            SetSpeed(targetSpeed, targetSpeed, B); 
+        }
+    }
     /// <summary>
     /// 在变速模式下处理速度变化
     /// </summary>
@@ -316,6 +346,7 @@ public class SpeedMager : MonoBehaviour
 
     internal void 临时速度清除()
     {
+        //if (Speed_Leve!=0) 
         Public_Const_Speed = Speed_Leve;
     }
 }

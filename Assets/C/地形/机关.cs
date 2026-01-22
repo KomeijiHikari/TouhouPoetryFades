@@ -136,6 +136,8 @@ interface I_Inter_action
 
 public class 交互_Base: 感应, I_Inter_action, I_Dead
 {
+
+
     [Tooltip("符合这个方向或者是空就触发")]
     [DisableOnPlay]
     [SerializeField]
@@ -175,7 +177,7 @@ public class 交互_Base: 感应, I_Inter_action, I_Dead
                     /// 触发器打开
                     /// 相同方向    或者      方向为空
                     bool B =
-                        (transform.你在我的哪里(Player3.I.transform).is_四方向比较(Ctrtten.方向To_v2())
+                        (transform.你在我的哪里(Player3.I.transform.transform).is_四方向比较(Ctrtten.方向To_v2())
                         || Ctrtten == E_方向.Null);
                     if (B)
                     { 
@@ -241,8 +243,7 @@ public class 交互_Base: 感应, I_Inter_action, I_Dead
 
         if (sp != null) 
         {
-            sp.enabled = b;
-            Debug.LogError(" sp.enabled   sp.enabled " + sp.enabled);
+            sp.enabled = b; 
         }
         
 
@@ -272,7 +273,7 @@ public class 交互_Base: 感应, I_Inter_action, I_Dead
 
 public partial class 机关 : 交互_Base, I_Revive
 {
-   
+
     [SerializeField] private bool re;
     [SerializeField] private float re_Time;
 
@@ -287,8 +288,7 @@ public partial class 机关 : 交互_Base, I_Revive
 }
 
 public partial class 机关 : 交互_Base
-{
-
+{ 
     //public void 
     public void 弹性(GameObject   a)
       {
@@ -319,7 +319,8 @@ public partial class 机关 : 交互_Base
         //摄像机.I.FOV_缩放();
     }
     private void Start()
-    {
+    { 
+
         if (标识!=null)
         {
             标识.SetActive(false);
@@ -351,7 +352,7 @@ public partial class 机关 : 交互_Base
     public void 传送至(Transform T)
     {
         Player3.I.Dash传送触发 ?.Invoke(T.gameObject.GetInstanceID());
-       
+
         Player3.I.transform.position = T.position; 
     }
     public void  ChangeSpeed(float t)
@@ -439,8 +440,10 @@ public partial class 机关 : 交互_Base
 
     }
     public void  玩家加速Y(float y)
-    { 
-            Player3.I.Velocity = new Vector2(Player3.I.Velocity.x, y); 
+    {       
+    Player3.I.    圆形攻击过了 = false; 
+        //Player3.I.跳跃触发(new Vector2(Player3.I.Velocity.x, y));
+        Player3.I.Velocity = new Vector2(Player3.I.Velocity.x, y);
     }
 
 }

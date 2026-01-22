@@ -13,8 +13,7 @@ public class 材质管理 :MonoBehaviour
     public static string _Alpha { get; } = "_Alpha";
     public static string 残影 { get; } = "残影";
     public static Material Get_Material(string  s)
-    {
-
+    { 
         Material a= Resources.Load("Material/"+s) as Material;
         if (a==null )
         {

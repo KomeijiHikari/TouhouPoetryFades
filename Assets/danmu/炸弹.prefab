@@ -178,13 +178,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3523587353952303655}
   - component: {fileID: 3523587353952303652}
-  - component: {fileID: 1959165710018720593}
   - component: {fileID: 9169695448622977995}
   - component: {fileID: -1204656422141857702}
   - component: {fileID: -4568335133457393070}
+  - component: {fileID: 7254210138819745584}
   m_Layer: 13
   m_Name: "\u70B8\u5F39"
-  m_TagString: Untagged
+  m_TagString: MovePP
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -258,24 +258,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1959165710018720593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3523587353952303650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab704f4681b6810449b3b1ba0993633d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  "\u5E94\u8BE5\u65E0\u89C6": 0
-  "\u9876\u4E00\u4E0B\u73A9\u5BB6": 0
-  "\u5355\u65B9\u5411": 0
-  Deb: 0
-  "\u6709\u4EBA1": 0
-  "\u6682\u505C1": 0
 --- !u!114 &9169695448622977995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,19 +278,18 @@ MonoBehaviour:
   "\u6469\u64E6\u529B": 0.5
   ZZZZZZZ: 0
   Deb: 0
-  Sp: {fileID: 486694292857536263}
   Speedd: 0
   "\u5173\u95ED1": 0
   "\u91CD\u529B\u589E\u5E451": 0
   ground: 0
   "\u78B0\u649E\u68C0\u6D4B\u5C421":
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   current_Speed_LV: 1
   speed_Lv: 1
   "\u5730\u9762": {fileID: -1204656422141857702}
-  s: {fileID: 3523587353952303652}
-  bc: {fileID: 0}
+  Sp: {fileID: 486694292857536263}
+  bc: {fileID: 7254210138819745584}
 --- !u!114 &-1204656422141857702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,12 +302,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d982df44c08409241967eb20fb5059cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  "\u5C3A\u5BF8\u52A0\u6210": {x: 1, y: 1}
   sp: {fileID: 3921428004920652762}
   L:
     serializedVersion: 2
     m_Bits: 192
   "\u9047\u89C1\u4E86_": 0
   PoinDeb: 0
+  EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
 --- !u!114 &-4568335133457393070
@@ -342,10 +325,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sp: {fileID: 486694292857536263}
-  "\u8C03\u8BD5": 0
+  obj: {fileID: 0}
   I_Speed_Change: {fileID: 0}
   f: 0
   c: {r: 0, g: 0, b: 0, a: 0}
   "\u6FC0\u6D3B\u7684": 0
   Sb: {fileID: 0}
   Deb: 0
+  SpeedInt: 0
+--- !u!61 &7254210138819745584
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3523587353952303650}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.9, y: 0.9}
+  m_EdgeRadius: 0

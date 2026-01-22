@@ -1,10 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using static BiologyBase;
+using static Unity.VisualScripting.Member;
 
-public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
+public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D, I_消弹
 {
     public bool Staticrb { get =>false; }
     [SerializeField]
@@ -47,7 +50,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         get { return 当前_; }
         private set
         {
-            if (当前_ != value&&Deb)     Debug.LogError(当前 + "          BUUGGGGGBBBBBBBB " + value + gameObject); 
+            if (当前_ != value&&Deb)     Debug.LogError(当前 + "速度 当前改变为" + value + gameObject); 
             当前_ = value;
         }
     }
@@ -79,8 +82,8 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     {
         get
         {
-            if (Initialize_Mono.I.Updatee) return Time.deltaTime * b.I_S.固定等级差;
-            return Time.fixedDeltaTime * b.I_S.固定等级差;
+            if (Initialize_Mono.I.Updatee) return Time.deltaTime * Initialize_Mono .I.GetMin(b.I_S.固定等级差) ;
+            return Time.fixedDeltaTime * Initialize_Mono.I.GetMin(b.I_S.固定等级差);
         }
     }
     private void Awake()
@@ -90,6 +93,11 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         if (b==null)
         {
             b =  this;
+            transform = new m_transform(base.transform);
+        }
+        else
+        {
+            transform = b.transform;
         }
 
         Velocity = Vector2.zero;
@@ -224,29 +232,37 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     {
         Velocity = Vector2.zero;
         当前 = Vector2.zero;
-    }
-    private void OnEnable()
-    {
-        Stop_Velo();
-    }
-
-    public Vector2 碰撞预测2(Vector2 target)
+    } 
+    
+    public static Vector2 碰撞预测2(Vector2 target,Bounds bou,LayerMask Layer,Transform my,bool Deb)
     {
         if (target == Vector2.zero) return target;
-        Vector3 中心点 = b.Bounds.center;
-        var 方向 = (中心点 - 中心点 + (Vector3)target);
-        方向.Normalize();
+        Vector3 中心点 = bou.center;
+        //var 方向 = (中心点 - 中心点 + (Vector3)target);
+        var 方向 =  (Vector3)target ;
 
-        var a = Physics2D.BoxCast(
+        方向= 方向.normalized; 
+
+        var a = Physics2D.BoxCastAll(
          中心点,
-         b.Bounds.size - new Vector3(0.05f, 0.05f),
+        bou.size - new Vector3(0.05f, 0.05f),
          0,
          方向,
-         target.magnitude * DeltaTime,
-         b.碰撞检测层
+         target.magnitude ,
+         Layer
          );
-         
-        return Initialize.Get碰撞Position(b.Bounds, a);
+ 
+        if (Deb) Debug.DrawLine(中心点, 中心点 + 方向 * target.magnitude, Color.green, 2);
+        for (int i = 0; i < a.Length; i++)
+        {
+            var a2 = a[i];
+            if (a2.collider != null && a2.collider.transform != my  )
+            {
+                //if (Deb)a2.point.DraClirl(3, Color.yellow, 1);
+                return Initialize.Get碰撞Position(bou, a2);
+            }
+        }
+        return Vector2.zero; 
     }
 
 
@@ -266,38 +282,53 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
             if (Velocity.x == 0 && Velocity.y != 0 && 当前.x != 0)
             {///起跳后保留惯性
                 Velocity = new Vector2(当前.x, Velocity.y);
-            } 
-            //当前 = 动态速度限制 ? 碰撞预测(Velocity) : Velocity;
-            当前 = Velocity;
-
-            //Initialize_Mono.I.Waite(() => De(), 1f);
+            }  
+            当前 = Velocity; 
         }
 
 
         //if (b.I_S.Speed > 8||  Mathf .Abs(b.I_S.Speed * 当前.y)>=40)
         //当前 = 碰撞预测(当前);    
-      var a=  碰撞预测2(当前);
- 
-        if (a==Vector2.zero)
+        if (当前!=Vector2.zero)
         {
 
-            ZZZZZZZ = Initialize_Mono.I.Mi.GetMin(b.I_S.固定等级差);
-            var V = (Vector3)当前 * ZZZZZZZ;
-             
-            if (Initialize_Mono.I.Updatee) b.transform.position += V * Time.deltaTime;
-            else   b.transform.position += V * Time.fixedDeltaTime;
+       
+        ZZZZZZZ = Initialize_Mono.I.Mi.GetMin(b.I_S.固定等级差);
+        var 单位位移 = (Vector3)当前 * ZZZZZZZ;
+
+        if (Initialize_Mono.I.Updatee) 单位位移 *= Time.deltaTime;
+             else 单位位移 *= Time.fixedDeltaTime;
+
+            if (Deb)   Debug.DrawLine(b.Bounds.center, b.Bounds.center+ 单位位移,Color.yellow,1);
+ 
+            var 发生碰撞后被阻拦的位置=  碰撞预测2(单位位移,b.Bounds,b.碰撞检测层,b.transform.transform,Deb);
+        //发生碰撞后被阻拦的位置.DraClirl(5, Color.white, 2);
+ 
+        if (发生碰撞后被阻拦的位置==Vector2.zero)
+        {
+            ///没有碰撞
+            SetPos(b.transform.position + 单位位移);
         }
         else
         {
-                        Stop_Velo();
+                if (Deb) 发生碰撞后被阻拦的位置.DraClirl(5, Color.white, 2);
 
-            Vector3 ca = b.Bounds.center - (Vector3)a;
-            b.transform.position -= ca;
+                Stop_Velo();
+            if (ground)
+            {
+                ///在地面但是有点差
+                Vector3 ca =new Vector3(0,(b.Bounds.center - (Vector3)发生碰撞后被阻拦的位置).y) ; ///何意喂？？
+
+                SetPos(b.transform.position - ca);
+            }
+            else
+            {
+                    ///在空中
+
+                SetPos(发生碰撞后被阻拦的位置+ 位置减碰撞中心);
+            }
         }
-
-
-
-        //if (Deb) Debug.LogError("aaaaaaaaa               a");
+        }
         ///重力个惯性
         var X = 当前.x;
         var Y = 当前.y;
@@ -307,6 +338,9 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         {
             if (!b.Ground || Y > 0)
             {
+                ///在空中或者
+                ///自己速度在上升
+               
                 ///空中起跳   加速度
                 Y  = Y - G * DeltaTime;
             }
@@ -361,20 +395,22 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
 
         当前 = new Vector2(X, Y);
         var aR = b.Get_rb();
-        if (aR != null) aR.velocity = Vector2.zero;
+        if (aR != null&& aR.bodyType!=RigidbodyType2D.Static) aR.velocity = Vector2.zero;
 
         Velocity = Vector2.zero; 
-    } 
+            
+    }
+
+    Vector2 位置减碰撞中心 => (Vector2)(transform.position - b.Bounds.center);
     public bool Deb;
-    [SerializeField]
-    SpriteRenderer Sp;
+
 
     
     private void FixedUpdate()
     {
         if (Initialize_Mono.I.Updatee) return;
         FixeUpdate();
-    }
+    } 
     private void FixeUpdate()
     {
 
@@ -388,15 +424,17 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
          else   Sp.transform.rotation = Quaternion.Euler( Initialize .Z1*Time.fixedTime*1000f);
         }
         ///脚底在地面下面
-        var a = Physics2D.Raycast(
+        var ab = Physics2D.Raycast(
             new Vector2(b.Bounds.min.x + 0.01f, b.Bounds.min.y + 0.01f),
             Vector2.right,
-            b.Bounds.size.x - 0.02f,
+            b.Bounds.size.x - 0.2f,
             b.碰撞检测层
-            ).collider != null;
+            ).collider;
+ 
+        var a = ab != null && ab.isTrigger == false&&ab.gameObject!=gameObject;
         if (a)
         {
-            transform.position = new Vector2(transform.position.x, transform.position.y + 0.1f);
+            SetPos(new Vector2(transform.position.x, transform.position.y + 0.1f)); 
         } 
         else
         { 
@@ -404,11 +442,50 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
         } 
         if (b==(I_M_Ridbody2D)this&&地面!=null)
         {
-            //ground = 地面.遇见了;
+            //ground = 地面.遇见了;  ///为啥注释了
+        }
+    } 
+    public void 目标炮_方向(Vector3 Target,Vector2 way )
+    {
+        if (Ground) Ground = false;
+        way.Normalize();
+        var 差 = Target - transform.position;
+        Target.DraClirl(4);
+        Debug.DrawLine(transform.position, transform.position+ (Vector3)(way * 3));
+        float A = Initialize_Mono.I.GetMin(b.I_S.固定等级差); 
+        var a = way * Initialize.抛物线_Get力 (way, 差, G );
+
+
+
+        //Debug.LogError(校准());
+        Set_RealVelo(a *  A/ 校准());
+    } 
+    public float 校准()
+    {
+        float A = Initialize_Mono.I.GetMin(b.I_S.固定等级差);
+        Debug.LogError(A);
+        if (A>1)
+        {
+            ///因为A值越大B也随着大
+
+            return 正算(A);
+        }
+        else if(A < 1)
+        {
+            float f = 1 / A;
+
+            return 1/ 正算(f);
+        }
+        return 1;
+
+        float 正算(float f)
+        {
+            Debug.LogError(f + (f * f * Initialize_Mono.I.校准值));
+            return f + (f * f * Initialize_Mono.I.校准值);
         }
     }
     [Button("测一下", ButtonSizes.Large)]
-    public void 目标炮(Vector3 Target,float tim)
+    public void 目标炮_时间(Vector3 Target,float tim)
     {
         if (Ground) Ground = false;
         var a= Initialize.抛物线_Get矢量(Target - transform .position,tim,G );
@@ -424,21 +501,39 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     {
         if (Ground)  Ground = false;
  
-        var Ti = 1;
+ 
         Velocity = 测试速度; 
 
         Vector2 预测 = transform.position + (Vector3)测试速度;
-        预测.DraClirl(0.5f,Color .blue, Ti+1); 
-        Initialize_Mono.I.Waite(
-            () => { ((Vector2)transform.position).DraClirl(1,Color .red ,1f); },Ti
-            );
+        if(Deb)
+        {
+            //预测.DraClirl(0.5f, Color.blue,2);
+            //Initialize_Mono.I.Waite(
+            //    () => { ((Vector2)transform.position).DraClirl(1, Color.red, 1f); },  1
+            //    );
+        }
+
     } 
+
+    void SetPos(Vector3 v)
+    {
+        if (Deb)
+        {
+            Debug.LogError("下一帧位置"+v+"差值"+(v - b.transform.position)+Time.frameCount);
+        }  
+    b.    transform.position = v;
+    }
     [Button("抛物线", ButtonSizes.Large)]
     public void 抛物线(Vector2 发射方向, Transform t)
-    {  
+    {
+        if (t==null)
+        {
+            t = Player3.I.transform.transform;
+        }
         发射方向.Normalize();
-        var 差 = transform.position - t.position;
-       当前= 发射方向*  Initialize . 抛物线_Get力(发射方向, t.position,G );
+        var 差 = t.position-transform.position  ;
+        Debug.LogError(差);
+       当前= 发射方向*  Initialize . 抛物线_Get力(发射方向, 差, G );
     }
     public void 抛物线(Vector2 发射方向, Vector3 t)
     {
@@ -469,7 +564,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
     private void OnDisable()
     {
         当前 = Vector2.zero;
-        Velocity = Vector2.zero;
+        Velocity = Vector2.zero; 
     }
 
      [SerializeField]
@@ -492,27 +587,49 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D
 
     public I_Speed_Change I_S { get => (I_Speed_Change)this; }
     public LayerMask 碰撞检测层 => 碰撞检测层1;
-   public new Transform transform => base.transform ;
+   public new m_transform transform { get; set; } 
   public   bool Ground { get => ground; set => ground = value; }
 
     [SerializeField] Phy_检测 地面;
     public GameObject 对象 => gameObject ;
     public float 重力增幅 { get => 重力增幅1; set => 重力增幅1 = value; }
     public System.Action 变速触发 { get ; set ; }
-
+    
+    No_Re n=new No_Re();
   public Bounds Bounds { 
         get {
-            if (s != null) return s.bounds;
+            if(Deb)
+            {
+                if (n.Note_Re())
+                {
+                    bool B = b == (I_M_Ridbody2D)this;
+                    Debug.LogError(Sp.bounds.size + "   " + bc.bounds.size + "   是自己作为刚体" + B);
+                }  
+            }
+            if (Sp != null) return Sp.bounds;
             else return bc.bounds; 
         }
-    } 
+    }
 
-    [SerializeField] SpriteRenderer s;
+    [SerializeField] SpriteRenderer Sp;
     [SerializeField] BoxCollider2D bc;
 
     public float Current_Speed_LV => current_Speed_LV; 
     public float Speed_Lv { get => speed_Lv; set => speed_Lv=value; } 
   public   Rigidbody2D Get_rb() { return null; }
+
+    public bool 被消弹()
+    {
+        if(b==(I_M_Ridbody2D)this)
+        {
+   
+            Debug.LogError("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+            特效_pool_2.I.GetPool( transform.position, T_N.特效闪光爆炸);
+            Surp_Pool.I.ReturnPool( gameObject, "炸弹");
+            return true;
+        }
+        return false; 
+    }
 }
 interface I_M_Ridbody2D
 {
@@ -521,7 +638,7 @@ interface I_M_Ridbody2D
     LayerMask 碰撞检测层 { get; }
     Bounds Bounds { get; }
     float 重力增幅 { get; set; }
-    Transform transform { get; }
+    m_transform transform { get;  set; }
     bool Ground { get; set; }
     Rigidbody2D Get_rb();
 }

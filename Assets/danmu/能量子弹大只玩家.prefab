@@ -135,6 +135,8 @@ MonoBehaviour:
   "\u5355\u65B9\u5411": 0
   Deb: 0
   "\u6709\u4EBA1": 0
+  "\u6682\u505C1": 0
+  KeepAlive: 0
 --- !u!61 &4930925209068988565
 BoxCollider2D:
   m_ObjectHideFlags: 0

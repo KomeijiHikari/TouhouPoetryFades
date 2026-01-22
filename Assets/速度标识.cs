@@ -4,17 +4,25 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 public class 速度标识 : MonoBehaviour
 {
+    [SerializeField]
    SpriteRenderer sp;
+    bool B;
     private void Awake()
     {
-        sp = GetComponent<SpriteRenderer>();
+     gameObject.组件(ref sp);
         V = sp.size;
+        B = true;
     }
     public bool Deb;
     Vector2 V;
     [Button("Play_", ButtonSizes.Large)]
     public void 刷新()
     {
+        if (!B)
+        {
+            Awake();
+            return;
+        }
         if (SpeedInt == Initialize_Mono.BugInt)
         {
             if(Deb)
@@ -22,7 +30,9 @@ public class 速度标识 : MonoBehaviour
             sp.enabled = false;
             return;
         }
-            sp.enabled = SpeedInt != 0; 
+ 
+            sp.enabled = SpeedInt != 0;
+     
         if(SpeedInt > 0)
         {
             sp.flipX = false;

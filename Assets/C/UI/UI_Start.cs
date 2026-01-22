@@ -14,9 +14,12 @@ public class UI_Start : MonoBehaviour
     public List<GameObject> 开始界面的所有=new List<GameObject> ();
     public List<SceneField> 要加载的场景=new List<SceneField> ();
     public Text_button 继续按钮;
-    public GameObject 子菜单; 
+    public GameObject 子菜单;
+
+    bool 启动过一次;
     private void Awake()
     {
+        启动过一次 = false;
         ///只有新玩家能测出来的
         var value = PlayerPrefs.GetInt(第一次, 0);
         if (value == 0)
@@ -64,8 +67,16 @@ public class UI_Start : MonoBehaviour
     }
     public void 重新开始()
     {
- 
-         
+        if (启动过一次)
+        {
+            return;
+        }
+        else
+        {
+
+            启动过一次 = true;
+        }
+
 
         for (int i = 0; i < 要加载的场景.Count; i++)
         {
@@ -92,7 +103,15 @@ public class UI_Start : MonoBehaviour
  
     public void 继续()
     {
- 
+        if (启动过一次)
+        {
+            return;
+        }
+        else
+        {
+            启动过一次 = true;
+        }
+       
 
         //关闭当前场景();
 

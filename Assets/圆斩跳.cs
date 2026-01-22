@@ -10,7 +10,7 @@ public class 圆斩跳 : MonoBehaviour
     BoxCollider2D Box;
     [SerializeField]
     BoxCollider2D 竖向判定Box;
-    public float FF=4.7f; 
+    public float FF=> 竖向判定Box.bounds.size.y; 
    int   答案(List<int >  a)
     {
         if (a != null && a.Count >= 0)
@@ -149,15 +149,16 @@ public class 圆斩跳 : MonoBehaviour
     public Vector2     发射()
     {
         bool 方向 = Player3.I.transform.localScale.x == 1;
-        var a = Vector2.zero; 
-         
-             a = GenerateRaycastResults(方向, Box.bounds, 9, Player3.I.碰撞检测层);
+        var a = Vector2.zero;
+
+        a = GenerateRaycastResults(方向, Box.bounds, 9, Player3.I.碰撞检测层);
         if (cricleatk.容错原批判定)
             if (a.x == -1)
             {
            float y=       竖向(方向, 竖向判定Box.bounds, 9, Player3.I.碰撞检测层).y;
                 a = GenerateRaycastResults(方向, Box.bounds, 9, Player3.I.碰撞检测层,y);
             }
+        Player3.I.消弹(); 
         return a;
     }
 
@@ -229,6 +230,13 @@ public class 圆斩跳 : MonoBehaviour
                     startPoints[i] = R.point;
                     results[i] = 1;
                     hitColliders[i] = R.collider;
+
+                    //if (R.collider != null)
+                    //{
+                    //    Debug.LogError(R.collider.gameObject.name + "   Player3.I.圆斩对象  ");
+                    //    Player3.I.圆斩对象?.Invoke(R.collider.gameObject.GetInstanceID());
+                    //    // 示例：如果命中对象上有 单方面通过 组件，则触发它   
+                    //}
                 }
                 else
                 {//头没有顶到  没有命中 
@@ -250,11 +258,13 @@ public class 圆斩跳 : MonoBehaviour
         {
             // 打到了：先播放特效（使用命中点）
            
-                特效_pool_2.I.GetPool(MaxPoins, T_N.特效圆跳).Speed_Lv = Player3.Public_Const_Speed; 
+                特效_pool_2.I.GetPool(MaxPoins, T_N.特效圆跳).Speed_Lv = Player3.Public_Const_Speed;
             // 对命中的碰撞体执行操作（若存在）
+
             var col = hitColliders[da];
             if (col != null)
-            { 
+            {
+                Debug.LogError(col.gameObject.name + "   Player3.I.圆斩对象  ");
                 Player3.I.圆斩对象?.Invoke(col.gameObject.GetInstanceID());
                 // 示例：如果命中对象上有 单方面通过 组件，则触发它   
             }

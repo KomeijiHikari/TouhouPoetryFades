@@ -84,7 +84,8 @@ public class 提示管理 : MonoBehaviour, I_BOOL
         {
             Debug.LogError(或(没有提示s)+ "          public  bool  好嘛()      " + 或(提示s)+gameObject.name+transform.position);
         }
-        好 =  或(没有提示s,true)  && 或(提示s) ; 
-        return 好;
+        好 =  或(没有提示s,true)  && 或(提示s) ;
+        好 = 反转 ? !好 : 好;
+        return  好;
     }
 }

@@ -189,7 +189,7 @@ public class Enemy_atk : MonoBehaviour, I_攻击
         if (攻击检测范围 == 0)
         {
 
-            Initialize_Mono.I.Debug_(this.GetType(), "这个" + gameObject + "的玩家检测范围未设置"); 
+            Initialize_Mono.I.DebugList_(this.GetType(), "这个" + gameObject + "的玩家检测范围未设置"); 
             攻击检测范围 = 4;
         }
         if (atkvalue_==0)

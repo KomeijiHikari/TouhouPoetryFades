@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class 提示管理机关 : MonoBehaviour,I_BOOL
 {
+    public bool Deb;
     public 生命周期管理 S;
     [SerializeField]
     private bool 好1;
@@ -16,6 +17,7 @@ public class 提示管理机关 : MonoBehaviour,I_BOOL
 
     public bool 好嘛()
     {
+
         if (S!=null)
         {
             好 = S.在死亡笔记里面();
@@ -26,7 +28,8 @@ public class 提示管理机关 : MonoBehaviour,I_BOOL
             Debug.LogError(gameObject.name + transform.position );
             好 = false;
         }
-
+        好= 反转 ? !好 : 好;
+        if (Deb) Debug.LogError("   好    "+ 好);
         return 好;
     }
 }

@@ -10,10 +10,10 @@ namespace Enemmy
         [SerializeField]
         UnityEvent EVENt; 
         [SerializeField]
-        发射器空间.发射器 f;
-
-        private void Start()
+        发射器空间.发射器 f; 
+        protected  override void Update()
         {
+            base.Update();
             f.Speed_Lv = e.Speed_Lv;
         }
         protected override void ATKENTER()

@@ -25,6 +25,7 @@ public interface I_Revive
     public float Re_Time { get; set; }
     public bool  重制();
 }
+[Obsolete("已经被弃用了     同速把东西收进去就是假死", false)]
 public interface I_假死
 {
     public GameObject 对象 { get; }
@@ -124,7 +125,8 @@ public state 死亡 = new state("死亡");
 
     [SerializeField ][DisplayOnly]
     bool 不参与场景;
-
+    [SerializeField]
+    UnityEvent isReviveEnter;
     [SerializeField]
     UnityEvent isDeadEnter;
  public    bool 不参与场景复活()
@@ -153,12 +155,19 @@ public state 死亡 = new state("死亡");
     监控激活碰撞框 监控;
 
     public bool 需要动画 =true;
+
+    [SerializeField]
+    Transform PosKeyForm;
     private void Awake()
     {
 
         假死 =  new state("假死", 活动);
 
-        mypo = transform.position;
+        if (PosKeyForm==null)
+        {
+            PosKeyForm= transform;
+        }
+        mypo = PosKeyForm.position;
         gameObject.组件(ref 监控);
         //监控 = gameObject.AddComponent<监控激活碰撞框>();
          D = GetComponent<I_Dead>();
@@ -178,7 +187,7 @@ public state 死亡 = new state("死亡");
             死亡.Deb = true;
         }
     }
-    [Button("Play_", ButtonSizes.Large)]
+    [Button("重置", ButtonSizes.Small)]
     public    void Play_()
     {
         if (R != null)
@@ -199,7 +208,58 @@ public state 死亡 = new state("死亡");
             ///或许 当有临时存档点的时候 延迟关闭该脚本
 
             当前 = 当前.to_state(初始化状态());
+        Player3.I.生命归零 += 刷新啊啊;
         }
+    [Button]
+    public void 刷新啊啊()
+    { 
+        if (DeBuG)
+        {
+            Debug.LogError("         初始化状态() 初始化状态() 初始化状态()    " + 初始化状态().StateName );
+        }
+        if (当前 ==活动)
+        {
+            ///啥都不干
+        }
+        else if (当前 == 死亡)
+        {
+            var Statte = 初始化状态();
+            if (Statte == 死亡)
+            {
+                /// 存档前就已经死掉
+
+            }
+            else if (Statte == 活动)
+            {            ///活过来 
+                if (R != null)
+                {
+                    当前 = 当前.to_state(初始化状态());
+                    if (R != null)
+                    {
+                        R.重制();
+                        isReviveEnter?.Invoke();
+                    }
+                    else
+                    {
+                        var a = GetComponents<Behaviour>();
+                        for (int i = 0; i < a.Length; i++)
+                        {
+                            var aa = a[i];
+                            aa.enabled = true;
+                        }
+
+                        var q = GetComponents<Renderer>();
+                        for (int i = 0; i < q.Length; i++)
+                        {
+                            var qr = q[i];
+                            qr.enabled = true;
+                        }
+                    }
+                }
+        }
+         
+        }
+    }
     private void 假死State()
     {
         假死.Enter += ()=>{ 
@@ -294,12 +354,12 @@ public state 死亡 = new state("死亡");
 
         死亡.Enter += () =>
         {
-            if (DeBuG) Debug.LogError("销毁触发  调用  死亡状态" + gameObject);
+            if (DeBuG) Debug.LogError(" 死亡  调用  死亡状态" + gameObject);
             D.Dead();
             效果_死亡Enter?.Invoke(); 
             isDeadEnter?.Invoke();
 
-                       效果_不复活?.Invoke (false);
+            效果_不复活?.Invoke (false);
             DeadTime = Time.time;
             存();
         }; 
@@ -322,6 +382,7 @@ public state 死亡 = new state("死亡");
             if (不参与场景复活()) 效果_不复活?.Invoke(true);
 
             效果_活动Enter?.Invoke();
+            //效果_死亡Enter?.Invoke();
             R.重制(); 
         };
 
@@ -339,16 +400,7 @@ public state 死亡 = new state("死亡");
             死亡.FixStay += () =>
             {
                 重生时间 += Time.fixedDeltaTime;
-                //if (CanLive())
-                //    {
-                //        // accumulate time while there is no collision
 
-                //    }
-                //    else
-                //    {
-                //        // If you want the progress to reset when collision happens, uncomment next line:
-                //        // 无碰撞累计 = 0f;
-                //    }
                 var required = R.Re_Time  ;
                 if (!真实时间复活)
                     required*= Player3.Public_Const_Speed;
@@ -460,10 +512,14 @@ public state 死亡 = new state("死亡");
 
     int I;
     bool CanLive()
-    { 
-        //bool A = Time.frameCount > I + 5;
+    {
+ 
+        Vector2 加成 = Vector2.one*0.1f;
+        if (重生时不等待玩家)
+        {
 
-        bool B = 盒子.碰撞列表(1 << Initialize.L_Player,1f)?.Get_碰撞组<Player3>() == null;
+        }
+        bool B = 盒子.碰撞列表(1 << Initialize.L_Player, 加成)?.Get_碰撞组<Player3>() == null;
         if ( B)
         {
             I = Time.frameCount;
@@ -486,22 +542,7 @@ public state 死亡 = new state("死亡");
             if (R == null) return;
             if (当前 == 假死) return;
             if (R.Re) to_state(活动);
-            if (仅活着||当前==活动)    R.重制();
- 
+            if (仅活着||当前==活动)    R.重制(); 
         }
     }
-    //void 重制(int  场景,int 编号)
-    //{
-    //    if (DeBuG )  Debug.LogError(场景 + "     " + 编号+gameObject );
-    //    if (场景==gameObject .scene .buildIndex &&编号== 所属相机编号)
-    //    {
-    //        if (R == null) return;
-    //        if ( !R.Re) return; 
-    //        to_state(活动);
-    //        if (仅活着)
-    //        {
-    //            R.重制();
-    //        }
-    //    }
-    //}
 }

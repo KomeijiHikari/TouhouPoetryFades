@@ -27,7 +27,7 @@ public class Flow混合 : MonoBehaviour
         C.enabled = true;
           开关 = true;
         //Ts.Add(t);
-        target1 = Player3.I.transform;
+        target1 = Player3.I.transform.transform;
         target2 = Boss.魔理沙.I.transform;
         //摄像机.I.c.Follow = transform;
      最大fov = 摄像机.I.当前场景真正最大FOV;

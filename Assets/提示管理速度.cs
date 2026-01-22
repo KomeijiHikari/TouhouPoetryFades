@@ -13,7 +13,8 @@ public class 提示管理速度 : MonoBehaviour,I_BOOL
 
     public bool 好嘛()
     {
-        好 = Player3.Public_Const_Speed == speed; 
+        好 = Player3.Public_Const_Speed == speed;
+        好 = 反转 ? !好 : 好;
         return 好;
     }
 }

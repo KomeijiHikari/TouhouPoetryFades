@@ -26,8 +26,7 @@ public class 生物荆棘 : MonoBehaviour
     float time;
 
     public void 关闭()
-    {
-        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    { 
         真正开关(false);
     }
     void  真正开关(bool b)

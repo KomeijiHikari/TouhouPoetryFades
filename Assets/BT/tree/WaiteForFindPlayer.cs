@@ -15,7 +15,7 @@ public class WaiteForFindPlayer : Aweak
     public override TaskStatus OnUpdate()
     {
 
-        if (j.发现玩家了吗)
+        if (j.发现玩家了吗_)
         {
             return TaskStatus.Success;
         }

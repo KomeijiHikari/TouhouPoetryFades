@@ -4,7 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
  
-public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead ,I_Speed_Is
+interface I_消失进度
+{
+    public float 进度 { get; set; }
+    public bool 是 { get; set; }
+
+
+}
+public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead ,I_Speed_Is, I_消失进度
 {
     [SerializeField]
     SpriteRenderer sr;
@@ -32,6 +39,7 @@ public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead ,I_Speed_Is
     public float Live_Time_ { get; set; } = 0;
     public float Live_Time_Max1 { get  => Initialize_Mono.I.重生平台存活时间; }
     public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
+    public float 进度 { get => 进度1; set => 进度1 = value; }
 
     [DisplayOnly]
     [SerializeField]
@@ -39,8 +47,8 @@ public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead ,I_Speed_Is
 
     [DisplayOnly]
     [SerializeField]
-    public float 进度;
-     
+    private float 进度1;
+
 
     I_Speed_Is I;
     [SerializeField]
@@ -52,13 +60,13 @@ public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead ,I_Speed_Is
     //        是 = false;
     //}
     private void OnCollisionStay2D(Collision2D collision)
-    {
-        Debug.LogError(collision+"      AAAAAAAAAAA");
+    { 
         if (collision.gameObject.CompareTag(Initialize.Player))
-            if (collision.transform.position.y>transform.position.y)
+            //if (collision.contacts[0].normal)
+         if (Player3.I.Bounds.min.y > bc.bounds.max.y-0.01f)  
             {
                 是 = true;
-            }
+            } 
     }
 
     private void FixedUpdate()
@@ -103,8 +111,7 @@ public class 简单重生平台 : MonoBehaviour, I_Revive,I_Dead ,I_Speed_Is
 
     var a=   GetComponent<生命周期管理>();
         a.重生时不等待玩家 = false;
-        a.真实时间复活 = true;
-        //Re_Time
+        a.真实时间复活 = true; 
     }
     void asd(int i)
     {

@@ -60,7 +60,7 @@ public class 开发者调试 : MonoBehaviour
             return 能力覆盖1&& 开发者模式;
         }  set => 能力覆盖1 = value; }
 
-    public bool 开发者模式 { get {
+    public bool 开发者模式 { get {  
             if (Application.platform!=RuntimePlatform.WindowsEditor)
             {
                 return false;

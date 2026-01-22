@@ -6,10 +6,9 @@ using UnityEngine;
 
 public class 速度颜色 : MonoBehaviour 
 {
-    public SpriteRenderer sp;
-    public bool 调试;
+    public SpriteRenderer sp; 
 
-
+   [DisplayOnly][SerializeField] GameObject obj;
 
     监控激活碰撞框 J;
 
@@ -51,16 +50,17 @@ public class 速度颜色 : MonoBehaviour
         if (I_Speed_Change == null) I_Speed_Change = gameObject;
         if (sp == null) sp = GetComponent<SpriteRenderer>();
         Is = I_Speed_Change.GetComponent<I_Speed_Is>();
-     
-        //i= GetComponent<I_Speed_Change>();
         if (Is == null)
-        {
-            Debug.LogError("空");
-        }
+        { 
+            Is = transform.parent.GetComponent<I_Speed_Is>();
+            if (Is == null)     Debug.LogError(gameObject.name + transform.position + "空 速度接口"); 
+        } 
+
         //sp.material = 材质管理.Get_Material(材质管理.Other); 
         M = sp.sharedMaterial;
-
-        Sb = GameObject.Instantiate(Surp_Pool.Get_Gameobject(Surp_Pool.三角)).GetComponent<速度标识>();
+ 
+        var a = GameObject.Instantiate(Initialize_Mono.I.速度标识);
+        Sb =a.GetComponent<速度标识>(); 
         假Speed = I_Speed_Change.GetComponent<假装是I_Speed_is>() != null;
         Sb.transform.position = transform.position;
         //Sb.transform.SetParent(transform);
@@ -80,7 +80,14 @@ public class 速度颜色 : MonoBehaviour
     {
         if (Is == null)
         {
-            Debug.LogError(gameObject.name + transform.position + "空 速度接口");
+            Start();
+            Debug.LogError(gameObject.name + transform.position + "空 速度接口"); 
+            return;
+        }
+        if(Sb==null)
+        {
+            Start();
+            Debug.LogError("那个空？" + gameObject.name);
             return;
         }
         Sb.gameObject.SetActive(BB);
@@ -176,6 +183,10 @@ public class 速度颜色 : MonoBehaviour
     }
     void 刷新()
     {
+        if (Deb)
+        {
+            Debug.LogError("AAAAAAAAAAAAAAAAAAAAA"+ BB);
+        }
         Sb.gameObject.SetActive(BB);
  
         Sb.刷新();

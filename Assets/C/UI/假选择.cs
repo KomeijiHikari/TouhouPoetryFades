@@ -104,7 +104,7 @@ public class 假选择 : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (father.当前选中 != null) father.当前选中.回弹(); 
         father.当前选中 = this;
         father.当前选中.选中();
-        Initialize_Mono.I.Debug_(this.GetType(),"选中了"+gameObject .name );
+        Initialize_Mono.I.DebugList_(this.GetType(),"选中了"+gameObject .name );
 
         if (在我这里点击)  触发(); 
 

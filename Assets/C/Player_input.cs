@@ -306,6 +306,7 @@ public class Player_input : Input_base
             if (value ==0)
             {
                 Debug.LogError("我了个去");
+                return;
             }
             if (Player_input.I.方向正负_ != value)
             {
@@ -414,19 +415,7 @@ public class Player_input : Input_base
     /// Input Key  输入的按键
     /// </summary>
     public class IK
-    {
-        //public KeyCode 地图 = KeyCode.M;
-        //public KeyCode 攻击 = KeyCode.J;
-        //public KeyCode 跳跃 = KeyCode.Space;
-        //public KeyCode 冲刺 = KeyCode.LeftShift;
-        //public KeyCode 格挡 = KeyCode.K;
-        //public KeyCode 交互 = KeyCode.E;
-        //public KeyCode 变速 = KeyCode.F;
-
-        //public KeyCode 上 = KeyCode.W;
-        //public KeyCode 下 = KeyCode.S;
-        //public KeyCode 左 = KeyCode.A;
-        //public KeyCode 右 = KeyCode.D;
+    { 
 
 
         public KeyCode 地图;
@@ -464,11 +453,11 @@ public class Player_input : Input_base
     A.冲刺 = KeyCode.LeftShift;
     A.格挡 = KeyCode.K;
     A.交互 = KeyCode.E;
-    A.变速 = KeyCode.F;
+    A.变速 = KeyCode.K;
      A.视野 = KeyCode.Tab    ;
   A.背包 = KeyCode.B;
 
-                A.上 = KeyCode.W;
+     A.上 = KeyCode.W;
     A.下 = KeyCode.S;
     A.左 = KeyCode.A;
     A.右 = KeyCode.D;

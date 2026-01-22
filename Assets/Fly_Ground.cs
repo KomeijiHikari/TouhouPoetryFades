@@ -385,14 +385,7 @@ if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)               
                 transform.rotation = Quaternion.Euler(0, 0, 0);
             }
 
-        }
-        //if (旋转1 ==false )   ///为何要这个功能
-        //{
-        //    不会碰撞消失 = true;
-        //    Initialize_Mono.I.Waite(
-        //        () => { 不会碰撞消失 = false;  },0.5f
-        //        );
-        //}
+        } 
     }
 
     bool 不会碰撞消失;
@@ -434,11 +427,9 @@ if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)               
         return Vector2.zero;
     }
     public bool 用Fly限制;
-    private void FixedUpdate()
+
+    private void UUpdate()
     {
-        if (Initialize_Mono.I.Updatee) return;
-        //transform.position += Vector3.down * Time.fixedDeltaTime;
-        //return;
         if (方向 == Vector2.zero) return;
         if (!gameObject.activeSelf) return;
         lookme = I_S.固定等级差 * self_speed;
@@ -446,7 +437,7 @@ if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)               
 
         if (Debul)
         {
-            Debug.LogError(lookme+ "lookme");
+            Debug.LogError(lookme + "lookme");
         }
         if (用Fly限制)
         {
@@ -465,7 +456,7 @@ if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)               
         销毁倒计时();
 
         var a = 无视 && 无视盒子.Contains(transform.position);
-   //if(Debul)     Debug.LogError(a +"    "+ 无视盒子.size);
+        //if(Debul)     Debug.LogError(a +"    "+ 无视盒子.size);
 
 
         if (!运动暂停)
@@ -478,23 +469,23 @@ if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)               
             }
             else
             {
- 
+
                 //Vector3 value =
                 //    new Vector3(模拟速度_.x,MathF.Max
                 //    (模拟速度_.y,Initialize_Mono.I.最大箭矢坠落速度)  );
-                transform.position +=((Vector3)模拟速度_) * 帧移动距离;
+                transform.position += ((Vector3)模拟速度_) * 帧移动距离;
             }
         }
         if (!a) 箭头();
         if (方向.x != 0)
         {
             var ls = sp.transform.localScale;
-            sp.transform.localScale = new Vector3(方向.x, ls.y,1);
+            sp.transform.localScale = new Vector3(方向.x, ls.y, 1);
         }
 
         // 只获取一次边界点集合 
-        if(Initialize_Mono.I.Updatee) 帧移动距离 = lookme * Time.deltaTime;
-     else   帧移动距离 = lookme * Time.fixedDeltaTime;
+        if (Initialize_Mono.I.Updatee) 帧移动距离 = lookme * Time.deltaTime;
+        else 帧移动距离 = lookme * Time.fixedDeltaTime;
         if (Debul)
         {
             Debug.LogError("    WWWWQWQWQQQQ  " + 帧移动距离);
@@ -506,14 +497,22 @@ if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)               
             float Deletime = Time.fixedDeltaTime;
             if (Initialize_Mono.I.Updatee) Deletime = Time.deltaTime;
 
-                transform.Rotate(帧旋转速度 * Initialize_Mono.I.GetMin(I_S.固定等级差) * Deletime * 0.21f);
-          
+            transform.Rotate(帧旋转速度 * Initialize_Mono.I.GetMin(I_S.固定等级差) * Deletime * 0.21f);
+
             float Y = 模拟速度_.y - Initialize_Mono.I.假物理重力 * 重力加速度乘 *
                 Initialize_Mono.I.GetMin(I_S.固定等级差) * Deletime;
-            模拟速度_.y =MathF.Max(Y,Initialize_Mono.I.最大箭矢坠落速度)  ; // 原地更新，不创建新向量
-           
+            模拟速度_.y = MathF.Max(Y, Initialize_Mono.I.最大箭矢坠落速度); // 原地更新，不创建新向量
+
             //Debug.LogError(模拟速度_.y);
-       //if (Y < -30)  死();
+            //if (Y < -30)  死();
+        }
+    }
+    private void FixedUpdate()
+    {
+        if (!Initialize_Mono.I.Updatee)
+        {
+            UUpdate();
+
         } 
     } 
     private void Update()
@@ -529,8 +528,8 @@ if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)               
             //bc.isTrigger = false;
             gameObject.layer = Initialize.L_M_Ground;
         }
-        FixedUpdate();
-
+        if (Initialize_Mono.I.Updatee)
+            UUpdate(); 
     }
     private void 箭头()
     {

@@ -65,7 +65,7 @@ public class ½¹µã : MonoBehaviour
     public void set_Parent(Transform target)
     {
         transform.SetParent(target);
-        if (target== Player3.I.transform)
+        if (target== Player3.I.transform.transform)
         {
             ¸úËæ×´Ì¬ = E_¸úËæ×´Ì¬.¸úÖ÷½Ç;
         }

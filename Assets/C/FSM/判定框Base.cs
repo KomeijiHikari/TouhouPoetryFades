@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class 判定框Base : MonoBehaviour
 {
-    public CircleCollider2D Cc;
+    public CapsuleCollider2D Cc;
     public BoxCollider2D bc;
     public PolygonCollider2D pc;
     public bool 打到了 { get; set; } = false;
@@ -19,6 +19,7 @@ public class 判定框Base : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.LogError(collision.name);
         打到的类型 打到的类型_ = 打到的类型.NULL;
         bool 地面 = collision.gameObject.CompareTag(Initialize.Ground);
         var 有血 = collision.gameObject.GetComponent<I_生命>();
@@ -27,6 +28,12 @@ public class 判定框Base : MonoBehaviour
         if (Player3.I.N_.时缓) 变速 = collision.gameObject.GetComponent<I_Speed_Change>();
         打到了 = true;
 
+        //if (!无穿透(collision))
+        //{
+        //    Debug.LogError("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas");
+        //    return;
+        //}
+      
         ADDCo(collision);
          
         if (有血 != null)
@@ -67,13 +74,29 @@ public class 判定框Base : MonoBehaviour
                 break;
         }
     }
+
+    bool 无穿透(Collider2D a)
+    { 
+        var v2you = a.bounds.center;
+        var v2my = Player3.I.Bounds.center;
+        var Hit2d = Physics2D.Linecast(v2my, v2you, 1 << Initialize.L_Ground);
+        if (Hit2d.collider == null)
+        {
+            return true;
+        }
+        else
+        {
+                Debug.LogError(a.gameObject.name+a.gameObject.name);
+            if (Hit2d.collider.gameObject == a.gameObject)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     void ADDCo(Collider2D a)
     {
-        //Debug.LogError(所有碰撞体.Contains(a)+"      "+a.gameObject.name );
-        if (!所有碰撞体.Contains(a))
-        { 
-            所有碰撞体.Add(a);
-        }
+        if (!所有碰撞体.Contains(a)) 所有碰撞体.Add(a);
     }
     void ADD(BiologyBase  a)
     {

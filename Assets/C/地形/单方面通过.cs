@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class 单方面通过 : I_Dead, I_Revive, I_Speed_Change
+public partial class 单方面通过 : I_Dead, I_Revive, I_Speed_Is
 {
     public GameObject 对象 { get => gameObject; }
     public 上海玩家 上海; 
@@ -11,15 +11,14 @@ public partial class 单方面通过 : I_Dead, I_Revive, I_Speed_Change
     public Action 销毁触发 { get; set; }
 
     [SerializeField] private bool re;
-    [SerializeField] private float re_Time;
-    private float speed_Lv=1;
+ private float re_Time=1;
+    [SerializeField] private float speed_Lv=1;
 
     public bool Re { get => re; set => re = value; }
-    public float Re_Time { get => re_Time; set => re_Time = value; }
+    public float Re_Time { get => re_Time/speed_Lv; set => re_Time = value; }
 
     public Action 变速触发 { get; set; }
-
-    public I_Speed_Change I_S => this;
+     
 
     public float Current_Speed_LV => Speed_Lv;
 
@@ -121,7 +120,7 @@ public partial class 单方面通过 : MonoBehaviour
         {
             Initialize_Mono.I.Waite(
             () => { 销毁触发?.Invoke(); },
-                I_S.固定等级差 * 销毁延迟时间
+               ((I_Speed_Is)this).固定等级差 * 销毁延迟时间
                 );
         }
 

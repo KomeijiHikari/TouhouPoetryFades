@@ -163,8 +163,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 4685280646671334351}
+  Deb: 0
   "\u662F1": 0
-  "\u8FDB\u5EA6": 0
+  "\u8FDB\u5EA61": 0
   speed_Lv: 1
 --- !u!114 &4685280647134246722
 MonoBehaviour:
@@ -252,7 +253,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b387c9d68ffa2945ae6df2e8342392f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s: {fileID: 4685280647134246725}
+  "\u5C3A\u5BF8": 0
+  "\u989C\u8272": 0
+  "ObjI_\u6D88\u5931\u8FDB\u5EA6": {fileID: 4685280647134246735}
   sp: {fileID: 4685280646671334351}
   "s\u8FDB\u5EA6": 0
   "\u5F00": 0
@@ -340,6 +343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sp: {fileID: 4685280646671334351}
   "\u8C03\u8BD5": 0
+  obj: {fileID: 0}
   I_Speed_Change: {fileID: 4685280647134246735}
   f: 0
   c: {r: 0, g: 0, b: 0, a: 0}

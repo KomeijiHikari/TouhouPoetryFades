@@ -9,7 +9,7 @@ public class hit : State_Base
     bool BigHit => Player.BigHit;
     public override void EnterState()
     {
-  
+         Player.ChangeFather();
         Player.加速(false);
         Initialize.Set_碰撞(Initialize .L_Player , Initialize.L_Air_wall,false);
         if (Player.当前hp <=0)
@@ -23,7 +23,7 @@ public class hit : State_Base
             Player.GravityScale = 0; 
         }
         else
-        {
+        { 
             if (BigHit)
             {
                 Player.受伤.stiffnessTime_ = Player.受伤.stiffnessTime大硬直;

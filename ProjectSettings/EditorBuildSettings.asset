@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AVS 2.unity
     guid: 31197826305227a4f9fb6f7f22695aa8
+  - enabled: 0
+    path: Assets/Scenes/AVS 2Copy.unity
+    guid: eb614b7ed0615fe48a6609a1314e5e34
   m_configObjects: {}

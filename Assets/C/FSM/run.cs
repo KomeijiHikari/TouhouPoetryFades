@@ -126,8 +126,16 @@ public class run : State_Base
         //Player.Velocity = new Vector2(IP.方向正零负 * Player.玩家数值.常态速度, Player.Velocity.y);
 
 
- 
+        if (Player.脚下==null)
+        {
             Player.AddForce(new Vector2(Player.玩家数值.起步速度 * 0.8f * IP.方向正负, 0));
+        }
+        else
+        {
+            Player.transform.localPosition += new Vector3(Player_input.I.方向正零负 * Player3.I.玩家数值.常态速度, 0, 0) * Time.fixedDeltaTime;
+        }
+ 
+
 
         if (EnterTime > 0.1f)
         {

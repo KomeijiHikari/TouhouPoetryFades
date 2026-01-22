@@ -11,7 +11,7 @@ public class 复活显示 : MonoBehaviour
 
     Bounds BB; 
 
-    SpriteRenderer 白块;
+   [SerializeField][DisplayOnly] SpriteRenderer 白块;
 
     [DisplayOnly]
     [SerializeField]
@@ -66,9 +66,11 @@ public class 复活显示 : MonoBehaviour
         BB = s.R.盒子;
 
         s.效果_死亡Enter += () => {
+       //if(Deb)     Debug.LogError("  s.效果_死亡Enter ");
             baikkk(true);
         };
         s.效果_活动Enter += () => {
+            //if (Deb) Debug.LogError("  s.效果_活动Enter ");
             baikkk(false); 
         };
 
@@ -92,6 +94,8 @@ public class 复活显示 : MonoBehaviour
     List<ParticleSystem> LIzijiguan=new List<ParticleSystem>();
 
     public bool 真实时间 = false;
+    public bool Deb;
+
     void Play()
     {
         for (int i = 0; i < LIzijiguan.Count; i++)

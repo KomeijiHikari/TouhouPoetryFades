@@ -379,7 +379,7 @@ namespace Enemmy
         {
             base.Update();
             距离_ = 距离;
-            if (j.发现玩家了吗)
+            if (j.发现玩家了吗_)
             {
                 if (距离 > A)
                 {

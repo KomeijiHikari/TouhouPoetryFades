@@ -1,19 +1,19 @@
+using Cinemachine;
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-
-using DG.Tweening;
 using System.IO;
-using UnityEngine.SceneManagement;
-using UnityEngine.Events;
-using UnityEditor;
-using UnityEngine.Tilemaps;
-using Cinemachine;
-using System.Reflection;
 using System.Linq;
-using static 生命周期管理;
+using System.Reflection;
 using Unity.VisualScripting;
+using UnityEditor; 
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
+using static BiologyBase;
+using static 生命周期管理;
 
 interface 打印消息
 {
@@ -21,33 +21,128 @@ interface 打印消息
     public bool 状态消息 { get; set; }
 }
 
-
-
+ 
 /// <summary>
 /// 设置属性只读
 /// </summary>
 public class DisplayOnly : PropertyAttribute
 {
 
+} 
+public static class Debug_
+{
+  public   enum E_DebugState
+    {
+        None,
+        Deb,
+        Count,
+    }
+static    Debug_.E_DebugState e_DebugState => Initialize_Mono.I.e_DebugState;
+
+    public static void LogError(object s, UnityEngine.Object c = null)
+    {
+        switch (e_DebugState)
+        {
+            case E_DebugState.None:
+                return;
+            case E_DebugState.Count:
+                if (c == null)
+                {
+                    Debug.LogError($"[{Time.frameCount}] {s}");
+                }
+                else
+                {
+                    Debug.LogError($"[{Time.frameCount}] {s}", c);
+                }
+                return;
+            case E_DebugState.Deb:
+            default:
+                if (c == null)
+                {
+                    Debug.LogError(s);
+                }
+                else
+                {
+                    Debug.LogError(s, c);
+                }
+                return;
+        }
+    }
+
+    // 统一的日志警告方法
+    public static void LogWarning(object s, UnityEngine.Object c = null)
+    {
+        switch (e_DebugState)
+        {
+            case E_DebugState.None:
+                return;
+            case E_DebugState.Count:
+                if (c == null)
+                {
+                    Debug.LogWarning($"[{Time.frameCount}] {s}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[{Time.frameCount}] {s}", c);
+                }
+                return;
+            case E_DebugState.Deb:
+            default:
+                if (c == null)
+                {
+                    Debug.LogWarning(s);
+                }
+                else
+                {
+                    Debug.LogWarning(s, c);
+                }
+                return;
+        }
+    }
+
+    // 统一的日志方法
+    public static void Log(object s, UnityEngine.Object c = null)
+    {
+        switch (e_DebugState)
+        {
+            case E_DebugState.None:
+                return;
+            case E_DebugState.Count:
+                if (c == null)
+                {
+                    Debug.Log($"[{Time.frameCount}] {s}");
+                }
+                else
+                {
+                    Debug.Log($"[{Time.frameCount}] {s}", c);
+                }
+                return;
+            case E_DebugState.Deb:
+            default:
+                if (c == null)
+                {
+                    Debug.Log(s);
+                }
+                else
+                {
+                    Debug.Log(s, c);
+                }
+                return;
+        }
+    }
 }
-
-
+ 
 /// <summary>
 /// FPS显示
-/// </summary>
-
-
-
-
+/// </summary> 
 [DefaultExecutionOrder(-100)]
 public class Initialize_Mono : MonoBehaviour
 {
- 
-    [SerializeField]
-    Transform 焦点;
+    public Debug_.E_DebugState e_DebugState;
     public List<提示管理设置> TsL = new List<提示管理设置>();
     private void Start()
-    {
+    {  
+
          Event_M.I.Add(Event_M.刷新提示机关, 提示机关刷新);
         重制触发 += (int i, int q) => { Waite(提示机关刷新, 0.01f); };
         切换Shader.I.SpeedAction += (bool b) => { Waite(提示机关刷新, 0.01f); };
@@ -236,7 +331,10 @@ public class Initialize_Mono : MonoBehaviour
 
     private void Awake()
     {
-        
+ 
+        QualitySettings.vSyncCount = 0;
+        // 锁定为60帧
+        Application.targetFrameRate = 60;
         事件字典显示 = Event_M.I.事件列表;
         if (I != null && I != this)
         {
@@ -254,7 +352,12 @@ public class Initialize_Mono : MonoBehaviour
             敌人回耐久速度 = 10;
         }
 
+        LoadPla_and_D(); 
 
+        Sz = new 数值范围(阀值,8 );
+    }
+    public static void LoadPla_and_D()
+    {
         Save_D.存档字典_ = null;
         Save_D.Load();
 
@@ -262,8 +365,6 @@ public class Initialize_Mono : MonoBehaviour
         DeadPla.I.DeadList = null;
         DeadPla.I.读取();
         DeadPla.I.DE();
-
-        Sz = new 数值范围(阀值,8 );
     }
    public 数值范围 Sz { get; private set; }
     public void 改变一会儿时间(float 真实时间, float 速率)
@@ -280,7 +381,7 @@ public class Initialize_Mono : MonoBehaviour
 
     [SerializeField]
     bool NEW消息列表 = false;
-    public void Debug_(Type t, object Message)
+    public void DebugList_(Type t, object Message)
     {
 
         string a = t.Name;
@@ -424,7 +525,7 @@ public class Initialize_Mono : MonoBehaviour
     /// <param name="time"></param>
     /// <param name="真实时间"></param>
     public void Waite(Action a, float time = 0, bool 真实时间 = false)
-    {
+    { 
         StartCoroutine(等待时间执行方法(a, time, 真实时间));
     }
     public void 等待一帧执行方法_检测原obj是否启用(GameObject G, Action a)
@@ -559,9 +660,13 @@ public class Initialize_Mono : MonoBehaviour
     public bool 动态跳跃碰撞=true;
     public  float 下落动画速度=8;
     public bool MoveP_优化;
+    public  GameObject 速度标识;
+    public float 子弹引线时间=1.5f;
+    public float 校准值=0.0089f;
 
     public int GetSpeedInt(float Speed)
-    { 
+    {
+ 
         return Sz.GetInt(Speed);
     } 
     private void Update()
@@ -622,10 +727,485 @@ public class No_Re
         }
     }
 }
+ 
 
+ 
+public static  class   Rb反算
+{ /// <summary>
+  /// 简化版本：根据位移和方向计算需要的初速度（只考虑重力）
+  /// </summary>
+  /// <param name="rb">Rigidbody2D组件</param>
+  /// <param name="displacement">目标位置相对于当前位置的位移</param>
+  /// <param name="direction">施加力的方向（不需要单位化）</param>
+  /// <returns>需要设置的初速度Vector2</returns>
+    public static Vector2 V2Frist(
+     this Rigidbody2D rb,
+        Vector2 displacement,
+        Vector2 direction)
+    {
+        // 方向归一化
+        Vector2 dir = direction.normalized;
+
+        // 获取重力加速度
+        float gravity = Mathf.Abs(Physics2D.gravity.y);
+
+        // 计算需要的总速度大小
+        // 使用公式：v = sqrt(2 * g * h)
+        // 其中 h = displacement.magnitude * sin(θ)
+        // θ 是位移与水平方向的夹角
+        float displacementAngle = Mathf.Atan2(displacement.y, displacement.x);
+        float dirAngle = Mathf.Atan2(dir.y, dir.x);
+        float angleDiff = dirAngle - displacementAngle;
+
+        // 计算沿方向的分量
+        float speed = Mathf.Sqrt(2 * gravity * displacement.magnitude * Mathf.Abs(Mathf.Cos(angleDiff)));
+
+        // 返回速度向量
+        return dir * speed;
+    }
+    /// <summary>
+    /// 完整版本：根据位移和方向计算需要的力（考虑所有物理参数）
+    /// </summary>
+    /// <param name="rb">Rigidbody2D组件</param>
+    /// <param name="displacement">目标位置相对于当前位置的位移</param>
+    /// <param name="direction">施加力的方向（不需要单位化）</param>
+    /// <param name="maxIterations">最大迭代次数（默认50）</param>
+    /// <param name="tolerance">容差（默认0.01）</param>
+    /// <returns>需要设置的力Vector2</returns>
+    public static Vector2 V2Next(
+     this Rigidbody2D rb,
+        Vector2 displacement,
+        Vector2 direction,
+        int maxIterations = 50,
+        float tolerance = 0.01f)
+    {
+        // 参数验证
+        if (direction.sqrMagnitude < 0.001f)
+        {
+            Debug.LogError("方向向量不能为零");
+            return Vector2.zero;
+        }
+
+        // 方向归一化
+        Vector2 dir = direction.normalized;
+
+        // 获取刚体物理参数
+        float mass = rb.mass;
+        float drag = rb.drag;
+        float angularDrag = rb.angularDrag;
+        float gravityScale = rb.gravityScale;
+        Vector2 gravity = Physics2D.gravity * gravityScale;
+
+        // 简化版本作为初始猜测
+        Vector2 initialForce = V2Frist(rb, displacement, direction);
+        float initialMagnitude = initialForce.magnitude;
+
+        // 使用二分法寻找合适的力大小
+        float minForce = 0f;
+        float maxForce = initialMagnitude * 10f; // 初始猜测的10倍作为上限
+        Vector2 bestForce = Vector2.zero;
+        float bestError = float.MaxValue;
+
+        for (int i = 0; i < maxIterations; i++)
+        {
+            // 计算当前测试的力大小（二分法）
+            float testMagnitude = (minForce + maxForce) * 0.5f;
+            Vector2 testForce = dir * testMagnitude;
+
+            // 计算施加此力后的运动轨迹终点
+            Vector2 endPosition = SimulateForceTrajectory(
+                Vector2.zero, // 起始位置（相对位置）
+                testForce,    // 施加的力
+                mass,
+                drag,
+                gravity,
+                5f,           // 模拟时间（足够长以观察最终位置）
+                0.02f         // 时间步长
+            );
+
+            // 计算与目标位移的误差
+            float error = Vector2.Distance(endPosition, displacement);
+
+            // 更新最佳解
+            if (error < bestError)
+            {
+                bestError = error;
+                bestForce = testForce;
+            }
+
+            // 检查是否满足精度要求
+            if (error < tolerance)
+            {
+                Debug.Log($"在第{i + 1}次迭代找到合适解，误差：{error:F4}");
+                return testForce;
+            }
+
+            // 调整搜索范围
+            // 比较终点位置与目标位置
+            float distanceToTarget = Vector2.Dot(endPosition.normalized, dir);
+            float targetDistance = Vector2.Dot(displacement.normalized, dir);
+
+            if (distanceToTarget < targetDistance)
+            {
+                // 距离不够，增加力
+                minForce = testMagnitude;
+            }
+            else
+            {
+                // 距离过大，减小力
+                maxForce = testMagnitude;
+            }
+
+            // 如果搜索范围太小，提前结束
+            if (maxForce - minForce < 0.01f)
+            {
+                Debug.Log($"搜索范围过小，使用最佳解，误差：{bestError:F4}");
+                return bestForce;
+            }
+        }
+
+        Debug.LogWarning($"在{maxIterations}次迭代后未找到精确解，使用最佳近似，误差：{bestError:F4}");
+        return bestForce;
+    }
+
+    /// <summary>
+    /// 模拟施加力后的轨迹
+    /// </summary>
+    private static Vector2 SimulateForceTrajectory(
+        Vector2 startPos,
+        Vector2 initialForce,
+        float mass,
+        float drag,
+        Vector2 gravity,
+        float totalTime,
+        float timeStep = 0.02f)
+    {
+        Vector2 position = startPos;
+        Vector2 velocity = initialForce / mass; // 力转化为初速度
+
+        float currentTime = 0f;
+        float dt = timeStep;
+
+        while (currentTime < totalTime)
+        {
+            // 计算时间步长
+            dt = Mathf.Min(dt, totalTime - currentTime);
+
+            // 计算加速度：重力加速度 + 阻力加速度
+            Vector2 acceleration = gravity; // 重力
+
+            // 空气阻力（与速度方向相反）
+            Vector2 dragAcceleration = -drag * velocity;
+            acceleration += dragAcceleration;
+
+            // 使用半隐式欧拉法（更稳定）
+            velocity += acceleration * dt;
+            position += velocity * dt;
+
+            // 如果速度接近零且位置接近稳定，提前结束
+            if (velocity.sqrMagnitude < 0.001f && acceleration.sqrMagnitude < 0.001f)
+            {
+                break;
+            }
+
+            currentTime += dt;
+        }
+
+        return position;
+    }
+
+    /// <summary>
+    /// 快速近似版本：使用能量守恒原理
+    /// </summary>
+    public static Vector2 V2Last(
+       this Rigidbody2D rb,
+        Vector2 displacement,
+        Vector2 direction)
+    {
+        // 方向归一化
+        Vector2 dir = direction.normalized;
+
+        // 获取物理参数
+        float mass = rb.mass;
+        float drag = rb.drag;
+        float gravityScale = rb.gravityScale;
+        float gravity = Mathf.Abs(Physics2D.gravity.y * gravityScale);
+
+        // 计算位移在方向上的投影
+        float displacementInDirection = Vector2.Dot(displacement, dir);
+
+        // 考虑阻力的能量损失因子
+        // 经验公式：能量损失与距离和阻力成正比
+        float energyLossFactor = 1f + drag * displacement.magnitude * 0.1f;
+
+        // 计算需要的动能
+        // E = 0.5 * m * v² = m * g * h + 阻力损失
+        float requiredHeight = Mathf.Abs(displacement.y);
+        float requiredEnergy = mass * gravity * requiredHeight * energyLossFactor;
+
+        // 计算速度大小
+        float speed = Mathf.Sqrt(2f * requiredEnergy / mass);
+
+        // 考虑角度因素调整
+        float angle = Vector2.Angle(dir, displacement.normalized) * Mathf.Deg2Rad;
+        float angleFactor = 1f / Mathf.Max(0.3f, Mathf.Cos(angle));
+        speed *= angleFactor;
+
+        // 计算力的大小（力 = 质量 * 速度 / 时间，这里假设时间=1）
+        float forceMagnitude = mass * speed;
+
+        return dir * forceMagnitude;
+    }   
+    /// <summary>
+         /// 版本1：只考虑重力，计算在指定时间内跳跃到目标位置所需的速度
+         /// </summary>
+         /// <param name="rb">Rigidbody2D组件（仅用于获取当前位置和重力）</param>
+         /// <param name="flightTime">到达目标的飞行时间（秒）</param>
+         /// <param name="displacement">目标位置相对于当前位置的位移（目标位置 - 当前位置）</param>
+         /// <returns>需要设置的初速度Vector2</returns>
+    public static Vector2 Frist(
+ this  Rigidbody2D rb,
+    float flightTime,
+    Vector2 displacement,
+    int maxIterations = 100,
+    float tolerance = 0.01f)
+    {
+        // 参数验证
+        if (flightTime <= 0.001f)
+        {
+            Debug.LogError("飞行时间必须大于0");
+            return Vector2.zero;
+        }
+
+        // 获取刚体参数
+        float mass = rb.mass;
+        float drag = rb.drag;
+        float gravityScale = rb.gravityScale;
+        Vector2 gravity = Physics2D.gravity * gravityScale;
+
+        // 使用简单公式作为初始猜测
+        Vector2 initialGuess = Next(rb, flightTime, displacement);
+
+        // 使用牛顿-拉弗森法迭代优化
+        Vector2 currentVelocity = initialGuess;
+        int II = 0;
+        for (int i = 0; i < maxIterations; i++)
+        {
+            // 模拟轨迹
+            Vector2 predictedPos = SimulateTrajectory(
+                Vector2.zero, // 从原点开始
+                currentVelocity,
+                mass,
+                drag,
+                gravity,
+                flightTime
+            );
+
+            // 计算误差
+            Vector2 error = displacement - predictedPos;
+            float errorMagnitude = error.magnitude;
+
+            // 检查是否达到精度要求
+            if (errorMagnitude < tolerance)
+            {
+                Debug.Log($"迭代{i + 1}次后收敛，最终误差：{errorMagnitude:F4}");
+                return currentVelocity;
+            }
+
+            // 计算雅可比矩阵（数值近似）
+            float h = 0.001f; // 微小变化量
+
+            // 对vx求偏导
+            Vector2 velXPlus = currentVelocity + new Vector2(h, 0);
+            Vector2 posXPlus = SimulateTrajectory(Vector2.zero, velXPlus, mass, drag, gravity, flightTime);
+            Vector2 dPos_dVx = (posXPlus - predictedPos) / h;
+
+            // 对vy求偏导
+            Vector2 velYPlus = currentVelocity + new Vector2(0, h);
+            Vector2 posYPlus = SimulateTrajectory(Vector2.zero, velYPlus, mass, drag, gravity, flightTime);
+            Vector2 dPos_dVy = (posYPlus - predictedPos) / h;
+
+            // 构建2x2雅可比矩阵
+            float[,] J = new float[2, 2]
+            {
+                { dPos_dVx.x, dPos_dVy.x },
+                { dPos_dVx.y, dPos_dVy.y }
+            };
+
+            // 计算雅可比矩阵的行列式
+            float det = J[0, 0] * J[1, 1] - J[0, 1] * J[1, 0];
+
+            // 如果行列式太小，使用梯度下降法替代
+            if (Mathf.Abs(det) < 1e-6f)
+            {
+                // 梯度下降：速度 = 速度 + 学习率 * 误差
+                float learningRate = 0.1f;
+                currentVelocity += error * learningRate;
+                continue;
+            }
+
+            // 计算雅可比矩阵的逆
+            float[,] J_inv = new float[2, 2]
+            {
+                { J[1, 1] / det, -J[0, 1] / det },
+                { -J[1, 0] / det, J[0, 0] / det }
+            };
+
+            // 牛顿-拉弗森法更新：v_new = v_old + J⁻¹ * error
+            float deltaVx = J_inv[0, 0] * error.x + J_inv[0, 1] * error.y;
+            float deltaVy = J_inv[1, 0] * error.x + J_inv[1, 1] * error.y;
+
+            currentVelocity += new Vector2(deltaVx, deltaVy);
+
+            // 限制速度变化幅度，防止发散
+            float maxDelta = 10f;
+            if (currentVelocity.magnitude > initialGuess.magnitude * 10f)
+            {
+                currentVelocity = initialGuess;
+                Debug.LogWarning($"迭代发散，重置为初始猜测");
+            }
+
+            II++;
+        }
+        Debug.LogError(II);
+        Debug.LogWarning($"在{maxIterations}次迭代后未收敛");
+        return currentVelocity;
+    }
+    private static Vector2 SimulateTrajectory(
+        Vector2 startPos,
+        Vector2 startVelocity,
+        float mass,
+        float drag,
+        Vector2 gravity,
+        float totalTime,
+        float timeStep = 0.01f)
+    {
+        Vector2 position = startPos;
+        Vector2 velocity = startVelocity;
+        float currentTime = 0f;
+        int II=  0;
+        while (currentTime < totalTime)
+        {
+            // 计算时间步长（不超过剩余时间）
+            float dt = Mathf.Min(timeStep, totalTime - currentTime);
+
+            // 计算合力：重力 + 阻力
+            Vector2 force = mass * gravity; // 重力
+
+            // 阻力：-drag * velocity
+            Vector2 dragForce = -drag * velocity;
+            force += dragForce;
+
+            // 计算加速度：a = F / m
+            Vector2 acceleration = force / mass;
+
+            // 使用欧拉法更新速度和位置
+            velocity += acceleration * dt;
+            position += velocity * dt;
+
+            currentTime += dt;
+
+            II++;
+        }
+        Debug.LogError(II);
+        return position;
+    }
+    /// <summary>
+    /// 版本2：完整考虑刚体设置（重力、质量、线性阻力、重力缩放等）
+    /// 使用数值迭代法求解，更精确但计算量更大
+    /// </summary>
+    /// <param name="rb">Rigidbody2D组件</param>
+    /// <param name="flightTime">到达目标的飞行时间（秒）</param>
+    /// <param name="displacement">目标位置相对于当前位置的位移</param>
+    /// <param name="maxIterations">最大迭代次数（默认100）</param>
+    /// <param name="tolerance">容差（默认0.01）</param>
+    /// <returns>需要设置的初速度Vector2，如果计算失败返回Vector2.zero</returns>
+    public static Vector2 Next(
+   this Rigidbody2D rb,
+    float flightTime,
+    Vector2 displacement)
+    {
+        // 获取当前重力（取绝对值，因为Unity中重力是负值）
+        float gravity = Mathf.Abs(Physics2D.gravity.y);
+
+        // 计算水平速度分量：vx = Δx / t
+        float velocityX = displacement.x / flightTime;
+
+        // 计算垂直速度分量：vy = (Δy + 0.5 * g * t²) / t
+        // 使用公式：y = vy * t - 0.5 * g * t²  (因为重力向下)
+        // 重排得：vy = (y + 0.5 * g * t²) / t
+        float velocityY = (displacement.y + 0.5f * gravity * flightTime * flightTime) / flightTime;
+
+        return new Vector2(velocityX, velocityY);
+    }
+    public static Vector2 Last(
+  this Rigidbody2D rb,
+    float flightTime,
+    Vector2 displacement)
+    {
+        // 获取刚体参数
+        float drag = rb.drag;
+        float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
+
+        // 计算有效重力（考虑阻力对下落的影响）
+        // 阻力会减小有效重力，这里使用经验公式
+        float effectiveGravity = gravity * Mathf.Exp(-drag * flightTime * 0.5f);
+
+        // 计算速度分量
+        float velocityX = displacement.x / flightTime;
+
+        // 调整X速度，考虑阻力影响
+        // 阻力会使水平速度随时间衰减
+        float dragFactorX = Mathf.Exp(drag * flightTime) - 1f;
+        velocityX = velocityX * drag * flightTime / dragFactorX;
+
+        // 计算Y速度
+        // 使用有效重力代替实际重力
+        float velocityY = (displacement.y + 0.5f * effectiveGravity * flightTime * flightTime) / flightTime;
+
+        // 调整Y速度，考虑阻力影响
+        float dragFactorY = 1f + drag * flightTime * 0.5f;
+        velocityY *= dragFactorY;
+
+        return new Vector2(velocityX, velocityY);
+    }
+}
+ 
 
 public static class Initialize
 {
+    public static void  TryPlay(this Animator animator, string c)
+    {
+      if(animator.AnimatorHasState(c))
+        {
+            animator.Play(c);
+        }
+    }
+    public static bool AnimatorHasState(this Animator animator, string stateName, int layerIndex = 0)
+    {
+        // 参数有效性检查
+        if (animator == null)
+        {
+            Debug.LogWarning("AnimatorHasState: Animator参数为null");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(stateName))
+        {
+            Debug.LogWarning("AnimatorHasState: 状态名称为空或null");
+            return false;
+        }
+
+        if (layerIndex < 0 || layerIndex >= animator.layerCount)
+        {
+            Debug.LogWarning($"AnimatorHasState: 层索引{layerIndex}超出有效范围(0-{animator.layerCount - 1})");
+            return false;
+        }
+
+        // 核心检测逻辑：将状态名转换为Hash ID并使用HasState API
+        int stateHash = Animator.StringToHash(stateName);
+        return animator.HasState(layerIndex, stateHash);
+    }
     /// <summary>
     /// 重载：将字典赋值到已存在的实例（适合无法新建实例的场景，如 Unity MonoBehaviour）
     /// </summary>
@@ -825,6 +1405,7 @@ public static class Initialize
         float proj = Mathf.Abs(myBounds.extents.x * normal.x) + Mathf.Abs(myBounds.extents.y * normal.y);
         // 将中心移动到碰撞点外侧，保证边界与碰撞点贴合（再加上一个微小的 skin）
         Vector2 flushCenter = hit.point + normal * (proj + skin);
+        //(flushCenter+Vector2.right*0.2f).DraClirl(3, Color.red, 1);
         return flushCenter;
     }
     public static List<T> 随机列表<T>(this List<T> list)
@@ -874,6 +1455,160 @@ public static class Initialize
         return points;
     }
     public static Vector3 Z1 { get => new Vector3(0, 0, 1); }
+
+
+    /// <summary>
+    /// 修正版本：考虑物理阀值和固定等级差的抛物线计算
+    /// </summary>
+    /// <param name="发射方向">发射方向（不需要单位化）</param>
+    /// <param name="目标位移">目标位移（目标位置 - 发射位置）</param>
+    /// <param name="G">重力加速度（正数）</param>
+    /// <param name="固定等级差">固定等级差</param>
+    /// <param name="物理阀值">物理阀值（默认30）</param>
+    /// <returns>需要的初速度Vector2</returns>
+    public static Vector2 抛物线_Get力2(
+        Vector2 发射方向,
+        Vector2 目标位移,
+        float G,
+        float 固定等级差 )
+    {
+        float 物理阀值 = Initialize_Mono.I.物理阀值1;
+        // 方向归一化
+        Vector2 direction = 发射方向.normalized;
+
+        // 获取ZZZZZZZ因子（你的GetMin方法）
+        float zFactor = Mathf.Min(固定等级差, 物理阀值);
+
+        // 实际有效的时间缩放因子
+        // 位移计算中的总缩放因子是：zFactor * speedLevel
+        // 因为：单位位移 = 当前 * zFactor * (Time.deltaTime * speedLevel)
+        float effectiveScale = zFactor * 固定等级差;
+
+        // 重力加速度的缩放因子
+        // 重力更新：Y = Y - G * (Time.deltaTime * speedLevel)
+        float gravityScale = 固定等级差;
+
+        // 我们需要解这个系统：
+        // dx = vx * effectiveScale * t
+        // dy = vy * effectiveScale * t - 0.5 * (G * gravityScale) * t²
+
+        // 这等价于解：
+        // dx' = vx * t
+        // dy' = vy * t - 0.5 * G' * t²
+        // 其中：
+        // dx' = dx / effectiveScale
+        // dy' = dy / effectiveScale
+        // G' = G * gravityScale / (effectiveScale * effectiveScale)
+
+        Vector2 scaledDisplacement = 目标位移 / effectiveScale;
+        float scaledGravity = G * gravityScale / (effectiveScale * effectiveScale);
+
+        // 使用标准的抛物线公式计算缩放后的速度
+        Vector2 scaledVelocity = CalculateParabolicVelocitySimple(
+            direction,
+            scaledDisplacement,
+            scaledGravity
+        );
+
+        // 缩放回实际速度
+        return scaledVelocity * effectiveScale;
+    }
+    private static Vector2 CalculateParabolicVelocitySimple(
+       Vector2 direction,
+       Vector2 displacement,
+       float G)
+    {
+        // 分解位移到方向和垂直方向
+        float displacementInDir = Vector2.Dot(displacement, direction);
+        Vector2 perpendicularDir = new Vector2(-direction.y, direction.x);
+        float displacementPerp = Vector2.Dot(displacement, perpendicularDir);
+
+        // 如果位移与方向垂直分量很小，使用简单公式
+        if (Mathf.Abs(displacementPerp) < 0.001f)
+        {
+            // 直线运动
+            float speed___ = Mathf.Sqrt(2 * G * displacementInDir);
+            return direction * speed___;
+        }
+
+        // 使用能量守恒法计算所需速度
+        // 需要的总能量 = 势能 + 动能（用于垂直位移）
+        float requiredHeight = Mathf.Abs(displacement.y);
+        float angle = Vector2.Angle(direction, displacement) * Mathf.Deg2Rad;
+
+        // 考虑角度的影响
+        float effectiveHeight = requiredHeight / Mathf.Max(0.1f, Mathf.Sin(angle));
+
+        // 计算速度
+        float speed = Mathf.Sqrt(2 * G * effectiveHeight);
+
+        return direction * speed;
+    }
+    public static float 抛物线_Get力3(Vector2 发射方向, Vector3 坐标差, float 重力, float 时间倍率)
+    {
+        // 参数验证
+        if (时间倍率 <= 0)
+        {
+            Debug.LogError($"时间倍率必须大于0，当前值：{时间倍率}");
+            return 0;
+        }
+
+        if (Mathf.Approximately(发射方向.x, 0))
+        {
+            Debug.LogError($"发射方向的X分量不能为0，当前方向：{发射方向}");
+            return 0;
+        }
+
+        // 获取方向分量
+        float Cx = 发射方向.x;
+        float Cy = 发射方向.y;
+
+        // 获取位移分量
+        float Mx = 坐标差.x;
+        float My = 坐标差.y;
+
+        // 计算分母部分
+        float 分母 = (Cy * Mx / Cx - My) * Cx * Cx;
+
+        // 检查分母是否接近0（无解的情况）
+        if (Mathf.Abs(分母) < 0.0001f)
+        {
+            Debug.LogError($"抛物线无解：发射方向={发射方向}，坐标差={坐标差}，分母接近0");
+            return 0;
+        }
+
+        // 计算速度平方值
+        float V平方 = (0.5f * 重力 * Mx * Mx) / 分母;
+
+        // 检查结果是否有效
+        if (V平方 < 0)
+        {
+            // 无实数解的情况：目标位置在当前发射角度下无法到达
+            Debug.LogWarning($"抛物线无实数解：发射方向={发射方向}，坐标差={坐标差}，重力={重力}");
+            return 0;
+        }
+
+        // 计算速度大小
+        float 速度 = Mathf.Sqrt(V平方);
+
+        // 时间倍率的影响：
+        // 实际物理意义：时间倍率改变时，重力加速度的表现会变化
+        // 如果时间变慢（时间倍率>1），相同位移需要更小的速度
+        // 如果时间变快（时间倍率<1），相同位移需要更大的速度
+        // 但根据公式推导，时间倍率在计算中会被约去，所以需要单独处理
+
+        // 方法1：根据时间倍率调整速度（物理意义：保持轨迹形状但改变时间）
+        // 速度 = 速度 / 时间倍率;
+
+        // 方法2：根据时间倍率调整重力（物理意义：保持速度但改变重力表现）
+        // 这取决于您想要的效果
+
+        // 根据您的需求，这里返回不考虑时间倍率的速度
+        // 如果需要在代码中使用时间倍率，可以在调用后处理：
+        // float 最终速度 = 抛物线_Get力(方向, 坐标差, 重力, 1) / 时间倍率;
+
+        return 速度;
+    }
     /// <summary>
     ///  X总位移 = 初始X*力 * ti 
     ///  Y总位移 = 初始Y*力 * ti - 0.5 * G*ti*ti
@@ -881,22 +1616,43 @@ public static class Initialize
     /// ti= 总位移x/初始X /力         代入  后者方程
     /// </summary> 
     /// 固定力求方向？
-    public static float 抛物线_Get力(Vector2 发射方向, Vector3 坐标差, float 重力)
+    public static float 抛物线_Get力(Vector2 发射方向, Vector3 坐标差, float 重力 )
     {
         var Cx = 发射方向.x;
         var Cy = 发射方向.y;
         var Mx = 坐标差.x;
         var My = 坐标差.y;
-        float VValue = (0.5f * 重力 * Mx * Mx) / ((Cy * Mx / Cx - My) * Cx * Cx);
+        float VValue = (0.5f * 重力 * Mx * Mx) /
+            ((Cy * Mx / Cx - My) * Cx * Cx);
         if (VValue < 0)
         {
             /// 0.45 0.89   0.34 2.8           角度超出上限
-            Debug.LogError("atic  float 抛物线(Vector2 发射方向, Vector3 坐标差,float  重力)" + 发射方向 + "   " + 坐标差 + "         " + 重力);
+            Debug.LogError(" (Vector2 发射方向, Vector3 坐标差,float  重力)" + 发射方向 + "   " + 坐标差 + "  " + 重力);
             return 0;
         }
         return (float)Math.Sqrt(VValue);
     }
+    public static  float 校准(float A)
+    {
+        // 基础双曲线衰减项：模拟位移放大效应
+        float hyperbolicTerm = 1.0f / (1.0f + 0.0045f * A);
 
+        // 正弦调制项：模拟时间步长效应的周期性影响
+        // 频率和相位根据数据点调整
+        float sineTerm = 1.0f + 0.025f * Mathf.Sin(0.15f * A - 0.8f);
+
+        // 混合权重：随A增大，正弦项影响增强
+        float weight = Mathf.Clamp01((A - 5f) / 20f);
+
+        // 最终校准值 = 双曲线项 × [1 + 权重×(正弦项-1)]
+        // 这样当A小时，以双曲线为主；A大时，正弦调制增强
+        float calibration = hyperbolicTerm * (1.0f + weight * (sineTerm - 1.0f));
+
+        // 添加一个小的线性漂移项，补偿未建模的效应
+        float drift = 0.0005f * (A - 15f);
+
+        return calibration + drift;
+    }
     /// <summary>
     ///  一排 点  高度相同  X不同    结果出来的Y速度一致
     /// </summary> 
@@ -993,10 +1749,10 @@ public static class Initialize
         }
         return result;
     }
-    public static Vector2 碰撞射线(Vector2 v1, Vector2 v2, LayerMask l)
+    public static RaycastHit2D 碰撞两点检测(Vector2 v1, Vector2 v2, LayerMask l)
     {
         var a = Physics2D.Linecast(v1, v2, l);
-        return a.point;
+        return a;
     }
     public static E_方向 Get_盒子八方向(Bounds bounds, Vector2 point)
     {
@@ -1381,6 +2137,10 @@ Debug.LogError( a.ToString());
     }
     public static RaycastHit2D[] 碰撞列表(this Bounds s, int layer, Vector2 size ,bool Deb=false)
     {
+        if (s==default)
+        {
+            return null;
+        }
         var a = Physics2D.BoxCastAll(s.center, s.size+ (Vector3)size, 0, Vector2.zero, 0, layer);
         if (Deb)
         {
@@ -1566,30 +2326,37 @@ Debug.LogError( a.ToString());
         bool Out = v.x == target.x || v.y == target.y;
 
         return Out;
-    }
-    public static Vector2Int 你在我的哪里(this Vector3  我, Transform 你, bool Deb = false)
+    }  
+         /// <summary>
+         /// 返回9个方向
+         /// </summary>
+         /// <param name="我"></param>
+         /// <param name="你"></param>
+         /// <returns></returns>
+    public static Vector2Int 你在我的哪里(this Vector3 我, Vector3 你,float f=0f, bool Deb = false)
     {
-        Vector2 cha = 你.position - 我 ;
+        Vector2 cha = 你 - 我;
         if (Deb)
         {
-            我 .DraClirl(2, Color.white, 1);
-            你.position.DraClirl(2, Color.blue, 1);
+            我.DraClirl(2, Color.white, 1);
+            你.DraClirl(2, Color.blue, 1);
             Debug.LogError(cha);
         }
         var x = cha.x > 0 ? 1 : -1;
         var y = cha.y > 0 ? 1 : -1;
+
+        if (Mathf.Abs(cha.x)   < f) x = 0;
+        if (Mathf.Abs(cha.y) < f) y = 0;
         return new Vector2Int(x, y);
     }
-    /// <summary>
-    /// 返回9个方向
-    /// </summary>
-    /// <param name="我"></param>
-    /// <param name="你"></param>
-    /// <returns></returns>
-    public static Vector2Int 你在我的哪里(this Transform 我, Transform 你,bool Deb=false)
+    public static Vector2Int 你在我的哪里(this Vector3  我, Transform 你, float f = 0.001f, bool Deb = false)
+    {
+        return 你在我的哪里(我, 你.position,f,Deb);
+    } 
+    public static Vector2Int 你在我的哪里(this Transform 我, Transform 你, float f = 0.001f, bool Deb=false)
     { 
-        return 你在我的哪里(我.position,你,Deb);
-    }
+        return 你在我的哪里(我.position,你,f,Deb);
+    } 
     static int ASD(float t)
     {
         var f = Mathf.Abs(t);
@@ -2220,6 +2987,17 @@ Debug.LogError( a.ToString());
     {
         return !(B.x > A.x || B.y > A.y);
     }
+    public static Vector2 GetCarmeraSize(this Camera camera, float zDepth)
+    {
+        // 计算半高：使用 GetCarmeraAngle2_SIze 方法的逻辑
+        float halfHeight = zDepth * Mathf.Tan(camera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+
+        // 计算半宽
+        float halfWidth = halfHeight * camera.aspect;
+
+        // 返回完整尺寸：宽度 = 半宽 * 2，高度 = 半高 * 2
+        return new Vector2(halfWidth * 2f, halfHeight * 2f);
+    }
     /// <summary>
     /// GetAngle反函数   知道角度求尺寸
     /// </summary>
@@ -2436,12 +3214,13 @@ Debug.LogError( a.ToString());
     public static void 闪光(this SpriteRenderer sp, float time, bool b = true)
     { 
         Material  M= sp.sharedMaterial;
+         
         if (M.name == 材质管理.闪光) return;
        
-        sp.material = 材质管理.Get_Material(材质管理.闪光);
-        Initialize_Mono.I.Waite(() => 
-        {
-        sp.material = M;
+        sp.material = 材质管理.Get_Material(材质管理.闪光); 
+        Initialize_Mono.I.Waite(() =>
+        { 
+            sp.material = M;
         }
         ,time
         ,b 

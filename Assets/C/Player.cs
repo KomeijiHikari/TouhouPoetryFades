@@ -84,22 +84,22 @@ public class Biology : BiologyBase
  
     }
 
-    Ground_bool 在自己的底部生成地面检测()
-    {
-        GameObject Ground_bool;
-        Ground_bool gb;
-        Ground_bool = new GameObject("Ground_bool");
-        Ground_bool.transform.parent = this.transform;
+    //Ground_bool 在自己的底部生成地面检测()
+    //{
+    //    GameObject Ground_bool;
+    //    Ground_bool gb;
+    //    Ground_bool = new GameObject("Ground_bool");
+    //    Ground_bool.transform.parent = this.transform; 
 
-        Ground_bool.transform.localPosition = new Vector2(0, -sp.bounds.size.y / 2 / transform.localScale.y);
-        return gb = Ground_bool.AddComponent<Ground_bool>();
-    }
+    //    Ground_bool.transform.localPosition = new Vector2(0, -sp.bounds.size.y / 2 / transform.localScale.y);
+    //    return gb = Ground_bool.AddComponent<Ground_bool>();
+    //}
 
     
 
-     private void Update()
+     protected override void Update()
     {
- 
+        base.Update();
         水平和竖直速度限制();
         U_pdate();
         生物数值.更新();
@@ -339,7 +339,7 @@ public class 功能数值Base : I_Save
 
     }
     [Header("跳跃下落参数")]
-    private float 最大下落速度1 = 20;
+    private float 最大下落速度1 =15;
     private float 最大重力1 = 5;
     private float 常态重力1 = 2;
     public float 下落速度判断临界负数值 = 0.3f;
@@ -360,6 +360,7 @@ public class 功能数值Base : I_Save
 
     public int 钱;
     public int 灵魂碎片;
+    public float 攻击速度加成=0;
 
     public string Name { get => "功能数值数据"; }
     public float 最大下落速度 {

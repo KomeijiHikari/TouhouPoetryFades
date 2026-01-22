@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c790e2ecab6964b8c3fab5cb198d37, type: 3}
   m_Name: "\u901F\u5EA6\u5207\u6362"
   m_EditorClassIdentifier: 
-  itemName: "\u5706\u5288"
   itemImage: {fileID: 114308894, guid: 4998057d8f98407458aab0928c04b3d2, type: 3}
-  "\u7269\u54C1\u6570\u91CF": 0
-  itemInfo: "\u554A\u554A\u554A\u554A\u554A"
-  "\u7269\u54C1\u7C7B\u578B": 2
+  "\u7269\u54C1\u6570\u91CF": 1
+  "\u7269\u54C1\u4EF7\u503C": 0
+  itemInfo: "\u53D8\u6210\u4E0A\u4E00\u4E2A\u901F\u5EA6\n\n\u8BA9\u67D0\u4EBA\u5934\u75BC\u8FD9\u4E2A\u600E\u4E48\u8DDF\u5996\u68A6\u4EA7\u751F\u8054\u7CFB___\u7231\u6765\u81EA\u4E9A\u62C9\u62C9"

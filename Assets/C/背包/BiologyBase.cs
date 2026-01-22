@@ -1,21 +1,115 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
-using Sirenix.OdinInspector;
+using UnityEngine.UIElements;
 [DefaultExecutionOrder(-10)]
-public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生命
+public abstract class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生命
 {
+    public bool transformDeb;
+    protected virtual void Update()
+    {
+        transform.transformDeb = transformDeb;
+    }
+    public class m_transform
+    {
+        public bool transformDeb;
+        Transform transform_真实;
+        public Transform transform
+        {
+            get
+            {
+                if (transformDeb) Debug.Log("有东西试图访问" + transform_真实.gameObject.name + transform_真实.position);
+                return transform_真实;
+            }
+        }
+        public m_transform(Transform s)
+        {
+            transform_真实 = s;
+        }
+        public void SetParent(Transform s)
+        {
+            if (transformDeb)
+            {
+                if (transform_真实.parent!=s)
+                {
+                    Debug.Log(Time.frameCount + "修改父对象从" + s + "修改为" + s);
+                }
+            }
+            transform_真实.SetParent(s);
+        }
+        public Transform parent => transform_真实.parent;
+        public Vector3 localPosition
+        {
+            get { return transform_真实.localPosition; }
+            set
+            {
+                if (transformDeb)
+                {
+                    if (transform_真实.localPosition != value)
+                    {
+
+                    Debug.Log(Time.frameCount + "修改局部坐标：" + transform_真实.localPosition + "修改后：" + value);
+                    }
+                }
+                transform_真实.localPosition = value;
+            }
+        }
+        public Vector3 lossyScale => transform_真实.lossyScale;
+        public Vector3 position
+        {
+            get { return transform_真实.position; }
+            set
+            {
+                if (transformDeb)
+                {
+                    if (transform_真实.position != value)
+                    {
+                        Debug.Log(Time.frameCount + "修改坐标：" + transform_真实.position + "修改后：" + value);
+                    }
+                }
+                transform_真实.position = value;
+            }
+        }
+        public Vector3 localScale
+        {
+            get { return transform_真实.localScale; }
+            set
+            {
+                if (transformDeb)
+                {
+                    if (transform_真实.localScale!=value)
+                    {
+                    Debug.Log(Time.frameCount + "修改尺寸：" + transform_真实.localScale + "修改后：" + value+transform.gameObject.name); 
+                    }
+                }
+
+                transform_真实.localScale = value;
+            }
+        }
+        public Quaternion rotation
+        {
+            get { return transform_真实.rotation; }
+            set
+            {
+                if (transformDeb) Debug.Log(Time.frameCount + "修改旋转：" + transform_真实.rotation + "修改后：" + value);
+                transform_真实.rotation = value;
+            }
+        }
+    }
+    new public m_transform transform { get; set; }
     public Vector2 扣血外部力 { get; set; }
     public bool 真实动画
     {
         get
         {
 
-            if (an .updateMode ==AnimatorUpdateMode.UnscaledTime)
+            if (an.updateMode == AnimatorUpdateMode.UnscaledTime)
             {
-                return true; 
+                return true;
             }
             else
             {
@@ -35,26 +129,29 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
         }
     }
 
-    public 移动方式  当前移动方式 ;
-    new public Transform transform { get { return base.transform; } }
+    public 移动方式 当前移动方式;
+
+
+
+    //new public Transform transform { get { return base.transform; } }
     /// <summary>
     /// 翻转
     /// </summary>
-    public virtual   void Flip()
+    public virtual void Flip()
     {
 
         LocalScaleX_Set = -LocalScaleX_Set;
-    }  
+    }
     /// <summary>
-         ///   返回正负1
-         ///   设置必须是正数或者负数
-         /// </summary>
+    ///   返回正负1
+    ///   设置必须是正数或者负数
+    /// </summary>
     public float LocalScaleX_Set
     {
-        get { return Mathf.Sign(transform.localScale.x) ; }
-        set { 
-            if ((int)Mathf.Sign(value ) != (int)Mathf.Sign(LocalScaleX_Int))        
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y,1);   
+        get { return Mathf.Sign(transform.lossyScale.x); }
+        set {
+            if ((int)Mathf.Sign(value) != (int)Mathf.Sign(LocalScaleX_Int))
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, 1);
         }
     }
     /// <summary>
@@ -63,16 +160,16 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
     public int LocalScaleX_Int
     {
         get
-        { 
-            return (int)transform.localScale.x;
+        {
+            return (int)transform.lossyScale.x;
         }
         set
         {
-            if (value !=1|| value != -1)
+            if (value != 1 || value != -1)
             {
                 Debug.LogError("我勒个去与");
             }
-            transform.localScale = new Vector3((int)value, transform.localScale.y,1); 
+            transform.localScale = new Vector3((int)value, transform.localScale.y, 1);
         }
     }
 
@@ -80,8 +177,8 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
     {
         get
         {
- 
- 
+
+
             return co.isTrigger;
         }
         set { co.isTrigger = value; }
@@ -89,17 +186,17 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
     public Vector2 反向 { get { return new Vector2(-LocalScaleX_Set, 0); } }
     public Vector2 正向 { get { return new Vector2(LocalScaleX_Set, 0); } }
     public Vector2 反面脚底 { get { return new Vector2(LocalScaleX_Set == 1 ? Bounds.min.x : Bounds.max.x, Bounds.min.y); } }
-    public Vector2 正面头顶 { get { return new Vector2(LocalScaleX_Set == 1 ? Bounds.max.x : Bounds.min.x , Bounds.max.y); } }
-    public Vector2 反面中间 { get {  return new Vector2(反面脚底.x, Bounds.center.y); } }
-    public Vector2 正面中间 { get {  return new Vector2(正面头顶.x, Bounds.center.y); } }
-    public Vector2 脚底中间 { get { return new Vector2(Bounds.center.x, Bounds.min.y); } } 
-    public   Bounds Bounds
+    public Vector2 正面头顶 { get { return new Vector2(LocalScaleX_Set == 1 ? Bounds.max.x : Bounds.min.x, Bounds.max.y); } }
+    public Vector2 反面中间 { get { return new Vector2(反面脚底.x, Bounds.center.y); } }
+    public Vector2 正面中间 { get { return new Vector2(正面头顶.x, Bounds.center.y); } }
+    public Vector2 脚底中间 { get { return new Vector2(Bounds.center.x, Bounds.min.y); } }
+    public Bounds Bounds
     {
         get
         {
-            if (co==null)
+            if (co == null)
             {
-                return new Bounds ();
+                return new Bounds();
             }
             return co.bounds;
         }
@@ -108,10 +205,10 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
     protected bool 灵魂1;
     protected virtual bool 灵魂
     {
-  
-        get => 灵魂1; 
+
+        get => 灵魂1;
         set
-        { 
+        {
             灵魂1 = value;
         }
     }
@@ -121,7 +218,7 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
     public Action 接触地面事件 { get; set; }
     public Action 离开地面事件 { get; set; }
 
-    public  enum  地面情况
+    public enum 地面情况
     {
         跨不过去,
         平地,
@@ -142,7 +239,7 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
 
     public bool Ground
     {
-        
+
         get
         {
             return Ground_;
@@ -150,13 +247,11 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
         set
         {
 
-            if (Ground !=value)
+            if (Ground != value)
             {
-                if (gameObject == Player3.I.gameObject)
-                    Debug.LogError(value._Color(Color.green)+Time.frameCount);
                 if (速度调试)
-                { 
-                    Debug.LogError(value ._Color (Color.green));
+                {
+                    Debug.LogError(value._Color(Color.green) + Time.frameCount);
                 }
                 //bool LastGround_ = Ground_;
 
@@ -174,11 +269,11 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
             }
 
 
-        } 
+        }
     }
     public Animator an;
- 
-    [HideInInspector] public SpriteRenderer sp;
+
+    public  SpriteRenderer sp;
     //[HideInInspector] 
     [DisplayOnly]
     public Collider2D co;
@@ -212,7 +307,7 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
     /// </summary>
     public virtual bool 头空_
     {
-       
+
         get { return 头; }
         set
         {
@@ -267,11 +362,11 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
     }
     public void AddForce(Vector2 vector2)
     {
-        if (gameObject.CompareTag(Initialize.Player)&& Initialize_Mono.I.MoveP_优化 && Player3.I.脚下 != null)
-        {
-            Player3.I.transform.localPosition += new Vector3(Player_input.I.方向正零负 * Player3.I.玩家数值.常态速度, 0, 0) * Time.fixedDeltaTime;
-            return;
-        }
+        //if (gameObject.CompareTag(Initialize.Player)&& Initialize_Mono.I.MoveP_优化 && Player3.I.脚下 != null)
+        //{
+        //    Player3.I.transform.localPosition += new Vector3(Player_input.I.方向正零负 * Player3.I.玩家数值.常态速度, 0, 0) * Time.fixedDeltaTime;
+        //    return;
+        //}
         //if (vector2 !=Vector2 .zero )
         //{
         //    Debug.LogError("加力"+ vector2);
@@ -297,19 +392,19 @@ public abstract   class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_生
     [SerializeField]
     protected bool Velocity调试;
     [SerializeField]
-protected    bool 速度调试;
+    protected bool 速度调试;
     public virtual Vector2 Velocity
     {
         get {
-            if (Velocity调试) Debug.LogWarning("Get"+rb.velocity + "obj   name:" + gameObject);
-            return rb.velocity; 
-        
+            if (Velocity调试) Debug.LogWarning("Get" + rb.velocity + "obj   name:" + gameObject);
+            return rb.velocity;
+
         }
         set {
-            if (Velocity调试) Debug.Log(rb.velocity+"改后" +value+ "obj   name:" + gameObject);
+            if (Velocity调试) Debug.Log(rb.velocity + "改后" + value + "obj   name:" + gameObject);
             rb.velocity = value;
 
-            }
+        }
     }
 
     public virtual float atkvalue { get; set; }
@@ -320,9 +415,127 @@ protected    bool 速度调试;
     public abstract float hpMax { get; set; }
     public virtual bool HPROCK { get; set; }
 
+    public class M_tsvalueList
+    {
+        [SerializeField]
+        public List<M_tsvalue> TsL;
+
+        //[SerializeField]
+        //public List<Vector3> qwe;
+        //[SerializeField]
+        //public List<bool> aaa;
+        public void Add(Vector3 po, bool B)
+        {
+            TsL.Add(new M_tsvalue(po, B));
+
+        }
+        public M_tsvalueList(List<M_tsvalue> l)
+        {
+
+            TsL = l;
+            Debug.LogError("NEWNEWNEWNEW");
+        }
+        public M_tsvalue Have(Vector3 pos)
+        {
+            if (TsL == null)
+            {
+                return M_tsvalue.Null;
+            }
+            for (int i = 0; i < TsL.Count; i++)
+            {
+                if (TsL[i].pos == pos)
+                {
+                    return TsL[i];
+                }
+            }
+            return M_tsvalue.Null;
+        }
+    }
+    [Serializable]
+    public class M_tsvalue
+    {
+        public static M_tsvalue Null;
+        [SerializeField]
+        public Vector3 pos;
+        [SerializeField]
+        public bool Deb;
+
+        public M_tsvalue(Vector3 pos, bool deb)
+        {
+            this.pos = pos;
+            Deb = deb;
+        }
+    }
+    private void OnDestroy()
+    {
+        TsL_I = null;
+    }
+    public static void Save假tr实例(M_tsvalueList s)
+    {
+        //var a =new   M_tsvalueList(new List<M_tsvalue>());
+        //var a =new M_tsvalue(Vector2.zero,true);
+        //var a =new List<M_tsvalue>();
+        //a.Add(new M_tsvalue(Vector2.zero, true));
+
+        //var j = JsonUtility.ToJson(a, true);
+        //Debug.LogError(j+"aaaaaa");
+
+        Save_static.SaveinText(s, Save_static.假tr实例, true);
+    }
+    public static M_tsvalueList TsL_I;
     protected virtual void Awake()
-    { 
-        Initialize.组件(gameObject, ref  an);
+    {
+        transform = new m_transform(gameObject.transform);
+
+        if (TsL_I == null || TsL_I.TsL== null)
+        {
+            ///第一次运行
+            ///没有实例  
+            var a = Save_static.LoadinText<M_tsvalueList>(Save_static.假tr实例);
+        if (a == null|| a.TsL==null)
+        {  
+                ///没有存档
+            TsL_I = new M_tsvalueList(new List<M_tsvalue>());
+            Debug.LogError(TsL_I);
+                ///来个新的
+            Save假tr实例(TsL_I);
+            //Debug.LogError("EEEEEEEEEEEEEEEEE");
+        }
+        else
+        {
+                ///有存档
+                ///读取记录
+                //Debug.LogError("WQEQWEQWEQWEQ");
+            TsL_I = a; 
+        }
+        }
+
+        if (TsL_I!=null&&TsL_I.TsL != null)
+        {
+            ////到这边保证大的不为空
+            var aa = TsL_I.Have(transform.position);
+            if (aa  != null)
+            {
+                //Debug.LogError("WWWWWWWWWWWWW ");
+                ///有我了
+                transformDeb = aa.Deb;
+            }
+            else
+            {
+      
+                ///没有我
+                TsL_I.Add(transform.position, transformDeb);
+                //Debug.LogError(transform.position+"QQQQQQQQQQQQQQQQQQQ " + TsL_I.TsL.Count);
+            }
+        }
+        else
+        {
+            //Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAA迷惑");
+        }
+
+
+
+            Initialize.组件(gameObject, ref  an);
         Initialize.组件(gameObject, ref co);
         Initialize.组件(gameObject, ref sp);
         Initialize.组件(gameObject, ref rb);

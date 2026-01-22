@@ -62,6 +62,7 @@ public class 玩家受伤效果 : MonoBehaviour
     public bool 受伤效果;
     public void EnterHit(float damage, bool 硬抗 = false)
     {
+ 
         if (Player3.I.HPROCK) return;
 
         if (不可以受伤) return;

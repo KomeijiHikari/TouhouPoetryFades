@@ -13,8 +13,7 @@ class Momomo
     public Momomo(SpriteRenderer sp)
     {
 
-        this.sp = sp;
-        Debug.LogError(sp.gameObject);
+        this.sp = sp; 
         bc = this.sp.gameObject.GetComponent<BoxCollider2D>();
         ts = this.sp.gameObject.GetComponent<Transform>();
     }
@@ -41,7 +40,7 @@ public class 删除_速度门 : MonoBehaviour, I_Speed_Change, I_暂停
     [SerializeField] Transform OrdinB;
 
     float MaxSize;
-    float 间隔 = 2.5f;
+    float 间隔 = 3f;
 
     [SerializeField]
     float NozeA;
@@ -86,8 +85,13 @@ public class 删除_速度门 : MonoBehaviour, I_Speed_Change, I_暂停
         sp.enabled = false;
 
         P.Enter += () => {
- 
+            Re();
             SpeedMager.I.临时速度清除();
+            Player3.I.适应文字.开关(true);
+            Player3.I.适应文字.SetText("找准空隙滑铲过去");
+        };
+        P.Exite += () => {
+            Player3.I.适应文字.开关(false);
         };
 
     }
@@ -116,7 +120,8 @@ public class 删除_速度门 : MonoBehaviour, I_Speed_Change, I_暂停
                 B.ts.localPosition = Vector2.zero;
                 初始化(A);
                 初始化(B);
-                bc.size = new Vector2(bc.size.x, sp.size.y);
+                //bc.size = new Vector2(bc.size.x, sp.size.y); //heyiwei
+                bc.size = new Vector2(sp.size.x, sp.size.y);
                 break;
             case E_移动方式.水平:
                 MaxSize = sp.size.x;
@@ -126,8 +131,9 @@ public class 删除_速度门 : MonoBehaviour, I_Speed_Change, I_暂停
                 B.ts.localPosition = Vector2.zero;
                 初始化(A, false);
                 初始化(B, false);
-        
-                bc.size = new Vector2(sp.size.x, bc.size.y);
+
+                //bc.size = new Vector2(sp.size.x, bc.size.y);  hyw?
+                bc.size = new Vector2(sp.size.x, sp.size.y);
                 break;
             case E_移动方式.自由:
                 break;
@@ -165,9 +171,24 @@ public class 删除_速度门 : MonoBehaviour, I_Speed_Change, I_暂停
         var 速度差 = I_S.固定等级差;
         var fu = 1 / Initialize_Mono.I.阀值;
         我比玩家慢 = 速度差 < fu || 速度差._is(fu); 
-        if (我比玩家慢) return; ///慢速静止
+        if (我比玩家慢)
+        {
+        
+            return; ///慢速静止
+        }
 
-        if (速度差 > Initialize_Mono.I.阀值 && 速度差 < Initialize_Mono.I.阀值2) 速度差 = Initialize_Mono.I.阀值2;///高速加快
+        if (速度差 > Initialize_Mono.I.阀值 && 速度差 < Initialize_Mono.I.阀值2)
+        {
+            bc.isTrigger = false;
+            bc.enabled = true;
+            速度差 = Initialize_Mono.I.阀值2*5;///高速加快
+       
+        }
+        else
+        {
+            bc.isTrigger = true;
+            bc.enabled = false;
+        }
 
         NozeB -= Time.deltaTime * 速度差;
         NozeA -= Time.deltaTime * 速度差;

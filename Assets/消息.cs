@@ -53,7 +53,7 @@ public class 消息 : MonoBehaviour
 
 
         quence = DOTween.Sequence();
-  
+        quence.SetUpdate(UpdateType.Normal, true);
         quence.Append(r.DOAnchorPos(StartWay , timee).SetEase (Ease.OutQuint));
         quence.Join(C.DOFade(1, timee));
         quence.AppendInterval(WiteTime);
@@ -67,18 +67,31 @@ public class 消息 : MonoBehaviour
     }
     [SerializeField ][DisplayOnly ]
     bool kai; 
-    public void Come_on_Meesge(string  s)
+    public void Come_on_Meesge(string  s,bool 快速结束=false)
     { 
         Debug.Log("消息队列收到消息："+s);
         // enqueue and start playback if idle
         if (string.IsNullOrEmpty(s)) return;
+
+        if (快速结束)   ClearMessages();
+ 
         messageQueue.Enqueue(s);
         if (!isPlaying)
         {
             StartNext();
         }
     }
-
+    public void ClearMessages()
+    { 
+        messageQueue.Clear();
+        if (quence != null)
+        {
+            quence.Complete();
+        }
+        //isPlaying = false;
+        //C.alpha = 0;
+        //r.anchoredPosition = FormPo;
+    }
     // start next message from queue
     private void StartNext()
     {

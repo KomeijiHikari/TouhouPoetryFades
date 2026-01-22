@@ -5,7 +5,12 @@ using UnityEngine.UIElements;
 
 public class 消失显示 : MonoBehaviour
 {
-    [SerializeField] 简单重生平台 s;
+    public bool 尺寸;
+    public bool 颜色;
+   I_消失进度 s;
+    [SerializeField]
+    GameObject
+    ObjI_消失进度;
     [SerializeField] SpriteRenderer sp;
 
     Bounds BB; 
@@ -29,15 +34,32 @@ public class 消失显示 : MonoBehaviour
 
     private void Awake()
     {
+        if (ObjI_消失进度 == null)
+        {
+            ObjI_消失进度 = gameObject;
+            if (ObjI_消失进度 == null)
+            {
+                ObjI_消失进度 = transform.parent.gameObject;
+            }
+
+        }
+        s = ObjI_消失进度.GetComponent<I_消失进度>();
         if (sp != null)
         {
+ 
             _initialLocalPos = sp.transform.localPosition;
+            if (颜色) _initialLColor = sp.color;
+            if (尺寸) _initialLLosize =sp.transform.localScale;
         }
     }
+    Color _initialLColor;
+    Vector2 _initialLLosize;
     private void OnEnable()
     {
         if (sp != null)
-        sp.transform.localPosition = _initialLocalPos;
+        if (颜色) sp.color  = _initialLColor;
+        if (尺寸) sp.transform.localScale = _initialLLosize;
+           sp.transform.localPosition = _initialLocalPos;
 
         _shakeCoroutine = null;
     }
@@ -68,7 +90,10 @@ public class 消失显示 : MonoBehaviour
             {
                 StopCoroutine(_shakeCoroutine);
                 _shakeCoroutine = null;
-            }
+            } 
+
+            if (颜色) sp.color = _initialLColor;
+            if (尺寸) sp.transform.localScale = _initialLLosize;
             // restore position
             sp.transform.localPosition = _initialLocalPos;
         }
@@ -76,6 +101,7 @@ public class 消失显示 : MonoBehaviour
 
     IEnumerator ShakeRoutine()
     {
+        Vector2 s尺寸 = sp.transform.localScale;
         // Desired period per shake: 0.1s => frequency = 10Hz
         const float period = 0.1f;
         const float freq = 1f / period; // 10
@@ -86,13 +112,18 @@ public class 消失显示 : MonoBehaviour
         while (true)
         {
             // advance time using unscaled delta to respect game pause? use Time.deltaTime
-            t += Time.deltaTime;
-
+            t += Time.deltaTime; 
             // amplitude is s进度 in range 0..1, clamp to be safe
             float amp = Mathf.Clamp01(s进度) * 振幅缩放;
 
+            if (尺寸)     sp.transform.localScale = s尺寸 * (振幅缩放 + s进度);
+   
+            if (颜色) sp.color= Color.Lerp(Color.white, Color.red,进度)   ;
+    
             if (amp <= 0f)
             {
+                if (颜色) sp.color = _initialLColor;
+                if (尺寸) sp.transform.localScale = _initialLLosize;
                 sp.transform.localPosition = _initialLocalPos;
             }
             else
