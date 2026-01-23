@@ -14,6 +14,8 @@ public class 摄像机 : MonoBehaviour
             //if (Deb) Debug.LogError("摄像机距离"+ (wt.position.z - Camera.main.transform.position.z)
             //    +"      摄像机位置"+ Camera.main.transform.position+"       摄像机前方"+ wt.position);
             //return wt.position.z-Camera.main.transform.position.z;
+
+            Debug.LogError(wt.position.z+"  " + Camera.main.transform.position.z+"  "+transform.position.z);
             return wt.position.z - Camera.main.transform.position.z;
         }
     }
@@ -298,7 +300,7 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
 public Vector2Int 相机框Int { get; private set; }
     private void Start()
     {
-        //c = GetComponent<CinemachineVirtualCamera>();
+        //c = GetComponent<CinemachineVirtualCamera>(); 
         if (c.m_Follow == null)
         {
             设置相机跟随(GameObject .FindGameObjectWithTag    ("Player"));
@@ -309,7 +311,7 @@ public Vector2Int 相机框Int { get; private set; }
     }  
    public  void 设置摄像机位置(Vector3 v)
     {
-        transform.position = new Vector3(v.x,v.y,-10);
+        transform.position = new Vector3(v.x,v.y, transform.position.z);
     }
     [DisplayOnly]
     public float 当前场景真正最大FOV;

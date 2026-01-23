@@ -3536,7 +3536,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 154072552}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -229.7, y: -504, z: 0}
+  m_LocalPosition: {x: -238.25, y: -500.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10454,7 +10454,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631139658}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -221.38998, y: -508.65826, z: -29.84}
+  m_LocalPosition: {x: -246.49, y: -497.75824, z: -29.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10475,7 +10475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0d73f215db74c5428c600755704b72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Deb: 0
+  Deb: 1
   wt: {fileID: 1914716505}
   "\u9ED8\u8BA4": {fileID: 2064576500}
   "\u78B0\u649E\u7EC4\u4EF6": {fileID: 0}
@@ -48464,7 +48464,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_Follow: {fileID: 1522640927}
   m_Lens:
     FieldOfView: 31.07
     OrthographicSize: 10
@@ -48529,7 +48529,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064576499}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -221.38998, y: -508.65826, z: -29.84}
+  m_LocalPosition: {x: -246.49, y: -497.75824, z: -29.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
