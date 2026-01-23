@@ -103,7 +103,7 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
         var b = a.GetComponent<Fly_Ground>();
         b.Debul = Deb;
 
-        b.初始化(new Vector2(transform.localScale.x, 0), transform.position, 弹道speed * speed_Lv);
+        b.初始化(new Vector2(Mathf.Sign(transform.localScale.x)  , 0), transform.position, 弹道speed * speed_Lv);
 
         var fg = b as Fly_Ground;
         if (fg != null)
