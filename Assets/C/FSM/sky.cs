@@ -1,4 +1,4 @@
-//using Schema.Internal.Types;
+ï»¿//using Schema.Internal.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using static BiologyBase;
 
 public class sky : State_Base  
 {
-    //float Ô­Ê¼Åö×²;
+    //float åŸå§‹ç¢°æ’;
   public static  Vector2 Startsize;
     public static Vector2 StartOff;
     private Vector2 StartDunOff;
@@ -17,66 +17,66 @@ public class sky : State_Base
     public override void AweakStatebase()
     {
         base.AweakStatebase();
-        //Ô­Ê¼Åö×² = Player.po.size.x;
-        Startsize = Player.Õ¾Á¢box.size;
-        StartOff = Player.Õ¾Á¢box.offset;
+        //åŸå§‹ç¢°æ’ = Player.po.size.x;
+        Startsize = Player.ç«™ç«‹box.size;
+        StartOff = Player.ç«™ç«‹box.offset;
 
-        StartDunOff= Player.¶×BOX .offset;
-        StartDunSize= Player.¶×BOX.size;
+        StartDunOff= Player.è¹²BOX .offset;
+        StartDunSize= Player.è¹²BOX.size;
     }
-    float ÌùÇ½Ê±¼ämax = 0.1f;
-    float ÌùÇ½Ê±¼ä = 0;
+    float è´´å¢™æ—¶é—´max = 0.1f;
+    float è´´å¢™æ—¶é—´ = 0;
 
-    float XËÙ¶È¼Ó³É;
-    float YËÙ¶È¼Ó³É;
+    float Xé€Ÿåº¦åŠ æˆ;
+    float Yé€Ÿåº¦åŠ æˆ;
     public override void EnterState()
     {
-        if (Initialize_Mono.I.¶¯Ì¬ÌøÔ¾Åö×²)
-         Player.¶×BOX.isTrigger = true;
-        ÌùÇ½Ê±¼ä = 0;
-       Ç°¿Õ  =Player.Ç°¿Õ_ ;
-        YËÙ¶È¼Ó³É = 0;
-        XËÙ¶È¼Ó³É = 0;
+        if (Initialize_Mono.I.åŠ¨æ€è·³è·ƒç¢°æ’)
+         Player.è¹²BOX.isTrigger = true;
+        è´´å¢™æ—¶é—´ = 0;
+       å‰ç©º  =Player.å‰ç©º_ ;
+        Yé€Ÿåº¦åŠ æˆ = 0;
+        Xé€Ÿåº¦åŠ æˆ = 0;
 
         if (Player.Velocity.y > 0)
-            if (Player3.I.½ÅÏÂ != null)
+            if (Player3.I.è„šä¸‹ != null)
         {
 
-         if(Player3.I.½ÅÏÂ.ÒÆ¶¯·½Ïò.y>0)
+         if(Player3.I.è„šä¸‹.ç§»åŠ¨æ–¹å‘.y>0)
             {   
-                YËÙ¶È¼Ó³É = Player3.I.½ÅÏÂ.µ¥Î»ËÙ¶È* Player3.I.½ÅÏÂ.Lerp.y;
+                Yé€Ÿåº¦åŠ æˆ = Player3.I.è„šä¸‹.å•ä½é€Ÿåº¦* Player3.I.è„šä¸‹.Lerp.y;
                 var a = Player.Get_rb();
-                YËÙ¶È¼Ó³É= a.Next(1,new Vector2(0, YËÙ¶È¼Ó³É)).y;
+                Yé€Ÿåº¦åŠ æˆ= a.Next(1,new Vector2(0, Yé€Ÿåº¦åŠ æˆ)).y;
 
-                Player.ÌøÔ¾´¥·¢(new Vector2(Player.Velocity.x, Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ë²¼äËÙ¶È + YËÙ¶È¼Ó³É));
-                //Debug.LogError(Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ë²¼äËÙ¶È +"AAAAAAAAAAAAAAAA" + YËÙ¶È¼Ó³É);
+                Player.è·³è·ƒè§¦å‘(new Vector2(Player.Velocity.x, Player.ç©å®¶æ•°å€¼.è·³è·ƒç¬é—´é€Ÿåº¦ + Yé€Ÿåº¦åŠ æˆ));
+                //Debug.LogError(Player.ç©å®¶æ•°å€¼.è·³è·ƒç¬é—´é€Ÿåº¦ +"AAAAAAAAAAAAAAAA" + Yé€Ÿåº¦åŠ æˆ);
             }
-            //Debug.LogError("WWWWWWWWWWBBBBBB" + Player3.I.½ÅÏÂ.ÒÆ¶¯·½Ïò.x);
-            if (Player3.I.½ÅÏÂ.ÒÆ¶¯·½Ïò .x!=0&&Player.LocalScaleX_Int== Player3.I.½ÅÏÂ.ÒÆ¶¯·½Ïò.x)
+            //Debug.LogError("WWWWWWWWWWBBBBBB" + Player3.I.è„šä¸‹.ç§»åŠ¨æ–¹å‘.x);
+            if (Player3.I.è„šä¸‹.ç§»åŠ¨æ–¹å‘ .x!=0&&Player.LocalScaleX_Int== Player3.I.è„šä¸‹.ç§»åŠ¨æ–¹å‘.x)
             {
-                XËÙ¶È¼Ó³É = Player3.I.½ÅÏÂ.ÒÆ¶¯·½Ïò.x* Player3.I.½ÅÏÂ.µ¥Î»ËÙ¶È * Player3.I.½ÅÏÂ.Lerp.x;
-                //Debug.LogError( "BBBBBBBBBBBBBBBBBBBB" + XËÙ¶È¼Ó³É);
+                Xé€Ÿåº¦åŠ æˆ = Player3.I.è„šä¸‹.ç§»åŠ¨æ–¹å‘.x* Player3.I.è„šä¸‹.å•ä½é€Ÿåº¦ * Player3.I.è„šä¸‹.Lerp.x;
+                //Debug.LogError( "BBBBBBBBBBBBBBBBBBBB" + Xé€Ÿåº¦åŠ æˆ);
  
             }
-            Player3.I.½ÅÏÂ = null;
+            Player3.I.è„šä¸‹ = null;
         
         }
 
-        //if (!Player3.I.isÔ­Parent)
+        //if (!Player3.I.isåŸParent)
  
             //Player3.I.ChangeFather();
             //Initialize_Mono.I.Waite(() =>
             //{
-            //    if (Player.½ÅÏÂ==null)
+            //    if (Player.è„šä¸‹==null)
             //    {
             //        Player3.I.ChangeFather();
             //    } 
             //},0.1f);
  
         //Player.po.size  = new Vector2(Player.po.size.x*0.4f, Player.po.size.y);
-        ²»ÊÇµÚÒ»´ÎĞü¸¡ = false;
-           µÚÒ»´ÎÌøÔ¾ = false;
-        //Player.Ç°µµ°å.enabled = true;
+        ä¸æ˜¯ç¬¬ä¸€æ¬¡æ‚¬æµ® = false;
+           ç¬¬ä¸€æ¬¡è·³è·ƒ = false;
+        //Player.å‰æ¡£æ¿.enabled = true;
 
         if (f.I_State_L.state==E_State. wall)
         { 
@@ -89,33 +89,33 @@ public class sky : State_Base
         switch (f.I_State_L .state)
         { 
             case E_State.upatk: 
-                Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ê£ÓàÔ¾´ÎÊı--; 
+                Player.ç©å®¶æ•°å€¼.è·³è·ƒå‰©ä½™è·ƒæ¬¡æ•°--; 
                 break;
             case E_State.wall:
             case E_State.downatk:
-                Player.·½Ïò¸üĞÂ();
+                Player.æ–¹å‘æ›´æ–°();
                 if (Player.Velocity.y <= 0)
                 {
-                    Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ê£ÓàÔ¾´ÎÊı--;
-                    var a = A.GetAnim(JUMAP_name.ÖĞ¼ä);
+                    Player.ç©å®¶æ•°å€¼.è·³è·ƒå‰©ä½™è·ƒæ¬¡æ•°--;
+                    var a = A.GetAnim(JUMAP_name.ä¸­é—´);
                     a.speed = 1.5f;
-                    A.Playanim(JUMAP_name.ÖĞ¼ä);
+                    A.Playanim(JUMAP_name.ä¸­é—´);
                 }
                 else
                 {
 
-                    A.Playanim(JUMAP_name.ÉÏÈ¥);
+                    A.Playanim(JUMAP_name.ä¸Šå»);
                 }
                 break;
             case E_State.hit :
             case E_State.skyatk:
-                if (A.µ±Ç°anim .name==A_N .skyatk_0back_)
+                if (A.å½“å‰anim .name==A_N .skyatk_0back_)
                 {
-                    A.NextAnim(A .GetAnim (JUMAP_name.ÖĞ¼ä));
+                    A.NextAnim(A .GetAnim (JUMAP_name.ä¸­é—´));
                 }
                 else
                 {
-                    A.Playanim(JUMAP_name.ÖĞ¼ä);
+                    A.Playanim(JUMAP_name.ä¸­é—´);
                 }
                 break;
             case E_State.atk:
@@ -124,39 +124,39 @@ public class sky : State_Base
             case E_State.idle:
                case E_State.skydash:
 
-                Vector2 dian = Player.½Åµ×·¢Éä(2f);
+                Vector2 dian = Player.è„šåº•å‘å°„(2f);
                 if (dian!=Vector2 .zero)
                 {
                     yalaAudil.I.EffectsPlay("Jump", 0);
-                    ÌØĞ§_pool_2.I.GetPool(dian, T_N .ÌØĞ§ÌøÔ¾ ).Speed_Lv =Player3 .Public_Const_Speed;
+                    ç‰¹æ•ˆ_pool_2.I.GetPool(dian, T_N .ç‰¹æ•ˆè·³è·ƒ ).Speed_Lv =Player3 .Public_Const_Speed;
  
                 }
                 if (Player.Velocity .y<=0)
                 {
-                    Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ê£ÓàÔ¾´ÎÊı--;
-                    var a=  A.GetAnim(JUMAP_name.ÖĞ¼ä);
+                    Player.ç©å®¶æ•°å€¼.è·³è·ƒå‰©ä½™è·ƒæ¬¡æ•°--;
+                    var a=  A.GetAnim(JUMAP_name.ä¸­é—´);
                     a.speed=1.5f;
-                    A.Playanim(JUMAP_name.ÖĞ¼ä);
+                    A.Playanim(JUMAP_name.ä¸­é—´);
                 }
                 else
                 {
                     yalaAudil.I.EffectsPlay("Jump", 0);
-                    A.Playanim(JUMAP_name.ÉÏÈ¥);
-                    ÌØĞ§_pool_2.I.GetPool(dian, T_N.ÌØĞ§ÌøÔ¾).Speed_Lv = Player3.Public_Const_Speed;
+                    A.Playanim(JUMAP_name.ä¸Šå»);
+                    ç‰¹æ•ˆ_pool_2.I.GetPool(dian, T_N.ç‰¹æ•ˆè·³è·ƒ).Speed_Lv = Player3.Public_Const_Speed;
                 }
                 break;
             case E_State.cricleatk:
-                A.Playanim(JUMAP_name.ÏÂÈ¥);
+                A.Playanim(JUMAP_name.ä¸‹å»);
                 break;
             case E_State.pa:
             case E_State.wall_surfing:
                 //Debug.LogError("AAAAAAAAAAAAAAAA");
-                A.Playanim(JUMAP_name.ÖĞ¼ä);
+                A.Playanim(JUMAP_name.ä¸­é—´);
                 break;
             case E_State.dash:
-                Player.¼ÓËÙ(true);
-                Player.dundash.ÀäÈ´ºÃÁË = true; 
-                //A.Playanim(JUMAP_name.ÏÂÈ¥);
+                Player.åŠ é€Ÿ(true);
+                Player.dundash.å†·å´å¥½äº† = true; 
+                //A.Playanim(JUMAP_name.ä¸‹å»);
                 break;
         }
 
@@ -168,90 +168,90 @@ public class sky : State_Base
     public override void ExitState(E_State e)
     {
         base.ExitState(e);
-        Player.¼ÇÂ¼a(0);
+        Player.è®°å½•a(0);
         //transform.position += Vector3.up * 0.1f;
-        if (Initialize_Mono.I.¶¯Ì¬ÌøÔ¾Åö×²)
-            Player.²î¼Û();
+        if (Initialize_Mono.I.åŠ¨æ€è·³è·ƒç¢°æ’)
+            Player.å·®ä»·();
 
 
-        //Player.Ç°µµ°å.enabled = false;
-        //Player.po.size = new Vector2(Ô­Ê¼Åö×², Player.po.size.y);
+        //Player.å‰æ¡£æ¿.enabled = false;
+        //Player.po.size = new Vector2(åŸå§‹ç¢°æ’, Player.po.size.y);
     }
-    public override void °´ÏÂÌøÔ¾()
+    public override void æŒ‰ä¸‹è·³è·ƒ()
     {
         if (f.I_State_L .state==E_State.run)
         {
             if (Time.time - f.Getstate(E_State.run).ExiteTime<0.1f)
             {
-                Debug.LogError("ÍÁÀÇÊ±¼ä");
-                A.Playanim(JUMAP_name.ÉÏÈ¥);
-                Player.ÌøÔ¾´¥·¢();
-                µÚÒ»´ÎÌøÔ¾ = false;
+                Debug.LogError("åœŸç‹¼æ—¶é—´");
+                A.Playanim(JUMAP_name.ä¸Šå»);
+                Player.è·³è·ƒè§¦å‘();
+                ç¬¬ä¸€æ¬¡è·³è·ƒ = false;
             }
         }
 
 
-        ///¶à¶ËÌø
-        //if (Player.Íæ¼ÒÊıÖµ.BossÉ±ÊÖ)
+        ///å¤šç«¯è·³
+        //if (Player.ç©å®¶æ•°å€¼.Bossæ€æ‰‹)
         //{
   
   
         //}
 
 
-        //if (Player.Íæ¼ÒÊıÖµ .ÌøÔ¾Ê£ÓàÔ¾´ÎÊı>0)
+        //if (Player.ç©å®¶æ•°å€¼ .è·³è·ƒå‰©ä½™è·ƒæ¬¡æ•°>0)
         //{
-        //    Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ê£ÓàÔ¾´ÎÊı--;
-        //    A.Playanim(JUMAP_name.ÉÏÈ¥);
-        //    Player. ÌøÔ¾´¥·¢();
+        //    Player.ç©å®¶æ•°å€¼.è·³è·ƒå‰©ä½™è·ƒæ¬¡æ•°--;
+        //    A.Playanim(JUMAP_name.ä¸Šå»);
+        //    Player. è·³è·ƒè§¦å‘();
 
 
-        //    µÚÒ»´ÎÌøÔ¾ = false;
+        //    ç¬¬ä¸€æ¬¡è·³è·ƒ = false;
         //}
         //else
         //{
-        //    Player.ÉÁ¹â();
+        //    Player.é—ªå…‰();
         //}
 
     }
 
 
-    bool ²»ÊÇµÚÒ»´ÎĞü¸¡;
-    float Ğü¸¡ËÙ¶È=-1;
+    bool ä¸æ˜¯ç¬¬ä¸€æ¬¡æ‚¬æµ®;
+    float æ‚¬æµ®é€Ÿåº¦=-1;
 
     float Wall_Y = 0;
     public override void FixedState()
     { 
 
-        if (IP.·½ÏòÕıÁã¸º!=0)
+        if (IP.æ–¹å‘æ­£é›¶è´Ÿ!=0)
         {
-            var a = Player.·µ»Ø·½Ïò(); 
-            if (Player.Ç°¿Õ_) Player.AddForce(new Vector2(a * Player.Íæ¼ÒÊıÖµ.Æğ²½ËÙ¶È, 0)); 
+            var a = Player.è¿”å›æ–¹å‘(); 
+            if (Player.å‰ç©º_) Player.AddForce(new Vector2(a * Player.ç©å®¶æ•°å€¼.èµ·æ­¥é€Ÿåº¦, 0)); 
         }
-        if (IP.Ë®Æ½²Ù×÷_ == 0 && Player.Velocity.y < 0)
+        if (IP.æ°´å¹³æ“ä½œ_ == 0 && Player.Velocity.y < 0)
         {
-            float °Ù·Ö±È = MathF.Abs(Velocity.x) / Player.Íæ¼ÒÊıÖµ.³£Ì¬ËÙ¶È;
+            float ç™¾åˆ†æ¯” = MathF.Abs(Velocity.x) / Player.ç©å®¶æ•°å€¼.å¸¸æ€é€Ÿåº¦;
 
-            °Ù·Ö±È = Mathf.Clamp(°Ù·Ö±È, 0, 1f);
-            if (°Ù·Ö±È > 0.25f)
+            ç™¾åˆ†æ¯” = Mathf.Clamp(ç™¾åˆ†æ¯”, 0, 1f);
+            if (ç™¾åˆ†æ¯” > 0.25f)
             {
-                Player.AddForce(-Player.LocalScaleX_Set * Vector2.right *7.5f * °Ù·Ö±È);
+                Player.AddForce(-Player.LocalScaleX_Set * Vector2.right *7.5f * ç™¾åˆ†æ¯”);
             } 
         } 
-        if (Player.N_.Ğü¸¡)
+        if (Player.N_.æ‚¬æµ®)
         { 
-        if (IP.°´¼ü¼ì²â_°´×¡(IP.k.ÌøÔ¾)&& IP.Get_key( IP.k.ÌøÔ¾).Keeptime>0.2f)
+        if (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½(IP.k.è·³è·ƒ)&& IP.Get_key( IP.k.è·³è·ƒ).Keeptime>0.2f)
         {
                 if (false )
-                    if (Player.Velocity.y < Ğü¸¡ËÙ¶È)
+                    if (Player.Velocity.y < æ‚¬æµ®é€Ÿåº¦)
             {
-                if (A.µ±Ç°anim.name!= A_N.air)
+                if (A.å½“å‰anim.name!= A_N.air)
                 {
                     Player.Velocity = new Vector2(Player.Velocity.x,0);
                 A.Playanim(A_N.air);
-                    if (!²»ÊÇµÚÒ»´ÎĞü¸¡)
+                    if (!ä¸æ˜¯ç¬¬ä¸€æ¬¡æ‚¬æµ®)
                     {
-                    ²»ÊÇµÚÒ»´ÎĞü¸¡ = true;
+                    ä¸æ˜¯ç¬¬ä¸€æ¬¡æ‚¬æµ® = true;
                         //Player.Velocity = new Vector2(Player.Velocity.x, 10);
                     }
                 }
@@ -263,7 +263,7 @@ public class sky : State_Base
         }
         }
 
-        if (IP.ÊúÖ±Õı¸ºÁã!=0)
+        if (IP.ç«–ç›´æ­£è´Ÿé›¶!=0)
         {
             if (Player.ladder)
             {
@@ -280,37 +280,37 @@ public class sky : State_Base
         {
             if (Player.Ground)
             {
-                ½Ó´¥µØÃæ();
+                æ¥è§¦åœ°é¢();
             }
         }
         if (Player.Velocity .y==0&& Player.Ground)
         {
-            ½Ó´¥µØÃæ();
+            æ¥è§¦åœ°é¢();
         } 
     }
 
-    public override void ½Ó´¥µØÃæ()
+    public override void æ¥è§¦åœ°é¢()
     { 
-        Vector2 dian = Player.½Åµ×·¢Éä(2.9f, 2);
+        Vector2 dian = Player.è„šåº•å‘å°„(2.9f, 2);
         if (dian != Vector2.zero)
         {
-            ÌØĞ§_pool_2.I.GetPool(dian, T_N.ÌØĞ§ÂäµØ).Speed_Lv = Player3.Public_Const_Speed;
+            ç‰¹æ•ˆ_pool_2.I.GetPool(dian, T_N.ç‰¹æ•ˆè½åœ°).Speed_Lv = Player3.Public_Const_Speed;
         }
 
-        //ÌØĞ§_pool_2.I.GetPool(Player.½Åµ×·¢Éä(), "ÌØĞ§ÂäµØ");
-        //if (IP.°´¼ü¼ì²â_°´×¡(IP.³å´Ì))
+        //ç‰¹æ•ˆ_pool_2.I.GetPool(Player.è„šåº•å‘å°„(), "ç‰¹æ•ˆè½åœ°");
+        //if (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½(IP.å†²åˆº))
         //{
         //    f.To_State(E_State.dash); 
         //}
         //else  
-        if (IP.°´¼ü¼ì²â_°´×¡ (IP.k.ÏÂ))
+        if (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½ (IP.k.ä¸‹))
         { 
                 f.To_State(E_State.dun); 
         }
         else
         {
  
-                if (IP.·½ÏòÕıÁã¸º == 0)
+                if (IP.æ–¹å‘æ­£é›¶è´Ÿ == 0)
                 {
                     f.To_State(E_State.idle);
                 }
@@ -325,17 +325,17 @@ public class sky : State_Base
  
     }
 
-    bool µÚÒ»´ÎÌøÔ¾ { get; set; }
+    bool ç¬¬ä¸€æ¬¡è·³è·ƒ { get; set; }
 
-    void ¿¨ÔÚ()
+    void å¡åœ¨()
     {
         if (Player.Velocity ==Vector2 .zero )
         {
-            var a = Player.Bounds.min-new Vector3 (0,Player.¶×BOX .edgeRadius );
-            var b = new Vector3(Player.Bounds.max.x , Player.Bounds.min.y)-new Vector3 (0,Player.¶×BOX .edgeRadius );
+            var a = Player.Bounds.min-new Vector3 (0,Player.è¹²BOX .edgeRadius );
+            var b = new Vector3(Player.Bounds.max.x , Player.Bounds.min.y)-new Vector3 (0,Player.è¹²BOX .edgeRadius );
 
-        var pa=    Physics2D.OverlapCircle(a, 0.1f, Player.Åö×²¼ì²â²ã);
-            var pb=     Physics2D.OverlapCircle(b, 0.1f, Player.Åö×²¼ì²â²ã);
+        var pa=    Physics2D.OverlapCircle(a, 0.1f, Player.ç¢°æ’æ£€æµ‹å±‚);
+            var pb=     Physics2D.OverlapCircle(b, 0.1f, Player.ç¢°æ’æ£€æµ‹å±‚);
 
             if (pa!=null||pb!=null)
             { 
@@ -344,18 +344,18 @@ public class sky : State_Base
             }
         }
     }
-    bool Ç°¿Õ=true;
+    bool å‰ç©º=true;
     Sprite targetSprite;
 
     
     void asd()
     {
-        ///ÄÚ²¿³ß´ç80  box ³ß´ç5*5  16±¶
+        ///å†…éƒ¨å°ºå¯¸80  box å°ºå¯¸5*5  16å€
         ///80= boxsize*16
-        ///size¿ÉÒÔÇó
+        ///sizeå¯ä»¥æ±‚
         ///offst
       Vector4 v=  targetSprite.border;
-        //X=×ó±ß¿ò¡¢Y=ÏÂ±ß¿ò¡¢Z=ÓÒ±ß¿ò¡¢W=ÉÏ±ß¿ò
+        //X=å·¦è¾¹æ¡†ã€Y=ä¸‹è¾¹æ¡†ã€Z=å³è¾¹æ¡†ã€W=ä¸Šè¾¹æ¡†
 
     }
     Sprite lastsp;
@@ -363,38 +363,38 @@ public class sky : State_Base
 
     public override void UpdateState()
     {
-        if (Player3.I.½ÅÏÂ != null )
+        if (Player3.I.è„šä¸‹ != null )
         {
-            Player3.I.½ÅÏÂ  = null;
+            Player3.I.è„šä¸‹  = null;
         }
 
-        if (Initialize_Mono.I.MoveP_ÓÅ»¯)
+        if (Initialize_Mono.I.MoveP_ä¼˜åŒ–)
         {
             Player3.I.ChangeFather();
         }
  
-        if (Initialize_Mono.I.¶¯Ì¬ÌøÔ¾Åö×²) 
+        if (Initialize_Mono.I.åŠ¨æ€è·³è·ƒç¢°æ’) 
         if (lastsp!=Player.sp.sprite)
         {
-            //¸üĞÂ²¢ÇÒ¸Ä±ä³ß´ç
+            //æ›´æ–°å¹¶ä¸”æ”¹å˜å°ºå¯¸
             lastsp = Player.sp.sprite; 
-            Vector4 v = É¾³ı_Í¼Æ¬ÎïÀí.Get_Í¼Æ¬Bor(lastsp.border, SPsize,16);
+            Vector4 v = åˆ é™¤_å›¾ç‰‡ç‰©ç†.Get_å›¾ç‰‡Bor(lastsp.border, SPsize,16);
             if (v.x!=5)
             {
 
-                Player.Õ¾Á¢box.size = new Vector2(Startsize.x, v.y);
-                Player.Õ¾Á¢box.offset = new Vector2(StartOff.x, v.w);
+                Player.ç«™ç«‹box.size = new Vector2(Startsize.x, v.y);
+                Player.ç«™ç«‹box.offset = new Vector2(StartOff.x, v.w);
 
-                    Player.¶×BOX.offset = StartDunOff;
-                    Player.¶×BOX.size =   StartDunSize;
+                    Player.è¹²BOX.offset = StartDunOff;
+                    Player.è¹²BOX.size =   StartDunSize;
                 }
         }
         //targetSprite.border
         //Vector2[] physicsShape = targetSprite.GetPhysicsShape
-        //if (IP.°´¼ü¼ì²â_°´×¡(IP.k.¹¥»÷))
+        //if (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½(IP.k.æ”»å‡»))
         {
             if (
-                Player_input.I.·½ÏòÕıÁã¸º != 0 &&
+                Player_input.I.æ–¹å‘æ­£é›¶è´Ÿ != 0 &&
  !Player.Ground
     && Player.Velocity.y < 0 
                 )
@@ -402,9 +402,9 @@ public class sky : State_Base
                 if (Time.frameCount - f.Getstate(E_State.wall).ExiteFramet > 6)
                 {
                     if (false)
-                    //if (Player.¶¥ËÀ)
+                    //if (Player.é¡¶æ­»)
                     {
-                        ///  Ô­ÏÈboolÅĞ¶ÏÎªPlayer.¶¥ËÀ
+                        ///  åŸå…ˆboolåˆ¤æ–­ä¸ºPlayer.é¡¶æ­»
                         f.To_State(E_State.wall);
                         return;
                     } 
@@ -412,33 +412,33 @@ public class sky : State_Base
                     {
                         //if(false)
                         { 
-                            var a = Player.¼Ù¼ì²â(0.5f);
+                            var a = Player.å‡æ£€æµ‹(0.5f);
                             if (a != Vector3.zero)
                             {
-                                ÌùÇ½Ê±¼ä += Time.deltaTime;
+                                è´´å¢™æ—¶é—´ += Time.deltaTime;
                             }
-                            //Debug.LogError(ÌùÇ½Ê±¼ä); 
-                            if (ÌùÇ½Ê±¼ä > ÌùÇ½Ê±¼ämax)
+                            //Debug.LogError(è´´å¢™æ—¶é—´); 
+                            if (è´´å¢™æ—¶é—´ > è´´å¢™æ—¶é—´max)
                             {
-                                var ²î = MathF.Abs(a.x - Player.Bounds.center.x) - (Player.Bounds.size.x / 2);
+                                var å·® = MathF.Abs(a.x - Player.Bounds.center.x) - (Player.Bounds.size.x / 2);
 
                                 var Y = transform.position.y;
                                 if (Wall_Y != 0 &&
-                                    transform.position.y > Wall_Y///ÏÖÔÚµÄÖµ´óÓÚ¹ıÈ¥µÄÖµ     ±ÈÒÔÇ°Ğ¡²»´¥·¢
-                                                                 ///²¢ÇÒ µ±ÏÖÔÚ±È¹ıÈ¥µÄÖµ´óµÄÌ«¶àÁËÒ²²»´¥·¢      
+                                    transform.position.y > Wall_Y///ç°åœ¨çš„å€¼å¤§äºè¿‡å»çš„å€¼     æ¯”ä»¥å‰å°ä¸è§¦å‘
+                                                                 ///å¹¶ä¸” å½“ç°åœ¨æ¯”è¿‡å»çš„å€¼å¤§çš„å¤ªå¤šäº†ä¹Ÿä¸è§¦å‘      
                                     && transform.position.y < Wall_Y + 1)
                                 {
-                                    Debug.LogError("´¥·¢AAA" + Y + transform.position.y);
+                                    Debug.LogError("è§¦å‘AAA" + Y + transform.position.y);
                                     Y = Wall_Y;
                                 }
-                                if(²î>1)
+                                if(å·®>1)
                                 {
-                                    Debug.LogError("´¥·¢   Ë²ÒÆ  ²îÊÇ" + ²î + "Î»ÖÃ:" + transform.position.x+"·½Ïòint"+ Player.LocalScaleX_Int
-                                        + "  Åö×²µãÎ»ÖÃ  "+a+"v2²î" + (transform.position - a));
+                                    Debug.LogError("è§¦å‘   ç¬ç§»  å·®æ˜¯" + å·® + "ä½ç½®:" + transform.position.x+"æ–¹å‘int"+ Player.LocalScaleX_Int
+                                        + "  ç¢°æ’ç‚¹ä½ç½®  "+a+"v2å·®" + (transform.position - a));
                                     return;
                                 }
                                 transform.position =
-                                    new Vector3(transform.position.x + ²î * MathF.Sign(Player.LocalScaleX_Int), Y, transform.position.z);
+                                    new Vector3(transform.position.x + å·® * MathF.Sign(Player.LocalScaleX_Int), Y, transform.position.z);
 
                                 f.To_State(E_State.wall);
                                 return;
@@ -450,31 +450,31 @@ public class sky : State_Base
             }
         }
 
-        if (Player.isÍÁÀÇÊ±¼ä_Wall == -1)
+        if (Player.isåœŸç‹¼æ—¶é—´_Wall == -1)
         {
-            bool °´ÏÂÁËÏàÍ¬ = (IP.°´¼ü¼ì²â_°´ÏÂ(IP.k.×ó) && -Player.wall_½øÈëÎªÕıÃæ == -1)
-    || (IP.°´¼ü¼ì²â_°´ÏÂ(IP.k.ÓÒ) && -Player.wall_½øÈëÎªÕıÃæ  == 1);
-            if (°´ÏÂÁËÏàÍ¬)
+            bool æŒ‰ä¸‹äº†ç›¸åŒ = (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä¸‹(IP.k.å·¦) && -Player.wall_è¿›å…¥ä¸ºæ­£é¢ == -1)
+    || (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä¸‹(IP.k.å³) && -Player.wall_è¿›å…¥ä¸ºæ­£é¢  == 1);
+            if (æŒ‰ä¸‹äº†ç›¸åŒ)
             { 
-                ((wall)f.Getstate(E_State.wall)).½ğÓ¹(0.3f);///²»ÖªµÀÎªÉ¶Ã»ÓÃ
-                A.Playanim(JUMAP_name.ÉÏÈ¥); 
-                Player.ÌøÔ¾´¥·¢(new Vector2(-Player.wall_½øÈëÎªÕıÃæ * 8f, Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ë²¼äËÙ¶È )
-                    , "µÇÇ½Ìø£¬AAAAÍÁÀÇ_ÏÈ¿Õ¸ñºó·½Ïò");
+                ((wall)f.Getstate(E_State.wall)).é‡‘åº¸(0.3f);///ä¸çŸ¥é“ä¸ºå•¥æ²¡ç”¨
+                A.Playanim(JUMAP_name.ä¸Šå»); 
+                Player.è·³è·ƒè§¦å‘(new Vector2(-Player.wall_è¿›å…¥ä¸ºæ­£é¢ * 8f, Player.ç©å®¶æ•°å€¼.è·³è·ƒç¬é—´é€Ÿåº¦ )
+                    , "ç™»å¢™è·³ï¼ŒAAAAåœŸç‹¼_å…ˆç©ºæ ¼åæ–¹å‘");
             }
         }
 
  
-        if (IP.°´¼ü¼ì²â_°´×¡(IP.k.ÌøÔ¾))
-            if (Player.isÍÁÀÇÊ±¼ä_Wall == 1)
+        if (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½(IP.k.è·³è·ƒ))
+            if (Player.isåœŸç‹¼æ—¶é—´_Wall == 1)
             {
-                ((wall)f.Getstate(E_State.wall)).½ğÓ¹(0.3f);
-                Player.isÍÁÀÇÊ±¼ä_Wall = 0;
-                A.Playanim(JUMAP_name.ÉÏÈ¥); 
-                Player.ÌøÔ¾´¥·¢(new Vector2(-Player.wall_½øÈëÎªÕıÃæ * 8f, Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ë²¼äËÙ¶È)
-                 , "µÇÇ½Ìø£¬BBBBÍÁÀÇ_ÏÈ·½Ïòºó¿Õ¸ñ __³ÖĞø´¥·¢");
+                ((wall)f.Getstate(E_State.wall)).é‡‘åº¸(0.3f);
+                Player.isåœŸç‹¼æ—¶é—´_Wall = 0;
+                A.Playanim(JUMAP_name.ä¸Šå»); 
+                Player.è·³è·ƒè§¦å‘(new Vector2(-Player.wall_è¿›å…¥ä¸ºæ­£é¢ * 8f, Player.ç©å®¶æ•°å€¼.è·³è·ƒç¬é—´é€Ÿåº¦)
+                 , "ç™»å¢™è·³ï¼ŒBBBBåœŸç‹¼_å…ˆæ–¹å‘åç©ºæ ¼ __æŒç»­è§¦å‘");
                 return;
             }
-  if (IP.°´¼ü¼ì²â_°´ÏÂ(IP.k.ÌøÔ¾))
+  if (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä¸‹(IP.k.è·³è·ƒ))
         {  
             if (EnterTime > 0.1f || f.I_State_L.state == E_State.cricleatk)
             {
@@ -485,15 +485,15 @@ public class sky : State_Base
 
         }
 
-        if (Player.Ğü¹Ò.Âú×ã)
+        if (Player.æ‚¬æŒ‚.æ»¡è¶³)
         {
-            if (IP.·½ÏòÕıÁã¸º == Player.LocalScaleX_Set)
+            if (IP.æ–¹å‘æ­£é›¶è´Ÿ == Player.LocalScaleX_Set)
             {
                 if (Player.Velocity .y<0)
                 {
-                    if (EnterTime > 0.3f)///¸ÕÌáÉ¨»³Äî¹ıÈ¥¾ÍÇĞ»»
+                    if (EnterTime > 0.3f)///åˆšææ‰«æ€€å¿µè¿‡å»å°±åˆ‡æ¢
                     {
-                        if (Player.½Åµ×·¢Éä(0.5f) == Vector2.zero)///±£³ÖÒ»¶¨¾àÀë
+                        if (Player.è„šåº•å‘å°„(0.5f) == Vector2.zero)///ä¿æŒä¸€å®šè·ç¦»
                         {
                             f.To_State(E_State.pa);
                         }
@@ -501,9 +501,9 @@ public class sky : State_Base
                 } 
             } 
         }
-        if (Ç°¿Õ != Player.Ç°¿Õ_&& !Player.Ç°¿Õ_) ///×²Ç½²¹Õı
+        if (å‰ç©º != Player.å‰ç©º_&& !Player.å‰ç©º_) ///æ’å¢™è¡¥æ­£
         {
-            Ç°¿Õ = Player.Ç°¿Õ_;
+            å‰ç©º = Player.å‰ç©º_;
 
             //Debug.LogError(transform.position + "         " + Player.Velocity.y);
             //Debug.LogError(Player.Velocity .y);
@@ -520,68 +520,68 @@ public class sky : State_Base
         if (Player.Velocity.y>0)
         {
          
-            Find(Ë«µãÅö×²(Player.Velocity.y / 20));
+            Find(åŒç‚¹ç¢°æ’(Player.Velocity.y / 20));
         }
 
-        if (!µÚÒ»´ÎÌøÔ¾)
+        if (!ç¬¬ä¸€æ¬¡è·³è·ƒ)
         {
-        if (Player.Velocity .y<Initialize_Mono.I.ÏÂÂä¶¯»­ËÙ¶È )
+        if (Player.Velocity .y<Initialize_Mono.I.ä¸‹è½åŠ¨ç”»é€Ÿåº¦ )
         {
-                if (A.µ±Ç°anim.name == A_N.jump_ )
+                if (A.å½“å‰anim.name == A_N.jump_ )
                 {
-                    µÚÒ»´ÎÌøÔ¾ = true;
-                    Debug.LogError("");
-                    A.Playanim(JUMAP_name.ÖĞ¼ä ); 
+                    ç¬¬ä¸€æ¬¡è·³è·ƒ = true;
+                    //Debug.LogError("");
+                    A.Playanim(JUMAP_name.ä¸­é—´ ); 
                 } 
             } 
         }
 
-        if (!IP.°´¼ü¼ì²â_°´×¡ (IP.k.ÌøÔ¾))//±»µ¯»Éµ¯ÉÏÈ¥
+        if (!IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½ (IP.k.è·³è·ƒ))//è¢«å¼¹ç°§å¼¹ä¸Šå»
         {
-            if (Player.Velocity .y>Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ë²¼äËÙ¶È)
+            if (Player.Velocity .y>Player.ç©å®¶æ•°å€¼.è·³è·ƒç¬é—´é€Ÿåº¦)
             {
-                A.Playanim(JUMAP_name.ÉÏÈ¥); 
-                µÚÒ»´ÎÌøÔ¾ = false;
+                A.Playanim(JUMAP_name.ä¸Šå»); 
+                ç¬¬ä¸€æ¬¡è·³è·ƒ = false;
             }  
         }
-        ÏÂÂä½µÂäÆ½Ì¨¼ì²â();
+        ä¸‹è½é™è½å¹³å°æ£€æµ‹();
 
-        ¿¨ÔÚ();
-        //if (IP.°´¼ü¼ì²â_°´×¡(IP.¹¥»÷)&& IP.°´¼ü¼ì²â_°´×¡(IP.ÏÂ))
+        å¡åœ¨();
+        //if (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½(IP.æ”»å‡»)&& IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½(IP.ä¸‹))
         //{
 
         //}
 
-        if (f.I_State_L.state != E_State.hit || IP.·½ÏòÕıÁã¸º != 0)
+        if (f.I_State_L.state != E_State.hit || IP.æ–¹å‘æ­£é›¶è´Ÿ != 0)
         {
-            Player.Ë®Æ½ÏŞÖÆ();
-            Player.ÊúÖ±ÏŞÖÆ(); 
+            Player.æ°´å¹³é™åˆ¶();
+            Player.ç«–ç›´é™åˆ¶(); 
         }
-        if (IP.·½ÏòÕıÁã¸º == 0)
+        if (IP.æ–¹å‘æ­£é›¶è´Ÿ == 0)
         {
-            XËÙ¶È¼Ó³É = 0;
+            Xé€Ÿåº¦åŠ æˆ = 0;
         }
 
-        if (XËÙ¶È¼Ó³É!=0)
+        if (Xé€Ÿåº¦åŠ æˆ!=0)
         {
 
-            XËÙ¶È¼Ó³É -= Mathf.Sign(XËÙ¶È¼Ó³É) * Time.deltaTime;
-            Debug.LogError(Time.frameCount + "  AAAAAWAAAA  " + XËÙ¶È¼Ó³É);
-            Player.transform.position += (Vector3)(Vector2.right * XËÙ¶È¼Ó³É * Time.deltaTime);
+            Xé€Ÿåº¦åŠ æˆ -= Mathf.Sign(Xé€Ÿåº¦åŠ æˆ) * Time.deltaTime;
+            Debug.LogError(Time.frameCount + "  AAAAAWAAAA  " + Xé€Ÿåº¦åŠ æˆ);
+            Player.transform.position += (Vector3)(Vector2.right * Xé€Ÿåº¦åŠ æˆ * Time.deltaTime);
         }
-        if (IP.·½ÏòÕıÁã¸º != 0) Player.Ë®Æ½ÏŞÖÆ();
+        if (IP.æ–¹å‘æ­£é›¶è´Ÿ != 0) Player.æ°´å¹³é™åˆ¶();
     }
 
-    public override void ·½Ïò¸Ä±ä(bool obj)
+    public override void æ–¹å‘æ”¹å˜(bool obj)
     {
-        base.·½Ïò¸Ä±ä(obj);
-        XËÙ¶È¼Ó³É = 0;
+        base.æ–¹å‘æ”¹å˜(obj);
+        Xé€Ÿåº¦åŠ æˆ = 0;
     }
     Vector2 Velocity => Player.Velocity;
-    LayerMask Åö×²¼ì²â²ã => Player.Åö×²¼ì²â²ã;
+    LayerMask ç¢°æ’æ£€æµ‹å±‚ => Player.ç¢°æ’æ£€æµ‹å±‚;
    m_transform transform => Player.transform;
-    BoxCollider2D po => Player.¶×BOX;
-    void ÏÂÂä½µÂäÆ½Ì¨¼ì²â()
+    BoxCollider2D po => Player.è¹²BOX;
+    void ä¸‹è½é™è½å¹³å°æ£€æµ‹()
     {
         if (Velocity.y > -0.5f) return;
         var DI_ =
@@ -591,33 +591,33 @@ public class sky : State_Base
     0f,
     Vector2.down,
      0.4f + po.edgeRadius,
-   Åö×²¼ì²â²ã
+   ç¢°æ’æ£€æµ‹å±‚
     )
     .collider;
         if (DI_ != null)
         {
             if (   DI_.gameObject.layer == Initialize.L_M_Ground)
             {
-                float ca = Initialize.»ñÈ¡Á½Åö×²Ìå×î½ü·½ÏòµÄ²åÖµ(Player.gameObject, DI_.gameObject);
+                float ca = Initialize.è·å–ä¸¤ç¢°æ’ä½“æœ€è¿‘æ–¹å‘çš„æ’å€¼(Player.gameObject, DI_.gameObject);
                 transform.position = new Vector2(transform.position.x, transform.position.y - ca); 
             }
         }
     }
 
-    public static List<RaycastHit2D> Ë«µãÅö×²(float distance)
+    public static List<RaycastHit2D> åŒç‚¹ç¢°æ’(float distance)
     {
         var a = new Vector2(Player3.I.Bounds.min.x, Player3.I.Bounds.max.y);
         var b = (Vector2)Player3.I.Bounds.max;
         LayerMask l = 1 << Initialize.L_Ground|1<<Initialize.L_M_Ground;
 
-        // Ê¹ÓÃÀàÄÚµÄ Åö×²¼ì²â²ã
+        // ä½¿ç”¨ç±»å†…çš„ ç¢°æ’æ£€æµ‹å±‚
         var mask = l;
 
-        // ´Ó a ºÍ b ÏòÉÏ·¢ÉäÉäÏß
+        // ä» a å’Œ b å‘ä¸Šå‘å°„å°„çº¿
         List<RaycastHit2D> hitA = new List<RaycastHit2D>(Physics2D.RaycastAll(a, Vector2.up, distance, mask));
         List<RaycastHit2D> hitB = new List<RaycastHit2D>(Physics2D.RaycastAll(b, Vector2.up, distance, mask));
 
-        // Debug ¿ÉÊÓ»¯£¨Ê¹ÓÃ Vector3 ¹¹ÔìÒÔ±ÜÃâ Vector2/Vector3 ÔËËã¶şÒåĞÔ£©
+        // Debug å¯è§†åŒ–ï¼ˆä½¿ç”¨ Vector3 æ„é€ ä»¥é¿å… Vector2/Vector3 è¿ç®—äºŒä¹‰æ€§ï¼‰
         Debug.DrawLine(new Vector3(a.x, a.y, 0f), new Vector3(a.x, a.y + distance, 0f), Color.cyan, 0.5f);
         Debug.DrawLine(new Vector3(b.x, b.y, 0f), new Vector3(b.x, b.y + distance, 0f), Color.cyan, 0.5f);
 
@@ -640,10 +640,10 @@ public class sky : State_Base
                 bool bo =!  obj.CompareTag(Initialize.Ground);
                 if (bo)
                 {
-                var D=    obj.GetComponent<µ¥·½ÃæÍ¨¹ı>();
+                var D=    obj.GetComponent<å•æ–¹é¢é€šè¿‡>();
                 if(D!=null)
                     { 
-                        D.´¥·¢();
+                        D.è§¦å‘();
                         return true;
                     }
                 } 
@@ -656,73 +656,73 @@ public class sky : State_Base
         }
         return false;
     }
-    public override void ËÉ¿ª(KeyCode obj)
+    public override void æ¾å¼€(KeyCode obj)
     { 
-        if (obj== IP.k.¹¥»÷)
+        if (obj== IP.k.æ”»å‡»)
         { 
                 f.To_State(E_State.skyatk);
                  
             return;
         }
 
-        if (obj == IP.k.ÌøÔ¾)
+        if (obj == IP.k.è·³è·ƒ)
         {
-            Debug.Log("ÏòÏÂÁ¦±»´¥·¢");
+            Debug.Log("å‘ä¸‹åŠ›è¢«è§¦å‘");
             
             var y = 0f;
             if (Player.Velocity.y > 0) y = Player.Velocity.y;
-            var a = y / Player.Íæ¼ÒÊıÖµ.ÌøÔ¾Ë²¼äËÙ¶È;
+            var a = y / Player.ç©å®¶æ•°å€¼.è·³è·ƒç¬é—´é€Ÿåº¦;
             a = Mathf.Min(a, 0.4f);
             //a = Mathf.Pow(a, 1.7f);
-            Player.AddForce(new Vector2(0, Player.Íæ¼ÒÊıÖµ.Ğ¡ÌøÏòÏÂÁ¦ * a));
+            Player.AddForce(new Vector2(0, Player.ç©å®¶æ•°å€¼.å°è·³å‘ä¸‹åŠ› * a));
         }
-        if (obj == IP.k.×ó || obj == IP.k. ÓÒ)
+        if (obj == IP.k.å·¦ || obj == IP.k. å³)
         {
             //Player.Velocity = Player.Velocity;
             if (Player.Velocity.y<0)
             {
-                //Debug.LogError("                Ğ¡ÓÚÁã"            );
+                //Debug.LogError("                å°äºé›¶"            );
                 Player.Velocity = new Vector2(Player.Velocity.x *  8 / 10, Player.Velocity.y);
             }
 
-            //float ±ÈÀı = Mathf.Abs(Player.Velocity.x) / Player.Íæ¼ÒÊıÖµ.³£Ì¬ËÙ¶È;
-            //float foce = Player.Íæ¼ÒÊıÖµ.Ë®Æ½Ïà·´Á¦ * -Player.LocalScaleX_Set * ±ÈÀı;
+            //float æ¯”ä¾‹ = Mathf.Abs(Player.Velocity.x) / Player.ç©å®¶æ•°å€¼.å¸¸æ€é€Ÿåº¦;
+            //float foce = Player.ç©å®¶æ•°å€¼.æ°´å¹³ç›¸ååŠ› * -Player.LocalScaleX_Set * æ¯”ä¾‹;
 
             //Debug.LogError(foce + "       " + Player.Velocity);
             //Player.AddForce(new Vector2(foce, 0));
         }
 
-        if (obj== IP.k.ÌøÔ¾)
+        if (obj== IP.k.è·³è·ƒ)
         {
-            if (A.µ±Ç°anim.name == A_N.air)
+            if (A.å½“å‰anim.name == A_N.air)
             {
-                A.Playanim(JUMAP_name.ÏÂÈ¥);
+                A.Playanim(JUMAP_name.ä¸‹å»);
             }
         }
     
     }
  
-    public override void °´ÏÂ(KeyCode obj)
+    public override void æŒ‰ä¸‹(KeyCode obj)
     {
-        //if (obj ==IP.¸ñµ²)
+        //if (obj ==IP.æ ¼æŒ¡)
         //{
         //    f.To_State(E_State.cricleatk);
         //    return;
         //}
-        if (obj==IP.k. ¹¥»÷)
+        if (obj==IP.k. æ”»å‡»)
         {
-            if (IP.°´¼ü¼ì²â_°´×¡ (IP.k.ÏÂ))
+            if (IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½ (IP.k.ä¸‹))
             {
                 f.To_State(E_State.downatk);
                 return;
             }
-            //else if(IP.°´¼ü¼ì²â_°´×¡(IP.ÉÏ))
+            //else if(IP.æŒ‰é”®æ£€æµ‹_æŒ‰ä½(IP.ä¸Š))
             //{
             //    f.To_State(E_State.upatk );
             //}
        
         }
-        if (obj==IP.k. ³å´Ì &&Player.Ç°¿Õ_)
+        if (obj==IP.k. å†²åˆº &&Player.å‰ç©º_)
         { 
             f.To_State(E_State.skydash);
             return;

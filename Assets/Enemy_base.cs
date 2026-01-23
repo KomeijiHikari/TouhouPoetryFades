@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -8,23 +8,24 @@ using DG.Tweening;
 using System.Linq;
 using SampleFSM;
 using Sirenix.OdinInspector;
-public enum E_³¬ËÙµÈ¼¶
+using Cysharp.Threading.Tasks;
+public enum E_è¶…é€Ÿç­‰çº§
 {
-    ¾²Ö¹,
-    µÍËÙ,                                                                                                                                                                                                                    
-    Õı³£,
-    ³¬ËÙ,
-    °ëĞé»¯,
-    Ğé»¯,
-    ĞéÎŞ,
+    é™æ­¢,
+    ä½é€Ÿ,                                                                                                                                                                                                                    
+    æ­£å¸¸,
+    è¶…é€Ÿ,
+    åŠè™šåŒ–,
+    è™šåŒ–,
+    è™šæ— ,
 }
 public interface I_Speed_Is
 {
  
     /// <summary>
-    /// Ã¿¸öÔ¤ÖÆÌå×ÔĞĞÉèÖÃµÄ  £¬ÓÎÏ·ÄÚ²»»á¸Ä±ä
+    /// æ¯ä¸ªé¢„åˆ¶ä½“è‡ªè¡Œè®¾ç½®çš„  ï¼Œæ¸¸æˆå†…ä¸ä¼šæ”¹å˜
     /// </summary> 
-    public float ¹Ì¶¨µÈ¼¶²î
+    public float å›ºå®šç­‰çº§å·®
     {
         get
         { 
@@ -35,50 +36,50 @@ public interface I_Speed_Is
     }
 
     /// <summary>
-    /// Ö»¶Á  µÈ¼¶»»ËãÍæ¼ÒËÙ¶ÈºóµÄËÙ¶È
+    /// åªè¯»  ç­‰çº§æ¢ç®—ç©å®¶é€Ÿåº¦åçš„é€Ÿåº¦
     /// </summary>
     float Speed_Lv { get; set; }
 }
 public interface I_Speed_Change: I_Speed_Is
 {
     /// <summary>
-    ///  Éè¶¨  ÎÒ±ÈÖ÷½Ç¿ì£¬ÄÇ¾ÍÉÏº£Ö÷½Ç ºÜ¿ì ÄÇ¾ÍÏûÊ§
-    ///  ÎÒ±ÈÖ÷½ÇÂı ÄÇ¾Í½Ó½ü¾²Ö¹  Ì«Âı ÄÇ¾ÍÅö×²ÏûÊ§  ÊÓ¾õ´æÔÚ
+    ///  è®¾å®š  æˆ‘æ¯”ä¸»è§’å¿«ï¼Œé‚£å°±ä¸Šæµ·ä¸»è§’ å¾ˆå¿« é‚£å°±æ¶ˆå¤±
+    ///  æˆ‘æ¯”ä¸»è§’æ…¢ é‚£å°±æ¥è¿‘é™æ­¢  å¤ªæ…¢ é‚£å°±ç¢°æ’æ¶ˆå¤±  è§†è§‰å­˜åœ¨
     /// </summary>
 
 
-    public GameObject ¶ÔÏó { get  ; }
-    System.Action ±äËÙ´¥·¢ { get; set; }
-    E_³¬ËÙµÈ¼¶ ³¬ËÙµÈ¼¶ { get {
-            E_³¬ËÙµÈ¼¶ e_ = E_³¬ËÙµÈ¼¶.Õı³£;
+    public GameObject å¯¹è±¡ { get  ; }
+    System.Action å˜é€Ÿè§¦å‘ { get; set; }
+    E_è¶…é€Ÿç­‰çº§ è¶…é€Ÿç­‰çº§ { get {
+            E_è¶…é€Ÿç­‰çº§ e_ = E_è¶…é€Ÿç­‰çº§.æ­£å¸¸;
 
-            if (¹Ì¶¨µÈ¼¶²î < 1 / Initialize_Mono.I.·§Öµ|| ¹Ì¶¨µÈ¼¶²î._is(1 / Initialize_Mono.I.·§Öµ )) 
-                e_ = E_³¬ËÙµÈ¼¶.µÍËÙ;
-            if (¹Ì¶¨µÈ¼¶²î <    Initialize_Mono.I.¸º·§Öµ || ¹Ì¶¨µÈ¼¶²î._is(1 / Initialize_Mono.I.¸º·§Öµ ))
-                e_ = E_³¬ËÙµÈ¼¶.¾²Ö¹; 
-            if ( ¹Ì¶¨µÈ¼¶²î >= Initialize_Mono.I.·§Öµ) 
-                    e_ = E_³¬ËÙµÈ¼¶.³¬ËÙ;
-                    if ( ¹Ì¶¨µÈ¼¶²î >= Initialize_Mono.I.·§Öµ2) 
-                        e_ = E_³¬ËÙµÈ¼¶.°ëĞé»¯;
-                        if ( ¹Ì¶¨µÈ¼¶²î >= Initialize_Mono.I.·§Öµ2_5) 
-                            e_ = E_³¬ËÙµÈ¼¶.Ğé»¯;
-                            if ( ¹Ì¶¨µÈ¼¶²î >= Initialize_Mono.I.·§Öµ3) 
-                                e_ = E_³¬ËÙµÈ¼¶.ĞéÎŞ;     
+            if (å›ºå®šç­‰çº§å·® < 1 / Initialize_Mono.I.é˜€å€¼|| å›ºå®šç­‰çº§å·®._is(1 / Initialize_Mono.I.é˜€å€¼ )) 
+                e_ = E_è¶…é€Ÿç­‰çº§.ä½é€Ÿ;
+            if (å›ºå®šç­‰çº§å·® <    Initialize_Mono.I.è´Ÿé˜€å€¼ || å›ºå®šç­‰çº§å·®._is(1 / Initialize_Mono.I.è´Ÿé˜€å€¼ ))
+                e_ = E_è¶…é€Ÿç­‰çº§.é™æ­¢; 
+            if ( å›ºå®šç­‰çº§å·® >= Initialize_Mono.I.é˜€å€¼) 
+                    e_ = E_è¶…é€Ÿç­‰çº§.è¶…é€Ÿ;
+                    if ( å›ºå®šç­‰çº§å·® >= Initialize_Mono.I.é˜€å€¼2) 
+                        e_ = E_è¶…é€Ÿç­‰çº§.åŠè™šåŒ–;
+                        if ( å›ºå®šç­‰çº§å·® >= Initialize_Mono.I.é˜€å€¼2_5) 
+                            e_ = E_è¶…é€Ÿç­‰çº§.è™šåŒ–;
+                            if ( å›ºå®šç­‰çº§å·® >= Initialize_Mono.I.é˜€å€¼3) 
+                                e_ = E_è¶…é€Ÿç­‰çº§.è™šæ— ;     
             return e_;
         } }
 
-    bool ÏŞÖÆ
+    bool é™åˆ¶
     {
         get
         {
-            //return ³¬ËÙµÈ¼¶== E_³¬ËÙµÈ¼¶.ĞéÎŞ;
-            return I_S.¹Ì¶¨µÈ¼¶²î < Initialize_Mono.I.¸º·§Öµ || I_S.¹Ì¶¨µÈ¼¶²î > Initialize_Mono.I.·§Öµ3;
+            //return è¶…é€Ÿç­‰çº§== E_è¶…é€Ÿç­‰çº§.è™šæ— ;
+            return I_S.å›ºå®šç­‰çº§å·® < Initialize_Mono.I.è´Ÿé˜€å€¼ || I_S.å›ºå®šç­‰çº§å·® > Initialize_Mono.I.é˜€å€¼3;
         }
     }
      I_Speed_Change I_S { get; }
 
     /// <summary>
-    /// Ö»¶Á  µ±Ç°»»ËãÍæ¼ÒËÙ¶ÈºóµÄËÙ¶È
+    /// åªè¯»  å½“å‰æ¢ç®—ç©å®¶é€Ÿåº¦åçš„é€Ÿåº¦
     /// </summary>
     float Curttent_Speed { get
         {
@@ -86,27 +87,27 @@ public interface I_Speed_Change: I_Speed_Is
             return Current_Speed_LV / Player3.Public_Const_Speed;
         } }
     /// <summary>
-    /// ÉúÎïµÄ»°£¬»áÒ»Ö±¸Ä±ä          ËÀÎïµÄ»°²»»á±ä          ±äËÙµÄÄ¿±ê
+    /// ç”Ÿç‰©çš„è¯ï¼Œä¼šä¸€ç›´æ”¹å˜          æ­»ç‰©çš„è¯ä¸ä¼šå˜          å˜é€Ÿçš„ç›®æ ‡
     /// </summary>
     float Current_Speed_LV { get; }
  
 }
 
-interface I_ÔİÍ£
+interface I_æš‚åœ
 {
-    public bool ÔİÍ£ { get; set; }
+    public bool æš‚åœ { get; set; }
 }
 /// <summary>
-/// ¹¥»÷ĞĞÎªºÍ¶¯»­ÓÉĞĞÎªÊ÷±à¼­¡££¬¹¥»÷Êµ¼ÊÉËº¦ ÊıÖµ·¢ÉúÓÉÅö×²Ïä´¥·¢
+/// æ”»å‡»è¡Œä¸ºå’ŒåŠ¨ç”»ç”±è¡Œä¸ºæ ‘ç¼–è¾‘ã€‚ï¼Œæ”»å‡»å®é™…ä¼¤å®³ æ•°å€¼å‘ç”Ÿç”±ç¢°æ’ç®±è§¦å‘
 /// </summary>
-public partial class Enemy_base : BiologyBase, I_Speed_Change, I_ÔİÍ£, I_M_Ridbody2D
+public partial class Enemy_base : BiologyBase, I_Speed_Change, I_æš‚åœ, I_M_Ridbody2D
 { 
-    public bool ¸ùĞÔ=false ;
-    public GameObject ¶ÔÏó { get => gameObject; }
+    public bool æ ¹æ€§=false ;
+    public GameObject å¯¹è±¡ { get => gameObject; }
     [SerializeField]
     private bool debug_;
     public bool Debug_ { get => debug_; set => debug_ = value; }
-    public System.Action ±äËÙ´¥·¢ { get; set; }
+    public System.Action å˜é€Ÿè§¦å‘ { get; set; }
     public I_Speed_Change I_S { get => (I_Speed_Change)this; }
     public enum Enemy_anim_state
     {
@@ -118,43 +119,43 @@ public partial class Enemy_base : BiologyBase, I_Speed_Change, I_ÔİÍ£, I_M_Ridbo
         hit,
         dead,
     }
-    public Enemy_anim_state µ±Ç° = Enemy_anim_state.idle;
+    public Enemy_anim_state å½“å‰ = Enemy_anim_state.idle;
     //public void TreeAction()
     //{
     //    v.SendEvent("Action");
     //}
-    public string Event_ËÀÍö { get; set; } = "ÉúÃü¹éÁã";
-    public string Event_ÊÜ»÷ { get; set; } = "Hit";
-    public string Event_´ò¶Ï { get; set; } = "Break";
+    public string Event_æ­»äº¡ { get; set; } = "ç”Ÿå‘½å½’é›¶";
+    public string Event_å—å‡» { get; set; } = "Hit";
+    public string Event_æ‰“æ–­ { get; set; } = "Break";
     /// <summary>
-    /// speed LV ÊÇÒ»¸öµ¥Î»ÄÚ²»¶¯µÄ
-    /// speed ÊÇ speed LV   ºÍ¾²Ì¬»»ËãºóµÄ
+    /// speed LV æ˜¯ä¸€ä¸ªå•ä½å†…ä¸åŠ¨çš„
+    /// speed æ˜¯ speed LV   å’Œé™æ€æ¢ç®—åçš„
     /// 
     /// mosp 
-    /// jump sp      Ò»ÃëÖ®ÄÚÒÆ¶¯¶àÉÙ   ¾àÀë/Ê±¼ä                    µ±Ö÷½Ç±ä¿ìµÄÊ±ºò   Ö÷½Ç±ä¿ì      ·ØÄ¹±ä´ó£¬µ¥Î»¾àÀë±äĞ¡    
-    /// ËùÒÔ                 ¾àÀë/Ö÷½Ç
+    /// jump sp      ä¸€ç§’ä¹‹å†…ç§»åŠ¨å¤šå°‘   è·ç¦»/æ—¶é—´                    å½“ä¸»è§’å˜å¿«çš„æ—¶å€™   ä¸»è§’å˜å¿«      åŸå¢“å˜å¤§ï¼Œå•ä½è·ç¦»å˜å°    
+    /// æ‰€ä»¥                 è·ç¦»/ä¸»è§’
     /// 
-    /// Ö´ĞĞµÄÊ±ºòÊÇ      jump sp*jump sp  
+    /// æ‰§è¡Œçš„æ—¶å€™æ˜¯      jump sp*jump sp  
     /// </summary>
  
     [DisplayOnly]
     [SerializeField]
-    float ÒÆ¶¯¾àÀë_;
+    float ç§»åŠ¨è·ç¦»_;
     [DisplayOnly]
     [SerializeField]
-    float ÏÔÊ¾_Speed_;
+    float æ˜¾ç¤º_Speed_;
 
     public float Current_Speed_LV
     {
         get { 
-            if (p.Get_Ê¸Á¿³¤¶È()==0)
+            if (p.Get_çŸ¢é‡é•¿åº¦()==0)
             {
                 
                 return Speed_Lv;
             }
             else
             {
-                return p.Get_Ê¸Á¿³¤¶È() * Speed_Lv;
+                return p.Get_çŸ¢é‡é•¿åº¦() * Speed_Lv;
             }  
         } 
     }
@@ -171,55 +172,55 @@ public partial class Enemy_base : BiologyBase, I_Speed_Change, I_ÔİÍ£, I_M_Ridbo
     public float Jump_speed { get => Jump_speed_; set => Jump_speed_ = value; }
 
 
-    public bool ÆÆ·À;
+    public bool ç ´é˜²;
 
     [SerializeField]
-    float ÈÍĞÔ__;
-    public float ÈÍĞÔ_
+    float éŸ§æ€§__;
+    public float éŸ§æ€§_
     {
         get
         {
-            return ÈÍĞÔ__;
+            return éŸ§æ€§__;
         }
         set
         {
             if (value!=0&&Debug_)
             {
-                Debug.LogError(ÈÍĞÔ__+value);
+                Debug.LogError(éŸ§æ€§__+value);
             }
-            ÈÍĞÔ__ = Mathf.Clamp(value, -MaxÈÍĞÔ, MaxÈÍĞÔ);
+            éŸ§æ€§__ = Mathf.Clamp(value, -MaxéŸ§æ€§, MaxéŸ§æ€§);
             if (value != 0 && Debug_)
             {
-                Debug.LogError(ÈÍĞÔ__+gameObject.name + value);
+                Debug.LogError(éŸ§æ€§__+gameObject.name + value);
             }
         }
     }
-public  float MaxÈÍĞÔ;
+public  float MaxéŸ§æ€§;
 
-    float ¼ÓËÙ¶È;
-    public bool Åö×²¿ª¹Ø;
+    float åŠ é€Ÿåº¦;
+    public bool ç¢°æ’å¼€å…³;
 
     ///// <summary>
-    ///// Ä³ÖÖ³Ì¶ÈÉÏÊÇÉúÃüÖÜÆÚ¹ÜÀíµÄ  ×Ó×´Ì¬
+    ///// æŸç§ç¨‹åº¦ä¸Šæ˜¯ç”Ÿå‘½å‘¨æœŸç®¡ç†çš„  å­çŠ¶æ€
     ///// </summary>
-    //   state »î×Å;
-    //   state ³¬ËÙ;
-    //   state ÊÜ»÷;
+    //   state æ´»ç€;
+    //   state è¶…é€Ÿ;
+    //   state å—å‡»;
     //   /// <summary>
-    //   /// Î¬ÍĞ¸øÉúÃü¹ÜÀíÖÜÆÚµÄ   
+    //   /// ç»´æ‰˜ç»™ç”Ÿå‘½ç®¡ç†å‘¨æœŸçš„   
     //   /// </summary>
-    //   state ËÀÍö;
+    //   state æ­»äº¡;
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.layer != Initialize.L_Player) return;
-        if (Åö×²²»¶¯ == Vector2.zero) return;
-        transform.position = Åö×²²»¶¯;
+        if (ç¢°æ’ä¸åŠ¨ == Vector2.zero) return;
+        transform.position = ç¢°æ’ä¸åŠ¨;
     }
-    Vector2 Åö×²²»¶¯;
+    Vector2 ç¢°æ’ä¸åŠ¨;
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer != Initialize.L_Player) return;
-        Åö×²²»¶¯ = transform.position;
+        ç¢°æ’ä¸åŠ¨ = transform.position;
 
     }
 
@@ -239,162 +240,162 @@ public  float MaxÈÍĞÔ;
             }
         }
     }
-    public void Ë²ÒÆÖÁ(Vector2 v)
+    public void ç¬ç§»è‡³(Vector2 v)
     {
-        transform.position = p.Åö×²Ô¤²â(v);
+        transform.position = p.ç¢°æ’é¢„æµ‹(v);
     }
     [SerializeField ]
-    float ÈÍĞÔÔö·ù=0;
+    float éŸ§æ€§å¢å¹…=0;
 
     [SerializeField]
-    bool »Ø¸´µ½Âú;
+    bool å›å¤åˆ°æ»¡;
     /// <summary>
-    /// ÊäÈëÕı  ¼ÓÈÍĞÔ
+    /// è¾“å…¥æ­£  åŠ éŸ§æ€§
     /// </summary>
     /// <param name="v"></param>
-    public int   ÈÍĞÔ(float v )
+    public int   éŸ§æ€§(float v )
     {
-        ///Âú    ¼ÓËÙ¶È¹éÁã  ÆÆ·ÀÎªflase;
-        ///´óÓÚÁã£¬Ã¿Ö¡»ØÈÍĞÔ£¬¿³Ò»µ¶¿ÛÈÍĞÔ
-        ///Ğ¡ÓÚÁã   ÆÆ·ÀÎªtrue  Ã¿Ö¡»ØÈÍĞÔ£»        v<0·¢Éä  ¿³Ò»µ¶¿ÛÈÍĞÔ    
+        ///æ»¡    åŠ é€Ÿåº¦å½’é›¶  ç ´é˜²ä¸ºflase;
+        ///å¤§äºé›¶ï¼Œæ¯å¸§å›éŸ§æ€§ï¼Œç ä¸€åˆ€æ‰£éŸ§æ€§
+        ///å°äºé›¶   ç ´é˜²ä¸ºtrue  æ¯å¸§å›éŸ§æ€§ï¼›        v<0å‘å°„  ç ä¸€åˆ€æ‰£éŸ§æ€§    
         ///
 
-        ÈÍĞÔ_ = ÈÍĞÔ_+ v;
+        éŸ§æ€§_ = éŸ§æ€§_+ v;
         if (Debug_)
         {
             if (v != 0)
             {
 
-                Debug.LogError(v +"     ºó"+ÈÍĞÔ_ + "    public int   ÈÍĞÔ(float v )"  );
+                Debug.LogError(v +"     å"+éŸ§æ€§_ + "    public int   éŸ§æ€§(float v )"  );
             }
         }
 
 
-        if (ÈÍĞÔ_ == MaxÈÍĞÔ)
+        if (éŸ§æ€§_ == MaxéŸ§æ€§)
         {
-            »Ø¸´µ½Âú = false;
-              ¼ÓËÙ¶È = 0;
-            ÆÆ·À = false;
+            å›å¤åˆ°æ»¡ = false;
+              åŠ é€Ÿåº¦ = 0;
+            ç ´é˜² = false;
            return -99;
         }
         else
-        {//»Ö¸´  
-            if (»Ø¸´µ½Âú) {
-                ¼ÓËÙ¶È += Time.deltaTime * (Initialize_Mono.I.µĞÈË»ØÄÍ¾ÃËÙ¶È + ÈÍĞÔÔö·ù);
+        {//æ¢å¤  
+            if (å›å¤åˆ°æ»¡) {
+                åŠ é€Ÿåº¦ += Time.deltaTime * (Initialize_Mono.I.æ•Œäººå›è€ä¹…é€Ÿåº¦ + éŸ§æ€§å¢å¹…);
             }   
 
-            if (ÈÍĞÔ_<0&& ÈÍĞÔ_+¼ÓËÙ¶È > 0)
+            if (éŸ§æ€§_<0&& éŸ§æ€§_+åŠ é€Ÿåº¦ > 0)
             {
-                »Ö¸´ÁË();
+                æ¢å¤äº†();
                 //return  1;
             }
 
-            ÈÍĞÔ_ += ¼ÓËÙ¶È * Time.deltaTime;
+            éŸ§æ€§_ += åŠ é€Ÿåº¦ * Time.deltaTime;
 
             //if (v==0) return -99;
-            if (ÈÍĞÔ_ > 0)
-            {  ///´óÓÚ  
-                ÆÆ·À = false;
+            if (éŸ§æ€§_ > 0)
+            {  ///å¤§äº  
+                ç ´é˜² = false;
                 if (v < 0)
                 {
-                    ///Ã»ÓĞÆÆ·ÀÔì³ÉÉËº¦  
+                    ///æ²¡æœ‰ç ´é˜²é€ æˆä¼¤å®³  
                     Hit(); 
                 }
             }
             else
-            {  ///ÈÍĞÔµÍÓÚ0ÁË 
+            {  ///éŸ§æ€§ä½äº0äº† 
                  
-                if (!ÆÆ·À)
+                if (!ç ´é˜²)
                 {
-                    »Ø¸´µ½Âú = true;
-                    /// »÷ÆÆÒ»Ë²¼ä 
-                    if (ÈÍĞÔ_>-160)
+                    å›å¤åˆ°æ»¡ = true;
+                    /// å‡»ç ´ä¸€ç¬é—´ 
+                    if (éŸ§æ€§_>-160)
                     {
-                        ÈÍĞÔ_ =-160;
+                        éŸ§æ€§_ =-160;
                     }
-                    ÉÏÌì(); 
+                    ä¸Šå¤©(); 
                 } 
-                ///Ğ¡ÓÚ
-                ÆÆ·À = true; 
+                ///å°äº
+                ç ´é˜² = true; 
                 if (v < 0)
                 { 
-                    ///ÆÆ·ÀºóÔì³ÉÉËº¦
-                    ´ò¶Ï();
+                    ///ç ´é˜²åé€ æˆä¼¤å®³
+                    æ‰“æ–­();
                     return -1;
                 }
             }
         }
         if (v != 0)
-            Debug.LogError("Ææ¹Ö£¬²»¿ÉÄÜ"+v);
+            Debug.LogError("å¥‡æ€ªï¼Œä¸å¯èƒ½"+v);
 
         return -99;
     }
 
-    public void àÃÆ¨()
+    public void å—å±()
     {
         yalaAudil.I.EffectsPlay("Die", gameObject. GetInstanceID());
 
         co.enabled = false;
-        ÉúÃü¹éÁã?.Invoke();
+        ç”Ÿå‘½å½’é›¶?.Invoke();
 
         HPROCK = true;
-        v?.SendEvent(Event_ËÀÍö);
+        v?.SendEvent(Event_æ­»äº¡);
         Initialize_Mono.I.Waite(
-            () => { Ïú»Ù´¥·¢?.Invoke();
+            () => { é”€æ¯è§¦å‘?.Invoke();
             }
             //, 0.8f
             );
     }
-    public System.Action A_ÆÆ·ÀÊÜ»÷;
-    public System.Action A_ÊÜ»÷;
-    public System.Action A_»Ö¸´;
-    public System.Action A_ÆÆ·À;
-    public virtual   void ÉÏÌì()
+    public System.Action A_ç ´é˜²å—å‡»;
+    public System.Action A_å—å‡»;
+    public System.Action A_æ¢å¤;
+    public System.Action A_ç ´é˜²;
+    public virtual   void ä¸Šå¤©()
     {
-        A_ÆÆ·À?.Invoke();
+        A_ç ´é˜²?.Invoke();
     }
-    public virtual void »Ö¸´ÁË()
+    public virtual void æ¢å¤äº†()
     {
-        A_»Ö¸´?.Invoke(); 
+        A_æ¢å¤?.Invoke(); 
     }
     public virtual void Hit()
     {
-        A_ÊÜ»÷?.Invoke();
-           v?.SendEvent(Event_ÊÜ»÷);
+        A_å—å‡»?.Invoke();
+           v?.SendEvent(Event_å—å‡»);
     }
-    public virtual void ´ò¶Ï()
+    public virtual void æ‰“æ–­()
     {
-        A_ÆÆ·ÀÊÜ»÷?.Invoke();
-        v?.SendEvent(Event_´ò¶Ï);
+        A_ç ´é˜²å—å‡»?.Invoke();
+        v?.SendEvent(Event_æ‰“æ–­);
     }
-    public static ÉúÎïÊı¾İ Get_ÉúÎïÊı¾İ(string s)
+    public static ç”Ÿç‰©æ•°æ® Get_ç”Ÿç‰©æ•°æ®(string s)
     {
 
-        return Resources.Load("ScriptableObject/ÉúÎï/" + s) as ÉúÎïÊı¾İ;
+        return Resources.Load("ScriptableObject/ç”Ÿç‰©/" + s) as ç”Ÿç‰©æ•°æ®;
     }
     [SerializeField]
     Vector2 BoomSpeed_;
     public Vector2 BoomSpeed { get => BoomSpeed_; set => BoomSpeed_ = value; }
 
     [SerializeField]
-    bool ¿ÕÆøÇ½Åö×²ÉèÖÃ1_=true;
+    bool ç©ºæ°”å¢™ç¢°æ’è®¾ç½®1_=true;
     /// <summary>
-    ///    Ö»¶Á
+    ///    åªè¯»
     /// </summary>
     [SerializeField]
     [DisplayOnly]
-    bool ¿ÕÆøÇ½Åö×²ÏÔÊ¾_; 
-    public bool ¿ÕÆøÇ½Åö×²
+    bool ç©ºæ°”å¢™ç¢°æ’æ˜¾ç¤º_; 
+    public bool ç©ºæ°”å¢™ç¢°æ’
     {
         get
         {
-            var b = !Initialize.Get_Åö×²(Initialize.L_Enemy, Initialize.L_Air_wall);
+            var b = !Initialize.Get_ç¢°æ’(Initialize.L_Enemy, Initialize.L_Air_wall);
             return b;
         }
         set
         {
 
-            Initialize.Set_Åö×²(Initialize.L_Enemy, Initialize.L_Air_wall, !value);
+            Initialize.Set_ç¢°æ’(Initialize.L_Enemy, Initialize.L_Air_wall, !value);
         }
     }
 
@@ -405,27 +406,27 @@ public  float MaxÈÍĞÔ;
     public static string idle { get => "idle"; }
     public static string dead { get => "dead"; }
     public static string hit { get => "hit"; }
-    public Á£×ÓÏµÍ³ Á£×ÓÏµÍ³;
-    public override System.Action ÉúÃü¹éÁã { get; set; }
-    public override System.Action ±»´ò { get; set; }
+    public ç²’å­ç³»ç»Ÿ ç²’å­ç³»ç»Ÿ;
+    public override System.Action ç”Ÿå‘½å½’é›¶ { get; set; }
+    public override System.Action è¢«æ‰“ { get; set; }
     public override float atkvalue { get => atkvalue_; set => atkvalue_ = value; }
-    public override float µ±Ç°hp { get => µ±Ç°hp_; set => µ±Ç°hp_ = value; }
+    public override float å½“å‰hp { get => å½“å‰hp_; set => å½“å‰hp_ = value; }
     public override float hpMax { get => hpMax_; set => hpMax_ = value; }
     public override bool HPROCK { get => HPROCK_; set => HPROCK_ = value; }
 
     [SerializeField]
-    float ÖØÁ¦Ôö·ù_;
-    public float ÖØÁ¦Ôö·ù { get => ÖØÁ¦Ôö·ù_; set => ÖØÁ¦Ôö·ù_ = value; }
+    float é‡åŠ›å¢å¹…_;
+    public float é‡åŠ›å¢å¹… { get => é‡åŠ›å¢å¹…_; set => é‡åŠ›å¢å¹…_ = value; }
     [SerializeField] float atkvalue_ = 10;
-    [SerializeField] float µ±Ç°hp_ = 100;
+    [SerializeField] float å½“å‰hp_ = 100;
     [SerializeField] float hpMax_ = 100;
     [SerializeField] bool HPROCK_;
-    [SerializeField] bool Áé»ê_ = true;
+    [SerializeField] bool çµé­‚_ = true;
 
 
     public string Name;
 
-    protected override bool Áé»ê { get => Áé»ê_; set => Áé»ê_ = value; }
+    protected override bool çµé­‚ { get => çµé­‚_; set => çµé­‚_ = value; }
 
     BehaviorTree v;
 
@@ -433,10 +434,10 @@ public  float MaxÈÍĞÔ;
     //public new Vector2 Velocity { get; set; }
     public new Vector2 Velocity { get { 
             if (p == null)return Vector2.zero;
-            return p.µ±Ç°; } set {
+            return p.å½“å‰; } set {
             if (p != null) 
             p.Velocity = value;  } }
-    public float ÒÆ¶¯¾àÀë
+    public float ç§»åŠ¨è·ç¦»
     {
         get
         {
@@ -458,13 +459,13 @@ public  float MaxÈÍĞÔ;
     }
     [SerializeField]
     [DisplayOnly]
-    float ÏÔÊ¾¶ÁÈ¡ºóË¢ĞÂ_Curttent_Speed_;
+    float æ˜¾ç¤ºè¯»å–ååˆ·æ–°_Curttent_Speed_;
 
     public void Play(string name)
     {
         an.Play(name);
     }
-    public ÉúÎïÊı¾İ m;
+    public ç”Ÿç‰©æ•°æ® m;
     public bool Add;
     MonoMager mo;
     protected override void Awake()
@@ -475,70 +476,70 @@ public  float MaxÈÍĞÔ;
             an = GetComponentInChildren<Animator>();
 
         base.Awake();
-        gameObject.×é¼ş(ref mo); 
+        gameObject.ç»„ä»¶(ref mo); 
         co = GetComponent<Collider2D>();
         p = GetComponent<Phy>();
 
         v = GetComponent<BehaviorTree>();
 
-        if (Á£×ÓÏµÍ³ == null)
-            Á£×ÓÏµÍ³ = GetComponentInChildren<Á£×ÓÏµÍ³>();
+        if (ç²’å­ç³»ç»Ÿ == null)
+            ç²’å­ç³»ç»Ÿ = GetComponentInChildren<ç²’å­ç³»ç»Ÿ>();
         if (Speed_Lv == 0) Speed_Lv = 1;
 
  
-        ¿ªÏä();
+        å¼€ç®±();
 
        GravityScale = 0;
-        //sp.material = ²ÄÖÊ¹ÜÀí.Get_Material(²ÄÖÊ¹ÜÀí.Other);
-        //±ßÔµÑÕÉ«¸üĞÂ();
+        //sp.material = æè´¨ç®¡ç†.Get_Material(æè´¨ç®¡ç†.Other);
+        //è¾¹ç¼˜é¢œè‰²æ›´æ–°();
         //Color .blue 
 
     }
     No_Re RR = new No_Re();
-    bool ³õÊ¼»¯;
-    void ¿ªÏä()
+    bool åˆå§‹åŒ–;
+    void å¼€ç®±()
     { 
         if (!RR.Note_Re()) return;  
-        m = Get_ÉúÎïÊı¾İ(Name);
+        m = Get_ç”Ÿç‰©æ•°æ®(Name);
         if (m != null)
         {
-            if (!³õÊ¼»¯)
+            if (!åˆå§‹åŒ–)
             {
                 if (Add)
                 {
-                    Move_speed += m.ÒÆ¶¯ËÙ¶È; 
-                    BoomSpeed += m.±¬·¢Á¦;
+                    Move_speed += m.ç§»åŠ¨é€Ÿåº¦; 
+                    BoomSpeed += m.çˆ†å‘åŠ›;
                     atkvalue += m.atkvalue;
                     hpMax += m.hpMax;
-                    MaxÈÍĞÔ = m.ÈÍĞÔ;
+                    MaxéŸ§æ€§ = m.éŸ§æ€§;
                 }
                 else
                 {
-                    Move_speed = m.ÒÆ¶¯ËÙ¶È;
+                    Move_speed = m.ç§»åŠ¨é€Ÿåº¦;
 
-                    BoomSpeed = m.±¬·¢Á¦;
+                    BoomSpeed = m.çˆ†å‘åŠ›;
                     atkvalue = m.atkvalue;
                     hpMax = m.hpMax;
-                    MaxÈÍĞÔ = m.ÈÍĞÔ;
+                    MaxéŸ§æ€§ = m.éŸ§æ€§;
                 }
             }
         }
-        µ±Ç°hp = hpMax; 
+        å½“å‰hp = hpMax; 
   
-        ÈÍĞÔ__ = MaxÈÍĞÔ;
+        éŸ§æ€§__ = MaxéŸ§æ€§;
 
         if (Debug_ ) 
-        Debug.LogError(MaxÈÍĞÔ+"                   AAAAAAA                                 "  +  ÈÍĞÔ__+gameObject.name);
+        Debug.LogError(MaxéŸ§æ€§+"                   AAAAAAA                                 "  +  éŸ§æ€§__+gameObject.name);
 
-        ³õÊ¼»¯ = true;
+        åˆå§‹åŒ– = true;
     }
 
     [SerializeField] [DisplayOnly]
-    bool ÏŞÖÆ_;
+    bool é™åˆ¶_;
     protected override void Update()
     {
   base.Update();
-        ÏŞÖÆ_ = I_S.ÏŞÖÆ;
+        é™åˆ¶_ = I_S.é™åˆ¶;
         if (Debug_)
         {
             if (v != null)
@@ -555,88 +556,88 @@ public  float MaxÈÍĞÔ;
             }
         }
 
-        if (!ÔİÍ£)
+        if (!æš‚åœ)
         { 
-            Ç°ºóºÍÍ·(0.1f, 0.1f);
+            å‰åå’Œå¤´(0.1f, 0.1f);
         }
 
-        ÈÍĞÔ(0);  
+        éŸ§æ€§(0);  
         if (!is_Dead)
         {
             if (p!=null) 
-            p.Stop = I_S.ÏŞÖÆ;
-            //co.enabled = !I_S.ÏŞÖÆ;
+            p.Stop = I_S.é™åˆ¶;
+            //co.enabled = !I_S.é™åˆ¶;
         }
 
-        if (I_S.ÏŞÖÆ || ÔİÍ£)
+        if (I_S.é™åˆ¶ || æš‚åœ)
         {
             an.speed = 0;
-            v?.DisableBehavior(true); ///ÔÚµ±Ç°½Úµã  Í£Ö¹ 
+            v?.DisableBehavior(true); ///åœ¨å½“å‰èŠ‚ç‚¹  åœæ­¢ 
         }
         else
         {
-            v?.EnableBehavior(); ///»Ö¸´
+            v?.EnableBehavior(); ///æ¢å¤
 
-            if (an!=null)   an.speed = I_S.¹Ì¶¨µÈ¼¶²î;
+            if (an!=null)   an.speed = I_S.å›ºå®šç­‰çº§å·®;
         }
 
  
-               //ÏÔÊ¾¶ÁÈ¡ºóË¢ĞÂ_Curttent_Speed_ = I_S.Curttent_Speed;
-               ÏÔÊ¾_Speed_ = I_S.¹Ì¶¨µÈ¼¶²î; 
+               //æ˜¾ç¤ºè¯»å–ååˆ·æ–°_Curttent_Speed_ = I_S.Curttent_Speed;
+               æ˜¾ç¤º_Speed_ = I_S.å›ºå®šç­‰çº§å·®; 
 
-        if (ÔİÍ£) return;
-        ¿ÕÆøÇ½Åö×² = ¿ÕÆøÇ½Åö×²ÉèÖÃ1_;
-        ¿ÕÆøÇ½Åö×²ÏÔÊ¾_ = ¿ÕÆøÇ½Åö×²;
+        if (æš‚åœ) return;
+        ç©ºæ°”å¢™ç¢°æ’ = ç©ºæ°”å¢™ç¢°æ’è®¾ç½®1_;
+        ç©ºæ°”å¢™ç¢°æ’æ˜¾ç¤º_ = ç©ºæ°”å¢™ç¢°æ’;
     }
     
 
-    Int²»ÖØ¸´ IIIIIIIB=new Int²»ÖØ¸´ ();
+    Intä¸é‡å¤ IIIIIIIB=new Intä¸é‡å¤ ();
 
-    public float ±»´òÊ±¼ä;
-    public override void ±»¿ÛÑª(float i, GameObject obj, int SKey=0)
+    public float è¢«æ‰“æ—¶é—´;
+    public override void è¢«æ‰£è¡€(float i, GameObject obj, int SKey=0)
     {
 
-        /// µ²×¡ÎŞÉË  Ã»µ²×¡  ±»¿ÛÑª  ¿ÛÑªÆÆ·À  »òÕß±»¿ÛÑ§ËÀµô   4ÖÖÇé¿ö
+        /// æŒ¡ä½æ— ä¼¤  æ²¡æŒ¡ä½  è¢«æ‰£è¡€  æ‰£è¡€ç ´é˜²  æˆ–è€…è¢«æ‰£å­¦æ­»æ‰   4ç§æƒ…å†µ
 
-        if (SKey == 0) SKey = Initialize.Get_Ëæ»úInt();
-        ///²»ÖØ¸´
+        if (SKey == 0) SKey = Initialize.Get_éšæœºInt();
+        ///ä¸é‡å¤
         if (!IIIIIIIB.Add(SKey)) return;
-        ///ÊÇÍæ¼Ò
+        ///æ˜¯ç©å®¶
         var BB = obj == Player3.I.gameObject; 
 
-        ///·ÀÓùÇé¿öÏÂÍæ¼ÒÊÕµ½·´×÷ÓÃÁ¦
+        ///é˜²å¾¡æƒ…å†µä¸‹ç©å®¶æ”¶åˆ°åä½œç”¨åŠ›
         if (HPROCK)
         {
-            if (BB) Player3.I.·´×÷ÓÃÁ¦(this, 0, Vector2.zero, Vector2.zero,
+            if (BB) Player3.I.åä½œç”¨åŠ›(this, 0, Vector2.zero, Vector2.zero,
                   Vector2.left * 0.5f, Vector2.left);
-            ÌØĞ§_pool_2.I.GetPool(gameObject, T_N.ÌØĞ§·ÀÓù, an.GetComponent<SpriteRenderer>());
+            ç‰¹æ•ˆ_pool_2.I.GetPool(gameObject, T_N.ç‰¹æ•ˆé˜²å¾¡, an.GetComponent<SpriteRenderer>());
             return;
         }
 
         yalaAudil.I.EffectsPlay("Hit", gameObject.GetInstanceID()); 
-        //¹²ÓÃÌØĞ§
-        sp.ÉÁ¹â(0.05f);
-        ///ÑªÁ¿¼ÆËã
-        if (ÆÆ·À)   µ±Ç°hp -= i;
-        //if (BB) Player3.I.·´×÷ÓÃÁ¦(this, 3, Vector2.left, Vector2.left * 0.5f, Vector2.left * 0.3f, Vector2.left * 0.1f);
-        ±»´òÊ±¼ä = Time.time;
+        //å…±ç”¨ç‰¹æ•ˆ
+        sp.é—ªå…‰(0.05f);
+        ///è¡€é‡è®¡ç®—
+        if (ç ´é˜²)   å½“å‰hp -= i;
+        //if (BB) Player3.I.åä½œç”¨åŠ›(this, 3, Vector2.left, Vector2.left * 0.5f, Vector2.left * 0.3f, Vector2.left * 0.1f);
+        è¢«æ‰“æ—¶é—´ = Time.time;
 
-        float ·´·½Ïò = Initialize.·µ»ØºÍ¶Ô·½Ïà·´·½ÏòµÄ±ê×¼Á¦(gameObject, obj).x;
-        if (µ±Ç°hp <= 0)
+        float åæ–¹å‘ = Initialize.è¿”å›å’Œå¯¹æ–¹ç›¸åæ–¹å‘çš„æ ‡å‡†åŠ›(gameObject, obj).x;
+        if (å½“å‰hp <= 0)
         { 
 
-            ///ÌØĞ§
-            Á£×ÓÏµÍ³?.restore();
-            Á£×ÓÏµÍ³?.Play(); 
+            ///ç‰¹æ•ˆ
+            ç²’å­ç³»ç»Ÿ?.restore();
+            ç²’å­ç³»ç»Ÿ?.Play(); 
 
-            ///ËÀÍö»÷·ÉÎ»ÒÆ
+            ///æ­»äº¡å‡»é£ä½ç§»
             float Y = Initialize.RandomInt(50, 100);
             float X = Initialize.RandomInt(7, 10);
-            Velocity = new Vector2(·´·½Ïò * X, Y);
+            Velocity = new Vector2(åæ–¹å‘ * X, Y);
 
-            ///½á¹û
+            ///ç»“æœ
    
-            àÃÆ¨(); 
+            å—å±(); 
         }
         else
         {
@@ -647,48 +648,48 @@ public  float MaxÈÍĞÔ;
                     Debug.LogError(i+ "            if (Debug_)      if (Debug_)      if (Debug_)    ");
                 }
             } 
-             ÈÍĞÔ(-i);
-            ///ÑªÒºÌØĞ§
-            if (Á£×ÓÏµÍ³!=null)
+             éŸ§æ€§(-i);
+            ///è¡€æ¶²ç‰¹æ•ˆ
+            if (ç²’å­ç³»ç»Ÿ!=null)
             {
-                //Á£×ÓÏµÍ³.transform.SetParent(null);
-                Á£×ÓÏµÍ³.ÊıÁ¿ = 3;
-                Á£×ÓÏµÍ³.ÅçÉä·½Ïò = new Vector2(·´·½Ïò, 0);
-                Á£×ÓÏµÍ³?.Play();
+                //ç²’å­ç³»ç»Ÿ.transform.SetParent(null);
+                ç²’å­ç³»ç»Ÿ.æ•°é‡ = 3;
+                ç²’å­ç³»ç»Ÿ.å–·å°„æ–¹å‘ = new Vector2(åæ–¹å‘, 0);
+                ç²’å­ç³»ç»Ÿ?.Play();
 
                  
             }
-            ///µ¶¹âÌØĞ§
-            ÌØĞ§_pool_2.I.GetPool(Bounds.center, T_N.ÌØĞ§ÊÜ»÷, ·´·½Ïò > 0, sp).Speed_Lv = Player3.Public_Const_Speed;
+            ///åˆ€å…‰ç‰¹æ•ˆ
+            ç‰¹æ•ˆ_pool_2.I.GetPool(Bounds.center, T_N.ç‰¹æ•ˆå—å‡», åæ–¹å‘ > 0, sp).Speed_Lv = Player3.Public_Const_Speed;
 
-            ///Î»ÒÆ 
-            if (¿ÛÑªÍâ²¿Á¦ != Vector2.zero)
+            ///ä½ç§» 
+            if (æ‰£è¡€å¤–éƒ¨åŠ› != Vector2.zero)
             {
                 p.Stop_Velo();
-                p.SafeVelocity = ¿ÛÑªÍâ²¿Á¦;
-                ¿ÛÑªÍâ²¿Á¦ = Vector2.zero;
+                p.SafeVelocity = æ‰£è¡€å¤–éƒ¨åŠ›;
+                æ‰£è¡€å¤–éƒ¨åŠ› = Vector2.zero;
             }
-            else if (!¸ùĞÔ) p.SafeVelocity = new Vector2(·´·½Ïò * 5, 0);
+            else if (!æ ¹æ€§) p.SafeVelocity = new Vector2(åæ–¹å‘ * 5, 0);
           
 
 
 
-            //Õğ¶¯
+            //éœ‡åŠ¨
             DG.Tweening.Sequence s = DOTween.Sequence();
             s.Append(sp.transform.DOShakePosition(0.2f, new Vector2(0.5f, 0), 33, 45f, false, false, ShakeRandomnessMode.Harmonic));
             s.AppendCallback(() => sp.transform.localPosition = Vector2.zero);
 
-            ±»´ò?.Invoke();
+            è¢«æ‰“?.Invoke();
 
             
         }
     }
 
-    public override LayerMask Åö×²¼ì²â²ã
+    public override LayerMask ç¢°æ’æ£€æµ‹å±‚
     {
         get
         {
-            if (¿ÕÆøÇ½Åö×²)
+            if (ç©ºæ°”å¢™ç¢°æ’)
             {
                 return 1 << Initialize.L_Ground | 1 << Initialize.L_Air_wall;
 
@@ -700,140 +701,156 @@ public  float MaxÈÍĞÔ;
         }
     }
 
-    public bool ÔİÍ£ { get => ÔİÍ£1; set {
+    public bool æš‚åœ { get => æš‚åœ1; set {
  
-          ÔİÍ£1 = value;
+          æš‚åœ1 = value;
         } }
 
-    public µØÃæÇé¿ö Ç°ÃæÓĞ¿Ó(float ¼ì²â×Ü¾àÀë, int ÊıÁ¿, float µÚÒ»¸ù¾àÀë, float Éî¶È)
+    public åœ°é¢æƒ…å†µ å‰é¢æœ‰å‘(float æ£€æµ‹æ€»è·ç¦», int æ•°é‡, float ç¬¬ä¸€æ ¹è·ç¦», float æ·±åº¦)
     {
-        float µ¥¸ö¾àÀë = ¼ì²â×Ü¾àÀë / (ÊıÁ¿ - 1);
+        float å•ä¸ªè·ç¦» = æ£€æµ‹æ€»è·ç¦» / (æ•°é‡ - 1);
         List<bool> boolList = new List<bool>();
 
-        // ±éÀú²¢·¢³öÉäÏß  
-        for (int i = 0; i < ÊıÁ¿; i++)
+        // éå†å¹¶å‘å‡ºå°„çº¿  
+        for (int i = 0; i < æ•°é‡; i++)
         {
-            // ¼ÆËãÉäÏßµÄË®Æ½Æ«ÒÆÁ¿  
-            float µ±Ç°Ôö³¤¾àÀë = µÚÒ»¸ù¾àÀë + i * µ¥¸ö¾àÀë;
-            Vector2 Ô­µã = new Vector2(ÕıÃæÍ·¶¥.x + (LocalScaleX_Set * µ±Ç°Ôö³¤¾àÀë), ÕıÃæÍ·¶¥.y);
-            Vector2 ·½Ïò = Vector2.down;
-            float ÉäÏß³¤¶È = Bounds.size.y + Éî¶È;
+            // è®¡ç®—å°„çº¿çš„æ°´å¹³åç§»é‡  
+            float å½“å‰å¢é•¿è·ç¦» = ç¬¬ä¸€æ ¹è·ç¦» + i * å•ä¸ªè·ç¦»;
+            Vector2 åŸç‚¹ = new Vector2(æ­£é¢å¤´é¡¶.x + (LocalScaleX_Set * å½“å‰å¢é•¿è·ç¦»), æ­£é¢å¤´é¡¶.y);
+            Vector2 æ–¹å‘ = Vector2.down;
+            float å°„çº¿é•¿åº¦ = Bounds.size.y + æ·±åº¦;
 
-            // ·¢ÉäÉäÏß²¢¼ì²âµØÃæ  
-            bool isGround = Physics2D.Raycast(Ô­µã, ·½Ïò, ÉäÏß³¤¶È, Åö×²¼ì²â²ã).collider == null;
+            // å‘å°„å°„çº¿å¹¶æ£€æµ‹åœ°é¢  
+            bool isGround = Physics2D.Raycast(åŸç‚¹, æ–¹å‘, å°„çº¿é•¿åº¦, ç¢°æ’æ£€æµ‹å±‚).collider == null;
             boolList.Add(isGround);
 #if UNITY_EDITOR
-            Debug.DrawRay(Ô­µã, ·½Ïò * ÉäÏß³¤¶È, Color.green, 0.01f);
+            Debug.DrawRay(åŸç‚¹, æ–¹å‘ * å°„çº¿é•¿åº¦, Color.green, 0.01f);
 #endif
         }
 
 
-        // ¼ì²éboolList²¢·µ»ØµØÃæÇé¿ö  
-        if (!boolList.Any()) // ¿ÕÁĞ±íÊ±Ã»ÓĞÔªËØ£¬·µ»ØÆ½µØ  
-            return µØÃæÇé¿ö.Æ½µØ;
+        // æ£€æŸ¥boolListå¹¶è¿”å›åœ°é¢æƒ…å†µ  
+        if (!boolList.Any()) // ç©ºåˆ—è¡¨æ—¶æ²¡æœ‰å…ƒç´ ï¼Œè¿”å›å¹³åœ°  
+            return åœ°é¢æƒ…å†µ.å¹³åœ°;
 
-        if (boolList.All(b => b)) // ËùÓĞÔªËØ¶¼ÊÇtrue£¨Êµ¼ÊÉÏÊÇÃ»ÓĞµØÃæ£©£¬·µ»Ø¿ç²»¹ıÈ¥  
-            return µØÃæÇé¿ö.¿ç²»¹ıÈ¥;
+        if (boolList.All(b => b)) // æ‰€æœ‰å…ƒç´ éƒ½æ˜¯trueï¼ˆå®é™…ä¸Šæ˜¯æ²¡æœ‰åœ°é¢ï¼‰ï¼Œè¿”å›è·¨ä¸è¿‡å»  
+            return åœ°é¢æƒ…å†µ.è·¨ä¸è¿‡å»;
 
-        // ¼ì²éÊÇ·ñ´æÔÚÖÁÉÙÒ»¸ötrue£¨Ã»ÓĞµØÃæ£©ºóÃæ¸ú×ÅÖÁÉÙÒ»¸öfalse£¨ÓĞµØÃæ£©µÄÇé¿ö£¬²¢·µ»ØÓĞ¿Ó  
+        // æ£€æŸ¥æ˜¯å¦å­˜åœ¨è‡³å°‘ä¸€ä¸ªtrueï¼ˆæ²¡æœ‰åœ°é¢ï¼‰åé¢è·Ÿç€è‡³å°‘ä¸€ä¸ªfalseï¼ˆæœ‰åœ°é¢ï¼‰çš„æƒ…å†µï¼Œå¹¶è¿”å›æœ‰å‘  
         if (boolList[0])
         {
             for (int i = 1; i < boolList.Count - 1; i++)
             {
                 if (!boolList[i])
                 {
-                    return µØÃæÇé¿ö.ÓĞ¿Ó;
+                    return åœ°é¢æƒ…å†µ.æœ‰å‘;
                 }
             }
         }
-        // Èç¹ûÃ»ÓĞÕÒµ½ĞèÒªÌøÔ¾µÄ¿Ó£¬Ôò·µ»ØÆ½µØ»òÎ´ÖªÇé¿ö  
-        // Èç¹ûËùÓĞÇé¿ö¶¼²»·ûºÏ£¬´òÓ¡´íÎó²¢·µ»ØÎ´ÖªÇé¿ö»òÆ½µØ  
-        return µØÃæÇé¿ö.Æ½µØ; // ÔİÊ±·µ»ØÆ½µØ£¬µ«Êµ¼ÊÇé¿ö¿ÉÄÜĞèÒª½øÒ»²½´¦Àí 
+        // å¦‚æœæ²¡æœ‰æ‰¾åˆ°éœ€è¦è·³è·ƒçš„å‘ï¼Œåˆ™è¿”å›å¹³åœ°æˆ–æœªçŸ¥æƒ…å†µ  
+        // å¦‚æœæ‰€æœ‰æƒ…å†µéƒ½ä¸ç¬¦åˆï¼Œæ‰“å°é”™è¯¯å¹¶è¿”å›æœªçŸ¥æƒ…å†µæˆ–å¹³åœ°  
+        return åœ°é¢æƒ…å†µ.å¹³åœ°; // æš‚æ—¶è¿”å›å¹³åœ°ï¼Œä½†å®é™…æƒ…å†µå¯èƒ½éœ€è¦è¿›ä¸€æ­¥å¤„ç† 
     }
 
  
     [DisableOnPlay]
     [SerializeField ]
-    private bool ÔİÍ£1;
+    private bool æš‚åœ1;
 
 }
 
 public partial class Enemy_base : I_Dead, I_Revive
 {
  
-    public Bounds ºĞ×Ó => co.bounds;
+    public Bounds ç›’å­ => co.bounds;
 
     [SerializeField]
     [DisableOnPlay]
     private bool re_ = true;
     public bool Re { get => re_; set => re_ = value; }
     public float Re_Time { get; set; } = 0;
-    public System.Action Ïú»Ù´¥·¢ { get; set; }
+    public System.Action é”€æ¯è§¦å‘ { get; set; }
 
     [SerializeField]
     Vector2 StartWay;
     private void Start()
     {
-        Start³¯Ïò = LocalScaleX_Set;
+        Startæœå‘ = LocalScaleX_Set;
         StartWay = transform.position;
 
         StartWay.DraClirl(5, Color.blue, 20);
-        if (MaxÈÍĞÔ==0)
+        if (MaxéŸ§æ€§==0)
         {
-            MaxÈÍĞÔ = 2;
+            MaxéŸ§æ€§ = 2;
         }
     }
-    [UnityEngine.Tooltip(" ËÀÍöÊ±ºò¹Ø±Õ  ¸´»îÊ±ºò¿ªÆôµÄ×é¼ş¡¡")]
+    [UnityEngine.Tooltip(" æ­»äº¡æ—¶å€™å…³é—­  å¤æ´»æ—¶å€™å¼€å¯çš„ç»„ä»¶ã€€")]
     [SerializeField]
-    List<Component> ×é¼şÁĞ±í;
+    List<Component> ç»„ä»¶åˆ—è¡¨;
 
     public bool is_Dead;
     public bool Dead()
     {
         if (Debug_) Debug.LogError("  Dead() Dead() Dead() Dead() " + gameObject.name + transform.position);
         is_Dead = true;
-        ×é¼şÁĞ±í.¼¯Ìå¿ª¹Ø(false);
+        ç»„ä»¶åˆ—è¡¨.é›†ä½“å¼€å…³(false);
         v?.DisableBehavior(true);
         return true;
 
     }
-    float Start³¯Ïò;
+    float Startæœå‘;
  
 
-    public void Event_ÖØÖÆ()
+    public void Event_é‡åˆ¶()
     {
-        var a = ÖØÖÆ();
+        var a = é‡åˆ¶();
     }
-    
 
-    public bool ÖØÖÆ()
+
+    public static bool waittime_EnableBehavior = false;
+
+    public bool é‡åˆ¶()
     {
  
-           if (Debug_) Debug.LogError(" ÖØÖÆ() ÖØÖÆ() ÖØÖÆ() ÖØÖÆ() ÖØÖÆ() ");
+           if (Debug_) Debug.LogError(" é‡åˆ¶() é‡åˆ¶() é‡åˆ¶() é‡åˆ¶() é‡åˆ¶() ");
         if (p != null) p.Stop_Velo();
-        E_ÖØÖÆ?.Invoke();
-       v?.EnableBehavior(); ///»Ö¸´
+        E_é‡åˆ¶?.Invoke();
 
- 
+        UniTask.Create(async () =>
+        {
+            await UniTask.WaitUntil(() => waittime_EnableBehavior == false);
+            waittime_EnableBehavior = true;
+            try
+            {
+                v?.EnableBehavior(); ///æ¢å¤
+            }
+            catch {}
+            for (int i = 0; i < 10; i++)
+                await UniTask.Yield(PlayerLoopTiming.Update);
+            waittime_EnableBehavior = false;
+        }).Forget();
+       
+
+
         an.TryPlay(idle);
-        HPROCK = false; //ºÍËÀÍö×´Ì¬Ïà¶ÔÓ¦
+        HPROCK = false; //å’Œæ­»äº¡çŠ¶æ€ç›¸å¯¹åº”
         is_Dead = false;
-        ¿ªÏä();
-        ×é¼şÁĞ±í.¼¯Ìå¿ª¹Ø(true);
-        LocalScaleX_Set = Start³¯Ïò;
+        å¼€ç®±();
+        ç»„ä»¶åˆ—è¡¨.é›†ä½“å¼€å…³(true);
+        LocalScaleX_Set = Startæœå‘;
         transform.position = StartWay;
         if (Debug_) ((Vector2)transform.position).DraClirl(5, Color.red, 90);
 
         return true;
     }
-   public  System.Action E_ÖØÖÆ;
+   public  System.Action E_é‡åˆ¶;
 }
 
-public class Int²»ÖØ¸´
+public class Intä¸é‡å¤
 {
-    List<int> ÁĞ±í=new List<int> ();
+    List<int> åˆ—è¡¨=new List<int> ();
     /// <summary>
-    ///  Èç¹ûÖØ¸´·µ»Øfalse
+    ///  å¦‚æœé‡å¤è¿”å›false
     /// </summary>
     /// <param name="i"></param>
     /// <param name="de"></param>
@@ -841,12 +858,12 @@ public class Int²»ÖØ¸´
     public bool Add(int i,bool de=false)
     {
     if(de)    Debug.LogError(i);
-        if (!ÁĞ±í.Contains (i))
+        if (!åˆ—è¡¨.Contains (i))
         {
-            ÁĞ±í.Add(i);
-            if (ÁĞ±í.Count >1000)
+            åˆ—è¡¨.Add(i);
+            if (åˆ—è¡¨.Count >1000)
             {
-                ÁĞ±í.Clear();
+                åˆ—è¡¨.Clear();
             }
             return true;
         }

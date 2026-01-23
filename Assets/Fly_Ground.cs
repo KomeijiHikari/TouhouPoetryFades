@@ -1,17 +1,17 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
-public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_¹¥»÷, I_ReturnPool, I_Dead 
+public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_æ”»å‡», I_ReturnPool, I_Dead 
 {
 
-    public bool ²»ÏÂÂä = false;
-    public GameObject ¶ÔÏó { get => gameObject; }
+    public bool ä¸ä¸‹è½ = false;
+    public GameObject å¯¹è±¡ { get => gameObject; }
     public string Pool_Key_name { get  ; set  ; }
-    public System.Action ±äËÙ´¥·¢ { get; set; }
+    public System.Action å˜é€Ÿè§¦å‘ { get; set; }
     public I_Speed_Change I_S { get => (I_Speed_Change)this; }
     public float Current_Speed_LV { get => Speed_Lv_; }
     public BoxCollider2D get_bc()
@@ -21,7 +21,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_¹¥»÷, I_ReturnPool, I
     BoxCollider2D bc;
     Animator an;
     public SpriteRenderer sp;
-    //Åö×²ÉËº¦ p;
+    //ç¢°æ’ä¼¤å®³ p;
     [SerializeField]
     float Speed_Lv_ = 1;
     public float Speed_Lv { get => Speed_Lv_; set => Speed_Lv_ = value; }
@@ -29,12 +29,12 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_¹¥»÷, I_ReturnPool, I
 
     public float self_speed { get => self_speed1; set => self_speed1 = value; }
     [SerializeField]
-    Vector2 ·½Ïò_;
+    Vector2 æ–¹å‘_;
 
     float tim { get; set; }
 
    
-    bool ÊÇÎÒ;
+    bool æ˜¯æˆ‘;
 
      private void OnTriggerStay2D(Collider2D collision)
     {
@@ -46,45 +46,45 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_¹¥»÷, I_ReturnPool, I
         {
             Debug.LogError(LayerMask.LayerToName(collision.gameObject.layer) + "      AAAAAAA ");
 
-            ÒıÏß±¬Õ¨(collision);
+            å¼•çº¿çˆ†ç‚¸(collision);
         } 
 
     }
     private void OnCollisionEnter2D(Collision2D co)
     {
-        //¿ª»Ù();
+        //å¼€æ¯();
         //return;
-        ///³¬ËÙ¾ÍÈÃÍæ¼ÒËÀ 
-        ///Õı³£¾ÍÕı³£Åª³ö¿ÉÒÔÅÀÉÏÈ¥µÄÂ·£¨²»¿ÉÒÔµ¥ÈËÂ·
+        ///è¶…é€Ÿå°±è®©ç©å®¶æ­» 
+        ///æ­£å¸¸å°±æ­£å¸¸å¼„å‡ºå¯ä»¥çˆ¬ä¸Šå»çš„è·¯ï¼ˆä¸å¯ä»¥å•äººè·¯
         //if (co.gameObject.layer.)
         //{
 
         //}
         //Initialize.Layer_is(co.gameObject.layer,Currrtten);
-        //bool B = ((1 << co.gameObject.layer) & Currrtten.value) > 0;// ºÎÒâÎ¹
-        //if (Time.realtimeSinceStartup - tim < 0.5f) return; // ºÎÒâÎ¹¸Õ³õÊ¼»¯¾Í·¢ÉúÅö×²?
+        //bool B = ((1 << co.gameObject.layer) & Currrtten.value) > 0;// ä½•æ„å–‚
+        //if (Time.realtimeSinceStartup - tim < 0.5f) return; // ä½•æ„å–‚åˆšåˆå§‹åŒ–å°±å‘ç”Ÿç¢°æ’?
 
-        if(ÎŞÊÓ) if (ÎŞÊÓºĞ×Ó.Contains(transform.position)) return;
+        if(æ— è§†) if (æ— è§†ç›’å­.Contains(transform.position)) return;
   
 
         if (co.collider.CompareTag (Initialize.Player))
         {
-            bool Åöµ½µÄÊÇÉÏÃæ = Initialize.Vector2Int±È½Ï(co.contacts[0].normal, Vector2.down);
+            bool ç¢°åˆ°çš„æ˜¯ä¸Šé¢ = Initialize.Vector2Intæ¯”è¾ƒ(co.contacts[0].normal, Vector2.down);
 
-            if (!Ğı×ª1)
+            if (!æ—‹è½¬1)
             {
-                ÊÇÎÒ = true;
+                æ˜¯æˆ‘ = true;
                 Player3.I.ChangeFather(transform);
             }
 
-            if (²»ÏÂÂä) return;
-            if (Åöµ½µÄÊÇÉÏÃæ)
+            if (ä¸ä¸‹è½) return;
+            if (ç¢°åˆ°çš„æ˜¯ä¸Šé¢)
             {
-                TTime1 = Initialize_Mono.I.F_Time_²ÈÉÏÈ¥×Ô±¬µÄÊ±¼ä; 
-                ·½Ïò = new Vector2(·½Ïò.x, -1);
-                ÊÇÍæ¼Ò¸ÁµÄ = true; 
+                TTime1 = Initialize_Mono.I.F_Time_è¸©ä¸Šå»è‡ªçˆ†çš„æ—¶é—´; 
+                æ–¹å‘ = new Vector2(æ–¹å‘.x, -1);
+                æ˜¯ç©å®¶å™¶çš„ = true; 
 
-                ¿ª»Ù();
+                å¼€æ¯();
                  
             }
 
@@ -94,13 +94,13 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_¹¥»÷, I_ReturnPool, I
         {
             Debug.LogError("        OnCollisionEnter2D(Collision2D co)OnCollisionEnter2D(Collision2D co)           ");
 
-            ¿ª»Ù(); 
+            å¼€æ¯(); 
         }
     }
-    public bool ÊÇÍæ¼Ò¸ÁµÄ;
+    public bool æ˜¯ç©å®¶å™¶çš„;
     private void OnDisable()
     {
-        if (ÊÇÎÒ)
+        if (æ˜¯æˆ‘)
         {
             if (Player3.I!=null)
             {
@@ -113,88 +113,88 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_¹¥»÷, I_ReturnPool, I
     {
         if (co.gameObject.layer == Initialize.L_Player)
         {
-            ÊÇÎÒ=false;
+            æ˜¯æˆ‘=false;
             Player3.I.ChangeFather();
         }
     }
  
-    public Vector2 ·½Ïò
+    public Vector2 æ–¹å‘
     {
         get
         {
-            return ·½Ïò_;
+            return æ–¹å‘_;
         }
         set
         {
 
-            if (·½Ïò_ != value)
+            if (æ–¹å‘_ != value)
             {
-                ·½Ïò_ = value;
+                æ–¹å‘_ = value;
             }
         }
     }
     [SerializeField]
     float atkvalue_;
     public float atkvalue { get => atkvalue_; set => atkvalue_ = value; }
-    public Action Ïú»Ù´¥·¢ { get; set; }
+    public Action é”€æ¯è§¦å‘ { get; set; }
 
-    public Bounds ºĞ×Ó { get {
-            if (ÊÇSP¶ø²»ÊÇBC)
+    public Bounds ç›’å­ { get {
+            if (æ˜¯SPè€Œä¸æ˜¯BC)
             {
                 return sp.bounds;
             }
             return bc.bounds;
             
         } }
-    public bool ÊÇSP¶ø²»ÊÇBC=true;
-    public bool ¿ÉÒÔĞı×ª;
-    public bool ±¬Õ¨ËÍ×ßz = false;
-    public  bool  ±¬Õ¨ÉËº¦=true;
-    public bool ´¥·¢±ù¿é = true; 
-    public bool ¼ıÍ·ÉËº¦ = true;
-    private bool Ô­Åú´¥·¢=false;
+    public bool æ˜¯SPè€Œä¸æ˜¯BC=true;
+    public bool å¯ä»¥æ—‹è½¬;
+    public bool çˆ†ç‚¸é€èµ°z = false;
+    public  bool  çˆ†ç‚¸ä¼¤å®³=true;
+    public bool è§¦å‘å†°å— = true; 
+    public bool ç®­å¤´ä¼¤å®³ = true;
+    private bool åŸæ‰¹è§¦å‘=false;
 
-    public bool ÎŞÊÓ=false;
-    public Bounds ÎŞÊÓºĞ×Ó=default;
+    public bool æ— è§†=false;
+    public Bounds æ— è§†ç›’å­=default;
     private void Awake()
     {
-        if (sp == null) Initialize.×é¼ş(gameObject, ref sp);
+        if (sp == null) Initialize.ç»„ä»¶(gameObject, ref sp);
 
-        Initialize.×é¼ş(gameObject, ref an);
-        Initialize.×é¼ş(gameObject, ref bc);
+        Initialize.ç»„ä»¶(gameObject, ref an);
+        Initialize.ç»„ä»¶(gameObject, ref bc);
         gameObject.layer = Initialize.L_M_Ground;
 
-        //±äËÙ´¥·¢ += () => { sp.ÉÁ¹â(0.02f); }; 
+        //å˜é€Ÿè§¦å‘ += () => { sp.é—ªå…‰(0.02f); }; 
 
-        if (Ô­Åú´¥·¢) Player3.I.Ô²Õ¶¶ÔÏó += asd;
+        if (åŸæ‰¹è§¦å‘) Player3.I.åœ†æ–©å¯¹è±¡ += asd;
 
         Start(); 
 }
     void asd(int i)
     {
-        if (i == gameObject.GetInstanceID())  ¿ª»Ù(); 
+        if (i == gameObject.GetInstanceID())  å¼€æ¯(); 
     }
     //float Selllf_Speed = 2;
-    public void ³õÊ¼»¯(Vector2 ·½Ïò, Vector2 Î»ÖÃ, float SpeedLv = 1, float atkv = 1)
+    public void åˆå§‹åŒ–(Vector2 æ–¹å‘, Vector2 ä½ç½®, float SpeedLv = 1, float atkv = 1)
     {
 
         tim = Time.realtimeSinceStartup;
         //atkvalue = atkv;
-        transform.position = Î»ÖÃ;
+        transform.position = ä½ç½®;
         //self_speed = Selllf_Speed;
-        this.·½Ïò = ·½Ïò;
+        this.æ–¹å‘ = æ–¹å‘;
         Speed_Lv = SpeedLv;
     }
     /// <summary>
-    ///   Ä¬ÈÏÈ«¾Ö×ø±êfase
+    ///   é»˜è®¤å…¨å±€åæ ‡fase
     /// </summary>
     /// <param name="direction"></param>
-    /// <param name="×ø±ê"></param>
+    /// <param name="åæ ‡"></param>
     /// <returns></returns>
-    public Vector2 GetEdgeCenter(Vector2 direction, bool ×ø±ê = false)
+    public Vector2 GetEdgeCenter(Vector2 direction, bool åæ ‡ = false)
     {
-        Vector2 center = Vector2.zero;// BoundsµÄÖĞĞÄµã  
-        if (!×ø±ê)
+        Vector2 center = Vector2.zero;// Boundsçš„ä¸­å¿ƒç‚¹  
+        if (!åæ ‡)
         {
             center = bc.bounds.center;
         }
@@ -203,7 +203,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_¹¥»÷, I_ReturnPool, I
             center = Vector2.zero;
         }
 
-        Vector2 extents = bc.bounds.extents; // BoundsµÄ´óĞ¡µÄÒ»°ë   
+        Vector2 extents = bc.bounds.extents; // Boundsçš„å¤§å°çš„ä¸€åŠ   
         if (direction == Vector2.right)
         {
             return new Vector2(center.x + extents.x, center.y);
@@ -231,34 +231,34 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_¹¥»÷, I_ReturnPool, I
     [DisplayOnly]
     public LayerMask Currrtten;
     [SerializeField]
-    bool Ïú»Ù_;
-    public bool Ïú»Ù
+    bool é”€æ¯_;
+    public bool é”€æ¯
     {
-        get => Ïú»Ù_;
+        get => é”€æ¯_;
         set
         {
             if ( value)
             {
                 if (Debul)
                 {
-                    Debug.LogError("         public bool Ïú»Ù    public bool Ïú»Ù      AAA");
+                    Debug.LogError("         public bool é”€æ¯    public bool é”€æ¯      AAA");
                 }
 
             }
-            Ïú»Ù_ = value;
+            é”€æ¯_ = value;
         }
     }
 
 
-    public bool ÔİÍ£ { get => ÔİÍ£1; set => ÔİÍ£1 = value; }
+    public bool æš‚åœ { get => æš‚åœ1; set => æš‚åœ1 = value; }
     
     
     /// <summary>
-    /// Î¢ÃîµÄ ¶àÖÖ²»Í¬»ÙÃğÇé¿öÏÂ¶àÖÖÊ±¼ä
-    /// Åöµ½ Ç½±Ú
-    /// ºÍÍæ¼ÒÒıÏß±¬Õ¨  ºÍÍæ¼Ò¼ıÍ·
-    /// ¼ıÍ·Ã»ÓĞ¹¥»÷Ê±ºò ´ÓÉÏÍùÏÂ²»·¢Éú ²È·¢Éú
-    /// ¼ıÍ·ÓĞµÄÊ±ºò ·Ö¼ıÍ·Ê±¼ä ²ÈÊ±¼ä
+    /// å¾®å¦™çš„ å¤šç§ä¸åŒæ¯ç­æƒ…å†µä¸‹å¤šç§æ—¶é—´
+    /// ç¢°åˆ° å¢™å£
+    /// å’Œç©å®¶å¼•çº¿çˆ†ç‚¸  å’Œç©å®¶ç®­å¤´
+    /// ç®­å¤´æ²¡æœ‰æ”»å‡»æ—¶å€™ ä»ä¸Šå¾€ä¸‹ä¸å‘ç”Ÿ è¸©å‘ç”Ÿ
+    /// ç®­å¤´æœ‰çš„æ—¶å€™ åˆ†ç®­å¤´æ—¶é—´ è¸©æ—¶é—´
     /// </summary>
     public float TTime1 { get => TTime;private set { 
                 if (TTime!=value)
@@ -273,17 +273,17 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_¹¥»÷, I_ReturnPool, I
               
        
         } }
-    public bool Ğı×ª1 { get => Ğı×ª; set => Ğı×ª = value; }
+    public bool æ—‹è½¬1 { get => æ—‹è½¬; set => æ—‹è½¬ = value; }
 
-    [Obsolete("¸Ã·½·¨ÒÑ¹ıÊ± ")]
-    public void ·´×÷ÓÃÁ¦(int i)
+    [Obsolete("è¯¥æ–¹æ³•å·²è¿‡æ—¶ ")]
+    public void åä½œç”¨åŠ›(int i)
     { 
-        transform.position -= (Vector3)·½Ïò.normalized * Ö¡ÒÆ¶¯¾àÀë * i;
+        transform.position -= (Vector3)æ–¹å‘.normalized * å¸§ç§»åŠ¨è·ç¦» * i;
     }
-    void ÒıÏß±¬Õ¨(Collider2D c)
+    void å¼•çº¿çˆ†ç‚¸(Collider2D c)
     {
 
-if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)                " + c.gameObject.name);
+if(Debul)         Debug.LogError("    void å¼•çº¿çˆ†ç‚¸(Collider2D c)                " + c.gameObject.name);
             if (Time.realtimeSinceStartup - WakeTime < 0.2f) return;
         if (Player3.I.transform.parent == gameObject.transform)
         {
@@ -291,10 +291,10 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
                Player3.I.ChangeFather();
         }
 
-        if(!¼ıÍ·ÉËº¦)
+        if(!ç®­å¤´ä¼¤å®³)
         {
-            bool ·½ÏòÊÇÉÏÏÂ = (·½Ïò.v2_To·½Ïò() == E_·½Ïò.ÉÏ || ·½Ïò.v2_To·½Ïò() == E_·½Ïò.ÏÂ);
-            if (·½ÏòÊÇÉÏÏÂ)
+            bool æ–¹å‘æ˜¯ä¸Šä¸‹ = (æ–¹å‘.v2_Toæ–¹å‘() == E_æ–¹å‘.ä¸Š || æ–¹å‘.v2_Toæ–¹å‘() == E_æ–¹å‘.ä¸‹);
+            if (æ–¹å‘æ˜¯ä¸Šä¸‹)
             {
                 if (c.gameObject.layer == Initialize.L_Player)
                 {
@@ -303,18 +303,18 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
             }
         }
 
-        ¿ª»Ù();
+        å¼€æ¯();
 
-        if (!c.TryGetComponent<±»´òÏûÊ§>(out var bb)     )
+        if (!c.TryGetComponent<è¢«æ‰“æ¶ˆå¤±>(out var bb)     )
         {
 
-            if (c.gameObject == Boss.Ä§ÀíÉ³.I.gameObject && Boss.Ä§ÀíÉ³.I.TÉ¨°Ñ == gameObject.transform)
-            Event_M.I.Invoke(Event_M.É¨°Ñ´òµ½ÁË, c.gameObject);
+            if (c.gameObject == Boss.é­”ç†æ²™.I.gameObject && Boss.é­”ç†æ²™.I.Tæ‰«æŠŠ == gameObject.transform)
+            Event_M.I.Invoke(Event_M.æ‰«æŠŠæ‰“åˆ°äº†, c.gameObject);
        
 
 
-            if (¼ıÍ·ÉËº¦) if (atkvalue != 0) if (c.TryGetComponent<I_ÉúÃü>(out var sm))
-              sm.±»¿ÛÑª(atkvalue, gameObject, Initialize.Get_Ëæ»úInt());
+            if (ç®­å¤´ä¼¤å®³) if (atkvalue != 0) if (c.TryGetComponent<I_ç”Ÿå‘½>(out var sm))
+              sm.è¢«æ‰£è¡€(atkvalue, gameObject, Initialize.Get_éšæœºInt());
 
  
         }
@@ -331,67 +331,67 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
 
 
     [Obsolete ]
-    public bool ÔË¶¯ÔİÍ£;
+    public bool è¿åŠ¨æš‚åœ;
 
-    bool Ğı×ª;
+    bool æ—‹è½¬;
 
 
     [SerializeField]
-    float ÖØÁ¦¼ÓËÙ¶È³Ë= 0.022f;
-    Vector2 Ä£ÄâËÙ¶È_;
+    float é‡åŠ›åŠ é€Ÿåº¦ä¹˜= 0.022f;
+    Vector2 æ¨¡æ‹Ÿé€Ÿåº¦_;
     [SerializeField]
-   Vector2 Ä£ÄâËÙ¶È=new Vector2 (0,4f);
-    public void Ğı×ª´¥·¢(int I)
+   Vector2 æ¨¡æ‹Ÿé€Ÿåº¦=new Vector2 (0,4f);
+    public void æ—‹è½¬è§¦å‘(int I)
     { 
         if (I == -1)
         {
-            Debug.LogError("Ô²È¦  Ô²È¦    Ô²È¦   Ô²È¦   Ô²È¦aaaaaaaaaaaaaaaÔ²    È¦");
-            ÌØĞ§_pool_2.I.GetPool(transform.position, T_N.ÌØĞ§´ó±¬Õ¨).Speed_Lv=Speed_Lv;
-            Ğı×ª1 = false;
-                ÔİÍ£ = false;
-                Ïú»Ù = false;
-                ·½Ïò = Vector2.down;
+            Debug.LogError("åœ†åœˆ  åœ†åœˆ    åœ†åœˆ   åœ†åœˆ   åœ†åœˆaaaaaaaaaaaaaaaåœ†    åœˆ");
+            ç‰¹æ•ˆ_pool_2.I.GetPool(transform.position, T_N.ç‰¹æ•ˆå¤§çˆ†ç‚¸).Speed_Lv=Speed_Lv;
+            æ—‹è½¬1 = false;
+                æš‚åœ = false;
+                é”€æ¯ = false;
+                æ–¹å‘ = Vector2.down;
                 transform.rotation = Quaternion.Euler(0, 0, 90);
             }
             else if (I == 1)
         {
-            ÌØĞ§_pool_2.I.GetPool(transform.position, T_N.ÌØĞ§´ó±¬Õ¨).Speed_Lv = Speed_Lv;
-            Ğı×ª1 = false;
-                ÔİÍ£ = false;
-                Ïú»Ù = false;
-                ·½Ïò = Vector2.up;
+            ç‰¹æ•ˆ_pool_2.I.GetPool(transform.position, T_N.ç‰¹æ•ˆå¤§çˆ†ç‚¸).Speed_Lv = Speed_Lv;
+            æ—‹è½¬1 = false;
+                æš‚åœ = false;
+                é”€æ¯ = false;
+                æ–¹å‘ = Vector2.up;
                 transform.rotation = Quaternion.Euler(0, 0, -90);
         }
         else if (I == 0)
         {
  
-                if (!Ğı×ª1)
+                if (!æ—‹è½¬1)
             {
  
-                Ğı×ª1 = true;
-                ÔİÍ£ = true;
-                Ïú»Ù = false;
-                ·½Ïò = Vector2.up;
-                Ä£ÄâËÙ¶È_ = Ä£ÄâËÙ¶È;
+                æ—‹è½¬1 = true;
+                æš‚åœ = true;
+                é”€æ¯ = false;
+                æ–¹å‘ = Vector2.up;
+                æ¨¡æ‹Ÿé€Ÿåº¦_ = æ¨¡æ‹Ÿé€Ÿåº¦;
             }
             else
             {
-                if (!Player3.I.N_.¼ıÊ¸µ¯·´)   return  ;
+                if (!Player3.I.N_.ç®­çŸ¢å¼¹å)   return  ;
             
-                ÌØĞ§_pool_2.I.GetPool(transform.position, T_N.ÌØĞ§´ó±¬Õ¨).Speed_Lv = Speed_Lv;
-                Ğı×ª1 = false;
-                ÔİÍ£ = false;
-                Ïú»Ù = false;
-                ·½Ïò = new Vector2(Player3.I.LocalScaleX_Set, 0);
+                ç‰¹æ•ˆ_pool_2.I.GetPool(transform.position, T_N.ç‰¹æ•ˆå¤§çˆ†ç‚¸).Speed_Lv = Speed_Lv;
+                æ—‹è½¬1 = false;
+                æš‚åœ = false;
+                é”€æ¯ = false;
+                æ–¹å‘ = new Vector2(Player3.I.LocalScaleX_Set, 0);
                 transform.rotation = Quaternion.Euler(0, 0, 0);
             }
 
         } 
     }
 
-    bool ²»»áÅö×²ÏûÊ§;
+    bool ä¸ä¼šç¢°æ’æ¶ˆå¤±;
     private static readonly RaycastHit2D[] s_hitBuffer = new RaycastHit2D[8];
-    ///·µ»ØÏà¶ÔµÄv2 ²îÖµ
+    ///è¿”å›ç›¸å¯¹çš„v2 å·®å€¼
     Vector2 aaaa(Vector2 po,Vector2 value)
     {
 
@@ -403,11 +403,11 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
         {
             return new Vector2(0, po.y-value.y );
         }
-        Debug.LogError("Õâ²»¶Ô°Ñ°¡¹ş°¡¹ş" + gameObject.name + transform.position);
+        Debug.LogError("è¿™ä¸å¯¹æŠŠå•Šå“ˆå•Šå“ˆ" + gameObject.name + transform.position);
         return Vector2.zero;
     }
     /// <summary>
-    /// ¸ù¾İ·½ÏòÌŞ³ı  v2·ÖÁ¿
+    /// æ ¹æ®æ–¹å‘å‰”é™¤  v2åˆ†é‡
     /// </summary>
     /// <param name="way"></param>
     /// <param name="valu"></param>
@@ -424,87 +424,151 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
         {
             return new Vector2(valu.x,0);
         }
-        Debug.LogError("Õâ²»¶Ô°Ñ°¡¹ş°¡¹ş"+gameObject.name+transform.position);
+        Debug.LogError("è¿™ä¸å¯¹æŠŠå•Šå“ˆå•Šå“ˆ"+gameObject.name+transform.position);
         return Vector2.zero;
     }
-    public bool ÓÃFlyÏŞÖÆ;
+    public bool ç”¨Flyé™åˆ¶;
 
+    //private void UUpdate()
+    //{
+    //    if (æ–¹å‘ == Vector2.zero) return;
+    //    if (!gameObject.activeSelf) return;
+    //    lookme = I_S.å›ºå®šç­‰çº§å·® * self_speed;
+    //    //if (I_S.å›ºå®šç­‰çº§å·®>I_S.c) return;
+
+    //    if (Debul)
+    //    {
+    //        Debug.LogError(lookme + "lookme");
+    //    }
+    //    if (ç”¨Flyé™åˆ¶)
+    //    {
+    //        lookme = Initialize_Mono.I.Mi.GetFlyGMin(lookme);
+    //    }
+    //    else
+    //    {
+    //        lookme = Initialize_Mono.I.Mi.GetMin(lookme);
+    //    }
+
+    //    if (Debul)
+    //    {
+    //        Debug.LogError(lookme + "lookme___åé¢");
+    //    }
+    //    // ç¼“å­˜å±€éƒ¨å˜é‡ 
+    //    é”€æ¯å€’è®¡æ—¶();
+
+    //    var a = æ— è§† && æ— è§†ç›’å­.Contains(transform.position);
+    //    //if(Debul)     Debug.LogError(a +"    "+ æ— è§†ç›’å­.size);
+
+
+
+    //    if (!a) ç®­å¤´();
+    //    if (æ–¹å‘.x != 0)
+    //    {
+    //        var ls = sp.transform.localScale;
+    //        sp.transform.localScale = new Vector3(æ–¹å‘.x, ls.y, 1);
+    //    }
+
+    //    // åªè·å–ä¸€æ¬¡è¾¹ç•Œç‚¹é›†åˆ 
+    //    if (Initialize_Mono.I.Updatee) å¸§ç§»åŠ¨è·ç¦» = lookme * Time.deltaTime;
+    //    else å¸§ç§»åŠ¨è·ç¦» = lookme * Time.fixedDeltaTime;
+    //    if (Debul)
+    //    {
+    //        Debug.LogError("    WWWWQWQWQQQQ  " + å¸§ç§»åŠ¨è·ç¦»);
+    //    }
+    //    if (æ—‹è½¬1)
+    //    {
+    //        å¸§ç§»åŠ¨è·ç¦» *= Initialize.è¿”å›æ­£è´Ÿå·(å¸§ç§»åŠ¨è·ç¦»);
+
+    //        float Deletime = Time.fixedDeltaTime;
+    //        if (Initialize_Mono.I.Updatee) Deletime = Time.deltaTime;
+
+    //        transform.Rotate(å¸§æ—‹è½¬é€Ÿåº¦ * Initialize_Mono.I.GetMin(I_S.å›ºå®šç­‰çº§å·®) * Deletime * 0.21f);
+
+    //        float Y = æ¨¡æ‹Ÿé€Ÿåº¦_.y - Initialize_Mono.I.å‡ç‰©ç†é‡åŠ› * é‡åŠ›åŠ é€Ÿåº¦ä¹˜ *
+    //            Initialize_Mono.I.GetMin(I_S.å›ºå®šç­‰çº§å·®) * Deletime;
+    //        æ¨¡æ‹Ÿé€Ÿåº¦_.y = MathF.Max(Y, Initialize_Mono.I.æœ€å¤§ç®­çŸ¢å è½é€Ÿåº¦); // åŸåœ°æ›´æ–°ï¼Œä¸åˆ›å»ºæ–°å‘é‡
+
+    //        //Debug.LogError(æ¨¡æ‹Ÿé€Ÿåº¦_.y);
+    //        //if (Y < -30)  æ­»();
+    //    }
+    //}
     private void UUpdate()
     {
-        if (·½Ïò == Vector2.zero) return;
+        if (æ–¹å‘ == Vector2.zero) return;
         if (!gameObject.activeSelf) return;
-        lookme = I_S.¹Ì¶¨µÈ¼¶²î * self_speed;
-        //if (I_S.¹Ì¶¨µÈ¼¶²î>I_S.c) return;
+
+        lookme = I_S.å›ºå®šç­‰çº§å·® * self_speed;
 
         if (Debul)
-        {
-            Debug.LogError(lookme + "lookme");
-        }
-        if (ÓÃFlyÏŞÖÆ)
-        {
-            lookme = Initialize_Mono.I.Mi.GetFlyGMin(lookme);
-        }
-        else
-        {
-            lookme = Initialize_Mono.I.Mi.GetMin(lookme);
-        }
+            Debug.LogError(lookme + " lookme");
+
+        lookme = ç”¨Flyé™åˆ¶
+            ? Initialize_Mono.I.Mi.GetFlyGMin(lookme)
+            : Initialize_Mono.I.Mi.GetMin(lookme);
 
         if (Debul)
-        {
-            Debug.LogError(lookme + "lookme___ºóÃæ");
-        }
-        // »º´æ¾Ö²¿±äÁ¿ 
-        Ïú»Ùµ¹¼ÆÊ±();
+            Debug.LogError(lookme + " lookme___åé¢");
 
-        var a = ÎŞÊÓ && ÎŞÊÓºĞ×Ó.Contains(transform.position);
-        //if(Debul)     Debug.LogError(a +"    "+ ÎŞÊÓºĞ×Ó.size);
+        é”€æ¯å€’è®¡æ—¶();
 
+        bool æ— è§†ä¸­ = æ— è§† && æ— è§†ç›’å­.Contains(transform.position);
+        if (!æ— è§†ä¸­) ç®­å¤´();
 
-
-        if (!a) ¼ıÍ·();
-        if (·½Ïò.x != 0)
+        if (æ–¹å‘.x != 0)
         {
             var ls = sp.transform.localScale;
-            sp.transform.localScale = new Vector3(·½Ïò.x, ls.y, 1);
+            sp.transform.localScale = new Vector3(æ–¹å‘.x, ls.y, 1);
         }
 
-        // Ö»»ñÈ¡Ò»´Î±ß½çµã¼¯ºÏ 
-        if (Initialize_Mono.I.Updatee) Ö¡ÒÆ¶¯¾àÀë = lookme * Time.deltaTime;
-        else Ö¡ÒÆ¶¯¾àÀë = lookme * Time.fixedDeltaTime;
+        // â­ ç»Ÿä¸€ä½¿ç”¨ deltaTime
+        float dt = Time.deltaTime;
+
+        å¸§ç§»åŠ¨è·ç¦» = lookme * dt;
+
         if (Debul)
+            Debug.LogError("å¸§ç§»åŠ¨è·ç¦» = " + å¸§ç§»åŠ¨è·ç¦»);
+
+        if (æ—‹è½¬1)
         {
-            Debug.LogError("    WWWWQWQWQQQQ  " + Ö¡ÒÆ¶¯¾àÀë);
-        }
-        if (Ğı×ª1)
-        {
-            Ö¡ÒÆ¶¯¾àÀë *= Initialize.·µ»ØÕı¸ººÅ(Ö¡ÒÆ¶¯¾àÀë);
+            å¸§ç§»åŠ¨è·ç¦» *= Initialize.è¿”å›æ­£è´Ÿå·(å¸§ç§»åŠ¨è·ç¦»);
 
-            float Deletime = Time.fixedDeltaTime;
-            if (Initialize_Mono.I.Updatee) Deletime = Time.deltaTime;
+            transform.Rotate(
+                å¸§æ—‹è½¬é€Ÿåº¦
+                * Initialize_Mono.I.GetMin(I_S.å›ºå®šç­‰çº§å·®)
+                * dt
+                * 0.21f
+            );
 
-            transform.Rotate(Ö¡Ğı×ªËÙ¶È * Initialize_Mono.I.GetMin(I_S.¹Ì¶¨µÈ¼¶²î) * Deletime * 0.21f);
+            float y = æ¨¡æ‹Ÿé€Ÿåº¦_.y
+                - Initialize_Mono.I.å‡ç‰©ç†é‡åŠ›
+                * é‡åŠ›åŠ é€Ÿåº¦ä¹˜
+                * Initialize_Mono.I.GetMin(I_S.å›ºå®šç­‰çº§å·®)
+                * dt;
 
-            float Y = Ä£ÄâËÙ¶È_.y - Initialize_Mono.I.¼ÙÎïÀíÖØÁ¦ * ÖØÁ¦¼ÓËÙ¶È³Ë *
-                Initialize_Mono.I.GetMin(I_S.¹Ì¶¨µÈ¼¶²î) * Deletime;
-            Ä£ÄâËÙ¶È_.y = MathF.Max(Y, Initialize_Mono.I.×î´ó¼ıÊ¸×¹ÂäËÙ¶È); // Ô­µØ¸üĞÂ£¬²»´´½¨ĞÂÏòÁ¿
-
-            //Debug.LogError(Ä£ÄâËÙ¶È_.y);
-            //if (Y < -30)  ËÀ();
+            æ¨¡æ‹Ÿé€Ÿåº¦_.y = MathF.Max(y, Initialize_Mono.I.æœ€å¤§ç®­çŸ¢å è½é€Ÿåº¦);
         }
     }
-    private void FixedUpdate()
+
+    //private void FixedUpdate()
+    //{
+    //    if (!Initialize_Mono.I.Updatee)
+    //    {
+    //        UUpdate();
+
+    //    } 
+    //} 
+    private void Update()
     {
         if (!Initialize_Mono.I.Updatee)
         {
             UUpdate();
 
-        } 
-    } 
-    private void Update()
-    {
-        if (I_S.¹Ì¶¨µÈ¼¶²î >= Initialize_Mono.I.Sz.YesPowers[2] || Ğı×ª1)
+        }
+
+
+        if (I_S.å›ºå®šç­‰çº§å·® >= Initialize_Mono.I.Sz.YesPowers[2] || æ—‹è½¬1)
         {
-            /// ´óÓÚ2 ²»Åö×² 
+            /// å¤§äº2 ä¸ç¢°æ’ 
             //bc.isTrigger = true;
             gameObject.layer = Initialize.L_Enemy;
         }
@@ -516,26 +580,26 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
         if (Initialize_Mono.I.Updatee)
             UUpdate(); 
     }
-    private void ¼ıÍ·()
+    private void ç®­å¤´()
     {
       
-            if (Ğı×ª) return;
-        var dirEnum = ·½Ïò.v2_To·½Ïò();
-        //if (Debul) Debug.LogError(" ¼ıÍ·()     ¼ıÍ·()"+g);
-        var edgePoints = bc.bounds.±ßÉÏÈıµã(dirEnum,Debul);
+            if (æ—‹è½¬) return;
+        var dirEnum = æ–¹å‘.v2_Toæ–¹å‘();
+        //if (Debul) Debug.LogError(" ç®­å¤´()     ç®­å¤´()"+g);
+        var edgePoints = bc.bounds.è¾¹ä¸Šä¸‰ç‚¹(dirEnum,Debul);
         //if (Debul) Debug.LogError(bc.bounds.size); 
-            if (!²»»áÅö×²ÏûÊ§)
+            if (!ä¸ä¼šç¢°æ’æ¶ˆå¤±)
         {
             for (int i = 0; i < edgePoints.Count; i++)
             {
                 Vector2 origin = edgePoints[i];
 #if UNITY_EDITOR
                 //if (Debul) origin.DraClirl(0.1f,Color.red,0.0001f);
-                //if (Debul) Debug.LogError(·½Ïò+ origin);
-                    if (Debul) Debug.DrawRay(origin, ·½Ïò * lookme*Time.fixedDeltaTime, Color.blue);
+                //if (Debul) Debug.LogError(æ–¹å‘+ origin);
+                    if (Debul) Debug.DrawRay(origin, æ–¹å‘ * lookme*Time.fixedDeltaTime, Color.blue);
 #endif
-                // Ê¹ÓÃ·Ç·ÖÅä API ²¢¸´ÓÃ»º³å
-                int hitCount = Physics2D.RaycastNonAlloc(origin, ·½Ïò , s_hitBuffer,  lookme * Time.fixedDeltaTime + 0.1f, Currrtten);
+                // ä½¿ç”¨éåˆ†é… API å¹¶å¤ç”¨ç¼“å†²
+                int hitCount = Physics2D.RaycastNonAlloc(origin, æ–¹å‘ , s_hitBuffer,  lookme * Time.fixedDeltaTime + 0.1f, Currrtten);
                 if (hitCount <= 0) continue;
 
                 for (int q = 0; q < hitCount; q++)
@@ -545,12 +609,12 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
                     if (col.gameObject.TryGetComponent<Fly_Ground>(out var f)) continue;
                     if (col == null) continue;
                     if (col == bc) continue;  
-                        if (·½Ïò == Vector2.up && col.CompareTag(Initialize.Player))
+                        if (æ–¹å‘ == Vector2.up && col.CompareTag(Initialize.Player))
                     {
-                        ÊÇÍæ¼Ò¸ÁµÄ = true;
+                        æ˜¯ç©å®¶å™¶çš„ = true;
                         break;
                     }
-                    ÒıÏß±¬Õ¨(col);
+                    å¼•çº¿çˆ†ç‚¸(col);
                     break;
                 }
             }
@@ -560,12 +624,12 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
     [SerializeField]
     float lookme;
     [SerializeField] 
- Vector3 Ö¡Ğı×ªËÙ¶È=new Vector3(0,0,800f) ;
-    public float Ö¡ÒÆ¶¯¾àÀë;
+ Vector3 å¸§æ—‹è½¬é€Ÿåº¦=new Vector3(0,0,800f) ;
+    public float å¸§ç§»åŠ¨è·ç¦»;
     [SerializeField]
     private float self_speed1 = 1;
 
-    public void ¿Û¹¥»÷(float i)
+    public void æ‰£æ”»å‡»(float i)
     {
     }
 
@@ -573,34 +637,34 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
 
 
     int LastC;
-    void ¿ª»Ù()
+    void å¼€æ¯()
     {
  
-        if (!Ïú»Ù)
+        if (!é”€æ¯)
         {
             LastC = Time.frameCount;
-            Ïú»Ù = true;
+            é”€æ¯ = true;
         }
-        Ïú»Ùµ¹¼ÆÊ±();
+        é”€æ¯å€’è®¡æ—¶();
     }
 
     /// <summary>
-    /// µ±Ö¡¾àÀëÌ«¿ì ÑÓ³ÙÒ»Ö¡±¬Õ¨    Æ«ÒÆÌ«¹ıÃ÷ÏÔ  µ±Ò»Ö¡ÄÚÖ¡ÒÆ¶¯¾àÀë³¬¹ı¸ÃÖµ  ÄÇ¾Ã²»ÑÓ³Ù Ö±½Ó±¬Õ¨ 
+    /// å½“å¸§è·ç¦»å¤ªå¿« å»¶è¿Ÿä¸€å¸§çˆ†ç‚¸    åç§»å¤ªè¿‡æ˜æ˜¾  å½“ä¸€å¸§å†…å¸§ç§»åŠ¨è·ç¦»è¶…è¿‡è¯¥å€¼  é‚£ä¹…ä¸å»¶è¿Ÿ ç›´æ¥çˆ†ç‚¸ 
     /// </summary>
-    static float ÑÓ³Ù±¬Õ¨×îĞ¡¾àÀë=0.1f;
+    static float å»¶è¿Ÿçˆ†ç‚¸æœ€å°è·ç¦»=0.1f;
     RaycastHit2D[] Rl;
-    void Ïú»Ùµ¹¼ÆÊ±()
+    void é”€æ¯å€’è®¡æ—¶()
     {
-        if (Ïú»Ù && !ÔİÍ£)
+        if (é”€æ¯ && !æš‚åœ)
         {
-            TTime1 -= Ö¡ÒÆ¶¯¾àÀë/self_speed;
-            if (Debul)    Debug.LogError("TTime TTime TTime +++++" + TTime1+"   "+ Ö¡ÒÆ¶¯¾àÀë+transform.position); 
+            TTime1 -= å¸§ç§»åŠ¨è·ç¦»/self_speed;
+            if (Debul)    Debug.LogError("TTime TTime TTime +++++" + TTime1+"   "+ å¸§ç§»åŠ¨è·ç¦»+transform.position); 
         } 
 
-        bool ÑÓ³Ù = Time.frameCount - LastC >= 1 || Ö¡ÒÆ¶¯¾àÀë > 0.1f;
-        if (TTime1 < 0 && Ïú»Ù && ÑÓ³Ù && !ÔİÍ£)
+        bool å»¶è¿Ÿ = Time.frameCount - LastC >= 1 || å¸§ç§»åŠ¨è·ç¦» > 0.1f;
+        if (TTime1 < 0 && é”€æ¯ && å»¶è¿Ÿ && !æš‚åœ)
         {
-            Rl = Physics2D.BoxCastAll(ºĞ×Ó.center, ºĞ×Ó.size+(Vector3.one * 0.5f)  , 0, Vector2.zero, 0 );
+            Rl = Physics2D.BoxCastAll(ç›’å­.center, ç›’å­.size+(Vector3.one * 0.5f)  , 0, Vector2.zero, 0 );
             if (Debul)
             {
                 foreach (var item in Rl)
@@ -614,39 +678,39 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
 
 
 
-                if (±¬Õ¨ÉËº¦) if (obj.TryGetComponent<I_ÉúÃü>(out var s))  s.±»¿ÛÑª(atkvalue, gameObject, Initialize.Get_Ëæ»úInt()); 
+                if (çˆ†ç‚¸ä¼¤å®³) if (obj.TryGetComponent<I_ç”Ÿå‘½>(out var s))  s.è¢«æ‰£è¡€(atkvalue, gameObject, Initialize.Get_éšæœºInt()); 
             
-                if(´¥·¢±ù¿é) if (obj.TryGetComponent<±»´òÏûÊ§>(out var bb))   bb.±»±¬Õ¨Îï´¥·¢();
+                if(è§¦å‘å†°å—) if (obj.TryGetComponent<è¢«æ‰“æ¶ˆå¤±>(out var bb))   bb.è¢«çˆ†ç‚¸ç‰©è§¦å‘();
 
-                if (±¬Õ¨ËÍ×ßz) if (obj.CompareTag(Initialize.Player)) Player3.I.°²È«µØµã();
-                //obj.GetComponent<±»´òÏûÊ§>()?.±»±¬Õ¨Îï´¥·¢();
+                if (çˆ†ç‚¸é€èµ°z) if (obj.CompareTag(Initialize.Player)) Player3.I.å®‰å…¨åœ°ç‚¹();
+                //obj.GetComponent<è¢«æ‰“æ¶ˆå¤±>()?.è¢«çˆ†ç‚¸ç‰©è§¦å‘();
             }
-            //a.Get_Åö×²×é<I_ÉúÃü>()?.±»¿ÛÑª(atkvalue, gameObject, Initialize.Get_Ëæ»úInt());
-            //a.Get_Åö×²×é<±»´òÏûÊ§>()?.±»±¬Õ¨Îï´¥·¢();
-            ËÀ();
+            //a.Get_ç¢°æ’ç»„<I_ç”Ÿå‘½>()?.è¢«æ‰£è¡€(atkvalue, gameObject, Initialize.Get_éšæœºInt());
+            //a.Get_ç¢°æ’ç»„<è¢«æ‰“æ¶ˆå¤±>()?.è¢«çˆ†ç‚¸ç‰©è§¦å‘();
+            æ­»();
         } 
     } 
-    void ËÀ()
+    void æ­»()
     {
         if (Debul) Debug.LogError("AAAAAAAAAAAAAAA"+transform.position);
 
-        if (ÊÇÍæ¼Ò¸ÁµÄ) Player3.I.ChangeFather();
+        if (æ˜¯ç©å®¶å™¶çš„) Player3.I.ChangeFather();
 
 
         if (Debul)
         {
-            Debug.LogError(ºĞ×Ó.size);
+            Debug.LogError(ç›’å­.size);
         }
-        var a = ºĞ×Ó.ÕóÁĞºĞ×Ó();
+        var a = ç›’å­.é˜µåˆ—ç›’å­();
         for (int i = 0; i < a.Count; i++)
         {
-             ÌØĞ§_pool_2.I.GetPool(a[i], T_N.ÌØĞ§×©¿é±¬Õ¨, Player3.I.sp).Speed_Lv = Speed_Lv;
+             ç‰¹æ•ˆ_pool_2.I.GetPool(a[i], T_N.ç‰¹æ•ˆç –å—çˆ†ç‚¸, Player3.I.sp).Speed_Lv = Speed_Lv;
  
         }
-        Ïú»Ù´¥·¢?.Invoke();
+        é”€æ¯è§¦å‘?.Invoke();
 
 
-        if (»Ø³Ø×Ó)
+        if (å›æ± å­)
         { 
         if (Pool_Key_name != null|| Pool_Key_name != "")
         { 
@@ -656,7 +720,7 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
 
 
     }
-    public bool  »Ø³Ø×Ó=true ;
+    public bool  å›æ± å­=true ;
     float WakeTime;
     private void OnEnable()
     {
@@ -666,37 +730,37 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
     {
         Currrtten = L1;
 
-        Start_·½Ïò = ·½Ïò;
+        Start_æ–¹å‘ = æ–¹å‘;
         Stat_Speed_Lv = Speed_Lv;
         Stat_self_speed = self_speed;
     }
-    Vector2 Start_·½Ïò;
+    Vector2 Start_æ–¹å‘;
     float Stat_Speed_Lv = 1;
     float Stat_self_speed = 1;
 
     [SerializeField]
     [DisplayOnly]
-    private bool ÔİÍ£1;
+    private bool æš‚åœ1;
 
     bool is_dead;
 
 
-    public void ÖØÖÆ()
+    public void é‡åˆ¶()
     {
-        ÎŞÊÓºĞ×Ó = default;
-        Ğı×ª1 = false; 
+        æ— è§†ç›’å­ = default;
+        æ—‹è½¬1 = false; 
         transform.rotation = Quaternion.Euler(0, 0, 0);
         is_dead =false ;
-          ÊÇÍæ¼Ò¸ÁµÄ = false;
+          æ˜¯ç©å®¶å™¶çš„ = false;
         Currrtten = L1;
         //Debul = false;
-        TTime1 =Initialize_Mono .I.   F_Time_Åöµ½Íæ¼ÒºóÏú»ÙÊ±¼ä;
-        ÔİÍ£ = false;
-        Ïú»Ù = false;
+        TTime1 =Initialize_Mono .I.   F_Time_ç¢°åˆ°ç©å®¶åé”€æ¯æ—¶é—´;
+        æš‚åœ = false;
+        é”€æ¯ = false;
         bc.enabled = true;
         sp.enabled = true;
 
-        ·½Ïò = Start_·½Ïò;
+        æ–¹å‘ = Start_æ–¹å‘;
         Speed_Lv = Stat_Speed_Lv;
         self_speed = Stat_self_speed;
     }
@@ -706,12 +770,12 @@ if(Debul)         Debug.LogError("    void ÒıÏß±¬Õ¨(Collider2D c)               
         return true;
     }
 
-    public void ¼ÙËÀÁË(bool ¼ÙËÀ²»)
+    public void å‡æ­»äº†(bool å‡æ­»ä¸)
     {
         if (is_dead) return;
-        if (¼ÙËÀ²»)
+        if (å‡æ­»ä¸)
         {
-            if (ÊÇÍæ¼Ò¸ÁµÄ) Player3.I.ChangeFather();
+            if (æ˜¯ç©å®¶å™¶çš„) Player3.I.ChangeFather();
 
 
             bc.enabled = false ;

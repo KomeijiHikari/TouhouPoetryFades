@@ -1,4 +1,4 @@
-using Cinemachine;
+﻿using Cinemachine;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -1982,64 +1982,116 @@ Debug.LogError( a.ToString());
     }
     static List<Vector2> Vector2_L { get; } = new List<Vector2>() {
         Vector2 .down,Vector2.left ,Vector2.right, Vector2.up , Vector2.one, -Vector2.one,右下角(),-右下角()};
-    public static List<Vector2> 边上三点(this Bounds B, E_方向 E,bool Deb=false)
-    {// v2 里有0    除0外相同  数字
-        //v2 没0    xy各为0
-        List<Vector2> List = new List<Vector2>();
-        var a = E.方向To_v2();
-        var X = a.x;
-        var Y = a.y;
+
+    public static List<Vector2> 边上三点(this Bounds b, E_方向 dir, bool debug = false)
+    {
+        var a = dir.方向To_v2();
         if (a == Vector2.zero)
         {
-            Debug.LogError("不接受  v2 变量");
+            Debug.LogError("不接受 Vector2.zero");
+            return new List<Vector2>();
         }
-        else
+
+        float x = a.x;
+        float y = a.y;
+
+        // 方向空间里的三点
+        Span<Vector2> localPoints = stackalloc Vector2[3];
+
+        if (x == 0 || y == 0)
         {
-            if (X * Y == 0)
+            // 直线方向
+            if (x != 0)
             {
-                // v2 里有0    除0外相同  数字
-                if (X != 0)
-                {
-                    Vector2_L.ForEach((Vector2 v) => {
-                        if (v.x == X)
-                        {
-                            List.Add(v);
-                        }
-                    });
-                }
-                else if (Y != 0)
-                {
-                    Vector2_L.ForEach((Vector2 v) => {
-                        if (v.y == Y)
-                        {
-                            List.Add(v);
-                        }
-                    });
-                }
-                else
-                {
-                    Debug.LogError("离谱");
-                }
+                localPoints[0] = new Vector2(x, -1);
+                localPoints[1] = new Vector2(x, 0);
+                localPoints[2] = new Vector2(x, 1);
             }
             else
             {
-
-                //v2 没0    xy各为0
-                List.Add(new Vector2(X, Y));
-                List.Add(new Vector2(0, Y));
-                List.Add(new Vector2(X, 0));
+                localPoints[0] = new Vector2(-1, y);
+                localPoints[1] = new Vector2(0, y);
+                localPoints[2] = new Vector2(1, y);
             }
         }
-
-        for (int i = 0; i < List.Count; i++)
+        else
         {
-
-        
-            List[i] = B.九个点(List[i].v2_To方向());
-            if (Deb) Debug.LogError(List[i]);
+            // 斜方向
+            localPoints[0] = new Vector2(x, y);
+            localPoints[1] = new Vector2(x, 0);
+            localPoints[2] = new Vector2(0, y);
         }
-        return List;
+
+        var result = new List<Vector2>(3);
+        for (int i = 0; i < 3; i++)
+        {
+            var p = b.九个点(localPoints[i].v2_To方向());
+            if (debug) Debug.Log(p);
+            result.Add(p);
+        }
+
+        return result;
     }
+
+
+    //public static List<Vector2> 边上三点(this Bounds B, E_方向 E,bool Deb=false)
+    //{// v2 里有0    除0外相同  数字
+    //    //v2 没0    xy各为0
+    //    List<Vector2> List = new List<Vector2>();
+    //    var a = E.方向To_v2();
+    //    var X = a.x;
+    //    var Y = a.y;
+    //    if (a == Vector2.zero)
+    //    {
+    //        Debug.LogError("不接受  v2 变量");
+    //    }
+    //    else
+    //    {
+    //        if (X * Y == 0)
+    //        {
+    //            // v2 里有0    除0外相同  数字
+    //            if (X != 0)
+    //            {
+    //                Vector2_L.ForEach((Vector2 v) => {
+    //                    if (v.x == X)
+    //                    {
+    //                        List.Add(v);
+    //                    }
+    //                });
+    //            }
+    //            else if (Y != 0)
+    //            {
+    //                Vector2_L.ForEach((Vector2 v) => {
+    //                    if (v.y == Y)
+    //                    {
+    //                        List.Add(v);
+    //                    }
+    //                });
+    //            }
+    //            else
+    //            {
+    //                Debug.LogError("离谱");
+    //            }
+    //        }
+    //        else
+    //        {
+
+    //            //v2 没0    xy各为0
+    //            List.Add(new Vector2(X, Y));
+    //            List.Add(new Vector2(0, Y));
+    //            List.Add(new Vector2(X, 0));
+    //        }
+    //    }
+
+    //    for (int i = 0; i < List.Count; i++)
+    //    {
+
+
+    //        List[i] = B.九个点(List[i].v2_To方向());
+    //        if (Deb) Debug.LogError(List[i]);
+    //    }
+    //    return List;
+    //}
     public static void 集体开关(this List<Component> 组件列表, bool 开关)
     {
         if (组件列表 == null && 组件列表.Count < 1)
@@ -3398,7 +3450,7 @@ Vector2.down,
         co = gb.GetComponent<T>();
         if (co == null)
         {
-            co = gb.gameObject.AddComponent<T>();
+            co = gb.AddComponent<T>();
         }
     }
 

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -17,10 +17,8 @@ public  abstract  class Pool_base : MonoBehaviour
     }
     protected void   初始化池子()
     { 
-        for (int i = 0; i < 200; i++) //初始化池子  （复制一个个体，并且是池子的子物体    取消激活，放回池子） 循环Count次
+        for (int i = 0; i < 1; i++) //初始化池子  （复制一个个体，并且是池子的子物体    取消激活，放回池子） 循环Count次
         {
-            
-                
             ReturnPool(初始化对象个体());
         }
     }
@@ -34,12 +32,17 @@ public  abstract  class Pool_base : MonoBehaviour
     }
 protected 特效模板管理 GetPool()
     {
+        特效模板管理 outobj = null;
         if (Q.Count == 0)//对象池里的东西全部拿完了 
         {
-            初始化池子();
+            outobj = 初始化对象个体();
+            outobj.transform.SetParent(transform);
         }
-        特效模板管理 outobj = Q.Dequeue();
-        outobj.gameObject.SetActive(true);
+        else
+        {
+            outobj = Q.Dequeue();
+            outobj.gameObject.SetActive(true);
+        }
         return outobj;
     }
 
@@ -50,6 +53,7 @@ public class 特效_pool_2 : Pool_base
 {  
     public static 特效_pool_2 I { get; private set; } 
     public List<特效模板> 列表;
+    public Dictionary<string,特效模板> 列表FindIndex;
     public float 残留时间 = 0.2f;
 protected override void Awake()
     {
@@ -61,12 +65,23 @@ protected override void Awake()
     }
     protected override 特效模板管理 初始化对象个体()
     {
+        if (列表FindIndex == null)
+        {
+            //创建索引
+            列表FindIndex = new Dictionary<string, 特效模板>();
+            for (int i = 0; i < 列表.Count; i++)
+            {
+                列表FindIndex[列表[i].clip.name] = 列表[i];
+            }
+
+        }
+
         GameObject obj;
         obj = new GameObject("特效");
         obj.transform.SetParent(transform);
         //obj.gameObject.AddComponent<速度颜色>();
-        var a = obj.gameObject.AddComponent<特效模板管理>();
-        a.初始化(an.runtimeAnimatorController, 列表);
+        var a = obj.AddComponent<特效模板管理>();
+        a.初始化(an.runtimeAnimatorController, 列表FindIndex);
         return a;
     }
     public bool Debug_;
