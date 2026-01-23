@@ -1,4 +1,4 @@
-using Cinemachine;
+﻿using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,13 +10,18 @@ public class 摄像机 : MonoBehaviour
 { 
     public bool Deb;
     public Transform wt;
+    public static Transform MainCamera = null;
    public float W{get{
+            if(MainCamera == null)
+            {
+                MainCamera = Camera.main.transform;
+            }
             //if (Deb) Debug.LogError("摄像机距离"+ (wt.position.z - Camera.main.transform.position.z)
             //    +"      摄像机位置"+ Camera.main.transform.position+"       摄像机前方"+ wt.position);
             //return wt.position.z-Camera.main.transform.position.z;
 
-            Debug.LogError(wt.position.z+"  " + Camera.main.transform.position.z+"  "+transform.position.z);
-            return wt.position.z - Camera.main.transform.position.z;
+            //Debug.LogError(wt.position.z+"  " + Camera.main.transform.position.z+"  "+transform.position.z);
+            return wt.position.z - MainCamera.position.z;
         }
     }
     //public bool is透视; 
