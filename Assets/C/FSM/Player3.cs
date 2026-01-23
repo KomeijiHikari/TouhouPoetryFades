@@ -769,8 +769,10 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
     protected override  void Update()
     { 
         base.Update(); 
-
-        if (Player_input.I.按键检测_按下(Player_input.I.k.变速)) SpeedMager.I.切换();
+        if(   Player3.I.N_.速度切换)
+        {
+        if (Player_input.I.按键检测_按下(Player_input.I.k.变速)) SpeedMager.I.切换(); 
+        }
  
          if(N_.速度视野)if (Player_input.I.按键检测_按下(Player_input.I.k.视野)) 切换Shader.I.isSpeed = !切换Shader.I.isSpeed;
 

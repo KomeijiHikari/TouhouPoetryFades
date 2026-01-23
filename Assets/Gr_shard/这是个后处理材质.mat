@@ -44,7 +44,7 @@ Material:
     - _Force: 0.01
     - _Size: 0.1
     - _Xsize: 1.777
-    - _t: 0
+    - _t: 0.15
     m_Colors:
-    - _Raing: {r: 0.30697018, g: 0.52877283, b: 0, a: 0}
+    - _Raing: {r: 0.47253624, g: 0.19423106, b: 0, a: 0}
   m_BuildTextureStacks: []

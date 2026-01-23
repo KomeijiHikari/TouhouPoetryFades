@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class 传送导点 : MonoBehaviour
 {
+    public Transform 默认出生点;
     [DisplayOnly]
     public 切换场景 [ ] 场景名列表作切换传送门检测=new 切换场景[2] ;
  
@@ -87,10 +88,14 @@ public class 传送导点 : MonoBehaviour
 
                     if (最后点!=Vector2 .zero)
                     {
-                        gameObject.transform.position = 最后点; 
+                       Player3.I.transform.position = 最后点+Vector2.up*4f; 
                     }
                     else
                     {
+                        if (默认出生点!=null)
+                        { 
+                        Player3.I.transform.position = 默认出生点. position;
+                        } 
                         Debug.LogError("传送点为？");
                     }
 
