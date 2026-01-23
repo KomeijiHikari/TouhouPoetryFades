@@ -668,9 +668,12 @@ public class Initialize_Mono : MonoBehaviour
     {
  
         return Sz.GetInt(Speed);
-    } 
+    }
+
+
     private void Update()
     { 
+        
         阀值2_5_ = 阀值2_5;
         阀值3_ = 阀值3;
         阀值2_ = 阀值2;

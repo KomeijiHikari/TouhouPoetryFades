@@ -1,7 +1,13 @@
 using System;
 using UnityEngine;
+using Sirenix.OdinInspector;
 public class Phy_检测 : MonoBehaviour, I_暂停
 {
+   [SerializeField][DisplayOnly] public int 数量;
+    public void Find(string s)
+    {
+
+    }
     public Vector2 尺寸加成;
     public bool 暂停 { get => 暂停1; set => 暂停1 = value; }
     [SerializeField]

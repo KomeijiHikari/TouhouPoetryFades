@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
-public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I_Dead,I_假死
+public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I_Dead 
 {
 
     public bool 不下落 = false;
@@ -275,6 +275,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool, I
         } }
     public bool 旋转1 { get => 旋转; set => 旋转 = value; }
 
+    [Obsolete("该方法已过时 ")]
     public void 反作用力(int i)
     { 
         transform.position -= (Vector3)方向.normalized * 帧移动距离 * i;
@@ -329,7 +330,7 @@ if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)               
     RaycastHit2D[] Ra;
 
 
-
+    [Obsolete ]
     public bool 运动暂停;
 
     bool 旋转;
@@ -459,23 +460,7 @@ if(Debul)         Debug.LogError("    void 引线爆炸(Collider2D c)               
         //if(Debul)     Debug.LogError(a +"    "+ 无视盒子.size);
 
 
-        if (!运动暂停)
-        {
-            if (!旋转1)
-            {
-                Vector2 n = 方向.normalized; // 仅一次归一化
 
-                transform.position += (Vector3)n * 帧移动距离;
-            }
-            else
-            {
-
-                //Vector3 value =
-                //    new Vector3(模拟速度_.x,MathF.Max
-                //    (模拟速度_.y,Initialize_Mono.I.最大箭矢坠落速度)  );
-                transform.position += ((Vector3)模拟速度_) * 帧移动距离;
-            }
-        }
         if (!a) 箭头();
         if (方向.x != 0)
         {

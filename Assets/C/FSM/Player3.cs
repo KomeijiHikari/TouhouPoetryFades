@@ -1688,8 +1688,6 @@ public partial class Player3 : I_生命, I_攻击
 
     public 玩家能力 N_;
 
-    [DisplayOnly]
-    public Fly_Ground Fly;
 
 
     public Func<GameObject, bool> Hit_FuncFSM;

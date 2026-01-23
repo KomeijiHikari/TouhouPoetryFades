@@ -853,52 +853,8 @@ public class cricleatk : atkBase
                                 if (delta > 0)
                                 {
                                     var a = sky.Ë«µãÅö×²(Player.Bounds.size.y + delta + Player.Velocity.y / 15f);
-                                    var B = sky.Find(a);
-
-                                    //var aac = sky.Ë«µãÅö×²(Player.Bounds.size.y + delta  );
-
-                                    //if (aac.Count > 0)
-                                    //{
-                                    //    var aa = Initialize.GetÅö×²Position(Player.Bounds, aac[0]);
-                                    //    if (aa == Vector2.zero)
-                                    //    {
-                                    //        Player.transform.position += new Vector3(0f, delta);
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        Vector3 ca = Player.Bounds.center - (Vector3)aa;
-                                    //        Player.transform.position -= ca;
-                                    //    }
-                                    //}
-                                    //else
-                                    //{
-                                    //    Player.transform.position += new Vector3(0f, delta);
-                                    //}
-                                    Player.transform.position += new Vector3(0f, delta);
-                                 
-                                    //Player.transform.position += new Vector3(0f, delta);
-
-
-                                    //if (a==null)
-                                    //{
-                                    //    Player.transform.position += new Vector3(0f, delta);
-                                    //}
-                                    //else
-                                    //{ 
-                                    //  if (!sky.Find(a))
-                                    //    {
-                                    //        ///Ã»ÓÐÑ©¿é 
-                                    //        /// 
-                                    //var aa = Initialize.GetÅö×²Position(Player.Bounds, a[0]);
-                                    //        if (aa==Vector2.zero)
-                                    //        {
-                                    //            Player.transform.position += new Vector3(0f, delta);
-                                    //        }
-                                    //    }
-                                    //}
-
-
-
+                                    var B = sky.Find(a); 
+                                    Player.transform.position += new Vector3(0f, delta); 
                                 }
                                 if (originalAll != null)
                                 {
@@ -953,6 +909,7 @@ public class cricleatk : atkBase
                             {
                                 var delta = Rs.y - Player.½Åµ×ÖÐ¼ä.y; 
                                 Player.transform.position += new Vector3(0f, delta);
+                                break;
                             }
                         }
                     }

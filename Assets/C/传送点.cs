@@ -46,10 +46,20 @@ public  partial  class 传送点 : MonoBehaviour
     {
         if (玩家走到了外面)
         {
-            if (Player_input.I.按键检测_按下(Player_input.I.k.交互))
-            { 
-                主UI.I.加点展开(); 
-            } 
+            if (Vector3.Distance(Player3.I.transform.position,transform.position)<5   )
+            {///走到外面开关有时候关不掉
+
+
+                if (Player_input.I.按键检测_按下(Player_input.I.k.交互))
+                {
+                    主UI.I.加点展开();
+                }
+            }
+            else
+            {
+                玩家走到了外面 = false;
+            }
+
         } 
     }
     public bool 玩家走到了外面;

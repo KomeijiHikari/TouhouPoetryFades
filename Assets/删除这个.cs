@@ -108,7 +108,7 @@ public class 删除这个 : MonoBehaviour
             //{
             //    在不在摄像机里面.color = Color.white;
             //}
-            var a = 摄像机.I.GetBouns().Intersects(在不在摄像机里面.bounds);
+            var a = 摄像机.I.CarmeraBous.Intersects(在不在摄像机里面.bounds);
             if (a)
             {
                 在不在摄像机里面.color = Color.red;

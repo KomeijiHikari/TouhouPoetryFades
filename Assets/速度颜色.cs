@@ -38,14 +38,15 @@ public class 速度颜色 : MonoBehaviour
 
     public bool 暂停 { get   ; set  ; }
 
-    Fly_Ground ff; 
+    //I_ReturnPool ff; 
     private void Start()
     {
         //return;
         gameObject.组件(ref J);
-        ff = GetComponent<Fly_Ground>();
-        if (ff == null) J.是我 += (bool b) => { 激活的 = b; };
-        else 激活的 = true;
+
+        //ff = GetComponent<I_ReturnPool>(); ///原先是Fly_Ground
+        //if (ff == null) J.是我 += (bool b) => { 激活的 = b; };
+        //else 激活的 = true;
 
         if (I_Speed_Change == null) I_Speed_Change = gameObject;
         if (sp == null) sp = GetComponent<SpriteRenderer>();

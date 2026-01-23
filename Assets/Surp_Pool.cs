@@ -1,10 +1,38 @@
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-
+using UnityEngine; 
 public class Surp_Pool : SerializedMonoBehaviour
 {
+    [SerializeField][DisplayOnly] public int 数量显示;
+    [Button]
+    public int FindChild(string targetName)
+    {
+        targetName += "(Clone)";
+        int count = 0;
+        if (string.IsNullOrEmpty(targetName)) return count;
+
+        // 遍历所有直接子物体，严格匹配名称（大小写敏感）
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).name == targetName) count++;
+        }
+        return count;
+    }
+    [Button]
+    public void Find(string s)
+    {
+        Queue<GameObject> Val;
+        if (池子字典_.TryGetValue(s, out Val))
+        {
+        数量显示 = Val.Count;
+
+        }
+        else
+        {
+            数量显示 = -99;
+        }
+    }
     public static GameObject Get_Gameobject(string s)
     {
 

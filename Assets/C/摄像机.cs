@@ -65,7 +65,7 @@ public class 摄像机 : MonoBehaviour
 
         return new Vector2(尺寸 * Initialize.屏幕横纵比 , 尺寸) * 2f;
     }
-    public Bounds GetBouns()
+      Bounds GetBouns()
     {
         Vector2 v2 = Camera.main.transform.position;
         return new Bounds(v2, GetSize()); 
@@ -104,9 +104,10 @@ public CinemachineVirtualCamera c { get=> 默认; private set => 默认=value; }
     [SerializeField]
     public  CinemachineConfiner2D 碰撞组件;
 
-
+    public Bounds CarmeraBous { get; private set; }
     private void Update()
     {
+        CarmeraBous = GetBouns();
         FFOV = Fov;
     }
     [DisplayOnly]
