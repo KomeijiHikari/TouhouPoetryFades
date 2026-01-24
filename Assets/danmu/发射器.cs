@@ -1,10 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
 using UnityEngine.Events;
 using Cinemachine;
+using System.Linq;
+using Unity.VisualScripting;
 namespace 发射器空间
 {
     public enum 播放类型
@@ -214,10 +216,13 @@ namespace 发射器空间
                 aa.Speed_Lv = Speed_Lv;
                 aa.目标炮_方向(VVV,new Vector2(transform.lossyScale.x*1,2));
                 aa.暂停 = false;
-                var P = aa.GetComponent<Phy_检测>(); 
+                var P = aa.GetComponent<Phy_检测>();
+                Debug.Log($"添加了 Stay 炸弹  currentLength:{P.Stay.GetInvocationList().Length}");
+                P.GetComponent<MonoMager>().永远不暂停 = true;
                 P.Stay += () =>
                 {
-                       if (P.Rs.Length >= 1)
+                    Debug.Log("触发了 Stay 炸弹");
+                    if (P.Rs.Length >= 1)
                     {
                               var ccc = P.Rs[0].collider.gameObject;
                         if (ccc.layer == Initialize.L_Ground||ccc.layer==Initialize.L_Player)
@@ -585,6 +590,7 @@ namespace 发射器空间
                     Surp_Pool.I.ReturnPool(B_.gameObject, B.pre.name);
                 }
             };
+            B_.Stay = null;
             B_.Stay += () => {
                 for (int i = 0; i < B_.Rs.Length; i++)
                 {

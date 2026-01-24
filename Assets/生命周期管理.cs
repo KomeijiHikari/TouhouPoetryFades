@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SampleFSM;
@@ -160,6 +160,8 @@ public state 死亡 = new state("死亡");
     Transform PosKeyForm;
     private void Awake()
     {
+        Application.targetFrameRate = 60;
+
 
         假死 =  new state("假死", 活动);
 

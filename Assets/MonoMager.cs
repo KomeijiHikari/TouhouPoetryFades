@@ -1,40 +1,41 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //using static UnityEditor.PlayerSettings;
 
-public class MonoMager : MonoBehaviour,I_ÔİÍ£
+public class MonoMager : MonoBehaviour,I_æš‚åœ
 {
-    ¼à¿Ø¼¤»îÅö×²¿ò ¼à¿Ø;
+    public bool æ°¸è¿œä¸æš‚åœ = false;
+    ç›‘æ§æ¿€æ´»ç¢°æ’æ¡† ç›‘æ§;
   [DisableOnPlay ]
-   public   bool ¹Ø±Õ = false;
+   public   bool å…³é—­ = false;
 
-    List<I_ÔİÍ£> Is=new List<I_ÔİÍ£>();
+    List<I_æš‚åœ> Is=new List<I_æš‚åœ>();
  
   [SerializeField ][DisableOnPlay ]
-    int ÊıÁ¿;
+    int æ•°é‡;
 
-    public bool ÔİÍ£ { get => ¹Ø±Õ; set 
+    public bool æš‚åœ { get => å…³é—­; set 
         {
-            //Debug.LogError("Íâ²¿²»¿ÉÒÔÉèÖÃµ½ÕâÀï  ·´Ê¡");
+            //Debug.LogError("å¤–éƒ¨ä¸å¯ä»¥è®¾ç½®åˆ°è¿™é‡Œ  åçœ");
         
         } }
 
     private void Awake()
     { 
-        foreach (var c in GetComponents<I_ÔİÍ£>())
+        foreach (var c in GetComponents<I_æš‚åœ>())
         {
             if (c is MonoBehaviour mb && mb == this) continue;
             Is.Add(c);
         }
 
-        gameObject.×é¼ş(ref ¼à¿Ø);
-        ¼à¿Ø.ÊÇÎÒ += Ë¢ĞÂ;
-        ÊıÁ¿ = Is.Count;
+        gameObject.ç»„ä»¶(ref ç›‘æ§);
+        ç›‘æ§.æ˜¯æˆ‘ += åˆ·æ–°;
+        æ•°é‡ = Is.Count;
     }
     public bool Deb;
-    public void Ë¢ĞÂ(bool b)
+    public void åˆ·æ–°(bool b)
     {
         if (Deb)
         {
@@ -44,9 +45,15 @@ public class MonoMager : MonoBehaviour,I_ÔİÍ£
         b = !b;
         for (int i = 0; i < Is.Count; i++)
         {
-     
-            Is[i].ÔİÍ£ = b;
+            if (æ°¸è¿œä¸æš‚åœ)
+            {
+                Is[i].æš‚åœ = false;
+            }
+            else
+            {
+                Is[i].æš‚åœ = b;
+            }
         }
-        ¹Ø±Õ = b;
+        å…³é—­ = b;
     }
 }

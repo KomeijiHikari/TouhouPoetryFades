@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Trisibo;
@@ -10,50 +10,52 @@ using DG.Tweening;
 public class UI_Start : MonoBehaviour
 {
 
-    List<AsyncOperation> µÈ´ı = new List<AsyncOperation>();
-    public List<GameObject> ¿ªÊ¼½çÃæµÄËùÓĞ=new List<GameObject> ();
-    public List<SceneField> Òª¼ÓÔØµÄ³¡¾°=new List<SceneField> ();
-    public Text_button ¼ÌĞø°´Å¥;
-    public GameObject ×Ó²Ëµ¥;
+    List<AsyncOperation> ç­‰å¾… = new List<AsyncOperation>();
+    public List<GameObject> å¼€å§‹ç•Œé¢çš„æ‰€æœ‰=new List<GameObject> ();
+    public List<SceneField> è¦åŠ è½½çš„åœºæ™¯=new List<SceneField> ();
+    public Text_button ç»§ç»­æŒ‰é’®;
+    public GameObject å­èœå•;
 
-    bool Æô¶¯¹ıÒ»´Î;
+    bool å¯åŠ¨è¿‡ä¸€æ¬¡;
     private void Awake()
     {
-        Æô¶¯¹ıÒ»´Î = false;
-        ///Ö»ÓĞĞÂÍæ¼ÒÄÜ²â³öÀ´µÄ
-        var value = PlayerPrefs.GetInt(µÚÒ»´Î, 0);
+        Application.targetFrameRate = 60;
+
+        å¯åŠ¨è¿‡ä¸€æ¬¡ = false;
+        ///åªæœ‰æ–°ç©å®¶èƒ½æµ‹å‡ºæ¥çš„
+        var value = PlayerPrefs.GetInt(ç¬¬ä¸€æ¬¡, 0);
         if (value == 0)
         {
-            ///  µÚÒ»´Î
-            SettingMager.ĞŞ¸Ä(FullScreenMode.FullScreenWindow);
-            SettingMager.Set_·Ö±æÂÊ(1960, 1080);
+            ///  ç¬¬ä¸€æ¬¡
+            SettingMager.ä¿®æ”¹(FullScreenMode.FullScreenWindow);
+            SettingMager.Set_åˆ†è¾¨ç‡(1960, 1080);
 
-            PlayerPrefs.SetInt(µÚÒ»´Î, 2);
+            PlayerPrefs.SetInt(ç¬¬ä¸€æ¬¡, 2);
             PlayerPrefs.Save();
         }
         else if(value==2)
         {
-            Debug.LogError("Õı³£");
+            Debug.LogError("æ­£å¸¸");
         }
         else
         {
-            Debug.LogError("°¡£¿");
+            Debug.LogError("å•Šï¼Ÿ");
         }
      
     }
-    const string µÚÒ»´Î= "µÚÒ»´Î";
-    class ÉèÖÃ
+    const string ç¬¬ä¸€æ¬¡= "ç¬¬ä¸€æ¬¡";
+    class è®¾ç½®
     {
 
     }
     private void Start()
     {
 
-        if (¼ÌĞø°´Å¥ != null)
+        if (ç»§ç»­æŒ‰é’® != null)
         {
             if (Save_D .Load()==null )
             {
-                ¼ÌĞø°´Å¥.interactable = false;
+                ç»§ç»­æŒ‰é’®.interactable = false;
             }
         }    
     }
@@ -61,32 +63,32 @@ public class UI_Start : MonoBehaviour
     {
         Debug.LogError("1");
     }
- public void É¾µµ()
+ public void åˆ æ¡£()
     {
-        Save_static.É¾³ıËùÓĞ();
+        Save_static.åˆ é™¤æ‰€æœ‰();
     }
-    public void ÖØĞÂ¿ªÊ¼()
+    public void é‡æ–°å¼€å§‹()
     {
-        if (Æô¶¯¹ıÒ»´Î)
+        if (å¯åŠ¨è¿‡ä¸€æ¬¡)
         {
             return;
         }
         else
         {
 
-            Æô¶¯¹ıÒ»´Î = true;
+            å¯åŠ¨è¿‡ä¸€æ¬¡ = true;
         }
 
 
-        for (int i = 0; i < Òª¼ÓÔØµÄ³¡¾°.Count; i++)
+        for (int i = 0; i < è¦åŠ è½½çš„åœºæ™¯.Count; i++)
         {
-            µÈ´ı.Add(SceneManager.LoadSceneAsync(Òª¼ÓÔØµÄ³¡¾°[i].BuildIndex, LoadSceneMode.Additive));
+            ç­‰å¾….Add(SceneManager.LoadSceneAsync(è¦åŠ è½½çš„åœºæ™¯[i].BuildIndex, LoadSceneMode.Additive));
  
         } 
-        StartCoroutine(¼ÓÔØ());
+        StartCoroutine(åŠ è½½());
 
     } 
-    public void ÍË³öÓÎÏ·()
+    public void é€€å‡ºæ¸¸æˆ()
     {
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -94,87 +96,87 @@ public class UI_Start : MonoBehaviour
             Application.Quit();
         #endif
     }
-    public void Õ¹¿ª×Ó²Ëµ¥ÉèÖÃ( )
+    public void å±•å¼€å­èœå•è®¾ç½®( )
     {
  
-        ×Ó²Ëµ¥.SetActive(true);
+        å­èœå•.SetActive(true);
  
     }
  
-    public void ¼ÌĞø()
+    public void ç»§ç»­()
     {
-        if (Æô¶¯¹ıÒ»´Î)
+        if (å¯åŠ¨è¿‡ä¸€æ¬¡)
         {
             return;
         }
         else
         {
-            Æô¶¯¹ıÒ»´Î = true;
+            å¯åŠ¨è¿‡ä¸€æ¬¡ = true;
         }
        
 
-        //¹Ø±Õµ±Ç°³¡¾°();
+        //å…³é—­å½“å‰åœºæ™¯();
 
-        µÈ´ı.Add(SceneManager.LoadSceneAsync(Òª¼ÓÔØµÄ³¡¾°[0].Name, LoadSceneMode.Additive));
+        ç­‰å¾….Add(SceneManager.LoadSceneAsync(è¦åŠ è½½çš„åœºæ™¯[0].Name, LoadSceneMode.Additive));
 
-        var a = Save_static.LoadinText<SaveData.txt>(Save_static.text).×îºó±£´æµÄ³¡¾°µÄÃû×Ö;
-        µÈ´ı.Add(SceneManager.LoadSceneAsync(a, LoadSceneMode.Additive));
+        var a = Save_static.LoadinText<SaveData.txt>(Save_static.text).æœ€åä¿å­˜çš„åœºæ™¯çš„åå­—;
+        ç­‰å¾….Add(SceneManager.LoadSceneAsync(a, LoadSceneMode.Additive));
 
-        StartCoroutine(¼ÓÔØ());
+        StartCoroutine(åŠ è½½());
 
 
     }
 
-    private void ¹Ø±Õµ±Ç°³¡¾°()
+    private void å…³é—­å½“å‰åœºæ™¯()
     {
  
-        foreach (var item in ¿ªÊ¼½çÃæµÄËùÓĞ)
+        foreach (var item in å¼€å§‹ç•Œé¢çš„æ‰€æœ‰)
         {
             item.SetActive(false);
         }
     }
 
- IEnumerator Ğ¶ÔØ()
+ IEnumerator å¸è½½()
     {
         yield return 3f;
-        Debug.LogError("Ê±¼äµ½");
+        Debug.LogError("æ—¶é—´åˆ°");
         SceneManager.UnloadSceneAsync(gameObject.scene.buildIndex);
     }
-    IEnumerator ¼ÓÔØ()
+    IEnumerator åŠ è½½()
     { 
-        for (int i = 0; i < µÈ´ı.Count; i++)
+        for (int i = 0; i < ç­‰å¾….Count; i++)
         {
-            µÈ´ı[i].allowSceneActivation = false;
+            ç­‰å¾…[i].allowSceneActivation = false;
         } 
-        for (int i = 0; i < µÈ´ı.Count; i++)
+        for (int i = 0; i < ç­‰å¾….Count; i++)
         { 
-            yield return µÈ´ı[i].isDone; 
+            yield return ç­‰å¾…[i].isDone; 
         } 
-        foreach (var item in µÈ´ı)
+        foreach (var item in ç­‰å¾…)
         {
             item.allowSceneActivation = true;
         } 
 
         SceneManager.sceneLoaded += (Scene sc, LoadSceneMode loadSceneMode) =>
         {
-            if (sc.buildIndex== Òª¼ÓÔØµÄ³¡¾°[1].BuildIndex)
+            if (sc.buildIndex== è¦åŠ è½½çš„åœºæ™¯[1].BuildIndex)
             {
                 //SceneManager.SetActiveScene(sc ); 
             } 
         };
-        ¼ÓÔØ_ = true;
+        åŠ è½½_ = true;
  
 
     }
     [SerializeField]
     [DisplayOnly]
-    bool ¼ÓÔØ_;
+    bool åŠ è½½_;
 
     private void Update()
     {
-        if (¼ÓÔØ_)
+        if (åŠ è½½_)
         { 
-            //¹Ø±Õµ±Ç°³¡¾°();
+            //å…³é—­å½“å‰åœºæ™¯();
             SceneManager .UnloadSceneAsync(gameObject.scene); 
 
         }

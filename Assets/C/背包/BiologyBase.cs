@@ -1,4 +1,4 @@
-using Sirenix.OdinInspector;
+ï»¿using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 [DefaultExecutionOrder(-10)]
-public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
+public abstract class BiologyBase : MonoBehaviour, set_get, æ“æ§, I_æ”»å‡», I_ç”Ÿå‘½
 {
     public bool transformDeb;
     protected virtual void Update()
@@ -17,92 +17,92 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
     public class m_transform
     {
         public bool transformDeb;
-        Transform transform_ÕæÊµ;
+        Transform transform_çœŸå®;
         public Transform transform
         {
             get
             {
-                if (transformDeb) Debug.Log("ÓĞ¶«Î÷ÊÔÍ¼·ÃÎÊ" + transform_ÕæÊµ.gameObject.name + transform_ÕæÊµ.position);
-                return transform_ÕæÊµ;
+                if (transformDeb) Debug.Log("æœ‰ä¸œè¥¿è¯•å›¾è®¿é—®" + transform_çœŸå®.gameObject.name + transform_çœŸå®.position);
+                return transform_çœŸå®;
             }
         }
         public m_transform(Transform s)
         {
-            transform_ÕæÊµ = s;
+            transform_çœŸå® = s;
         }
         public void SetParent(Transform s)
         {
             if (transformDeb)
             {
-                if (transform_ÕæÊµ.parent!=s)
+                if (transform_çœŸå®.parent!=s)
                 {
-                    Debug.Log(Time.frameCount + "ĞŞ¸Ä¸¸¶ÔÏó´Ó" + s + "ĞŞ¸ÄÎª" + s);
+                    Debug.Log(Time.frameCount + "ä¿®æ”¹çˆ¶å¯¹è±¡ä»" + s + "ä¿®æ”¹ä¸º" + s);
                 }
             }
-            transform_ÕæÊµ.SetParent(s);
+            transform_çœŸå®.SetParent(s);
         }
-        public Transform parent => transform_ÕæÊµ.parent;
+        public Transform parent => transform_çœŸå®.parent;
         public Vector3 localPosition
         {
-            get { return transform_ÕæÊµ.localPosition; }
+            get { return transform_çœŸå®.localPosition; }
             set
             {
                 if (transformDeb)
                 {
-                    if (transform_ÕæÊµ.localPosition != value)
+                    if (transform_çœŸå®.localPosition != value)
                     {
 
-                    Debug.Log(Time.frameCount + "ĞŞ¸Ä¾Ö²¿×ø±ê£º" + transform_ÕæÊµ.localPosition + "ĞŞ¸Äºó£º" + value);
+                    Debug.Log(Time.frameCount + "ä¿®æ”¹å±€éƒ¨åæ ‡ï¼š" + transform_çœŸå®.localPosition + "ä¿®æ”¹åï¼š" + value);
                     }
                 }
-                transform_ÕæÊµ.localPosition = value;
+                transform_çœŸå®.localPosition = value;
             }
         }
-        public Vector3 lossyScale => transform_ÕæÊµ.lossyScale;
+        public Vector3 lossyScale => transform_çœŸå®.lossyScale;
         public Vector3 position
         {
-            get { return transform_ÕæÊµ.position; }
+            get { return transform_çœŸå®.position; }
             set
             {
                 if (transformDeb)
                 {
-                    if (transform_ÕæÊµ.position != value)
+                    if (transform_çœŸå®.position != value)
                     {
-                        Debug.Log(Time.frameCount + "ĞŞ¸Ä×ø±ê£º" + transform_ÕæÊµ.position + "ĞŞ¸Äºó£º" + value);
+                        Debug.Log(Time.frameCount + "ä¿®æ”¹åæ ‡ï¼š" + transform_çœŸå®.position + "ä¿®æ”¹åï¼š" + value);
                     }
                 }
-                transform_ÕæÊµ.position = value;
+                transform_çœŸå®.position = value;
             }
         }
         public Vector3 localScale
         {
-            get { return transform_ÕæÊµ.localScale; }
+            get { return transform_çœŸå®.localScale; }
             set
             {
                 if (transformDeb)
                 {
-                    if (transform_ÕæÊµ.localScale!=value)
+                    if (transform_çœŸå®.localScale!=value)
                     {
-                    Debug.Log(Time.frameCount + "ĞŞ¸Ä³ß´ç£º" + transform_ÕæÊµ.localScale + "ĞŞ¸Äºó£º" + value+transform.gameObject.name); 
+                    Debug.Log(Time.frameCount + "ä¿®æ”¹å°ºå¯¸ï¼š" + transform_çœŸå®.localScale + "ä¿®æ”¹åï¼š" + value+transform.gameObject.name); 
                     }
                 }
 
-                transform_ÕæÊµ.localScale = value;
+                transform_çœŸå®.localScale = value;
             }
         }
         public Quaternion rotation
         {
-            get { return transform_ÕæÊµ.rotation; }
+            get { return transform_çœŸå®.rotation; }
             set
             {
-                if (transformDeb) Debug.Log(Time.frameCount + "ĞŞ¸ÄĞı×ª£º" + transform_ÕæÊµ.rotation + "ĞŞ¸Äºó£º" + value);
-                transform_ÕæÊµ.rotation = value;
+                if (transformDeb) Debug.Log(Time.frameCount + "ä¿®æ”¹æ—‹è½¬ï¼š" + transform_çœŸå®.rotation + "ä¿®æ”¹åï¼š" + value);
+                transform_çœŸå®.rotation = value;
             }
         }
     }
     new public m_transform transform { get; set; }
-    public Vector2 ¿ÛÑªÍâ²¿Á¦ { get; set; }
-    public bool ÕæÊµ¶¯»­
+    public Vector2 æ‰£è¡€å¤–éƒ¨åŠ› { get; set; }
+    public bool çœŸå®åŠ¨ç”»
     {
         get
         {
@@ -129,13 +129,13 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
         }
     }
 
-    public ÒÆ¶¯·½Ê½ µ±Ç°ÒÆ¶¯·½Ê½;
+    public ç§»åŠ¨æ–¹å¼ å½“å‰ç§»åŠ¨æ–¹å¼;
 
 
 
     //new public Transform transform { get { return base.transform; } }
     /// <summary>
-    /// ·­×ª
+    /// ç¿»è½¬
     /// </summary>
     public virtual void Flip()
     {
@@ -143,8 +143,8 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
         LocalScaleX_Set = -LocalScaleX_Set;
     }
     /// <summary>
-    ///   ·µ»ØÕı¸º1
-    ///   ÉèÖÃ±ØĞëÊÇÕıÊı»òÕß¸ºÊı
+    ///   è¿”å›æ­£è´Ÿ1
+    ///   è®¾ç½®å¿…é¡»æ˜¯æ­£æ•°æˆ–è€…è´Ÿæ•°
     /// </summary>
     public float LocalScaleX_Set
     {
@@ -155,7 +155,7 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
         }
     }
     /// <summary>
-    ///   Ö»ÄÜÊÇ³ß´çÊÇ1µ¥Î»
+    ///   åªèƒ½æ˜¯å°ºå¯¸æ˜¯1å•ä½
     /// </summary>
     public int LocalScaleX_Int
     {
@@ -167,7 +167,7 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
         {
             if (value != 1 || value != -1)
             {
-                Debug.LogError("ÎÒÀÕ¸öÈ¥Óë");
+                Debug.LogError("æˆ‘å‹’ä¸ªå»ä¸");
             }
             transform.localScale = new Vector3((int)value, transform.localScale.y, 1);
         }
@@ -183,13 +183,13 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
         }
         set { co.isTrigger = value; }
     }
-    public Vector2 ·´Ïò { get { return new Vector2(-LocalScaleX_Set, 0); } }
-    public Vector2 ÕıÏò { get { return new Vector2(LocalScaleX_Set, 0); } }
-    public Vector2 ·´Ãæ½Åµ× { get { return new Vector2(LocalScaleX_Set == 1 ? Bounds.min.x : Bounds.max.x, Bounds.min.y); } }
-    public Vector2 ÕıÃæÍ·¶¥ { get { return new Vector2(LocalScaleX_Set == 1 ? Bounds.max.x : Bounds.min.x, Bounds.max.y); } }
-    public Vector2 ·´ÃæÖĞ¼ä { get { return new Vector2(·´Ãæ½Åµ×.x, Bounds.center.y); } }
-    public Vector2 ÕıÃæÖĞ¼ä { get { return new Vector2(ÕıÃæÍ·¶¥.x, Bounds.center.y); } }
-    public Vector2 ½Åµ×ÖĞ¼ä { get { return new Vector2(Bounds.center.x, Bounds.min.y); } }
+    public Vector2 åå‘ { get { return new Vector2(-LocalScaleX_Set, 0); } }
+    public Vector2 æ­£å‘ { get { return new Vector2(LocalScaleX_Set, 0); } }
+    public Vector2 åé¢è„šåº• { get { return new Vector2(LocalScaleX_Set == 1 ? Bounds.min.x : Bounds.max.x, Bounds.min.y); } }
+    public Vector2 æ­£é¢å¤´é¡¶ { get { return new Vector2(LocalScaleX_Set == 1 ? Bounds.max.x : Bounds.min.x, Bounds.max.y); } }
+    public Vector2 åé¢ä¸­é—´ { get { return new Vector2(åé¢è„šåº•.x, Bounds.center.y); } }
+    public Vector2 æ­£é¢ä¸­é—´ { get { return new Vector2(æ­£é¢å¤´é¡¶.x, Bounds.center.y); } }
+    public Vector2 è„šåº•ä¸­é—´ { get { return new Vector2(Bounds.center.x, Bounds.min.y); } }
     public Bounds Bounds
     {
         get
@@ -202,39 +202,39 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
         }
     }
     [SerializeField]
-    protected bool Áé»ê1;
-    protected virtual bool Áé»ê
+    protected bool çµé­‚1;
+    protected virtual bool çµé­‚
     {
 
-        get => Áé»ê1;
+        get => çµé­‚1;
         set
         {
-            Áé»ê1 = value;
+            çµé­‚1 = value;
         }
     }
 
     [SerializeField]
     bool Ground_;
-    public Action ½Ó´¥µØÃæÊÂ¼ş { get; set; }
-    public Action Àë¿ªµØÃæÊÂ¼ş { get; set; }
+    public Action æ¥è§¦åœ°é¢äº‹ä»¶ { get; set; }
+    public Action ç¦»å¼€åœ°é¢äº‹ä»¶ { get; set; }
 
-    public enum µØÃæÇé¿ö
+    public enum åœ°é¢æƒ…å†µ
     {
-        ¿ç²»¹ıÈ¥,
-        Æ½µØ,
-        ÓĞ¿Ó,
+        è·¨ä¸è¿‡å»,
+        å¹³åœ°,
+        æœ‰å‘,
         UnKnow,
     }
 
 
-    protected virtual void ½Ó´¥µØÃæ_()
+    protected virtual void æ¥è§¦åœ°é¢_()
     {
 
-        ½Ó´¥µØÃæÊÂ¼ş?.Invoke();
+        æ¥è§¦åœ°é¢äº‹ä»¶?.Invoke();
     }
-    protected virtual void Àë¿ªµØÃæ_()
+    protected virtual void ç¦»å¼€åœ°é¢_()
     {
-        Àë¿ªµØÃæÊÂ¼ş?.Invoke();
+        ç¦»å¼€åœ°é¢äº‹ä»¶?.Invoke();
     }
 
     public bool Ground
@@ -249,7 +249,7 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
 
             if (Ground != value)
             {
-                if (ËÙ¶Èµ÷ÊÔ)
+                if (é€Ÿåº¦è°ƒè¯•)
                 {
                     Debug.LogError(value._Color(Color.green) + Time.frameCount);
                 }
@@ -257,13 +257,13 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
 
                 if (!Ground_ && value)
                 {
-                    ½Ó´¥µØÃæ_();
+                    æ¥è§¦åœ°é¢_();
                 }
                 if (Ground_ && !value)
                 {
                     //if (gameObject==Player3.I.gameObject)
-                    //    if (Player3.I.½ÅÏÂ==null)
-                    Àë¿ªµØÃæ_();
+                    //    if (Player3.I.è„šä¸‹==null)
+                    ç¦»å¼€åœ°é¢_();
                 }
                 Ground_ = value;
             }
@@ -285,73 +285,73 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
     }
     [DisplayOnly]
     [SerializeField]
-    bool Ç°;
-    public virtual bool Ç°¿Õ_
+    bool å‰;
+    public virtual bool å‰ç©º_
     {
-        get { return Ç°; }
-        set { Ç° = value; }
+        get { return å‰; }
+        set { å‰ = value; }
     }
     [DisplayOnly]
-    public bool ºó;
-    public virtual bool ºó¿Õ_
+    public bool å;
+    public virtual bool åç©º_
     {
-        get { return ºó; }
-        set { ºó = value; }
+        get { return å; }
+        set { å = value; }
     }
     [DisplayOnly]
     [SerializeField]
-    bool Í· = true;
+    bool å¤´ = true;
 
     /// <summary>
-    /// trueÎª¿Õ
+    /// trueä¸ºç©º
     /// </summary>
-    public virtual bool Í·¿Õ_
+    public virtual bool å¤´ç©º_
     {
 
-        get { return Í·; }
+        get { return å¤´; }
         set
         {
-            if (Í· != value)
+            if (å¤´ != value)
             {
-                if (Í· == false && value == true)
+                if (å¤´ == false && value == true)
                 {
-                    ³öÁË¶´Âï();
+                    å‡ºäº†æ´å˜›();
 
                 }
             }
-            Í· = value;
+            å¤´ = value;
         }
     }
-    public virtual void ¿ªÆôÁé»ê()
+    public virtual void å¼€å¯çµé­‚()
     {
 
-        if (!Áé»ê)
+        if (!çµé­‚)
         {
-            Áé»ê = true;
+            çµé­‚ = true;
         }
 
     }
-    public virtual void ¹Ø±ÕÁé»ê()
+    public virtual void å…³é—­çµé­‚()
     {
-        if (Áé»ê)
+        if (çµé­‚)
         {
-            Áé»ê = false;
+            çµé­‚ = false;
         }
 
 
     }
-    public virtual void ÓÒÒÆ()
+    public virtual void å³ç§»()
     {
 
     }
-    public virtual void ×óÒÆ()
+    public virtual void å·¦ç§»()
     {
 
     }
-    public virtual void ÏòÄ¿±êË®Æ½ÒÆ¶¯(GameObject obj)
+    public virtual void å‘ç›®æ ‡æ°´å¹³ç§»åŠ¨(GameObject obj)
     {
     }
-    protected virtual void ³öÁË¶´Âï()
+    protected virtual void å‡ºäº†æ´å˜›()
     {
 
     }
@@ -362,19 +362,19 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
     }
     public void AddForce(Vector2 vector2)
     {
-        //if (gameObject.CompareTag(Initialize.Player)&& Initialize_Mono.I.MoveP_ÓÅ»¯ && Player3.I.½ÅÏÂ != null)
+        //if (gameObject.CompareTag(Initialize.Player)&& Initialize_Mono.I.MoveP_ä¼˜åŒ– && Player3.I.è„šä¸‹ != null)
         //{
-        //    Player3.I.transform.localPosition += new Vector3(Player_input.I.·½ÏòÕıÁã¸º * Player3.I.Íæ¼ÒÊıÖµ.³£Ì¬ËÙ¶È, 0, 0) * Time.fixedDeltaTime;
+        //    Player3.I.transform.localPosition += new Vector3(Player_input.I.æ–¹å‘æ­£é›¶è´Ÿ * Player3.I.ç©å®¶æ•°å€¼.å¸¸æ€é€Ÿåº¦, 0, 0) * Time.fixedDeltaTime;
         //    return;
         //}
         //if (vector2 !=Vector2 .zero )
         //{
-        //    Debug.LogError("¼ÓÁ¦"+ vector2);
+        //    Debug.LogError("åŠ åŠ›"+ vector2);
         //}
         rb.AddForce(vector2);
     }
     /// <summary>
-    /// ÖØÁ¦
+    /// é‡åŠ›
     /// </summary>
     public float GravityScale
     {
@@ -382,7 +382,7 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
         set { rb.gravityScale = value; }
     }
     /// <summary>
-    /// Ä¦²ÁÁ¦
+    /// æ‘©æ“¦åŠ›
     /// </summary>
     public float Linear
     {
@@ -390,28 +390,28 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
         set { rb.drag = value; }
     }
     [SerializeField]
-    protected bool Velocityµ÷ÊÔ;
+    protected bool Velocityè°ƒè¯•;
     [SerializeField]
-    protected bool ËÙ¶Èµ÷ÊÔ;
+    protected bool é€Ÿåº¦è°ƒè¯•;
     public virtual Vector2 Velocity
     {
         get {
-            if (Velocityµ÷ÊÔ) Debug.LogWarning("Get" + rb.velocity + "obj   name:" + gameObject);
+            if (Velocityè°ƒè¯•) Debug.LogWarning("Get" + rb.velocity + "obj   name:" + gameObject);
             return rb.velocity;
 
         }
         set {
-            if (Velocityµ÷ÊÔ) Debug.Log(rb.velocity + "¸Äºó" + value + "obj   name:" + gameObject);
+            if (Velocityè°ƒè¯•) Debug.Log(rb.velocity + "æ”¹å" + value + "obj   name:" + gameObject);
             rb.velocity = value;
 
         }
     }
 
     public virtual float atkvalue { get; set; }
-    public abstract Action ÉúÃü¹éÁã { get; set; }
+    public abstract Action ç”Ÿå‘½å½’é›¶ { get; set; }
 
-    public abstract Action ±»´ò { get; set; }
-    public abstract float µ±Ç°hp { get; set; }
+    public abstract Action è¢«æ‰“ { get; set; }
+    public abstract float å½“å‰hp { get; set; }
     public abstract float hpMax { get; set; }
     public virtual bool HPROCK { get; set; }
 
@@ -470,7 +470,7 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
     {
         TsL_I = null;
     }
-    public static void Save¼ÙtrÊµÀı(M_tsvalueList s)
+    public static void Saveå‡trå®ä¾‹(M_tsvalueList s)
     {
         //var a =new   M_tsvalueList(new List<M_tsvalue>());
         //var a =new M_tsvalue(Vector2.zero,true);
@@ -480,7 +480,7 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
         //var j = JsonUtility.ToJson(a, true);
         //Debug.LogError(j+"aaaaaa");
 
-        Save_static.SaveinText(s, Save_static.¼ÙtrÊµÀı, true);
+        Save_static.SaveinText(s, Save_static.å‡trå®ä¾‹, true);
     }
     public static M_tsvalueList TsL_I;
     protected virtual void Awake()
@@ -489,22 +489,22 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
 
         if (TsL_I == null || TsL_I.TsL== null)
         {
-            ///µÚÒ»´ÎÔËĞĞ
-            ///Ã»ÓĞÊµÀı  
-            var a = Save_static.LoadinText<M_tsvalueList>(Save_static.¼ÙtrÊµÀı);
+            ///ç¬¬ä¸€æ¬¡è¿è¡Œ
+            ///æ²¡æœ‰å®ä¾‹  
+            var a = Save_static.LoadinText<M_tsvalueList>(Save_static.å‡trå®ä¾‹);
         if (a == null|| a.TsL==null)
         {  
-                ///Ã»ÓĞ´æµµ
+                ///æ²¡æœ‰å­˜æ¡£
             TsL_I = new M_tsvalueList(new List<M_tsvalue>());
             Debug.LogError(TsL_I);
-                ///À´¸öĞÂµÄ
-            Save¼ÙtrÊµÀı(TsL_I);
+                ///æ¥ä¸ªæ–°çš„
+            Saveå‡trå®ä¾‹(TsL_I);
             //Debug.LogError("EEEEEEEEEEEEEEEEE");
         }
         else
         {
-                ///ÓĞ´æµµ
-                ///¶ÁÈ¡¼ÇÂ¼
+                ///æœ‰å­˜æ¡£
+                ///è¯»å–è®°å½•
                 //Debug.LogError("WQEQWEQWEQWEQ");
             TsL_I = a; 
         }
@@ -512,61 +512,61 @@ public abstract class BiologyBase : MonoBehaviour, set_get, ²Ù¿Ø, I_¹¥»÷, I_ÉúÃü
 
         if (TsL_I!=null&&TsL_I.TsL != null)
         {
-            ////µ½Õâ±ß±£Ö¤´óµÄ²»Îª¿Õ
+            ////åˆ°è¿™è¾¹ä¿è¯å¤§çš„ä¸ä¸ºç©º
             var aa = TsL_I.Have(transform.position);
             if (aa  != null)
             {
                 //Debug.LogError("WWWWWWWWWWWWW ");
-                ///ÓĞÎÒÁË
+                ///æœ‰æˆ‘äº†
                 transformDeb = aa.Deb;
             }
             else
             {
       
-                ///Ã»ÓĞÎÒ
+                ///æ²¡æœ‰æˆ‘
                 TsL_I.Add(transform.position, transformDeb);
                 //Debug.LogError(transform.position+"QQQQQQQQQQQQQQQQQQQ " + TsL_I.TsL.Count);
             }
         }
         else
         {
-            //Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAÃÔ»ó");
+            //Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAè¿·æƒ‘");
         }
 
 
 
-            Initialize.×é¼ş(gameObject, ref  an);
-        Initialize.×é¼ş(gameObject, ref co);
-        Initialize.×é¼ş(gameObject, ref sp);
-        Initialize.×é¼ş(gameObject, ref rb);
+            Initialize.ç»„ä»¶(gameObject, ref  an);
+        Initialize.ç»„ä»¶(gameObject, ref co);
+        Initialize.ç»„ä»¶(gameObject, ref sp);
+        Initialize.ç»„ä»¶(gameObject, ref rb);
 
-        rb = this.gameObject.GetComponent<Rigidbody2D>();
-
+        //rb = this.gameObject.GetComponent<Rigidbody2D>();
+        
         rb.freezeRotation = true;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         rb.sleepMode = RigidbodySleepMode2D.NeverSleep;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
     }
-public virtual LayerMask  Åö×²¼ì²â²ã
+public virtual LayerMask  ç¢°æ’æ£€æµ‹å±‚
     {
         get
         {
             return 1 << Initialize.L_Ground;
         }
     }
-protected virtual void Ç°ºóºÍÍ·(float ¾àÀë,float DIºá)
+protected virtual void å‰åå’Œå¤´(float è·ç¦»,float DIæ¨ª)
     {
 
         //float DD = Ground ? 0 : 0.3f;
         var DI =
                          Physics2D.BoxCast(
               new Vector2(co.bounds.center.x, co.bounds.min.y),
-               new Vector2(co.bounds.size.x - DIºá, 0.01f),
+               new Vector2(co.bounds.size.x - DIæ¨ª, 0.01f),
                0f,
                Vector2.down,
                 0.01f,
-         Åö×²¼ì²â²ã
+         ç¢°æ’æ£€æµ‹å±‚
                )
                .collider;
         if (DI != null)
@@ -580,99 +580,99 @@ protected virtual void Ç°ºóºÍÍ·(float ¾àÀë,float DIºá)
         }
 
 
-        Í·¿Õ_ =
+        å¤´ç©º_ =
         Physics2D.BoxCast(
        new Vector2(co.bounds.center.x, co.bounds.max.y),
         new Vector2(co.bounds.size.x - 0.5f, 1),
         0f,
         Vector2.up,
-         ¾àÀë,
-Åö×²¼ì²â²ã
+         è·ç¦»,
+ç¢°æ’æ£€æµ‹å±‚
         )
         .collider == null;
 
-  Ç°¿Õ_ =
+  å‰ç©º_ =
       Physics2D.BoxCast(
-      new Vector2(ÕıÃæÍ·¶¥ .x, co.bounds.center.y),
+      new Vector2(æ­£é¢å¤´é¡¶ .x, co.bounds.center.y),
       new Vector2(0.01f, co.bounds.size.y - 0.4f),
       0f,
-    ÕıÏò,
+    æ­£å‘,
  0.05f,
-Åö×²¼ì²â²ã
+ç¢°æ’æ£€æµ‹å±‚
       )
       .collider == null;
 
-        ºó¿Õ_ =
+        åç©º_ =
  Physics2D.BoxCast(
- new Vector2(·´Ãæ½Åµ×.x, co.bounds.center.y),
+ new Vector2(åé¢è„šåº•.x, co.bounds.center.y),
  new Vector2(0.01f, co.bounds.size.y - 0.4f),
  0f,
-    ·´Ïò,
+    åå‘,
  0.05f,
-Åö×²¼ì²â²ã
+ç¢°æ’æ£€æµ‹å±‚
  )
  .collider == null;
 
  
     }
 
-    public bool ×ó¿Õ { 
+    public bool å·¦ç©º { 
         get {
             if (LocalScaleX_Set ==1)
             {
-                return ºó¿Õ_;
+                return åç©º_;
             }
             else
             {
-                return Ç°¿Õ_;
+                return å‰ç©º_;
             } 
         } 
     }
-    public bool ÓÒ¿Õ {
+    public bool å³ç©º {
 
         get
         {
             if (LocalScaleX_Set != 1)
             {
-                return ºó¿Õ_;
+                return åç©º_;
             }
             else
             {
-                return Ç°¿Õ_;
+                return å‰ç©º_;
             }
         }
     }
     /// <summary>
-    /// ¿ÕÎªÕæ     ÓĞÊµÌåÎª¼Ù
+    /// ç©ºä¸ºçœŸ     æœ‰å®ä½“ä¸ºå‡
     /// </summary>
-    public virtual  bool  Ğü¿Õ¼ì²â()
+    public virtual  bool  æ‚¬ç©ºæ£€æµ‹()
     { 
         var a = new Vector2(co.bounds.min.x, co.bounds.min. y+0.1f); 
         var b = new Vector2(co.bounds.max.x, co.bounds.min.y + 0.1f);
-     var ba=   Physics2D.Raycast(a,Vector2.down ,0.2f,Åö×²¼ì²â²ã).collider==null;
-        var bb = Physics2D.Raycast(b, Vector2.down, 0.2f, Åö×²¼ì²â²ã).collider == null;
+     var ba=   Physics2D.Raycast(a,Vector2.down ,0.2f,ç¢°æ’æ£€æµ‹å±‚).collider==null;
+        var bb = Physics2D.Raycast(b, Vector2.down, 0.2f, ç¢°æ’æ£€æµ‹å±‚).collider == null;
         return bb || ba;
     }
  
-    public virtual void ½»»¥()
+    public virtual void äº¤äº’()
     {
     }
 
 
-    public virtual void ÌøÔ¾()
+    public virtual void è·³è·ƒ()
     {
 
     }
 
-    public virtual void ¿Û¹¥»÷(float i)
+    public virtual void æ‰£æ”»å‡»(float i)
     {
     }
 
-    public virtual void ±»¿ÛÑª(float i, GameObject obj,int Key)
+    public virtual void è¢«æ‰£è¡€(float i, GameObject obj,int Key)
     {
     }
 
-    public virtual void ¿Û×î´óÉÏÏŞ(float i)
+    public virtual void æ‰£æœ€å¤§ä¸Šé™(float i)
     {
     }
 }

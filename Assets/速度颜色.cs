@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -79,6 +79,9 @@ public class 速度颜色 : MonoBehaviour
     bool 假Speed;
     private void Update()
     {
+        if (Time.frameCount % 3 != 0) //3帧执行一次, 优化
+            return;
+
         if (Is == null)
         {
             Start();

@@ -1,4 +1,4 @@
-using Enemmy;
+﻿using Enemmy;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -93,11 +93,12 @@ namespace  SampleFSM
 
         public void  fatherFix()
         {
-            if (Father!=null)
+            var father = Father;
+            if (father != null)
             {
 
-                Father.fatherFix();
-               Father.BaseFixStay?.Invoke();
+                father.fatherFix();
+                father.BaseFixStay?.Invoke();
             }
         }
 

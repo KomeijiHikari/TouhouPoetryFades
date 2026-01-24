@@ -27,7 +27,8 @@ public class 特效模板管理 : MonoBehaviour, I_Speed_Change
  
     public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
 
-    List<特效模板> 列表;
+    //List<特效模板> 列表;
+    Dictionary<string, 特效模板> 列表FindIndex = null;
   public  Animator an;
     SpriteRenderer sp;
 
@@ -40,8 +41,9 @@ public class 特效模板管理 : MonoBehaviour, I_Speed_Change
 
   public   特效模板 播放特效(string name)
     {
-        特效模板 当前特效模板 = null; 
-        for (int i = 0; i < 列表.Count; i++) if (列表[i].clip.name == name) 当前特效模板 = 列表[i];   //获取特效
+        特效模板 当前特效模板 = null;
+        列表FindIndex.TryGetValue(name, out 当前特效模板);
+        //for (int i = 0; i < 列表.Count; i++) if (列表[i].clip.name == name) 当前特效模板 = 列表[i];   //获取特效
 
         if (当前特效模板 == null)
         {
@@ -154,13 +156,13 @@ public class 特效模板管理 : MonoBehaviour, I_Speed_Change
             transform.SetParent(father);
         }
     }
-    internal void 初始化(RuntimeAnimatorController c, List<特效模板> list)
+    internal void 初始化(RuntimeAnimatorController c, Dictionary<string,特效模板> list)
     {
 
         Initialize.组件(gameObject, ref sp);
         Initialize.组件(gameObject, ref an);
         father = transform.parent;
-        列表 = list;
+        列表FindIndex = list;
         an.runtimeAnimatorController = c;
     }
     int Time_;
@@ -193,11 +195,18 @@ public class 特效模板管理 : MonoBehaviour, I_Speed_Change
             }
         }
 
-        if (同步玩家)
+        
+
+        if(Time.frameCount % 3 == 0)//3帧执行一次 优化性能
         {
-            Speed_Lv = Player3.Public_Const_Speed;
+            var spd = Player3.Public_Const_Speed;
+            if (同步玩家)
+            {
+                Speed_Lv = spd;
+            }
+
+            an.speed = Speed_Lv / spd;
         }
-        an.speed = Speed_Lv / Player3.Public_Const_Speed;
     }
     public bool 代理回归=false ;
 }

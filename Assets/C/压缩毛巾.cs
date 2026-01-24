@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -160,7 +160,8 @@ public class 压缩毛巾 : MonoBehaviour
     
     private void Update()
     {
- 
+        FakeUpdate();
+
         if (FatherB == null) return;
         transform.parent    .position = FatherB.transform.position - ((Vector3)v2差);
 
@@ -168,10 +169,12 @@ public class 压缩毛巾 : MonoBehaviour
         {
             Bc.enabled = false;
         }
+
+
     }
     [SerializeField ]
     float time_;
-    private void FixedUpdate()
+    private void FakeUpdate()
     {
         if (e.I_S.限制) return;
         float T = B ? -压缩倍数 : 0;
