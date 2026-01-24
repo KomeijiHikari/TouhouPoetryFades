@@ -140,12 +140,12 @@ protected  Anim2 Next { get; set; }
     int Last;
     Anim2 我先;
    
-    protected void Playe(Anim2 anim)
+    protected void Playe(Anim2 anim )
     {
   
         //迭代当前anim,相同帧检测，速度恢复，Next 恢复，时间检测恢复;
 
-        //正常情况      被Next调用     有Next但是被强切
+        //正常情况      被Next调用     有Next但是被强切 
         if (当前anim == anim) return; 
         if (Last == Time.frameCount
             && 我先 != null  )

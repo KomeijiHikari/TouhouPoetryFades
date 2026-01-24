@@ -362,16 +362,36 @@ public partial class 机关 : 交互_Base
             Player3.I.SetSpeed(t);
             //Player3.Public_Const_Speed = t;
             Player3.I.变速特效(t);
-        } 
-    } 
-    public void 原地提示(string s)
-    { 
-        var a= GetComponentsInChildren<适应文字>(true);
-        if (a!=null&&a.Length>0)
+        }
+    }
+    public void 原地键位提示提示(string s)
+    {
+        if(jw==null)
+            jw = GetComponent<键位提示转换>();
+
+            if (jw != null)
         {
-            适应 = a[0];
+        var  OOut=    jw.键位提示(s);
+            真提示(OOut);
+        }
+        else
+        {
+            Debu.LogError("没有找到",this);
+            return;
         } 
-        if (适应==null)
+    }
+    void 真提示( string s)
+    {
+        if (适应 == null)
+        {
+            var a = GetComponentsInChildren<适应文字>(true);
+            if (a != null && a.Length > 0)
+            {
+                适应 = a[0];
+            }
+        }
+
+        if (适应 == null)
         {
             Debug.LogError("子物体没有适应文字组件");
         }
@@ -382,9 +402,16 @@ public partial class 机关 : 交互_Base
             适应.SetText(s);
         }
     }
- 
+    public void 原地提示(string s)
+    {
+        真提示(s);
+    }
+    键位提示转换 jw;
   public  适应文字 适应;
-
+    public void  跟随键位提示(string s)
+    {
+        跟随提示(按键D.ReplaceKeys(s));
+    }
     public void 跟随提示(string  s)
     { 
         适应 = Player3.I.适应文字;

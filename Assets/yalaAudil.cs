@@ -187,7 +187,7 @@ public class yalaAudil : MonoBehaviour
         }
         else
         {
-            Debug_.LogError("“Ù∆µº”‘ÿ ß∞‹: " + www.error);
+            Debu.LogError("“Ù∆µº”‘ÿ ß∞‹: " + www.error);
         }
     }
     [SerializeField]

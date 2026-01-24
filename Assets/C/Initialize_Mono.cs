@@ -29,7 +29,7 @@ public class DisplayOnly : PropertyAttribute
 {
 
 } 
-public static class Debug_
+public static class Debu
 {
   public   enum E_DebugState
     {
@@ -37,7 +37,7 @@ public static class Debug_
         Deb,
         Count,
     }
-static    Debug_.E_DebugState e_DebugState => Initialize_Mono.I.e_DebugState;
+static    Debu.E_DebugState e_DebugState => Initialize_Mono.I.e_DebugState;
 
     public static void LogError(object s, UnityEngine.Object c = null)
     {
@@ -138,7 +138,7 @@ static    Debug_.E_DebugState e_DebugState => Initialize_Mono.I.e_DebugState;
 [DefaultExecutionOrder(-100)]
 public class Initialize_Mono : MonoBehaviour
 {
-    public Debug_.E_DebugState e_DebugState;
+    public Debu.E_DebugState e_DebugState;
     public List<提示管理设置> TsL = new List<提示管理设置>();
     private void Start()
     {  
@@ -330,9 +330,7 @@ public class Initialize_Mono : MonoBehaviour
     // }
 
     private void Awake()
-    {
- 
-        QualitySettings.vSyncCount = 0;
+    { 
         // 锁定为60帧
         Application.targetFrameRate = 60;
         事件字典显示 = Event_M.I.事件列表;
@@ -1177,6 +1175,26 @@ public static  class   Rb反算
 
 public static class Initialize
 {
+    public static void PlayOrReplay(this Animator animator, string stateName, int layer = -1, float normalizedTime = 0f)
+    {
+        if (animator == null || string.IsNullOrEmpty(stateName))
+            return;
+
+        // 获取当前状态信息
+        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(layer);
+
+        // 检查是否是同一个动画且正在播放
+        if (currentState.IsName(stateName))
+        {
+            // 重新播放该动画
+            animator.Play(stateName, layer, normalizedTime);
+        }
+        else
+        {
+            // 播放新的动画
+            animator.Play(stateName, layer, normalizedTime);
+        }
+    }
     public static void  TryPlay(this Animator animator, string c)
     {
       if(animator.AnimatorHasState(c))

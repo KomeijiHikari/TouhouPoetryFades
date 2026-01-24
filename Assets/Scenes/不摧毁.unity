@@ -27527,6 +27527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae4631df17b9524f97b5ff2f224b474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  "\u6C38\u8FDC\u4E0D\u6682\u505C": 0
   "\u5173\u95ED": 0
   "\u6570\u91CF": 0
   Deb: 0
@@ -43286,7 +43287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   E: 0
-  "\u5F00\u53D1\u8005\u6A21\u5F0F1": 0
+  "\u5F00\u53D1\u8005\u6A21\u5F0F1": 1
   Debbbb:
     "\u5730\u56FE\u9053\u5177\u89E3\u95011": 0
     Dash: 1
@@ -43303,7 +43304,7 @@ MonoBehaviour:
     "\u653B\u51FB\u6253\u65AD": 1
     "\u4E0B\u843D\u653B\u51FB": 0
     "Dash\u52A0\u901F": 1
-    "\u65E0\u9650\u5706\u5288": 0
+    "\u65E0\u9650\u5706\u5288": 1
     "\u901F\u5EA6\u89C6\u91CE": 1
   "\u80FD\u529B\u8986\u76D61": 1
   "\u81EA\u7531\u8D77\u59CB\u70B91": 1
@@ -46826,6 +46827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae4631df17b9524f97b5ff2f224b474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  "\u6C38\u8FDC\u4E0D\u6682\u505C": 0
   "\u5173\u95ED": 0
   "\u6570\u91CF": 0
   Deb: 0

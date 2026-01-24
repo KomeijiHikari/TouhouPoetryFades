@@ -111,6 +111,11 @@ public partial  class 重要道具 : MonoBehaviour
         N.半灵 = true; 
         消息.I.Come_on_Meesge("你的半灵回来了");
     }
+    public void 物品(item item)
+    {
+        
+        所有物品管理.I.PlayerAdd(所有物品管理.I.GetCompleteItem(item.itemName));
+    }
     public void 开启视野()
     {
 

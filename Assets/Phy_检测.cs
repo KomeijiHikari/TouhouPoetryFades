@@ -79,10 +79,10 @@ public class Phy_检测 : MonoBehaviour, I_暂停
         if(ActionDeb)
         {
 
-            if (AliveStay != null) Debug_.LogError(AliveStay.GetInvocationList().Length);
-            if (Stay != null) Debug_.LogError( Stay.GetInvocationList().Length);
-            if (Enter != null) Debug_.LogError(Enter.GetInvocationList().Length);
-            if (Exite != null) Debug_.LogError(Exite.GetInvocationList().Length);
+            if (AliveStay != null) Debu.LogError(AliveStay.GetInvocationList().Length);
+            if (Stay != null) Debu.LogError( Stay.GetInvocationList().Length);
+            if (Enter != null) Debu.LogError(Enter.GetInvocationList().Length);
+            if (Exite != null) Debu.LogError(Exite.GetInvocationList().Length);
         } 
 
         AliveStay?.Invoke();

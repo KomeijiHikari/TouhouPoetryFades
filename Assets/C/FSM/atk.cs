@@ -96,6 +96,7 @@ public static class A_N
 }
 public abstract  class  atkBase: State_Base
 {
+    protected float xM水平 = 1;
     protected virtual float AtkSpeed => Player3.I.玩家数值.攻击速度加成;
     protected bool 蓄力攻击
     {
@@ -351,7 +352,7 @@ public abstract  class  atkBase: State_Base
     {
 
     }
-    protected void 提一下(float Y,float 水平约束_最慢乘值=0,float 水平约束_最大乘值 = 1)
+    protected void 提一下(float Y, float 水平约束_最慢乘值 = 0, float 水平约束_最大乘值 = 1, float xM = 1)
     {
         Y = MathF.Max(Y, Player.Velocity.y-1);
     
@@ -365,10 +366,20 @@ public abstract  class  atkBase: State_Base
         }
         else
         {
-            var Lerp = Mathf.Clamp(IP.方向正零负_非零计时器, 水平约束_最慢乘值, 水平约束_最大乘值);
+            var Lerp = xM* Mathf.Clamp(IP.方向正零负_非零计时器, 水平约束_最慢乘值, 水平约束_最大乘值)  ;
 
-
+            ///当水平为0，那么直接是乘法
+            ///不为零，那么就是  水平最大速度*结果
+            if(IP.方向正零负==0)
+            {
                 Player.Velocity = new Vector2(Player.Velocity.x * Lerp, Y);
+            }
+            else
+            {
+                //Player.水平限制
+                Player.Velocity = new Vector2(Player.玩家数值.常态速度 * Lerp*Player.LocalScaleX_Int, Y);
+            }
+
         }
  
 
@@ -528,6 +539,7 @@ public class atk : atkBase
         通告 = 第N下 == 2; 
     }
 } 
+ 
 public class skyatk : atkBase
 {
     protected override bool 击中效果()
@@ -593,8 +605,9 @@ public class skyatk : atkBase
     protected override void 开启碰撞框播放特效()
     {
         base.开启碰撞框播放特效();
-        提一下(5, 0.2f, 0.5f);
+        提一下(5, 0.2f, 0.5f, xM水平);
     }
+
     protected override void 播放相应动画()
     {
         动画阶段 = 阶段.ready;
@@ -692,6 +705,12 @@ public class cricleatk : atkBase
     public override void ExitState(E_State e)
     {
         base.ExitState(e);
+
+        if (e!=E_State.cricleatk)
+        {
+            xM水平 = 1;
+        }
+
         击中生物 = false;
         当前攻击特效名字 = null;
         判定框.关闭再打开();
@@ -742,7 +761,18 @@ public class cricleatk : atkBase
                 return;
             }
         }
-   
+
+        if(Player.N_.无限圆劈)
+        if (IP.按键检测_按下(IP.k.跳跃))
+        {
+            Debug.LogError("Debug        if (IP.按键检测_按下(IP.k.跳跃))        if (IP.按键检测_按下(IP.k.跳跃))        if (IP.按键检测_按下(IP.k.跳跃))____");
+            ExitState(E_State.cricleatk);
+            xM水平 *= 0.5f;
+            EnterState();
+            A.animator.PlayOrReplay(A_N.cricleatk_0_);
+            return;
+        }
+ 
 
         if (击中效果()) {
             ///击中后重置
@@ -750,10 +780,13 @@ public class cricleatk : atkBase
             Player.空中攻击过了 = false;
             Player.圆形攻击过了 = false;
             //提一下(Player.玩家数值.圆斩上升力);
+            xM水平 = 1;
             提一下(Player.玩家数值.圆斩上升力, 0.7f); 
              
         }
         if (IP.方向正零负 != 0)  Player.水平限制();
+
+        Player.竖直限制();
     }
     Int不重复 BInt=new Int不重复();
     protected override bool 击中效果()
