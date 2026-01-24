@@ -416,7 +416,25 @@ public class Player_input : Input_base
     /// </summary>
     public class IK
     { 
+       public enum IK_Name
+        {
+        地图,
+        攻击,
+        跳跃,
+        冲刺,
+        格挡,
+        交互,
+        变速,
+        视野,
+        背包,
 
+        上,
+        下,
+        左,
+        右,
+
+    }
+       
 
         public KeyCode 地图;
         public KeyCode 攻击;

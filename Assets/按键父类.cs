@@ -4,10 +4,37 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Player_input;
 
+public static  class  按键D
+    {
+    public static Dictionary<string, object> D;
+
+    public static  string GetString(IK.IK_Name e)
+    {
+        object Nam;
+        if (D.TryGetValue(e.ToString(), out Nam))
+        {
+            return Nam.ToString();
+        }
+        else
+        {
+            Debug_.LogError("Deb_没找到" + e);
+            return "Deb_没找到";
+        }
+
+
+    }
+}
 public class 按键父类 : MonoBehaviour
 {
     Text_button_Father T;
-    public     Dictionary<string, object> D=new Dictionary<string, object>();
+    public Dictionary<string, object> D { get
+        {
+            return D;
+        }
+        set {
+            D=value;
+        }
+    }
     public static 按键父类 I;
 
     public 按键监听 j;
@@ -19,6 +46,8 @@ public class 按键父类 : MonoBehaviour
         if (I != null ) Destroy(this);
         else   I = this;
         //Debug.LogError();
+
+        D= new Dictionary<string, object>();
 
         T = GetComponent<Text_button_Father>();
 
@@ -36,6 +65,7 @@ public class 按键父类 : MonoBehaviour
     //    读取();
     //}
  
+
     public void 新的()
     {
         var kk = 来个新的();
