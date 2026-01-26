@@ -10,22 +10,22 @@ public class 删除这个 : MonoBehaviour
     public Transform Phy预测;
     public Transform Ts;
     public Material M;
-    public bool s设置材质=false;
+    public bool s设置材质 = false;
 
     SpriteRenderer sp;
 
     Rigidbody2D rb;
     string DarkName = "_DarkColor";
 
-   
+
     private void Awake()
     {
-        rb=GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         sp = GetComponent<SpriteRenderer>();
 
-        M= sp.sharedMaterial;
+        M = sp.sharedMaterial;
     }
- public   float Time;
+    public float Time;
     public Vector2 V;
     public Vector2 Way;
     void asd()
@@ -33,7 +33,7 @@ public class 删除这个 : MonoBehaviour
         var a = V + (Vector2)transform.position;
         Initialize_Mono.I.Waite(() => {
 
-          a.DraClirl(1, Color.red, 1);
+            a.DraClirl(1, Color.red, 1);
             rb.bodyType = RigidbodyType2D.Static;
         }, Time);
     }
@@ -65,14 +65,14 @@ public class 删除这个 : MonoBehaviour
     }
     void v2ASD()
     {
-        var a = V + (Vector2)transform.position; 
-            a.DraClirl(1, Color.red, 12); 
-    
+        var a = V + (Vector2)transform.position;
+        a.DraClirl(1, Color.red, 12);
+
     }
     [Button]
     public void Av()
     {
-        rb.velocity = rb.V2Frist(Way, V); 
+        rb.velocity = rb.V2Frist(Way, V);
         v2ASD();
     }
     [Button]
@@ -90,15 +90,21 @@ public class 删除这个 : MonoBehaviour
     public Vector3 CameraWv;
     public Vector3 CameraWs;
     public Vector3 CameraV2zeroPo;
+
+    [Button]
+    public void Set原批测试(float a,float b)
+    {
+        cricleatk.SetY(a,b);
+    }
     private void Update()
     {
         if (在不在摄像机里面 != null)
         {
             var C = 在不在摄像机里面.transform.position;
             CameraWv = Camera.main.WorldToViewportPoint(C);
-            CameraWs=Camera.main.WorldToScreenPoint(C);
+            CameraWs = Camera.main.WorldToScreenPoint(C);
 
-            CameraV2zeroPo= Camera.main.ViewportToWorldPoint(Vector3.zero);
+            CameraV2zeroPo = Camera.main.ViewportToWorldPoint(Vector3.zero);
             //在不在摄像机里面.bounds.Intersects();
             //if (CameraWv.y < 0 || CameraWv.x < 0 || CameraWv.y > 1 || CameraWv.x > 1)
             //{
@@ -117,20 +123,20 @@ public class 删除这个 : MonoBehaviour
             {
                 在不在摄像机里面.color = Color.white;
             }
- 
+
         }
-        if (Phy预测!=null)
+        if (Phy预测 != null)
         {
-            Phy.碰撞预测2(Phy预测 .position- Player3.I.Bounds.center, Player3.I.Bounds,1<<Initialize.L_Ground,transform,true);
+            Phy.碰撞预测2(Phy预测.position - Player3.I.Bounds.center, Player3.I.Bounds, 1 << Initialize.L_Ground, transform, true);
         }
-        if (Ts!=null)
+        if (Ts != null)
         {
             Vector3 V = transform.position - Ts.transform.position;
             Vector3 No = V;
             No.Normalize();
- 
+
             Debug.DrawRay(transform.position, No * 3, Color.red);
-            Debug.DrawRay(transform.position+Vector3.right*0.5f, V.normalized * 3, Color.yellow);
+            Debug.DrawRay(transform.position + Vector3.right * 0.5f, V.normalized * 3, Color.yellow);
         }
 
         if (s设置材质)

@@ -352,7 +352,20 @@ public abstract  class  atkBase: State_Base
     {
 
     }
-    protected void 提一下(float Y, float 水平约束_最慢乘值 = 0, float 水平约束_最大乘值 = 1, float xM = 1)
+    protected void 提一下_NoLerp(float Y, float xM = 1)
+    {
+ 
+        if (Player.Velocity.y > Y)
+        {
+            Player.Velocity = new Vector2(Player.Velocity.x * xM, Player.Velocity.y * xM);
+        }
+        else
+        {
+        Player.Velocity = new Vector2(Player.Velocity.x*xM , Y*xM );
+
+        }
+    }
+    protected void 提一下(float Y, float 水平约束_最慢乘值  , float 水平约束_最大乘值 = 1, float xM = 1)
     {
         Y = MathF.Max(Y, Player.Velocity.y-1);
     
@@ -361,7 +374,6 @@ public abstract  class  atkBase: State_Base
             //if (Player.加速了) Player.Velocity = new Vector2(Player.Velocity.x, Y);
             //else Player.Velocity = new Vector2(Player.Velocity.x / 4, Y);
 
- 
             Player.Velocity = new Vector2(0, Y);
         }
         else
@@ -605,7 +617,7 @@ public class skyatk : atkBase
     protected override void 开启碰撞框播放特效()
     {
         base.开启碰撞框播放特效();
-        提一下(5, 0.2f, 0.5f, xM水平);
+        提一下(5, 0.2f, 0.5f );
     }
 
     protected override void 播放相应动画()
@@ -719,6 +731,7 @@ public class cricleatk : atkBase
     public override void EnterState()
     {
         base.EnterState();
+
         A.Re();
         yalaAudil.I.EffectsPlay("Jump", 0);
         第N下 = 0;
@@ -745,6 +758,7 @@ public class cricleatk : atkBase
         判定框.开启一会儿(碰撞框触发时间, 判定框.Cc);
         当前攻击特效名字 = null;
     }
+    float 上次按;
     public override void UpdateState()
     {
         base.UpdateState();
@@ -765,14 +779,17 @@ public class cricleatk : atkBase
         if(Player.N_.无限圆劈)
         if (IP.按键检测_按下(IP.k.跳跃))
         {
-            Debug.LogError("Debug        if (IP.按键检测_按下(IP.k.跳跃))        if (IP.按键检测_按下(IP.k.跳跃))        if (IP.按键检测_按下(IP.k.跳跃))____");
-            ExitState(E_State.cricleatk);
-            xM水平 *= 0.5f;
-            EnterState();
-            A.animator.PlayOrReplay(A_N.cricleatk_0_);
-            return;
+                if(Time.time-上次按>0.1f)
+                {
+                    上次按 = Time.time;
+                    Debug.LogError("Debug        if (IP.按键检测_按下(IP.k.跳跃))        if (IP.按键检测_按下(IP.k.跳跃))        if (IP.按键检测_按下(IP.k.跳跃))____");
+                    ExitState(E_State.cricleatk);
+                    xM水平 *= 0.5f;
+                    EnterState();
+                    A.animator.PlayOrReplay(A_N.cricleatk_0_);
+                    return;
+                } 
         }
- 
 
         if (击中效果()) {
             ///击中后重置
@@ -781,13 +798,35 @@ public class cricleatk : atkBase
             Player.圆形攻击过了 = false;
             //提一下(Player.玩家数值.圆斩上升力);
             xM水平 = 1;
-            提一下(Player.玩家数值.圆斩上升力, 0.7f); 
+            提一下_NoLerp(Player.玩家数值.圆斩上升力 ); 
              
         }
+
         if (IP.方向正零负 != 0)  Player.水平限制();
 
         Player.竖直限制();
+        Player.水平限制();
+        if (Y时间_容器>0)
+        { 
+            Y时间_容器 -= Time.deltaTime;
+             Player.transform.position+=(Vector3) Vector2.up* Time.deltaTime * 帧位移;
+        }
+  
     }
+    public static void SetY(float way,float time)
+    {
+        //Player3.I.transform.position += new Vector3(0f, way);
+        //return;
+        var a = (cricleatk)FSM.f.Getstate(E_State.cricleatk);
+        a.Y时间_容器 = a.Y时间;
+        a.量 = way;
+        a.Y时间 = time; 
+    }
+    ///  10   t:2      每秒位移   5         Time.deltaTime=0.1  帧量=0.05  一共运行40帧  帧量*每秒位移=0.25    *40   =2.5*4=10
+    public float 量;
+    public float Y时间=0.1f;
+    public float Y时间_容器;
+    public float 帧位移 =>   量/ Y时间;
     Int不重复 BInt=new Int不重复();
     protected override bool 击中效果()
     { 
@@ -874,8 +913,8 @@ public class cricleatk : atkBase
                                     Debug.LogError("到这里aaa");
                                 }
 
-                                Player.脚底中间.DraClirl(1f,Color.white);
-                                new Vector2 (Player.transform.position.x, Rs.y).DraClirl(1f, Color.white);
+                                //Player.脚底中间.DraClirl(1f,Color.white);
+                                //new Vector2 (Player.transform.position.x, Rs.y).DraClirl(1f, Color.white);
 
                                 if (Initialize_Mono.I.打包额外打印)
                                 {
@@ -886,8 +925,9 @@ public class cricleatk : atkBase
                                 if (delta > 0)
                                 {
                                     var a = sky.双点碰撞(Player.Bounds.size.y + delta + Player.Velocity.y / 15f);
-                                    var B = sky.Find(a); 
-                                    Player.transform.position += new Vector3(0f, delta); 
+                                    var B = sky.Find(a);
+                                    SetY(delta,0.1f);
+                       
                                 }
                                 if (originalAll != null)
                                 {
@@ -941,7 +981,7 @@ public class cricleatk : atkBase
                             if (RRR)
                             {
                                 var delta = Rs.y - Player.脚底中间.y; 
-                                Player.transform.position += new Vector3(0f, delta);
+                                SetY(delta, 0.1f); 
                                 break;
                             }
                         }
@@ -1010,7 +1050,9 @@ public class cricleatk : atkBase
         Debug.LogError(Player.圆形攻击过了);
 
         if (!Player.圆形攻击过了)
-            提一下(5, 0.7f);
+        {
+            提一下_NoLerp(5, xM水平); 
+        } 
         Player.圆形攻击过了 = true;
   
         A.Playanim(A_N.cricleatk_0_ );
@@ -1287,7 +1329,7 @@ public class upatk : atkBase
                 }
                 break; 
         }
-        if (击中效果()) 提一下(4.2f);
+        if (击中效果()) 提一下(4.2f,0f);
        
     }
    protected override bool          击中效果()

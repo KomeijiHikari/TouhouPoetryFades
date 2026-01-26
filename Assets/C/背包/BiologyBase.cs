@@ -68,7 +68,7 @@ public abstract class BiologyBase : MonoBehaviour, set_get, 操控, I_攻击, I_
                 {
                     if (transform_真实.position != value)
                     {
-                        Debug.Log(Time.frameCount + "修改坐标：" + transform_真实.position + "修改后：" + value);
+                        Debug.Log(Time.frameCount + "修改坐标：" + transform_真实.position + "修改后：" + value+"差值："+(value - transform_真实.position));
                     }
                 }
                 transform_真实.position = value;

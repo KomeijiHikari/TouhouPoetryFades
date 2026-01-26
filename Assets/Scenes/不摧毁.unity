@@ -43287,7 +43287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   E: 0
-  "\u5F00\u53D1\u8005\u6A21\u5F0F1": 1
+  "\u5F00\u53D1\u8005\u6A21\u5F0F1": 0
   Debbbb:
     "\u5730\u56FE\u9053\u5177\u89E3\u95011": 0
     Dash: 1
