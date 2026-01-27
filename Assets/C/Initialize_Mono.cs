@@ -2750,6 +2750,7 @@ Debug.LogError( a.ToString());
     /// <summary>
     /// 只有Player  有碰撞
     /// </summary>
+    public static LayerMask L_Deb { get; } = LayerMask.NameToLayer("Deb");
     public static LayerMask L_Default { get; } = LayerMask.NameToLayer("Default");
     public static LayerMask L_Only_Ground { get; } = LayerMask.NameToLayer("Only_Ground");
     public static LayerMask L_Enemy { get; } = LayerMask.NameToLayer("Enemy");

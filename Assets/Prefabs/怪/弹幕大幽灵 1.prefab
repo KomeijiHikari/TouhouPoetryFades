@@ -233,7 +233,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6459563326737340051}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.28, y: -1.25, z: 0}
+  m_LocalPosition: {x: 0, y: -1.025, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -377,7 +377,6 @@ MonoBehaviour:
   "\u6469\u64E6\u529B": 20
   ZZZZZZZ: 0
   Deb: 0
-  Sp: {fileID: 0}
   Speedd: 0
   "\u5173\u95ED1": 0
   "\u91CD\u529B\u589E\u5E451": 0
@@ -388,7 +387,7 @@ MonoBehaviour:
   current_Speed_LV: 0
   speed_Lv: 0
   "\u5730\u9762": {fileID: 0}
-  s: {fileID: 0}
+  Sp: {fileID: 0}
   bc: {fileID: 0}
 --- !u!114 &6459563326737340042
 MonoBehaviour:
@@ -449,11 +448,15 @@ MonoBehaviour:
   E: {fileID: 0}
   tim: 0
   "\u4E0D\u53C2\u4E0E\u573A\u666F": 0
+  isReviveEnter:
+    m_PersistentCalls:
+      m_Calls: []
   isDeadEnter:
     m_PersistentCalls:
       m_Calls: []
   "\u7279\u6548\u5217\u8868": []
   "\u9700\u8981\u52A8\u753B": 1
+  PosKeyForm: {fileID: 0}
   mypo: {x: 0, y: 0}
   "\u91CD\u751F\u65F6\u95F4": 0
   "\u66F4\u5B89\u5168\u7684\u5730\u70B9": 0
@@ -497,6 +500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae4631df17b9524f97b5ff2f224b474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  "\u6C38\u8FDC\u4E0D\u6682\u505C": 0
   "\u5173\u95ED": 0
   "\u6570\u91CF": 0
   Deb: 0
@@ -671,7 +675,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sp: {fileID: 6459563328372634129}
-  "\u8C03\u8BD5": 0
   obj: {fileID: 0}
   I_Speed_Change: {fileID: 6459563326737340051}
   f: 0

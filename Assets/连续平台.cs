@@ -48,10 +48,10 @@ public class 连续平台 : MonoBehaviour, I_碰撞状态
     // ========== 视觉参数 ==========
 
     /// <summary> 平台未激活时的缩放 </summary>
-    Vector2 No = new Vector2(1f, 3.5f);
+    Vector2 No = new Vector2(0.2f, 3.5f);
 
     /// <summary> 平台激活时的缩放 </summary>
-    Vector2 Yes = new Vector2(3.5f, 1f);
+    Vector2 Yes = new Vector2(3.5f, 0.2f);
 
     // ========== 临时变量 ==========
 

@@ -158,13 +158,14 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
  
                 transform.position = 下一目标;
             }
-            else
+            else  
             {
                 ////下一帧将会发生碰撞 
                 ///
                 if (Ray.collider.CompareTag(Initialize.Player))
                 {
-                    transform.position = 下一目标;
+
+                        transform.position = 下一目标;
                 }
                 else
                 {
@@ -221,6 +222,10 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool, I_消弹, I_消失进度
         var a = Physics2D.BoxCast(transform.position, transform.localScale, 0f, Vector2.zero, 0f,  子弹碰撞);
         if (a)
         {
+            if (a.collider!=null&&!a.collider.isTrigger)
+            {
+
+      
             if (a.transform.gameObject.layer == Initialize.L_Player && deadtime == -1f)
             {
                 if (a.collider.gameObject == Player3.I.gameObject) {
@@ -231,6 +236,7 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool, I_消弹, I_消失进度
             else if (a.transform.gameObject.layer == Initialize.L_Ground)
             {
                 我死了();
+                }
             }
         }
          

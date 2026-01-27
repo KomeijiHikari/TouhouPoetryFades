@@ -11,7 +11,7 @@ using UnityEngine;
 /// </summary>
 public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Revive
 {
-
+    监控激活碰撞框 j;
     public bool Re { get; set; }=false;
     public float Re_Time { get; set; } = 0;
     public bool 重制()
@@ -59,7 +59,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
     public GameObject 游标;
 
     /// <summary> 游标检测平台激活的统一范围半径 </summary>
-    public float 检测范围 = 2;
+  [SerializeField][DisplayOnly]  private float 检测范围1;
 
     /// <summary> 游标移动速度（单位/秒） </summary>
     public float Speed = 1;
@@ -130,6 +130,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
     public Bounds 盒子 =>default;
 
     public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
+    public float 检测范围 { get => 检测范围1; set => 检测范围1 = value; }
 
     // ========== Unity生命周期方法 ==========
     Color C;
@@ -140,7 +141,8 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
     }
     void Start()
     {
-
+        gameObject.组件 (ref j);
+        j.是我 += (bool b) => { 重置(); };
         C = 激活与否.color;
         // 收集所有子平台
         Ls = GetComponentsInChildren<连续平台>();
@@ -212,14 +214,16 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
                 if (Vector3.Distance(my, 检测点) < 检测范围)
                 {
                     if (已激活 == 未完成进度)
-                    {
-                        //   上个范围内
-                        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAA" + 游标.transform.position);
-                        //if (Deb)             Debug.Break();
-
-                        游标.transform.position = 检测点;
-                        Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAA" + 游标.transform.position);
+                    { 
+                        ///如果索引是最新索引了
+                        /// 移动到当前和下一个之间    然后  应该索引     
+                        //游标.transform.position = Vector3.MoveTowards(Vs[路径索引 + 1] , Vs[路径索引 + 2], 检测范围); 
+                        游标.transform.position = 检测点; 
                     }
+                }
+                else if ( Vector3.Distance(my, Vs[路径索引]) < 检测范围)
+                {
+                    游标.transform.position = Vector3.MoveTowards(Vs[路径索引 ], Vs[路径索引  ], 检测范围);
                 }
                 // 前进到下一个平台
                 已激活 = 0;          // 重置激活状态
@@ -231,6 +235,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
                 {
                     Debug.LogError("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
                     销毁触发?.Invoke();
+                    return;
                 }
             }
         }
@@ -268,7 +273,8 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
         }
 
     }
-
+    [SerializeField] float  游标Speed;
+    [SerializeField] Vector2     Next游标目标;
     void FixedUpdate()
     {
         if (暂停) return;
@@ -283,8 +289,10 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
         {
             Debug.Break();
         }
+ 
         Vector3 you = Vs[路径索引 + 1];
-
+        游标Speed = Speed * Time.fixedDeltaTime * ((I_Speed_Is)this).固定等级差;
+        Next游标目标 = you;
         // 向目标路径点移动
         游标.transform.position = Vector3.MoveTowards(my, you, Speed * Time.fixedDeltaTime*((I_Speed_Is)this).固定等级差);
 
@@ -310,58 +318,67 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
 
         // 获取下一个目标平台的位置
         Vector3 检测点 = Ls[未完成进度].transform.position;
-
+        bool Is = Ls[未完成进度].transform.position == Vs[路径索引 + 1]; 
+        //bool usLast = Ls[未完成进度].transform.position == Vs[路径索引  ];
         // 调试绘制（仅在编辑器或调试时显示）
         Ls[未完成进度].transform.position.DraClirl(检测范围, Color.white);
+ 
 
         // 检测游标是否进入目标平台范围
         if (Vector3.Distance(my, 检测点) < 检测范围)
         {
-            // 游标在平台范围内
-            if (未完成进度 != 已激活)
-            {
-                // 刚进入范围：激活平台
-                Ls[未完成进度].开起来();
-                已激活 = 未完成进度;
-
-                // 扩展点：平台激活事件
-                OnPlatformActivated?.Invoke(未完成进度);
-                //Debug.LogError(路径索引 + 2+"   "+ Vs.Count);
-                if (路径索引 + 2 == Vs.Count)
+            if (Is)
+            {            // 游标在平台范围内
+                if (未完成进度 != 已激活)
                 {
-                    ///最后一个路径点
-                    Speed /= 2;
+                    // 刚进入范围：激活平台
+                    Ls[未完成进度].开起来();
+                    已激活 = 未完成进度;
 
+                    // 扩展点：平台激活事件
+                    OnPlatformActivated?.Invoke(未完成进度);
+                    //Debug.LogError(路径索引 + 2+"   "+ Vs.Count);
+                    if (路径索引 + 2 == Vs.Count)
+                    {
+                        ///最后一个路径点
+                        Speed /= 2;
+
+                    }
                 }
-            }
-            else
-            {       
-                // 已在范围内：持续激活状态
-                // 扩展点：平台保持激活事件
-
-  
-            }
+                else
+                {
+                    // 已在范围内：持续激活状态
+                    // 扩展点：平台保持激活事件 
+                }
+            } 
         }
         else
         {
-            // 游标在平台范围外
-            if (已激活 == 未完成进度)
+            //if (usLast)
             {
-                // 刚离开范围：取消激活平台
-                Ls[未完成进度].关上();
+                // 游标在平台范围外
+                if (已激活 == 未完成进度)
+                {
+                    // 刚离开范围：取消激活平台
+                    Ls[未完成进度].关上();
 
-                // 重置挑战（玩家未及时交互）
-                重置();
+                    // 重置挑战（玩家未及时交互）
+                    重置();
 
-                // 扩展点：平台取消激活事件
-                OnPlatformDeactivated?.Invoke(未完成进度);
-            }
-        }
+                    // 扩展点：平台取消激活事件
+                    OnPlatformDeactivated?.Invoke(未完成进度);
+                }
+            } 
+        } 
     }
-    bool Last前置条件; 
+    bool Last前置条件;
+   [SerializeField] float 固定等级差;
     void Update()
     {
         if (暂停) return;
+
+    检测范围1=    ((I_Speed_Is)this).固定等级差 + 2;
+
         if (激活与否.isVisible)
         {
             if ( 完成)

@@ -143,8 +143,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6144ae18c5f7bb847b480acefc9b036e
-      internalID: -1409770682
+      spriteID: 5adc339cb52573f4fb0ec112faacaab8
+      internalID: -1238905530
       vertices: []
       indices: 
       edges: []
@@ -164,8 +164,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2fdc794943e76e4ea7888044ea06793
-      internalID: 1511507453
+      spriteID: 8756ed340dc274f488fe506b2752e0ef
+      internalID: 801008466
       vertices: []
       indices: 
       edges: []
@@ -185,8 +185,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 895a35a04d599604aa06e4e8c440ab09
-      internalID: -470178926
+      spriteID: 37320d5dbc1a92f4ea39ff11cc9d7643
+      internalID: 1255981462
       vertices: []
       indices: 
       edges: []
@@ -206,8 +206,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bba5b0f42bc231049b81d5264c9b684a
-      internalID: 506565972
+      spriteID: 3cf1a34184a6f4f4caa210750decc40e
+      internalID: 13040979
       vertices: []
       indices: 
       edges: []
@@ -227,8 +227,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0eb887ada5f825b4391e0fe8869631c9
-      internalID: -1358226427
+      spriteID: 39c2763df5bef30438d3c55634f925f2
+      internalID: 253721932
       vertices: []
       indices: 
       edges: []
@@ -248,8 +248,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da93e7b885f86d14c83634593f1e23b9
-      internalID: -114021650
+      spriteID: d5b99c975a0c4634aabdedf126c818b8
+      internalID: 1312695276
       vertices: []
       indices: 
       edges: []
@@ -269,8 +269,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ae6e1b1e26daf9a4bad5fee94e616c7b
-      internalID: 2022011467
+      spriteID: b727726dee399e14797fd8860784b7ae
+      internalID: -2138278158
       vertices: []
       indices: 
       edges: []
@@ -290,8 +290,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9e54e9bdd9e53fc45aa680df2f5662ae
-      internalID: -179720357
+      spriteID: 19f1c95714ef1c04fb4521045611b68c
+      internalID: -959551534
       vertices: []
       indices: 
       edges: []
@@ -311,8 +311,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4c1184306c2b9af4790df84ea4530763
-      internalID: -686438733
+      spriteID: 87d6fc3a6f981ff40a437cac2af05e9a
+      internalID: -1198982500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u65B9\u5411_9"
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 666bf1260b3367c468e70cebf7e0c013
+      internalID: -1165788417
       vertices: []
       indices: 
       edges: []
@@ -328,15 +349,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      "\u65B9\u5411_0": -1409770682
-      "\u65B9\u5411_1": 1511507453
-      "\u65B9\u5411_2": -470178926
-      "\u65B9\u5411_3": 506565972
-      "\u65B9\u5411_4": -1358226427
-      "\u65B9\u5411_5": -114021650
-      "\u65B9\u5411_6": 2022011467
-      "\u65B9\u5411_7": -179720357
-      "\u65B9\u5411_8": -686438733
+      "\u65B9\u5411_0": -1238905530
+      "\u65B9\u5411_1": 801008466
+      "\u65B9\u5411_2": 1255981462
+      "\u65B9\u5411_3": 13040979
+      "\u65B9\u5411_4": 253721932
+      "\u65B9\u5411_5": 1312695276
+      "\u65B9\u5411_6": -2138278158
+      "\u65B9\u5411_7": -959551534
+      "\u65B9\u5411_8": -1198982500
+      "\u65B9\u5411_9": -1165788417
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

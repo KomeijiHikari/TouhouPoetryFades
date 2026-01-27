@@ -31,9 +31,18 @@ Transform  碰撞框;
     {
 
     }
+    private void OnDestroy()
+    {
+        Debu.LogError(gameObject.name+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Initialize_Mono.I.重制触发 -= 响应;
+    }
     private void 响应(int 场景, int 编号)
     {
- 
+ if (gameObject==null)
+        {
+            Debu.LogError("不可能啊"+transform.position ,this);
+            return;
+        }
         var a = 场景 == gameObject.scene.buildIndex && 编号 == 所属相机编号;
         if (Deb)
         { 

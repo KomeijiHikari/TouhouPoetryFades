@@ -196,7 +196,7 @@ public class 戒备 : MonoBehaviour, I_暂停
 
             if (a != this.gameObject)
             {
-                if (a.layer == Initialize.L_Ground)
+                if (a.layer == Initialize.L_Ground )
                 {
                     检测到的列表.Add(a);
                     break;  // 这里会在检测到第一个满足条件的物体后退出循环  

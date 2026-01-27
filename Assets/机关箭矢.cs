@@ -96,6 +96,7 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
     {
         开启 = !开启;
     }
+    public E_方向 e_;
     public void 触发()
     {
 
@@ -103,7 +104,20 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
         var b = a.GetComponent<Fly_Ground>();
         b.Debul = Deb;
 
-        b.初始化(new Vector2(Mathf.Sign(transform.localScale.x)  , 0), transform.position, 弹道speed * speed_Lv);
+        switch (e_)
+        { 
+            case E_方向.上: 
+            case E_方向.下:
+                b.初始化(new Vector2(0, Mathf.Sign(transform.localScale.y)), transform.position, 弹道speed * speed_Lv);
+                break;
+            case E_方向.左: 
+            case E_方向.右:
+                b.初始化(new Vector2(Mathf.Sign(transform.localScale.x), 0), transform.position, 弹道speed * speed_Lv);
+                break;
+            default:
+                Debu.LogError("该箭矢方向不对劲" + transform.position, this); 
+                break;
+        } 
 
         var fg = b as Fly_Ground;
         if (fg != null)
