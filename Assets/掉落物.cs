@@ -33,6 +33,8 @@ public class 掉落物 : MonoBehaviour
             a.transform.position = transform.position;
             a.transform.SetParent(null);
         }
+
+        if(false)
         if (钱 <= 几率)
         {
             var a = Surp_Pool.I.GetPool("加钱");

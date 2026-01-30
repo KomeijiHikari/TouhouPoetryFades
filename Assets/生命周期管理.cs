@@ -33,9 +33,7 @@ public interface I_假死
 }
 
 public  partial  class 生命周期管理 : 泛用状态机, I_假死
-{
- 
- 
+{ 
     public GameObject 对象 => gameObject;
     public struct DeadPla:I_Save
     { 

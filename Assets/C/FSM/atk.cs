@@ -206,8 +206,7 @@ public abstract  class  atkBase: State_Base
                 单个攻击结束();
             }
             else
-            {//按下了第二次
-                //Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            {//按下了第二次 
                 第N下++;
                 马上下一个攻击 = false;
                 播放相应动画();
@@ -216,8 +215,7 @@ public abstract  class  atkBase: State_Base
  
     }
     protected bool  旋转箭失触发(Collider2D  a )
-    {
-
+    { 
         if (a == null) return false  ; 
         if ( !a.CompareTag(Initialize.One_way))return false ; 
         var F = a.gameObject.GetComponent<Fly_Ground>();
@@ -233,12 +231,8 @@ public abstract  class  atkBase: State_Base
     
         
         if (F != null)
-        {
-
-            //Debug.LogError("             AAAAAAAAAAAAA"+(x.Sign() == Player.LocalScaleX_Int)  );
-
-            F.Currrtten =F.L2; 
-            //Debug.LogError(state+"      "+f.I_State_L.state);
+        { 
+            F.Currrtten =F.L2;  
             switch (state)
             { 
                 case E_State.upatk:
@@ -250,14 +244,8 @@ public abstract  class  atkBase: State_Base
                     //F.旋转触发(-1);
                     if (正面)
                     {
-                        F.旋转触发(-1);
-
-                    }
-                    //else
-                    //{
-                    //    F.旋转触发(1);
-                    //}
-
+                        F.旋转触发(-1); 
+                    } 
                     return true;
                 default:
                     F.旋转触发(0);
@@ -362,7 +350,6 @@ public abstract  class  atkBase: State_Base
         else
         {
         Player.Velocity = new Vector2(Player.Velocity.x*xM , Y*xM );
-
         }
     }
     protected void 提一下(float Y, float 水平约束_最慢乘值  , float 水平约束_最大乘值 = 1, float xM = 1)
@@ -390,11 +377,8 @@ public abstract  class  atkBase: State_Base
             {
                 //Player.水平限制
                 Player.Velocity = new Vector2(Player.玩家数值.常态速度 * Lerp*Player.LocalScaleX_Int, Y);
-            }
-
-        }
- 
-
+            } 
+        } 
     }
 }
 public class atk : atkBase
@@ -414,8 +398,6 @@ public class atk : atkBase
         当前攻击特效名字 = null;
         马上下一个攻击 = false;
         Player.Velocity = Vector2.zero;
-
-
 
         播放相应动画();
         if (蓄力攻击 )
@@ -596,11 +578,24 @@ public class skyatk : atkBase
             {
                 f.To_State(E_State.skydash); return;
             }
-        }    
+        }
+
+        if (IP.方向正零负 != 0)
+        {
+            var a = Player.返回方向();
+            //if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0)); 
+            if (Player.前空_)
+            {
+                Player.Velocity = new Vector2(a * Player.玩家数值.常态速度, Player.Velocity.y);
+            }
+        }
+
+        Player.竖直限制();
+        Player.水平限制();
 
         if (击中效果())
         {
-            提一下(7, 0.2f,0.5f);
+            提一下_NoLerp(7);
         } 
     }
     public override void 接触地面()
@@ -617,7 +612,8 @@ public class skyatk : atkBase
     protected override void 开启碰撞框播放特效()
     {
         base.开启碰撞框播放特效();
-        提一下(5, 0.2f, 0.5f );
+        提一下_NoLerp(5);
+        //提一下(5, 0.2f, 0.5f );
     }
 
     protected override void 播放相应动画()
@@ -800,9 +796,17 @@ public class cricleatk : atkBase
             xM水平 = 1;
             提一下_NoLerp(Player.玩家数值.圆斩上升力 ); 
              
-        }
+        } 
 
-        if (IP.方向正零负 != 0)  Player.水平限制();
+        if (IP.方向正零负 != 0)
+        {
+            var a = Player.返回方向();
+            //if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0)); 
+            if (Player.前空_)
+            {
+                Player.Velocity = new Vector2(a * Player.玩家数值.常态速度, Player.Velocity.y);
+            }
+        }
 
         Player.竖直限制();
         Player.水平限制();

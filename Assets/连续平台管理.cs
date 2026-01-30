@@ -9,23 +9,23 @@ using UnityEngine;
 /// 功能：管理平台挑战的完整流程，包括前置条件检测、状态机管理、游标移动控制等
 /// 设计模式：状态机 + 事件驱动
 /// </summary>
-public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Revive
+public class 连续平台管理 : MonoBehaviour, I_Dead, I_Speed_Is, I_暂停, I_Revive
 {
     监控激活碰撞框 j;
-    public bool Re { get; set; }=false;
+    public bool Re { get; set; } = false;
     public float Re_Time { get; set; } = 0;
     public bool 重制()
     {
         if (Deb) Debug.LogError("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Speed = StartSpeed;
 
-        if (!已经初始化) return false ;
+        if (!已经初始化) return false;
 
-        完成=false ;
-        前置条件=false ;
-    for (int i = 0; i < Ls.Length; i++)
+        完成 = false;
+        前置条件 = false;
+        for (int i = 0; i < Ls.Length; i++)
         {
-            var a= Ls[i];
+            var a = Ls[i];
             a.关上();
             a.不受玩家影响 = false;
         }
@@ -43,7 +43,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
     }
     public bool 暂停 { get => 暂停1; set => 暂停1 = value; }
     [SerializeField]
-    private float speed_Lv=1;
+    private float speed_Lv = 1;
     // ========== 公开配置字段 ==========
 
     /// <summary> 前置条件：玩家是否拥有特定能力 </summary>
@@ -59,7 +59,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
     public GameObject 游标;
 
     /// <summary> 游标检测平台激活的统一范围半径 </summary>
-  [SerializeField][DisplayOnly]  private float 检测范围1;
+    [SerializeField][DisplayOnly] private float 检测范围1;
 
     /// <summary> 游标移动速度（单位/秒） </summary>
     public float Speed = 1;
@@ -110,13 +110,13 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
     bool 在运行 => 已完成进度 != -1;
     public bool Dead()
     {
-        if (!已经初始化)   Start(); 
+        if (!已经初始化) Start();
         完成 = true;
-        游标.SetActive(false); 
+        游标.SetActive(false);
         半灵.I.SetTarget(Ls[0].transform, false);
         // 激活所有平台并锁定状态
         for (int ii = 0; ii < Ls.Length; ii++)
-        { 
+        {
             var a = Ls[ii];
             a.开起来();               // 确保平台激活
             a.不受玩家影响 = true;    // 锁定平台状态
@@ -126,8 +126,8 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
         OnChallengeSuccess?.Invoke();
         return true;
     }
-    public Action 销毁触发 { get  ; set  ; } 
-    public Bounds 盒子 =>default;
+    public Action 销毁触发 { get; set; }
+    public Bounds 盒子 => default;
 
     public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
     public float 检测范围 { get => 检测范围1; set => 检测范围1 = value; }
@@ -141,7 +141,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
     }
     void Start()
     {
-        gameObject.组件 (ref j);
+        gameObject.组件(ref j);
         j.是我 += (bool b) => { 重置(); };
         C = 激活与否.color;
         // 收集所有子平台
@@ -195,7 +195,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
                     游标.gameObject.SetActive(true);
 
                     // 扩展点：挑战开始事件
-                     OnChallengeStarted?.Invoke();
+                    OnChallengeStarted?.Invoke();
                 }
                 // 非第一次触发（挑战已开始，再次踩到第一个平台）
                 else
@@ -208,23 +208,35 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
             // 情况2：玩家触发非第一个平台
             else if (i == 已激活 && 已激活 == 未完成进度)
             {
-                      Vector3 my = 游标.transform.position; 
+                Vector3 my = 游标.transform.position;
                 Vector3 检测点 = Vs[路径索引 + 1];
                 // 检测游标是否进入目标平台范围
-                if (Vector3.Distance(my, 检测点) < 检测范围)
-                {
-                    if (已激活 == 未完成进度)
-                    { 
-                        ///如果索引是最新索引了
-                        /// 移动到当前和下一个之间    然后  应该索引     
-                        //游标.transform.position = Vector3.MoveTowards(Vs[路径索引 + 1] , Vs[路径索引 + 2], 检测范围); 
-                        游标.transform.position = 检测点; 
-                    }
-                }
-                else if ( Vector3.Distance(my, Vs[路径索引]) < 检测范围)
-                {
-                    游标.transform.position = Vector3.MoveTowards(Vs[路径索引 ], Vs[路径索引  ], 检测范围);
-                }
+
+                ///应当是 瞬移到I的位置
+                ///并且重置
+
+                游标.transform.position = Ls[i].transform.position;
+                //if (Vector3.Distance(my, 检测点) < 检测范围)
+                //{
+                //    if (已激活 == 未完成进度)
+                //    {
+                //        ///如果索引是最新索引了
+                //        /// 移动到当前和下一个之间    然后  应该索引     
+                //        //游标.transform.position = Vector3.MoveTowards(Vs[路径索引 + 1] , Vs[路径索引 + 2], 检测范围); 
+                //        游标.transform.position = 检测点;
+                //        Debu.LogError("AAAAAAAAAAAAAAAAAAAAA");
+                //        Debu.LogError(已激活+"  "+未完成进度 + " " + 已完成进度 + "    " + 路径索引);
+                //        ///  点位前
+                //    }
+                //}
+                //else if (Vector3.Distance(my, Vs[路径索引]) < 检测范围)
+                //{
+                //    ///  点位后
+                //    游标.transform.position = Vs[路径索引];
+                //    Debu.LogError("BBBBBBBBBBBBBBBBBBBBB");
+                //    Debu.LogError(已激活 + "  " + 未完成进度 + " " + 已完成进度 + "    " + 路径索引);
+                //}
+
                 // 前进到下一个平台
                 已激活 = 0;          // 重置激活状态
                 未完成进度++;       // 目标平台索引+1
@@ -253,7 +265,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
             // 注意：这里需要确保所有平台都被重置
             // 扩展点：可添加平台重置循环
 
-            Speed= StartSpeed;
+            Speed = StartSpeed;
 
 
             Ls[0].开起来();           // 重新激活第一个平台
@@ -273,8 +285,8 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
         }
 
     }
-    [SerializeField] float  游标Speed;
-    [SerializeField] Vector2     Next游标目标;
+    [SerializeField] float 游标Speed;
+    [SerializeField] Vector2 Next游标目标;
     void FixedUpdate()
     {
         if (暂停) return;
@@ -285,21 +297,21 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
         // ========== 游标移动逻辑 ==========
 
         Vector3 my = 游标.transform.position;
-        if (路径索引 + 1==Vs.Count)
+        if (路径索引 + 1 == Vs.Count)
         {
             Debug.Break();
         }
- 
+
         Vector3 you = Vs[路径索引 + 1];
         游标Speed = Speed * Time.fixedDeltaTime * ((I_Speed_Is)this).固定等级差;
         Next游标目标 = you;
         // 向目标路径点移动
-        游标.transform.position = Vector3.MoveTowards(my, you, Speed * Time.fixedDeltaTime*((I_Speed_Is)this).固定等级差);
+        游标.transform.position = Vector3.MoveTowards(my, you, Speed * Time.fixedDeltaTime * ((I_Speed_Is)this).固定等级差);
 
         // 到达路径点后更新索引
         if (Vector3.Distance(my, you) < 0.1f)
-        { 
-                路径索引++;
+        {
+            路径索引++;
             if (路径索引 + 1 == Vs.Count)
             {
                 /// 最后 的  判定失败
@@ -318,11 +330,11 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
 
         // 获取下一个目标平台的位置
         Vector3 检测点 = Ls[未完成进度].transform.position;
-        bool Is = Ls[未完成进度].transform.position == Vs[路径索引 + 1]; 
+        bool Is = Ls[未完成进度].transform.position == Vs[路径索引 + 1];
         //bool usLast = Ls[未完成进度].transform.position == Vs[路径索引  ];
         // 调试绘制（仅在编辑器或调试时显示）
         Ls[未完成进度].transform.position.DraClirl(检测范围, Color.white);
- 
+
 
         // 检测游标是否进入目标平台范围
         if (Vector3.Distance(my, 检测点) < 检测范围)
@@ -350,7 +362,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
                     // 已在范围内：持续激活状态
                     // 扩展点：平台保持激活事件 
                 }
-            } 
+            }
         }
         else
         {
@@ -368,27 +380,27 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
                     // 扩展点：平台取消激活事件
                     OnPlatformDeactivated?.Invoke(未完成进度);
                 }
-            } 
-        } 
+            }
+        }
     }
     bool Last前置条件;
-   [SerializeField] float 固定等级差;
+    [SerializeField] float 固定等级差;
     void Update()
     {
         if (暂停) return;
 
-    检测范围1=    ((I_Speed_Is)this).固定等级差 + 2;
+        检测范围1 = ((I_Speed_Is)this).固定等级差 + 2;
 
         if (激活与否.isVisible)
         {
-            if ( 完成)
+            if (完成)
             {
                 激活与否.color = C;
             }
             else
             {
                 float F = Mathf.Sin(Time.time * 4) * 0.5f + 0.5f;
-                激活与否.color = new Color(C.r,C.g,C.b, F*C.a);
+                激活与否.color = new Color(C.r, C.g, C.b, F * C.a);
             }
 
         }
@@ -403,46 +415,46 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
             ///前置条件达成
             ///如果离开范围取消激活
             ///如果踩上第一个机关那么不用检测范围   取消激活条件是退出房间或者失败 
-            if (!在运行&& !完成)
-            { 
+            if (!在运行 && !完成)
+            {
                 ///没在运行
                 ///
                 Vector3 My = Ls[0].transform.position;
                 bool 玩家在范围内 = Vector2.Distance(Player3.I.transform.position, My) < 7;
                 半灵.I.SetTarget(Ls[0].transform, 玩家在范围内);
                 if (玩家在范围内)
-                { 
+                {
                     bool 半灵在范围内 = Vector2.Distance(半灵.I.transform.position, My) < 1;
                     if (半灵在范围内)
-                    { 
+                    {
                         Last前置条件 = true;
                     }
                     else
-                    { 
+                    {
                         Last前置条件 = false;
                     }
                     ///半灵没到
                 }
                 else
-                { 
+                {
                     ///玩家没到
                     Last前置条件 = false;
                 }
             }
             else
-            { 
+            {
                 ///正在运行 
                 Last前置条件 = true;
             }
 
-       
+
             //半灵.I.SetTarget(Ls[0].transform,true);
 
 
         }
         激活与否.gameObject.SetActive(Last前置条件);
         //Last前置条件 = Player3.I.N_.半灵;
-        if (Last前置条件!= 前置条件)
+        if (Last前置条件 != 前置条件)
         {
             前置条件 = Last前置条件;
 
@@ -450,15 +462,15 @@ public class 连续平台管理 : MonoBehaviour, I_Dead,I_Speed_Is,I_暂停,I_Re
             if (前置条件)
             {
                 OnPreconditionMet?.Invoke();
-                 Ls[0].开起来();
-               
+                Ls[0].开起来();
+
             }
             else
             {///不满足
-                  Ls[0].关上();
+                Ls[0].关上();
                 OnPreconditionFailed?.Invoke();
             }
-        } 
+        }
     }
 
 

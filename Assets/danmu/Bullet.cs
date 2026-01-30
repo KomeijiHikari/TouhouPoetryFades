@@ -129,7 +129,14 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     }
     [SerializeField ]
   protected   LayerMask 子弹碰撞;
- 
+
+    [DisplayOnly]
+    [SerializeField]
+    protected float Current_Speed;
+protected virtual void Update()
+    {
+        Current_Speed = Current_Speed_LV;
+    }
     /// <summary>
     /// 碰到  地面  玩家
     /// 申明周期无
@@ -203,6 +210,10 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     {
         Destroy(gameObject);
     }
+    protected virtual void Move()
+    {
+
+    }
 
 }
 
@@ -253,6 +264,8 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool, I_消弹, I_消失进度
         }
         是 = deadtime >= 0;
     }
+
+
     public bool 是 { get; set; }
     public float 进度 { get; set; }
     public float atkvalue { get; set; } = 10f;

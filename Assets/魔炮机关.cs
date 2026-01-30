@@ -12,6 +12,7 @@ public class 魔炮机关 : MonoBehaviour, I_暂停, I_Speed_Is
     MonoMager M;
     public bool Deb;
 
+    public float 生命周期 = 0;
     [SerializeField]
     SpriteRenderer sp;
     public bool 暂停 { get; set; }
@@ -58,6 +59,10 @@ public class 魔炮机关 : MonoBehaviour, I_暂停, I_Speed_Is
     public void 触发()
     {
         f.初始化 +=  (Bullet_base b) => {
+            if (生命周期!=0)
+            {
+            b.生命周期 = 生命周期; 
+            }
             b.speed_Lv = Speed_Lv;
             b.A角速度 = Angle / Time.fixedDeltaTime;
         };

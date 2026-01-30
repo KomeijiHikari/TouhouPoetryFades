@@ -23,7 +23,7 @@ public struct   Value
     [SerializeField] string String;
     [SerializeField] Vector2 v2;
 
-
+ 
     [SerializeField] bool bD;
     static string sD= "-999";
     static Vector2 vD =new Vector2 (99,99);
@@ -67,13 +67,21 @@ public partial class Player3 : BiologyBase
     public new Bounds Bounds
     {
         get
-        {
-            if (co == null)
+        { 
+
+            if (站立box.enabled)
             {
+            return 站立box.bounds; 
+            }
+            else if(站立box.enabled)
+            {
+                return 蹲BOX.bounds;
+            }
+            else
+            {
+                Debug.LogError("两个都关闭");
                 return new Bounds();
             }
-
-            return 站立box.bounds;
         }
     }
     public bool 地面调试;
@@ -1435,8 +1443,8 @@ public     BoxCollider2D 最低点()
         }
 
         Collider2D A = Physics2D.BoxCast(
-        new Vector2(蹲BOX.bounds.min.x, 蹲BOX.bounds.center.y),
-        new Vector2(0.001f, 蹲BOX.bounds.size.y - 0.4f),
+        new Vector2(Bounds.min.x,Bounds.center.y),
+        new Vector2(0.001f, Bounds.size.y - 0.4f),
         0f,
       Vector2.left,
    0.05f,
@@ -1446,8 +1454,8 @@ public     BoxCollider2D 最低点()
         var a = A == null || A.isTrigger;
 
         Collider2D B = Physics2D.BoxCast(
- new Vector2(蹲BOX.bounds.max.x, 蹲BOX.bounds.center.y),
- new Vector2(0.001f, 蹲BOX.bounds.size.y - 0.4f),
+ new Vector2(Bounds.max.x, Bounds.center.y),
+ new Vector2(0.001f, Bounds.size.y - 0.4f),
  0f,
        Vector2.right,
  0.05f,

@@ -106,13 +106,17 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
 
         switch (e_)
         { 
-            case E_方向.上: 
-            case E_方向.下:
-                b.初始化(new Vector2(0, Mathf.Sign(transform.localScale.y)), transform.position, 弹道speed * speed_Lv);
+            case E_方向.上:
+                b.初始化(Vector2.up, transform.position, 弹道speed * speed_Lv);
                 break;
-            case E_方向.左: 
+            case E_方向.下:
+                b.初始化( Vector2.down, transform.position, 弹道speed * speed_Lv);
+                break;
+            case E_方向.左:
+                b.初始化(Vector2.left, transform.position, 弹道speed * speed_Lv);
+                break;
             case E_方向.右:
-                b.初始化(new Vector2(Mathf.Sign(transform.localScale.x), 0), transform.position, 弹道speed * speed_Lv);
+                b.初始化(Vector2.right, transform.position, 弹道speed * speed_Lv);
                 break;
             default:
                 Debu.LogError("该箭矢方向不对劲" + transform.position, this); 

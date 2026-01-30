@@ -584,10 +584,9 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
 
         if (旋转) return;
         var dirEnum = 方向.v2_To方向();
-        //if (Debul) Debug.LogError(" 箭头()     箭头()"+g);
 
      var p=   bc.bounds.九个点(dirEnum);
-        s_hitBuffer = Physics2D.OverlapCircleAll(p,0.3f, Currrtten);
+        s_hitBuffer = Physics2D.OverlapCircleAll(p,0.2f, Currrtten);
         for (int q = 0; q < s_hitBuffer.Length; q++)
         {
            var col = s_hitBuffer[q];
@@ -597,22 +596,30 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
             if (col == bc) continue;
             if ( col.CompareTag(Initialize.Player))
             {
-
-            var BB=    f方向可以(方向, Player3.I.Velocity);
-                if (BB)
-                {
-                    //同方
-                    continue;
+                if ( MathF.Abs(方向.x) ==1)
+                {///横向
+                    var BB = f方向可以(方向, Player3.I.Velocity);
+                    if (BB)
+                    {
+                        //同方
+                        continue;
+                    }
+                       else   if (Player3.I.Velocity.y < -2)
+                 {
+                        ///方向不一样
+                        是玩家噶的 = true;
+                        引线爆炸(col);
+                        break; 
+                    }
                 }
                 else
                 {
-                是玩家噶的 = true;
-                    引线爆炸(col);
-                    break;
-                } 
+                    /////这边处理竖直情况
+                    continue;
+                }
+                break;
             }
             引线爆炸(col);
-            break;
         }
         return; 
     }

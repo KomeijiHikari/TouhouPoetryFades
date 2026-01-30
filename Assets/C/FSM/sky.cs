@@ -169,13 +169,9 @@ public class sky : State_Base
     {
         base.ExitState(e);
         Player.记录a(0);
-        //transform.position += Vector3.up * 0.1f;
+ 
         if (Initialize_Mono.I.动态跳跃碰撞)
-            Player.差价();
-
-
-        //Player.前档板.enabled = false;
-        //Player.po.size = new Vector2(原始碰撞, Player.po.size.y);
+            Player.差价(); 
     }
     public override void 按下跳跃()
     {
@@ -188,31 +184,8 @@ public class sky : State_Base
                 Player.跳跃触发();
                 第一次跳跃 = false;
             }
-        }
-
-
-        ///多端跳
-        //if (Player.玩家数值.Boss杀手)
-        //{
-  
-  
-        //}
-
-
-        //if (Player.玩家数值 .跳跃剩余跃次数>0)
-        //{
-        //    Player.玩家数值.跳跃剩余跃次数--;
-        //    A.Playanim(JUMAP_name.上去);
-        //    Player. 跳跃触发();
-
-
-        //    第一次跳跃 = false;
-        //}
-        //else
-        //{
-        //    Player.闪光();
-        //}
-
+        } 
+        ///多端跳 
     }
 
 
@@ -225,8 +198,12 @@ public class sky : State_Base
 
         if (IP.方向正零负!=0)
         {
-            var a = Player.返回方向(); 
-            if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0)); 
+            var a = Player.返回方向();
+            //if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0)); 
+            if (Player.前空_)
+            {
+                Player.Velocity= new Vector2(a * Player.玩家数值.常态速度, Player.Velocity.y);
+            }
         }
         if (IP.水平操作_ == 0 && Player.Velocity.y < 0)
         {
