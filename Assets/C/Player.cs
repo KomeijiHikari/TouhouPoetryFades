@@ -665,8 +665,9 @@ public partial class Player : Biology
  
    
 
-    public void 松开空格引发的事件(KeyCode k)
-    { 
+    public void 松开空格引发的事件(KeyCode k, int i)
+    {
+        if (i != 0) return;
         if (k != Player_input.I.k.跳跃 ||Player.I.Velocity.y <= 0) return;
         P_Action.小跳向下力(生物数值.小跳向下力);
     }
@@ -677,8 +678,9 @@ public partial class Player : Biology
         P_Action.jump_瞬间向上力(生物数值.跳跃瞬间速度);
         P_Action.jump_下落恢复重力(生物数值.常态重力);
     }
-    public void 按下跳跃引发的事件(KeyCode k)
+    public void 按下跳跃引发的事件(KeyCode k, int i)
     {
+        if (i != 0) return;
         if (!跳跃开关) return;
         if (k != Player_input.I.k.跳跃 || 生物数值.跳跃剩余跃次数 <= 0) return;
         跳跃();
@@ -686,7 +688,7 @@ public partial class Player : Biology
     public override void 离地动作()
     {
         生物数值.跳跃剩余跃次数 = 生物数值.最大跳跃次数 - 1;
-        松开下蹲(Player_input.I.k.下);
+        松开下蹲(Player_input.I.k.下,0);
  
     }
     public override void S_tart()
@@ -787,8 +789,9 @@ public partial class Player : Biology
     public float sizeY = 1.8f;
 
     public bool 下蹲锁 = true;
-    public void 按住下蹲(KeyCode k)
+    public void 按住下蹲(KeyCode k, int i)
     {
+        if (i != 0) return;
         if (k != Player_input.I.k.下) return;
         if (!下蹲锁) return;
         if (!Ground) return;
@@ -799,8 +802,9 @@ public partial class Player : Biology
         下蹲表示 = true;
     }
 
-    public void 松开下蹲(KeyCode k)
+    public void 松开下蹲(KeyCode k, int i)
     {
+        if (i != 0) return;
 
         if (k != Player_input.I.k.下) return;
         if (!头空_ ) return;

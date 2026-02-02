@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine; 
 interface I_消弹
 {
-    public bool 被消弹();
+    public bool 被消弹(float i);
 }
 public class Bullet_base : MonoBehaviour, I_Speed_Change
-{ 
+{
     /// <summary>
     ///  应该是一个列表
     ///  
@@ -16,19 +16,20 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     /// </summary>
     //[DictionaryDrawerSettings]
 
-    public List<float> Times=new List<float> ();
-    public List<Action> Actions=new List<Action> ();
+    [SerializeField] BoxCollider2D bc;
+    public List<float> Times = new List<float>();
+    public List<Action> Actions = new List<Action>();
 
     private void OnDisable()
-    { 
+    {
         Times.Clear();
         Actions.Clear();
-    } 
-    public void Add(float T,Action A)
+    }
+    public void Add(float T, Action A)
     {
         if (!Times.Contains(T))
-        { 
-            Times.Add(生命周期-T);
+        {
+            Times.Add(生命周期 - T);
             Actions.Add(A);
         }
     }
@@ -36,25 +37,21 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     {
         for (int i = 0; i < Times.Count; i++)
         {
-            if (生命周期<Times[i])
+            if (生命周期 < Times[i])
             {
                 Actions[i]?.Invoke();
                 Times[i] = -999;
             }
         }
     }
-    public static float 方向转角度(Vector2 a,Vector2 b)
+    public static float 方向转角度(Vector2 a, Vector2 b)
     {
-        var t =  a-b;
-        t.Normalize(); 
+        var t = a - b;
+        t.Normalize();
         return Initialize.To_方向到角度(t) / Time.fixedDeltaTime;
     }
     public bool Deb;
-    private void Awake()
-    {
-        
-        //gameObject.layer = Initialize.L_Box_Ground;
-    }
+
     public float L线速度;
     public float A角速度
     {
@@ -69,17 +66,17 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
 
     }
     [DisplayOnly]
-    [SerializeField ]
+    [SerializeField]
     float a角速度;
     public float L_Acc线加速度;
-    public float A_Acc角加速度; 
-    public float Max速度 = int.MaxValue; 
+    public float A_Acc角加速度;
+    public float Max速度 = int.MaxValue;
     public float 生命周期 = 5;
 
-[SerializeField] Vector2 方向1;
-    public Vector3 eulerAngles; 
-    public bool 自身旋转; 
-    public new Transform transform => base.transform; 
+    [SerializeField] Vector2 方向1;
+    public Vector3 eulerAngles;
+    public bool 自身旋转;
+    public new Transform transform => base.transform;
     public GameObject 对象 => base.gameObject;
 
     public Action 变速触发 { get; set; }
@@ -104,39 +101,61 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
 
     public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
     public Vector2 方向 { get => 方向1; set {
-            if (方向1 != value )
+            if (方向1 != value)
             {
                 if (Deb)
                 {
                     Debug.LogError(value);
-                } 
+                }
             }
             方向1 = value; } }
 
- public    float speed_Lv = 1f;
+    public float speed_Lv = 1f;
     [Range(0, 1)]
-    public  float 追踪玩家=0;
+    public float 追踪玩家 = 0;
 
-    public Vector2 返回当前指向玩家的方向(Vector2 v=default)
+    public Vector2 返回当前指向玩家的方向(Vector2 v = default)
     {
-        if (v==default )
+        if (v == default)
         {
             v = transform.position;
         }
-        Vector2 玩家方向 = (Vector2)(Player3.I.transform.position - (Vector3 )v);
+        Vector2 玩家方向 = (Vector2)(Player3.I.transform.position - (Vector3)v);
         玩家方向.Normalize();
         return 玩家方向;
     }
-    [SerializeField ]
-  protected   LayerMask 子弹碰撞;
+    [SerializeField]
+    protected LayerMask 子弹碰撞;
 
     [DisplayOnly]
     [SerializeField]
     protected float Current_Speed;
-protected virtual void Update()
+    protected virtual void Update()
     {
         Current_Speed = Current_Speed_LV;
+        //if (bc.IsTouching(Player3.I.站立box)|| bc.IsTouching(Player3.I.蹲BOX))
+        if (bc.IsTouchingLayers(1 << Initialize.L_Player)) 
+     {
+            if (Player3.I.Bounds.min.y>=bc.bounds.max.y )
+            {
+                if (PlayerisUp==false)
+                {
+                    刚刚在我头上?.Invoke( );
+                }
+                PlayerisUp = true; 
+            }
+        }
+        else
+        {
+            PlayerisUp = false;
+        }
     }
+    public Action 刚刚在我头上;
+    bool PlayerisUp;
+
+    public float 真实移动速度 => Initialize_Mono.I.GetMin(L线速度 * I_S.固定等级差);
+    ///线速度就是自身速度
+
     /// <summary>
     /// 碰到  地面  玩家
     /// 申明周期无
@@ -155,15 +174,15 @@ protected virtual void Update()
   
                 方向 = Vector2.Lerp(Initialize.To_角度到方向(A角速度 * Time.fixedDeltaTime), 玩家方向, 追踪玩家);
 
-            var 下一目标 = transform.position + L线速度 * (Vector3)方向 * Time.fixedDeltaTime * I_S.固定等级差;
+ 
+            var 下一目标 = position +   (Vector3)方向 * Time.fixedDeltaTime * 真实移动速度;
 
-            var Ray = Initialize.碰撞两点检测(transform.position, 下一目标, 子弹碰撞);
+            var Ray = Initialize.碰撞两点检测(position, 下一目标, 子弹碰撞);
         var a= Ray.point;
 
             if (a == Vector2.zero)
             { 
- 
-                transform.position = 下一目标;
+                position = 下一目标;
             }
             else  
             {
@@ -171,29 +190,26 @@ protected virtual void Update()
                 ///
                 if (Ray.collider.CompareTag(Initialize.Player))
                 {
-
-                        transform.position = 下一目标;
+                    position = 下一目标; 
                 }
                 else
                 {
                     ///停止
-                    transform.position = a;
-                }
-  
-                //Initialize_Mono.I.Waite(() => { });
+                    ///
+                    position = a; 
+                } 
             }
-
-       
-
         }
         else
         { 
             transform.rotation *= Quaternion.Euler(new Vector3(0, 0, 1f) * A角速度 * Time.fixedDeltaTime * I_S.固定等级差);
-            transform.Translate(L线速度 * Vector2.right * Time.fixedDeltaTime * I_S.固定等级差, Space.Self); 
+ 
+            position +=   Vector3.right * Time.fixedDeltaTime * 真实移动速度;
+            //transform.Translate(L线速度 * Vector2.right * Time.fixedDeltaTime * I_S.固定等级差, Space.Self); 
             //if (Deb) Debug.LogError("");
         }
 
-        生命周期 -= Time.fixedDeltaTime * I_S.固定等级差;
+        生命周期 -= Time.fixedDeltaTime * 真实移动速度;
 
         字典刷新(); 
 
@@ -201,8 +217,6 @@ protected virtual void Update()
         {
             我死了();
         }
- 
-
     }
     
     public Action<Bullet_base> 结束;
@@ -210,15 +224,32 @@ protected virtual void Update()
     {
         Destroy(gameObject);
     }
-    protected virtual void Move()
+
+    public Vector3 position
     {
-
-    }
-
+        get { return transform.position; }
+        set { transform.position=value;
+        
+        }
+    }  
 }
 
 public class Bullet : Bullet_base, I_攻击, I_ReturnPool, I_消弹, I_消失进度
 {
+    Sprite StartSprite;
+    SpriteRenderer sp;
+    private void Start()
+    {
+        sp = GetComponentInChildren<SpriteRenderer>();
+        StartSprite = sp.sprite;
+
+        刚刚在我头上 += () => {
+            if (deadtime==-1)
+            {
+                deadtime = 0;
+            }
+        };
+    }
     [SerializeField]
     float deadtime = -1;
 
@@ -226,7 +257,7 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool, I_消弹, I_消失进度
     ///    难崩
     /// </summary>
     /// <param name="collision"></param>
-    protected override void FixedUpdate()
+    protected override void FixedUpdate() 
     {
 
         base.FixedUpdate();
@@ -238,11 +269,15 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool, I_消弹, I_消失进度
 
       
             if (a.transform.gameObject.layer == Initialize.L_Player && deadtime == -1f)
-            {
-                if (a.collider.gameObject == Player3.I.gameObject) {
-                    结束?.Invoke(this);
-                deadtime = 0;
-                }
+                {
+                    if (!无害化)
+                    {
+                        if (a.collider.gameObject == Player3.I.gameObject)
+                        {
+                            结束?.Invoke(this);
+                            deadtime = 0;
+                        }
+                    } 
             }
             else if (a.transform.gameObject.layer == Initialize.L_Ground)
             {
@@ -273,21 +308,66 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool, I_消弹, I_消失进度
     public void 扣攻击(float i)
     {
     }
+    private void OnEnable()
+    {
+        重制();
+    }
+    public void 重制() {
+        if (sp!=null)
+        {
 
-    public void 重制() { }
-
+        sp.sprite = StartSprite;
+        }
+        无害化 = false;
+    }
+    public bool 成为平台 = true;
     public bool 可以被消灭 = true;
+
+ 
+
+
+      bool 无害化;
     /// <summary>
     /// 返回BOOL表示有没有成功
     /// </summary>
     /// <returns></returns>
-    public bool 被消弹()
-    { 
+    public bool 被消弹(float i)
+    {
+        Debu.LogError(i+"AAAAAAAAAAAAAAAAAAAAAAA");
         if (可以被消灭)
         {
-            特效_pool_2.I.GetPool(transform.position, T_N.特效消弹);
+            if (成为平台)
+            {           
+                ///平A可以让 子弹无害化   
+                ///原批只能让子弹消失？？
+                ///
+                ///消失0   无害1
+                if (i._is(1))
+                {
+                    if (!无害化)
+                    {///第一次触发
+                        无害化 = true;
+                        deadtime = 0f;
+                        特效_pool_2.I.GetPool(transform.position, T_N.特效消弹);
+                        sp.sprite = Initialize_Mono.I.无害子弹图片;
+                    }
+                    else
+                    {
+                        ///反复触发无效
+                    }
+                }
+                else
+                {
+                    if (!无害化)
+                    {
+                        特效_pool_2.I.GetPool(transform.position, T_N.特效消弹);
 
-            无了();
+                        无了();
+                    }
+             
+                } 
+
+            } 
             return true;
         }
         else
@@ -306,14 +386,20 @@ public class Bullet : Bullet_base, I_攻击, I_ReturnPool, I_消弹, I_消失进度
   protected override void 我死了()
     {
  
-    var a=    Physics2D.OverlapCircle(transform.position,0.5f,1<<Initialize .L_Player );
-        if (a!=null) Player3.I.被扣血(atkvalue, gameObject, 0);
+        if(!无害化)
+        {
+            var a = Physics2D.OverlapCircle(transform.position, 0.5f, 1 << Initialize.L_Player);
+            if (a != null) Player3.I.被扣血(atkvalue, gameObject, 0);
+        }
+
 
         可以被消灭 = true;
         特效_pool_2.I.GetPool(transform .position , T_N.特效闪光爆炸);
 
         无了();
     }
+
+ 
 }
 
 

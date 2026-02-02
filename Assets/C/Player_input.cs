@@ -93,7 +93,9 @@ public class Key
 
 public class  Input_base: MonoBehaviour
 {
-public    bool 输入开关_ = true;
+    public bool Exite =>         Input.GetButtonDown(Initialize.Exite) ;
+    public int State = 0;
+    public    bool 输入开关_ = true;
     public  virtual  bool 输入开关
     {
         get
@@ -121,16 +123,16 @@ public    bool 输入开关_ = true;
     //public KeyCode 左 = KeyCode.A;
     //public KeyCode 右 = KeyCode.D;
 
-    public Action<KeyCode> KeyUp { get; set; }
-    public Action<KeyCode> KeyDown { get; set; }
-    public Action<KeyCode> KeyState { get; set; }
+    public Action<KeyCode, int> KeyUp { get; set; }
+    public Action<KeyCode, int> KeyDown { get; set; }
+    public Action<KeyCode,int > KeyState { get; set; }
 public   Dictionary<KeyCode, Key> D_I = new Dictionary<KeyCode, Key>();
     public List<KeyCode> 玩家输入的按键顺序_显示 = new List<KeyCode>();
     public LinkedList<KeyCode> 玩家输入的按键存储栈 = new LinkedList<KeyCode>();
     public List<Key> 所有的按键列表;
 
-    public Key Get_key(KeyCode k)
-    {
+    public Key Get_key(KeyCode k )
+    { 
         return D_I[k];
     }
     public List<KeyCode> 玩家输入的按键存储_按住 { get => 玩家输入的按键存储_按住1; set => 玩家输入的按键存储_按住1 = value; }
@@ -201,8 +203,13 @@ public   Dictionary<KeyCode, Key> D_I = new Dictionary<KeyCode, Key>();
         yield return new WaitForSeconds(time);
         if (失效列表.Contains(k)) 失效列表.Remove(k);
     }
-    public bool 按键检测_按下(KeyCode K)
-    {
+    public bool 按键检测_按下(KeyCode K, int i = 0)
+    { 
+        if (State != i && i != 999)
+        {
+            return false;
+        }
+
         if (失效列表.Contains(K)) return false; 
 
         if ( 玩家输入的按键存储_按下.Contains(K))
@@ -214,22 +221,34 @@ public   Dictionary<KeyCode, Key> D_I = new Dictionary<KeyCode, Key>();
             return false;
         }
     }
-    public bool 按键检测_按住(KeyCode K)
+    public bool 按键检测_按住(KeyCode K,int i=0)
     {
-        if (失效列表.Contains(K)) return false;
-        if ( 玩家输入的按键存储_按住.Contains(K))
-        {
 
+      
+        if (State!=i&&i!=999)
+        { 
+            return false;
+        }
+
+        if (失效列表.Contains(K))
+        { 
+            return false;
+        }
+        if ( 玩家输入的按键存储_按住.Contains(K))
+        { 
             return true;
         }
         else
-        {
+        { 
             return false;
         }
     }
-    public bool 按键检测_松开(KeyCode K)
+    public bool 按键检测_松开(KeyCode K, int i = 0)
     {
-
+        if (State != i && i != 999)
+        {
+            return false;
+        }
         if ( 玩家输入的按键存储_松开.Contains(K))
         {
             return true;
@@ -242,6 +261,7 @@ public   Dictionary<KeyCode, Key> D_I = new Dictionary<KeyCode, Key>();
 }
 public class Player_input : Input_base
 {
+
    public  IK k;
     public override bool 输入开关
     {
@@ -267,7 +287,7 @@ public class Player_input : Input_base
         }
     }
 
-    public Key 跳;
+    public Key 监控;
 
     public  Action<int>方向变动 { get;  set; }
 
@@ -320,7 +340,7 @@ public class Player_input : Input_base
         foreach (var item in 玩家输入的按键存储_按住)
         {
             玩家输入的按键存储_松开.Add(item);
-            KeyUp?.Invoke(item); 
+            KeyUp?.Invoke(item,State); 
             方向正零负 = 0;
  
 
@@ -427,6 +447,7 @@ public class Player_input : Input_base
         变速,
         视野,
         背包,
+        控灵,
 
         上,
         下,
@@ -434,8 +455,7 @@ public class Player_input : Input_base
         右,
 
     }
-       
-
+        public KeyCode 控灵;
         public KeyCode 地图;
         public KeyCode 攻击;
         public KeyCode 跳跃;
@@ -464,12 +484,14 @@ public class Player_input : Input_base
             case RuntimePlatform.WindowsEditor:
                 Debug.LogError("AAAAAAAAAAAAAAAAAAAAA");
 
-
-    A.地图 = KeyCode.M;
+            A.    控灵 = KeyCode.L;
+                A.地图 = KeyCode.M;
     A.攻击 = KeyCode.J;
     A.跳跃 = KeyCode.Space;
     A.冲刺 = KeyCode.LeftShift;
+
     A.格挡 = KeyCode.K;
+
     A.交互 = KeyCode.E;
     A.变速 = KeyCode.K;
      A.视野 = KeyCode.Tab    ;
@@ -523,6 +545,7 @@ public class Player_input : Input_base
         New_(k.右, "右");
         New_(k.左, "左");
 
+        New_(k.控灵, "控灵");
         New_(k.地图, "地图");
         New_(k.攻击, "攻击");
         New_(k.跳跃, "跳跃");
@@ -533,7 +556,7 @@ public class Player_input : Input_base
         New_(k.视野, "视野");
         New_(k.背包 ,"背包");
 
-        跳 = D_I[k.跳跃];
+        监控 = D_I[k.变速];
         foreach (Key D in D_I.Values)
         {
             所有的按键列表.Add(D);
@@ -547,25 +570,26 @@ public class Player_input : Input_base
  
     void 水平方向更新()
     {
-        if (按键检测_按住(k.左) && 按键检测_按住(k.右))
-        {
+
+        if (按键检测_按住(k.左,999) && 按键检测_按住(k.右, 999))
+        { 
             方向正零负 = 0;
             return;
         }
-        else if (按键检测_按住(k.左))
+        else if (按键检测_按住(k.左, 999))
         {
 
             方向正负 = -1;
             方向正零负 = -1;
         }
-        else if (按键检测_按住(k.右))
+        else if (按键检测_按住(k.右, 999))
         {
 
             方向正负 = 1;
             方向正零负 = 1;
         }
         else
-        {
+        { 
             方向正零负 = 0;
         }
 
@@ -639,19 +663,43 @@ public class Player_input : Input_base
         I.玩家输入的按键存储_按下.Clear();
         I.玩家输入的按键存储_松开.Clear();
 
-
-        
-            foreach (KeyValuePair<KeyCode, Key> D in D_I)
+        if (Input.GetKey(KeyCode.W))
         {
+            Debu.LogError("W        VVVV  这里");
+        }
+          if (Input.GetKey(KeyCode.A))
+        {
+            Debu.LogError("A        VVVV  这里");
+        }
+        if (Input.GetKey(KeyCode.L ))
+        {
+            Debu.LogError("L        VVVV  这里");
+        }
+        string ss = D_I.Count+"";
+        foreach (KeyValuePair<KeyCode, Key> D in D_I)
+        {
+            bool BB = D.Key == KeyCode.W || D.Key == KeyCode.A;
 
-      
-                if (Input.GetKeyDown(D.Key))///玩家输入了范围中的按键
+            if (Input.GetKey(D.Key))
             {
+                ss += D.Key;
+                //if (BB) Debu.LogError(D.Key + "        VVVV  这里");
+            }
+        }
+        Debu.LogError(ss);
+        //return ;
+        foreach (KeyValuePair<KeyCode, Key> D in D_I)
+        { 
+            //if (BB) Debu.LogError(D.Key + "        AAAA  这里");
+
+            if (Input.GetKeyDown(D.Key))///玩家输入了范围中的按键
+            {
+                //if (BB) Debu.LogError(D.Key + "        YYYYY  这里");
                 if (!输入开关) return;
                  
-                KeyDown?.Invoke(D.Key);
-             
-                    D_I[D.Key].更新时间(1);
+                KeyDown?.Invoke(D.Key, State);
+
+                D_I[D.Key].更新时间(1);
                     玩家输入的按键存储_按下.Add(D.Key);
                     玩家输入的按键存储栈.AddLast(D.Key);
                     玩家输入的按键顺序_显示.Clear();
@@ -661,23 +709,30 @@ public class Player_input : Input_base
 
                     }
                 }
-
-                if (Input.GetKey(D.Key))
+            //if (BB) Debu.LogError(D.Key + "        TTT  这里");
+            if (Input.GetKey(D.Key))
                 {
+
+        
+                //if (BB) Debu.LogError(D.Key + "        BBB  这里");
+
                 if (!输入开关) return;
+
+
+
                 if (!玩家输入的按键存储_按住.Contains(D.Key))
                 {
                     玩家输入的按键存储_按住.Add(D.Key);
                 }
-                KeyState?.Invoke(D.Key);
-                    D_I[D.Key].更新时间(2);
+                KeyState?.Invoke(D.Key, State);
+                D_I[D.Key].更新时间(2);
                 D_I[D.Key].被按下了吗 = true;
                 }
 
                 if (Input.GetKeyUp(D.Key))
                 {
 
-                    KeyUp?.Invoke(D.Key);
+                    KeyUp?.Invoke(D.Key, State);
                     玩家输入的按键存储_按住.Remove(D.Key);
                     D_I[D.Key].更新时间(3);
                     玩家输入的按键存储_松开.Add(D.Key);
@@ -724,21 +779,23 @@ public class Player_input : Input_base
     /// </summary>
     /// <returns></returns>
     void 竖直方向更新()
-    {
-        if (按键检测_按住(k.上)&& 按键检测_按住(k.下))
-        {
+    { 
+        if (按键检测_按住(k.上, 999)&& 按键检测_按住(k.下, 999))
+        { 
             竖直正负零 = 0;
         }
-        else  if(按键检测_按住(k.上))
+        else  if(按键检测_按住(k.上, 999))
         {
+
             竖直正负零 = 1;
         }
-        else if (按键检测_按住(k.下))
+        else if (按键检测_按住(k.下, 999))
         {
             竖直正负零 = -1;
         }
         else
-        {
+        { 
+            ////不能往左上方移动
             竖直正负零 = 0;
         } 
     }

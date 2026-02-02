@@ -100,9 +100,10 @@ public abstract  class  atkBase: State_Base
     protected virtual float AtkSpeed => Player3.I.玩家数值.攻击速度加成;
     protected bool 蓄力攻击
     {
-        get => f.变速攻击;
-        set =>f. 变速攻击 = value;
+        get => f.蓄力攻击_;
+        set =>f. 蓄力攻击_ = value;
     }
+
 
     protected float 碰撞框触发时间 { get; set; } = 0.1f;
     public override void ExitState(E_State e)
@@ -254,8 +255,9 @@ public abstract  class  atkBase: State_Base
         }
         else return false;
     } 
-    public bool 消弹()
+    public bool 消弹(float v=0)
     {
+        Debu.LogError(v+"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         bool a = false;
         if (判定框.所有碰撞体 != null && 判定框.所有碰撞体.Count > 0)
         { 
@@ -268,7 +270,7 @@ public abstract  class  atkBase: State_Base
                     var A = CC.GetComponent<I_消弹>();
                     if (A != null)
                     {  
-                    if (A.被消弹())
+                    if (A.被消弹(v))
                         {
                             a = true;
                             半灵.I.发射();
@@ -393,6 +395,8 @@ public class atk : atkBase
     public override void EnterState()
     { 
         base.EnterState();
+ 
+
         A.Re();
         第N下 = 0;
         当前攻击特效名字 = null;
@@ -409,7 +413,9 @@ public class atk : atkBase
     public override void ExitState(E_State e)
     {
         base.ExitState(e);
-          第N下 = 0;
+ 
+
+        第N下 = 0;
         当前攻击特效名字 = null;
         马上下一个攻击 = false;
         //Player.Velocity = Vector2.zero;
@@ -457,7 +463,7 @@ public class atk : atkBase
     }
     protected override bool 击中效果()
     { 
-        return base.击中效果() || 消弹();
+        return base.击中效果() || 消弹(1);
     }
     protected override void 单个攻击结束()
     {
@@ -489,6 +495,7 @@ public class atk : atkBase
     } 
     public override void UpdateState()
     {
+        击中效果();
         if (蓄力攻击  )
         {
             if (  Player.Atk)
@@ -523,7 +530,7 @@ public class atk : atkBase
                 return;
             }
         }
-        击中效果();
+
     }
 
 
@@ -538,12 +545,14 @@ public class skyatk : atkBase
 {
     protected override bool 击中效果()
     {
-        return base.击中效果() || 消弹();
+        return base.击中效果() || 消弹(1);
     }
     public override void EnterState()
     {
         base.EnterState();
         A.Re();
+
+ 
 
         第N下 = 0;
         当前攻击特效名字 = null;
@@ -559,7 +568,8 @@ public class skyatk : atkBase
     }
     public override void ExitState(E_State e)
     {
-        base.ExitState(e);
+        base.ExitState(e); 
+ 
         当前攻击特效名字 = null;  
         判定框.关闭再打开();
         Player.方向更新();
@@ -677,7 +687,7 @@ public class cricleatk : atkBase
     public override bool 能力激活的 { get => Player.N_.圆劈; set => Player.N_.圆劈 = value; }
     public override void 接触地面()
     { 
-        消弹 ();
+        //消弹 ();  hyw
         if (IP.方向正零负 == 0)
         {
             A.Playanim(A_N .idle_jump_to0);
@@ -789,6 +799,16 @@ public class cricleatk : atkBase
 
         if (击中效果()) {
             ///击中后重置
+
+            if (Player3.I.N_.速度切换)
+            {
+                ///短按
+                if (Player_input.I.按键检测_按住(Player_input.I.k.变速))
+                {
+                    SpeedMager.I.切换(); 
+                }
+
+            }
 
             Player.空中攻击过了 = false;
             Player.圆形攻击过了 = false;

@@ -52,6 +52,10 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
             }
         };
     }
+    private void Start()
+    {
+    F=    Surp_Pool.I.GetValue(Surp_Pool.子弹).GetComponent<Fly_Ground>();
+    }
     public float 间隔=3;
     float time;
     public float 弹道speed=1;
@@ -73,12 +77,23 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
             }
         }
     }
+    Fly_Ground F;
+
+    public bool 开开开开开开开开;
     private void FixedUpdate()
     { 
         if (暂停) return; 
             if (!开启) return;
-        time += Time.fixedDeltaTime* I.固定等级差;
-
+        float FF =0;
+        if (开开开开开开开开)
+        {
+            FF = I.固定等级差;
+        }
+        else
+        {
+            FF = Initialize_Mono.I.Mi.GetFlyGMin(F.self_speed * I.固定等级差);
+        } 
+        time += Time.fixedDeltaTime* FF;
         if (time > 间隔)
         {
             time = 0;
@@ -99,7 +114,7 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
     public E_方向 e_;
     public void 触发()
     {
-
+     
         var a = Surp_Pool.I.GetPool(Surp_Pool.子弹);
         var b = a.GetComponent<Fly_Ground>();
         b.Debul = Deb;

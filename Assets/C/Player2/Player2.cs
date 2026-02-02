@@ -74,20 +74,23 @@ public class Player2 :MonoBehaviour
 
 
 
-    private void 按下_(KeyCode obj)
+    private void 按下_(KeyCode obj, int i)
     {
+        if (i != 0) return;
         CustomEvent.Trigger(gameObject, 按下, obj);
         if (obj== Player_input.I.k.跳跃)
         {
             CustomEvent.Trigger(gameObject, "按下跳跃");
         }
     }
-    private void 松开_(KeyCode obj)
+    private void 松开_(KeyCode obj, int i)
     {
+        if (i != 0) return;
         CustomEvent.Trigger(gameObject, 松开, obj);
     }
-    private void 按住_(KeyCode obj)
+    private void 按住_(KeyCode obj, int i)
     {
+        if (i != 0) return;
         CustomEvent.Trigger(gameObject, 按住, obj);
 
         if (obj == Player_input.I.k.左 || obj == Player_input.I.k.右)

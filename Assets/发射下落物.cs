@@ -169,8 +169,6 @@ f.销毁触发 += handler;
             }
         }
     }
-
- 
 }
 
 public partial class 发射下落物 : MonoBehaviour, I_Dead, I_Revive, I_Speed_Change,I_暂停

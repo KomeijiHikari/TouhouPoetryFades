@@ -18,6 +18,13 @@ public class idle : State_Base
     public override void UpdateState()
     {
         base.UpdateState();
+        if(Player_input.I.State==0)
+        if (IP.方向正零负!=0)
+        {
+            if (IP.按键检测_按住(IP.k.左) && IP.按键检测_按住(IP.k.右)  ) return;
+            f.To_State(E_State.run); 
+        }
+
         if (Initialize_Mono.I. MoveP_优化)
         {
             Player3.I.对齐脚下();
@@ -109,6 +116,7 @@ public override void StateStart()
                 case E_State.downatk:
                 case E_State.skyatk:
                 case E_State.sky:
+                    if( IP.State==0 )
                     if(IP.方向正零负 ==0)
                         yalaAudil.I.EffectsPlay("DallGround", 0);
                     Player.Velocity = Vector2.zero;
@@ -184,18 +192,7 @@ public override void StateStart()
         //Initialize.Set_碰撞(Initialize.L_Enemy, Initialize.L_Player, false);
 
     }
-    public override void 按住(KeyCode obj)
-    {
  
-        if (obj == IP.k.右 || obj == IP.k.左)
-        {
-            if (Input.GetKey(IP.k.左) && Input.GetKey(IP.k.右)) return;
-            f.To_State(E_State.run);
- 
-        }
- 
-    }
-
     public override void ExitState(E_State e)
     {
  

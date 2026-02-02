@@ -619,8 +619,9 @@ namespace 发射器空间
             Bb.Velocity = 方向 * B.LinearVelocity;
             return Bb;
         }
-
+   
         public bool 发射角度指向玩家=false;
+        public Bullet_base LastBullet;
         Bullet_base Send(float 角度 = 0)
         {
 
@@ -649,6 +650,7 @@ namespace 发射器空间
             }
 
             初始化?.Invoke(Bb);
+            LastBullet = Bb;
             return Bb;
 
         }

@@ -234,9 +234,9 @@ public partial class Player3 : BiologyBase
     [DisplayOnly]
     public Vector2 监控;
 
-    public void 消弹()
+    public void 消弹( )
     {
-  ((atk)F.Getstate(E_State.atk))  .   消弹();
+  ((atk)F.Getstate(E_State.atk))  .   消弹( );
     }
     public float Wall_Way_Y;
     public float LastWall { get; set; }
@@ -390,6 +390,7 @@ public partial class Player3 : BiologyBase
     float 加速度;
     private void Start()
     {
+        变速 = Player_input.I.Get_key((Player_input.I.k.变速));
         LoadAll().Forget();
         Initialize_Mono.I.重制触发 += (int i, int l) => {
             Initialize_Mono.I.Waite(() =>
@@ -477,20 +478,23 @@ public partial class Player3 : BiologyBase
     //}
 
 
-    private void 按下_(KeyCode obj)
+    private void 按下_(KeyCode obj,int i )
     {
+        if (i != 0) return;
         按下?.Invoke(obj);
         if (obj == Player_input.I.k.跳跃)
         {
             按下跳跃?.Invoke();
         }
     }
-    private void 松开_(KeyCode obj)
+    private void 松开_(KeyCode obj, int i)
     {
+        if (i != 0) return;
         松开?.Invoke(obj);
     }
-    private void 按住_(KeyCode obj)
+    private void 按住_(KeyCode obj, int i)
     {
+        if (i != 0) return;
         按住?.Invoke(obj);
 
         if (obj == Player_input.I.k.左)
@@ -765,7 +769,35 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
 
     public static float 前档板距离 = 0.05f;
 
+    void 半灵相关()
+    {
+        if (N_.半灵)
+        {
+ 
+            //if (Ground)
+                if (Player_input.I.按键检测_按下(Player_input.I.k.控灵))
+                { 
+                    Player_input.I.State = 1;
+                    摄像机.I.设置相机跟随( 半灵.I.gameObject  );
+        
+                }else   if ( Player_input.I.按键检测_松开(Player_input.I.k.控灵, 1))
+            { 
+                Player_input.I.State = 0;
+                摄像机.I.设置相机跟随(焦点.I.gameObject);
+     
+                    半灵.I.玩家目标点.transform.localPosition = Vector3.zero;
+            }
 
+            if (Player_input.I.State == 1)
+            {
+                //int heng = Player_input.I.方向正零负;
+                //int shu = Player_input.I.竖直正负零;
+                Vector3  V = Player_input.I.输入;
+                Debu.LogError("X    Y"+V);
+                半灵.I.玩家目标点.transform.position+= V * Time.deltaTime * 玩家数值.常态速度*3;
+            }
+        }
+    }
     [SerializeField]
 
 
@@ -774,14 +806,29 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
         set { SpeedMager.I.Last副Speed1Leve = value; } }
 
     //public new  SpriteRenderer sp;
+
+ [DisplayOnly] public   Key 变速;
     protected override  void Update()
     { 
-        base.Update(); 
-        if(   Player3.I.N_.速度切换)
+        base.Update();
+         
+     if (  N_.速度切换)
         {
-        if (Player_input.I.按键检测_按下(Player_input.I.k.变速)) SpeedMager.I.切换(); 
-        }
  
+            ///短按
+            if (Player_input.I.按键检测_松开(Player_input.I.k.变速))
+            {
+                if (Player_input.I.Now_Time_- 变速.KeytimeDown < 0.2f)
+                {
+                    SpeedMager.I.切换();
+                }
+            }
+ 
+        }
+
+        半灵相关();
+
+
          if(N_.速度视野)if (Player_input.I.按键检测_按下(Player_input.I.k.视野)) 切换Shader.I.isSpeed = !切换Shader.I.isSpeed;
 
         if (Ground && !HPROCK && (FSM.f.I_State_C.state == E_State.run || FSM.f.I_State_C.state == E_State.idle))
@@ -1663,6 +1710,7 @@ public partial class Player3 : I_生命, I_攻击
     }
     public void 变速特效(float f)
     {
+        Debu.LogError("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
         if (MathF.Abs(Player3.Public_Const_Speed - f) > 1)
         {
             脉冲.I.File(Player3.I.transform.position);
@@ -1670,7 +1718,8 @@ public partial class Player3 : I_生命, I_攻击
         }
         else
         {
-            脉冲.I.File(Player3.I.transform.position, 0.01f);
+            脉冲.I.File(Player3.I.transform.position);
+            //脉冲.I.File(Player3.I.transform.position, 0.01f);
             Initialize_Mono.I.时缓(0.1f, 0.2f);
         }
     }

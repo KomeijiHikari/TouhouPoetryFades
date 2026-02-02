@@ -53,7 +53,7 @@ public class 判定框Base : MonoBehaviour
             case 打到的类型.敌人:
                 if (变速 != null)
                 {
-                    if (FSM.f.变速攻击)
+                    if (FSM.f.蓄力攻击_)
                     {
                         Debug.LogWarning("进入CCCCCCCCCCCCCCCCC");
                         SpeedMager.I.同速_(变速);
@@ -65,7 +65,7 @@ public class 判定框Base : MonoBehaviour
                 有血.被扣血(Player3.I.atkvalue, Player3.I.gameObject, 0);
                 break;
             case 打到的类型.移动平台:
-                if (FSM.f.变速攻击)
+                if (FSM.f.蓄力攻击_&&FSM.f.可以同速)
                 {
                     SpeedMager.I.同速_(变速);
                 }

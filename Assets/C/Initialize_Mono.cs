@@ -213,7 +213,9 @@ public class Initialize_Mono : MonoBehaviour
 
     public List<AnimationClip> asddd;
     public Animator a;
-    [Serializable]
+
+
+    public Sprite 无害子弹图片;
     public struct 消息
     {
         [SerializeField]
@@ -364,6 +366,9 @@ public class Initialize_Mono : MonoBehaviour
         DeadPla.I.读取();
         DeadPla.I.DE();
     }
+    /// <summary>
+    /// 速度的限制
+    /// </summary>
    public 数值范围 Sz { get; private set; }
     public void 改变一会儿时间(float 真实时间, float 速率)
     {
@@ -589,7 +594,7 @@ public class Initialize_Mono : MonoBehaviour
 
 
     public void 时缓(float setTime, float endTime)
-    {
+    { 
         Initialize.TimeScale = 1f;
         if (时缓协程 != null)
         {

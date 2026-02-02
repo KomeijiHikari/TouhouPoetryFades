@@ -146,6 +146,9 @@ public class SpeedMager : MonoBehaviour
 
       if(Deb)  Debug.LogError($"{speedInterface.Speed_Lv}  速度  {speedInterface.Current_Speed_LV}");
 
+        // 播放速度变化效果
+        视听体验(speedInterface.Current_Speed_LV  );
+
         // 2. 判断速度状态类型并处理
         if (_is接口是静态速度(speedInterface))
         {
@@ -203,8 +206,7 @@ public class SpeedMager : MonoBehaviour
             return;
         }
 
-        // 播放速度变化效果
-        视听体验(targetSpeed);
+
 
         // 根据变速模式处理
         if (变速变速)

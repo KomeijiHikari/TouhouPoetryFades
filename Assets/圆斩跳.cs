@@ -159,7 +159,7 @@ public class 圆斩跳 : MonoBehaviour
                 float y = 竖向(方向, 竖向判定Box.bounds, 9, Player3.I.碰撞检测层).y;
                 a = GenerateRaycastResults(方向, Box.bounds, 9, Player3.I.碰撞检测层, y);
             }
-        Player3.I.消弹();
+        Player3.I.消弹( );
         return a;
     }
 
@@ -259,7 +259,7 @@ public class 圆斩跳 : MonoBehaviour
         {
             // 打到了：先播放特效（使用命中点）
 
-            特效_pool_2.I.GetPool(MaxPoins, T_N.特效圆跳).Speed_Lv = Player3.Public_Const_Speed;
+            特效_pool_2.I.GetPool(MaxPoins, T_N.特效圆跳).Speed_Lv = SpeedMager.I.Speed_Leve1;
             // 对命中的碰撞体执行操作（若存在）
 
             var col = hitColliders[da];

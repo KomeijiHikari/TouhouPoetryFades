@@ -15,7 +15,7 @@ public class 魔炮机关 : MonoBehaviour, I_暂停, I_Speed_Is
     public float 生命周期 = 0;
     [SerializeField]
     SpriteRenderer sp;
-    public bool 暂停 { get; set; }
+    public bool 暂停 { get => 暂停1; set => 暂停1 = value; }
     public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
 
     float Angle;
@@ -32,20 +32,37 @@ public class 魔炮机关 : MonoBehaviour, I_暂停, I_Speed_Is
         {
             time = 间隔 - 0.01f; 
         };
-    }
+    } 
+
+    /// <summary>
+    /// 运行前  所有的发射机关都一样
+    /// 间隔（默认3）    之后速度应该是 发射物体的 自身速度*上   比如之后是21
+    /// </summary>
     public float 间隔 = 3;
     float time;
     public float 弹道speed = 1;
     [SerializeField]
     private float speed_Lv = 1;
-    I_Speed_Is I => this;
+    I_Speed_Is I_s => this;
  
     public E_方向 方向;
+
+    public   bool 开开开开开开开开开;
+  [SerializeField][DisplayOnly]  private bool 暂停1;
+
     private void FixedUpdate()
     {
-        if (暂停) return; 
-        time += Time.fixedDeltaTime * I.固定等级差;
+        if (暂停) return;
 
+        if (f.LastBullet==null)
+        {
+            触发();
+        }
+        else
+        { 
+ 
+                time += Time.fixedDeltaTime * f.LastBullet.真实移动速度;
+ 
         if (time > 间隔)
         {
             time = 0;
@@ -55,6 +72,7 @@ public class 魔炮机关 : MonoBehaviour, I_暂停, I_Speed_Is
         float ff = time / 间隔;
         ff = Mathf.Clamp(ff, 0.2f, 1) * 2f;
         transform.localScale = new Vector3(transform.localScale.x, ff);
+        }
     } 
     public void 触发()
     {

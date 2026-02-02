@@ -82,7 +82,12 @@ public class FSM : MonoBehaviour
     public float Wall_X;
     public   Transform 改变后的;
     public bool 状态消息 = true;
-    public bool 变速攻击;
+    public bool 蓄力攻击_;
+
+    public bool 可以同速
+    {
+        get =>f.I_State_C.state == E_State.atk || f.I_State_C.state == E_State.skyatk;
+    }
     public static FSM f { get; private set; }
 
     public I_State I_State_LLL;
@@ -238,6 +243,8 @@ public class FSM : MonoBehaviour
             蓄力状态 = E_蓄力状态.没蓄力; 
             return;
         }
+        if (Player_input.I.State==0)
+        { 
         switch (蓄力状态)
         {
             case E_蓄力状态.没蓄力:
@@ -278,7 +285,8 @@ public class FSM : MonoBehaviour
                     蓄力成功之后 = Time.time;
                 }
                 break; 
-        } 
+        }
+        }
     }
 
     private void Start()

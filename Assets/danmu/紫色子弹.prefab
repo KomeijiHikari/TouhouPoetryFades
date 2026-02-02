@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46abb22dda260c54cb707beecff6624f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bc: {fileID: 4930925209068988565}
   Times: []
   Deb: 0
   "L\u7EBF\u901F\u5EA6": 0
@@ -61,11 +62,14 @@ MonoBehaviour:
   "\u65B9\u54111": {x: 0, y: 0}
   eulerAngles: {x: 0, y: 0, z: 0}
   "\u81EA\u8EAB\u65CB\u8F6C": 0
+  speed_Lv: 1
   "\u8FFD\u8E2A\u73A9\u5BB6": 0
   "\u5B50\u5F39\u78B0\u649E":
     serializedVersion: 2
     m_Bits: 192
+  Current_Speed: 0
   deadtime: -1
+  "\u6210\u4E3A\u5E73\u53F0": 1
   "\u53EF\u4EE5\u88AB\u6D88\u706D": 1
 --- !u!114 &1959165710018720593
 MonoBehaviour:

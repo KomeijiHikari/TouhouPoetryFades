@@ -203,8 +203,9 @@ default:
                 break;
         }
     }
- public  void ¹¥»÷¶¯»­¿ØÖÆ(KeyCode obj)
+ public  void ¹¥»÷¶¯»­¿ØÖÆ(KeyCode obj, int i)
     {
+        if (i != 0) return;
         if (obj != Player_input.I.k.¹¥»÷) return; 
         ¹¥»÷(); 
     }

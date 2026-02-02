@@ -11,7 +11,7 @@ public class 半灵 : MonoBehaviour
         } }
 
     [SerializeField]
-    Transform 玩家目标点;
+  public  Transform 玩家目标点;
     public static 半灵 I;
     [SerializeField]
     控制粒子 子弹发射;
@@ -23,6 +23,11 @@ public class 半灵 : MonoBehaviour
     SpriteRenderer sp;
 
     [SerializeField] ParticleSystem 半灵尾巴;
+
+    public void Set跟随开关(bool b)
+    {
+        F.enabled= b;
+    }
     /// <summary>
     /// 
     /// </summary>

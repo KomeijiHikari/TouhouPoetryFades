@@ -349,6 +349,8 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
     Vector2 模拟速度_;
     [SerializeField]
     Vector2 模拟速度 = new Vector2(0, 4f);
+
+    float Enter旋转时间;
     public void 旋转触发(int I)
     {
         if (I == -1)
@@ -375,7 +377,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
 
             if (!旋转1)
             {
-
+                Enter旋转时间 =SpeedTime;
                 旋转1 = true;
                 暂停 = true;
                 销毁 = false;
@@ -506,7 +508,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
             float Deletime = Time.fixedDeltaTime;
             if (Initialize_Mono.I.Updatee) Deletime = Time.deltaTime;
 
-            transform.Rotate(帧旋转速度 * Initialize_Mono.I.GetMin(I_S.固定等级差) * Deletime * 0.21f);
+            sp.transform.Rotate(帧旋转速度 * Initialize_Mono.I.GetMin(I_S.固定等级差) * Deletime * 0.21f);
 
             float Y = 模拟速度_.y - Initialize_Mono.I.假物理重力 * 重力加速度乘 *
                 Initialize_Mono.I.GetMin(I_S.固定等级差) * Deletime;
@@ -515,7 +517,11 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
             //Debug.LogError(模拟速度_.y);
             //if (Y < -30)  死();
         }
+
+        SpeedTime += 帧移动距离;
     }
+
+    float SpeedTime;
     private void FixedUpdate()
     {
         if (!Initialize_Mono.I.Updatee)
@@ -526,10 +532,11 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
     }
     private void Update()
     {
-        if (I_S.固定等级差 >= Initialize_Mono.I.Sz.YesPowers[2] || 旋转1)
+        if (I_S.固定等级差 >= Initialize_Mono.I.Sz.YesPowers[2] 
+            || (旋转&&SpeedTime-Enter旋转时间>0.5f))
         {
             /// 大于2 不碰撞 
-            //bc.isTrigger = true;
+            //Enter旋转时间
             gameObject.layer = Initialize.L_Enemy;
         }
         else
@@ -750,9 +757,11 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
 
     public void 重制()
     {
+        Enter旋转时间 = 0;
         无视盒子 = default;
         旋转1 = false;
         transform.rotation = Quaternion.Euler(0, 0, 0);
+        sp. transform.rotation = Quaternion.Euler(0, 0, 0);
         is_dead = false;
         是玩家噶的 = false;
         Currrtten = L1;

@@ -32,8 +32,7 @@ Transform  碰撞框;
 
     }
     private void OnDestroy()
-    {
-        Debu.LogError(gameObject.name+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    { 
         Initialize_Mono.I.重制触发 -= 响应;
     }
     private void 响应(int 场景, int 编号)

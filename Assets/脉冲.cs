@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Sirenix.OdinInspector;
 public class 脉冲 : MonoBehaviour
 {
     RawImage RI;
     Material m;
     public static 脉冲 I;
- 
+
+    public float Max;
+    public float Min;
     public  float  speed=1;
     static string 尺寸
     {
@@ -18,11 +20,11 @@ public class 脉冲 : MonoBehaviour
     {
         get => "_Force";
     }
-    static string t
+    static string 距离
     {
         get => "_t";
     }
-    bool enabled
+    bool e嗯嗯nabled
     { 
     set
         {
@@ -44,27 +46,42 @@ public class 脉冲 : MonoBehaviour
         RI = GetComponent<RawImage>();
         m = RI.material;
 
-        m.SetFloat(t, 0);
-        enabled = false;
+        m.SetFloat(距离, 0);
+        e嗯嗯nabled = false;
     }
 
     private void Start()
     {
         defu= m.GetFloat(强度);
+        Defu尺寸 = m.GetFloat(尺寸);
     }
     float defu;
 
     public void End_File()
     {
-         enabled = false;
+         e嗯嗯nabled = false;
         StopCoroutine(F);
         Set_Float(0);
+
+        m.SetFloat(距离, -10);
         m.SetFloat(强度, defu);
-        m.SetFloat(尺寸,0.1f);
+        m.SetFloat(尺寸, Defu尺寸);
+    }
+    float Defu尺寸;
+
+    [Button]
+    public void 试一下()
+    {
+        File(Player3.I.transform.position,0, true,10);
     }
     public void File(Vector3 po,float 脉冲强度=0,bool 正向反向=true,float 时间=1,float 尺寸_=0.1f)
     {
-        时间 = 0.15f;
+        Debu.LogError(" "+脉冲强度+ 正向反向+ 时间+ 尺寸_);
+        if (时间==1)
+        {
+            时间 = 0.15f;
+        }
+
         m.SetFloat(尺寸, 尺寸_);
         if (脉冲强度==0)
         {
@@ -90,14 +107,14 @@ public class 脉冲 : MonoBehaviour
     {
         if (实验!=0)
         {
-             enabled = true;
+             e嗯嗯nabled = true; 
             Set_Float(实验);
         }
     }
     IEnumerator ST(bool 正负=true,float 时间=1)
     {
         正负 = true;
-         enabled = true; 
+         e嗯嗯nabled = true; 
         var Starttime =Time.time;
         if (正负)
         { 
@@ -128,14 +145,15 @@ public class 脉冲 : MonoBehaviour
 
 
         Set_Float(0);
-         enabled = false ; 
+         e嗯嗯nabled = false ; 
         yield return null;
     }
 
     void Set_Float(float value)
     { 
-        float 缺口 = 0.15f;
-        value = 缺口 + (1- 缺口) / 1f* value;
-        m.SetFloat(t, value);
+        //float 缺口 = 0.15f;
+        //value = 缺口 + (1- 缺口) / 1f* value;
+        float Lerp = Mathf.Lerp(Min, Max, value);
+        m.SetFloat(距离, Lerp);
     }
 }

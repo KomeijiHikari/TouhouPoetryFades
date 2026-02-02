@@ -195,8 +195,8 @@ public class 特效模板管理 : MonoBehaviour, I_Speed_Change
             }
         }
 
-        
 
+        return;
         if(Time.frameCount % 3 == 0)//3帧执行一次 优化性能
         {
             var spd = Player3.Public_Const_Speed;
@@ -206,6 +206,7 @@ public class 特效模板管理 : MonoBehaviour, I_Speed_Change
             }
 
             an.speed = Speed_Lv / spd;
+            if (A_name == T_N.特效圆跳) Debu.LogError(an.speed +"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         }
     }
     public bool 代理回归=false ;

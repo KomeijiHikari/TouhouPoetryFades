@@ -3,6 +3,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Trisibo;
 using UnityEngine;
@@ -229,7 +230,7 @@ public class 主UI : MonoBehaviour
         //    Debug.LogError("BBBBBBBBBBBBBBB");
         //}
 
-        if (Input.GetButtonDown(Initialize.Exite))
+        if (Player_input.I.   Exite)
         {//从菜单里切回来的时候这个会触发
 
             if (true|| Player.Ground)

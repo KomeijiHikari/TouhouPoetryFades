@@ -618,7 +618,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D, I_消
     public float Speed_Lv { get => speed_Lv; set => speed_Lv=value; } 
   public   Rigidbody2D Get_rb() { return null; }
 
-    public bool 被消弹()
+    public bool 被消弹(float i)
     {
         if(b==(I_M_Ridbody2D)this)
         {
