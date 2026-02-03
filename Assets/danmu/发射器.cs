@@ -214,9 +214,10 @@ namespace 发射器空间
                 var VVV = a[i];
                 Phy aa = SendP();
                 aa.Speed_Lv = Speed_Lv;
-                aa.目标炮_方向(VVV,new Vector2(transform.lossyScale.x*1,2));
+                aa.目标炮_方向(VVV,new Vector2(transform.lossyScale.x*1,0.5f));
                 aa.暂停 = false;
                 var P = aa.GetComponent<Phy_检测>();
+                //P.enabled = false;
                 Debug.Log($"添加了 Stay 炸弹  currentLength:{P.Stay.GetInvocationList().Length}");
                 P.GetComponent<MonoMager>().永远不暂停 = true;
                 P.Stay += () =>
@@ -582,8 +583,10 @@ namespace 发射器空间
             var Bb = Surp_Pool.I.GetPool(B.pre.name).GetComponent<Phy>();
             var B_ = Bb.GetComponent<Phy_检测>();
             Bb.transform.position = transform.position;
-            B_.AliveStay += () =>
+            if (false)
+                B_.AliveStay += () =>
             {
+ 
                 if (Time.time - B_.EnableTime > 10 / Speed_Lv / Player3.Public_Const_Speed)
                 {
                     特效_pool_2.I.GetPool(B_.transform.position, T_N.特效闪光爆炸);
@@ -591,6 +594,7 @@ namespace 发射器空间
                 }
             };
             B_.Stay = null;
+            //if(false)
             B_.Stay += () => {
                 for (int i = 0; i < B_.Rs.Length; i++)
                 {

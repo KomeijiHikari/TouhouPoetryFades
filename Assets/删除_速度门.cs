@@ -88,7 +88,11 @@ public class 删除_速度门 : MonoBehaviour, I_Speed_Change, I_暂停
             Re();
             SpeedMager.I.临时速度清除();
             Player3.I.适应文字.开关(true);
-            Player3.I.适应文字.SetText("找准空隙滑铲过去");
+            if (true)
+            {
+                Player3.I.适应文字.SetText("速度一致的话就找准空隙滑铲过去吧");
+            }
+       
         };
         P.Exite += () => {
             Player3.I.适应文字.开关(false);
@@ -180,14 +184,14 @@ public class 删除_速度门 : MonoBehaviour, I_Speed_Change, I_暂停
         if (速度差 > Initialize_Mono.I.阀值 && 速度差 < Initialize_Mono.I.阀值2)
         {
             bc.isTrigger = false;
-            bc.enabled = true;
+ 
             速度差 = Initialize_Mono.I.阀值2*5;///高速加快
        
         }
         else
         {
             bc.isTrigger = true;
-            bc.enabled = false;
+ 
         }
 
         NozeB -= Time.deltaTime * 速度差;

@@ -280,7 +280,7 @@ MonoBehaviour:
   Deb: 0
   Speedd: 0
   "\u5173\u95ED1": 0
-  "\u91CD\u529B\u589E\u5E451": 0
+  "\u91CD\u529B\u589E\u5E451": 0.5
   ground: 0
   "\u78B0\u649E\u68C0\u6D4B\u5C421":
     serializedVersion: 2
@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d982df44c08409241967eb20fb5059cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  "\u6570\u91CF": 0
   "\u5C3A\u5BF8\u52A0\u6210": {x: 1, y: 1}
   sp: {fileID: 3921428004920652762}
   L:
@@ -312,6 +313,7 @@ MonoBehaviour:
   EnableTime: 0
   Deb: 0
   "\u6682\u505C1": 0
+  ActionDeb: 0
 --- !u!114 &-4568335133457393070
 MonoBehaviour:
   m_ObjectHideFlags: 0

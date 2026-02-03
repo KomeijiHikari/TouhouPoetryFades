@@ -72,6 +72,7 @@ public interface I_Speed_Change: I_Speed_Is
     {
         get
         {
+            return false;
             //return 超速等级== E_超速等级.虚无;
             return I_S.固定等级差 < Initialize_Mono.I.负阀值 || I_S.固定等级差 > Initialize_Mono.I.阀值3;
         }

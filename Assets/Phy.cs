@@ -291,10 +291,16 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D, I_消
         //当前 = 碰撞预测(当前);    
         if (当前!=Vector2.zero)
         {
+            //float lent =Mathf.Max(1, 当前.sqrMagnitude)  ;
+            //if (lent>1) 
+            float lent = 当前.magnitude;
+            Debug.LogError(lent+"   " + b.I_S.固定等级差);
+            current_Speed_LV = lent * b.I_S.固定等级差;
+            Vector2 way= 当前.normalized;
 
-       
+
         ZZZZZZZ = Initialize_Mono.I.Mi.GetMin(b.I_S.固定等级差);
-        var 单位位移 = (Vector3)当前 * ZZZZZZZ;
+        Vector3 单位位移 = 当前 * ZZZZZZZ;
 
         if (Initialize_Mono.I.Updatee) 单位位移 *= Time.deltaTime;
              else 单位位移 *= Time.fixedDeltaTime;
@@ -554,7 +560,7 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D, I_消
     private void Update()
     { 
         Speedd = b.I_S.固定等级差;
-
+        //current_Speed_LV=Speed_Lv*
         if (Initialize_Mono.I.Updatee)
             FixeUpdate();
     }
@@ -607,7 +613,12 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D, I_消
                 }  
             }
             if (Sp != null) return Sp.bounds;
-            else return bc.bounds; 
+            else if (bc != null) return bc.bounds;
+            else
+            {
+                Debu.LogError("空盒子",gameObject);
+                return default;
+            }
         }
     }
 

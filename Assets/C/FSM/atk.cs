@@ -257,7 +257,7 @@ public abstract  class  atkBase: State_Base
     } 
     public bool 消弹(float v=0)
     {
-        Debu.LogError(v+"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+ 
         bool a = false;
         if (判定框.所有碰撞体 != null && 判定框.所有碰撞体.Count > 0)
         { 

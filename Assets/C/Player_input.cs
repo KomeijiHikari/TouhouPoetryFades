@@ -662,31 +662,59 @@ public class Player_input : Input_base
         //return;
         I.玩家输入的按键存储_按下.Clear();
         I.玩家输入的按键存储_松开.Clear();
+        List<KeyCode> currentPressed = new List<KeyCode>();
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            Debu.LogError("W        VVVV  这里");
-        }
-          if (Input.GetKey(KeyCode.A))
-        {
-            Debu.LogError("A        VVVV  这里");
-        }
-        if (Input.GetKey(KeyCode.L ))
-        {
-            Debu.LogError("L        VVVV  这里");
-        }
-        string ss = D_I.Count+"";
-        foreach (KeyValuePair<KeyCode, Key> D in D_I)
-        {
-            bool BB = D.Key == KeyCode.W || D.Key == KeyCode.A;
+        //// 直接检测特定按键
+        //bool wPressed = Input.GetKey(KeyCode.W);
+        //bool aPressed = Input.GetKey(KeyCode.A);
+        //bool lPressed = Input.GetKey(KeyCode.L);
 
-            if (Input.GetKey(D.Key))
-            {
-                ss += D.Key;
-                //if (BB) Debu.LogError(D.Key + "        VVVV  这里");
-            }
-        }
-        Debu.LogError(ss);
+        //// 同时打印所有按下的键
+        //string pressedKeys = "";
+        //if (wPressed)
+        //{
+        //    pressedKeys += "W ";
+        //    currentPressed.Add(KeyCode.W);
+        //}
+        //if (aPressed)
+        //{
+        //    pressedKeys += "A ";
+        //    currentPressed.Add(KeyCode.A);
+        //}
+        //if (lPressed)
+        //{
+        //    pressedKeys += "L ";
+        //    currentPressed.Add(KeyCode.L);
+        //}
+
+        //if (!string.IsNullOrEmpty(pressedKeys))
+        //{
+        //    Debug.Log($"当前按下的键: {pressedKeys}");
+        //}
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //    Debu.LogError("W        VVVV  这里");
+        //}
+        //  if (Input.GetKey(KeyCode.A))
+        //{
+        //    Debu.LogError("A        VVVV  这里");
+        //}
+        //if (Input.GetKey(KeyCode.L ))
+        //{
+        //    Debu.LogError("L        VVVV  这里");
+        //}
+        //string ss = D_I.Count+"";
+        //foreach (KeyValuePair<KeyCode, Key> D in D_I)
+        //{
+        //    bool BB = D.Key == KeyCode.W || D.Key == KeyCode.A;
+
+        //    if (Input.GetKey(D.Key))
+        //    {
+        //        ss += D.Key;
+        //        //if (BB) Debu.LogError(D.Key + "        VVVV  这里");
+        //    }
+        //}
+        //Debu.LogError(ss);
         //return ;
         foreach (KeyValuePair<KeyCode, Key> D in D_I)
         { 

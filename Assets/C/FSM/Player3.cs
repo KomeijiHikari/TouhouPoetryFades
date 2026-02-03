@@ -773,29 +773,32 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
     {
         if (N_.半灵)
         {
- 
+
             //if (Ground)
+
+            if (Player_input.I.State == 0)
+            {
                 if (Player_input.I.按键检测_按下(Player_input.I.k.控灵))
-                { 
+                {
                     Player_input.I.State = 1;
-                    摄像机.I.设置相机跟随( 半灵.I.gameObject  );
-        
-                }else   if ( Player_input.I.按键检测_松开(Player_input.I.k.控灵, 1))
-            { 
-                Player_input.I.State = 0;
-                摄像机.I.设置相机跟随(焦点.I.gameObject);
-     
+                    摄像机.I.设置相机跟随(半灵.I.gameObject);
+
+                }
+            }
+            else if (Player_input.I.State == 1)
+            {
+                if (Player_input.I.按键检测_按下(Player_input.I.k.控灵, 1))
+                {
+                    Player_input.I.State = 0;
+                    摄像机.I.设置相机跟随(焦点.I.gameObject);
+
                     半灵.I.玩家目标点.transform.localPosition = Vector3.zero;
+                } 
+                    Vector3 V = Player_input.I.输入;
+                    Debu.LogError("X    Y" + V);
+                    半灵.I.玩家目标点.transform.position += V * Time.deltaTime * 玩家数值.常态速度 * 3; 
             }
 
-            if (Player_input.I.State == 1)
-            {
-                //int heng = Player_input.I.方向正零负;
-                //int shu = Player_input.I.竖直正负零;
-                Vector3  V = Player_input.I.输入;
-                Debu.LogError("X    Y"+V);
-                半灵.I.玩家目标点.transform.position+= V * Time.deltaTime * 玩家数值.常态速度*3;
-            }
         }
     }
     [SerializeField]
