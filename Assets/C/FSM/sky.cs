@@ -194,27 +194,26 @@ public class sky : State_Base
 
     float Wall_Y = 0;
     public override void FixedState()
-    { 
+    {
+        Player.空中移动(Player.返回方向());
 
-        if (IP.方向正零负!=0)
-        {
-            var a = Player.返回方向();
-            //if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0)); 
-            if (Player.前空_)
-            {
-                Player.Velocity= new Vector2(a * Player.玩家数值.常态速度, Player.Velocity.y);
-            }
-        }
-        if (IP.水平操作_ == 0 && Player.Velocity.y < 0)
-        {
-            float 百分比 = MathF.Abs(Velocity.x) / Player.玩家数值.常态速度;
+  //      if (IP.方向正零负 != 0)
+  //      {
+  //          var a = Player.返回方向();
+  //          //if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0));
+  //          if (Player.前空_)
+  //          {
+  //              Player.Velocity = new Vector2(a * Player.玩家数值.常态速度, Player.Velocity.y);
+  //          }
+  //      }
+  //      if (IP.方向正零负 == 0 )
+  //      {
+  //          float 百分比 = MathF.Abs(Velocity.x) / Player.玩家数值.常态速度;
 
-            百分比 = Mathf.Clamp(百分比, 0, 1f);
-            if (百分比 > 0.25f)
-            {
-                Player.AddForce(-Player.LocalScaleX_Set * Vector2.right *7.5f * 百分比);
-            } 
-        } 
+  //          百分比 = Mathf.Clamp(百分比, 0, 1f);
+  //Player.AddForce(-Player.LocalScaleX_Set * Vector2.right * 15f * 百分比);
+  
+  //      }
         if (Player.N_.悬浮)
         { 
         if (IP.按键检测_按住(IP.k.跳跃)&& IP.Get_key( IP.k.跳跃).Keeptime>0.2f)
@@ -433,7 +432,7 @@ public class sky : State_Base
     || (IP.按键检测_按下(IP.k.右) && -Player.wall_进入为正面  == 1);
             if (按下了相同)
             { 
-                ((wall)f.Getstate(E_State.wall)).金庸(0.3f);///不知道为啥没用
+                ((wall)f.Getstate(E_State.wall)).金庸(Initialize_Mono.I.删掉最长);///不知道为啥没用
                 A.Playanim(JUMAP_name.上去); 
                 Player.跳跃触发(new Vector2(-Player.wall_进入为正面 * 8f, Player.玩家数值.跳跃瞬间速度 )
                     , "登墙跳，AAAA土狼_先空格后方向");
@@ -444,7 +443,7 @@ public class sky : State_Base
         if (IP.按键检测_按住(IP.k.跳跃))
             if (Player.is土狼时间_Wall == 1)
             {
-                ((wall)f.Getstate(E_State.wall)).金庸(0.3f);
+                ((wall)f.Getstate(E_State.wall)).金庸(Initialize_Mono.I.删掉最长);
                 Player.is土狼时间_Wall = 0;
                 A.Playanim(JUMAP_name.上去); 
                 Player.跳跃触发(new Vector2(-Player.wall_进入为正面 * 8f, Player.玩家数值.跳跃瞬间速度)

@@ -590,15 +590,7 @@ public class skyatk : atkBase
             }
         }
 
-        if (IP.方向正零负 != 0)
-        {
-            var a = Player.返回方向();
-            //if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0)); 
-            if (Player.前空_)
-            {
-                Player.Velocity = new Vector2(a * Player.玩家数值.常态速度, Player.Velocity.y);
-            }
-        }
+        Player.空中移动(Player.返回方向());
 
         Player.竖直限制();
         Player.水平限制();
@@ -816,17 +808,9 @@ public class cricleatk : atkBase
             xM水平 = 1;
             提一下_NoLerp(Player.玩家数值.圆斩上升力 ); 
              
-        } 
-
-        if (IP.方向正零负 != 0)
-        {
-            var a = Player.返回方向();
-            //if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0)); 
-            if (Player.前空_)
-            {
-                Player.Velocity = new Vector2(a * Player.玩家数值.常态速度, Player.Velocity.y);
-            }
         }
+
+        Player.空中移动(Player.返回方向());
 
         Player.竖直限制();
         Player.水平限制();
@@ -856,8 +840,7 @@ public class cricleatk : atkBase
     { 
         for (int ti = 0; ti < 判定框.所有碰撞体.Count; ti++)
         {
-            var col = 判定框.所有碰撞体[ti];
-            Debug.LogError(col.name);
+            var col = 判定框.所有碰撞体[ti]; 
         }
         if (判定框.所有碰撞体 !=null&& 判定框.所有碰撞体.Count>=1)
         {
@@ -928,7 +911,6 @@ public class cricleatk : atkBase
                             Vector2 Rs= Player.圆斩判定.发射();
                             RRR = Rs.x == 1;
                             ////10-1  0表示空  1 表示可以 -1 表示碰头
-
                             if (RRR)
                             {
                                 //if (!BInt.Add(Time.frameCount, true)) break;
@@ -1001,7 +983,7 @@ public class cricleatk : atkBase
                             var col = originalAll[i];
                             if (col == null) continue;
                             Vector2 Rs = Player.圆斩判定.发射(); 
-                            RRR = Rs.x == 1;
+                            RRR = Rs.x == 1; 
                             if (RRR)
                             {
                                 var delta = Rs.y - Player.脚底中间.y; 

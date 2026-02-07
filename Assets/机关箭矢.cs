@@ -91,16 +91,16 @@ public class 机关箭矢 : MonoBehaviour, I_暂停,I_Speed_Is
         }
         else
         {
-            FF = Initialize_Mono.I.Mi.GetFlyGMin(F.self_speed * I.固定等级差);
+            FF = Initialize_Mono.I.Mi.GetFlyGMin(F.self_speed * I.固定等级差* 弹道speed);
         } 
         time += Time.fixedDeltaTime* FF;
-        if (time > 间隔)
+        if (time > 间隔* 弹道speed)
         {
             time = 0;
 
             触发();
         }
-        float ff = time / 间隔;
+        float ff = time /(间隔 * 弹道speed) ;
         ff = Mathf.Clamp(ff,0.2f,1) * 2f;
         transform.localScale = new Vector3(transform.localScale.x, ff);
     }

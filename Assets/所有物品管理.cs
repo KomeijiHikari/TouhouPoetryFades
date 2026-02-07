@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using YamlDotNet.Core.Tokens;
 ///
 namespace ItemMager
 {
@@ -92,10 +93,10 @@ namespace ItemMager
     /// </summary>
     public invontory 所有;
     public Dictionary<String, CompleteItem> D_CompleteItem=new Dictionary<String, CompleteItem>();
-    public List<Itemvalue> itemSave=new List<Itemvalue>();
+        [SerializeField][DisplayOnly] List<Itemvalue> itemSave = new List<Itemvalue>();
 
- 
- 
+
+
         public CompleteItem GetCompleteItem(string name)
         {
             D_CompleteItem.TryGetValue(name, out var 完整物品);
@@ -143,17 +144,18 @@ namespace ItemMager
         if (所有==null)   return;
 
             ///读取 存档
-            itemSave = Load();
-            //Debug.LogError(itemSave.Count);
-        var 空存档 = itemSave == null;
-            if (空存档) itemSave = new List<Itemvalue>();
+            ItemSave = Load();
 
+            var 空存档 = ItemSave == null|| ItemSave.Count==0;
+            if (空存档) ItemSave = new List<Itemvalue>();
+            Debug.LogError(空存档+"    "+ItemSave.Count + 所有.itemList.Count);
             for (int i = 0; i < 所有.itemList.Count; i++)
             {
                 var a = 所有.itemList[i];
             string key= a.itemName;
-            ///如果为空，根据所有item创建 空数据 
-            Itemvalue 动态数据;
+                Debug.LogError(key + "   名字");
+                ///如果为空，根据所有item创建 空数据 
+                Itemvalue 动态数据;
             if (空存档)  动态数据 = new Itemvalue(key, a.物品数量, 0); 
             else
             {
@@ -163,10 +165,11 @@ namespace ItemMager
                     Debug.LogError(key+"从存档里面找不到");
                 }
             }
+                Debug.LogError(key + "   名字");
                 ///这边初始自定义
-                if (动态数据.key == "原劈") 动态数据.玩家持有 = 1;
+                //if (动态数据.key == "原劈") 动态数据.玩家持有 = 1;
 
-                itemSave.Add(动态数据);
+                ItemSave.Add(动态数据);
 
             var 完整物品=new CompleteItem(a, 动态数据, item.返回(key)  );
             D_CompleteItem.Add(key, 完整物品);
@@ -174,9 +177,10 @@ namespace ItemMager
 
                 刷新商店和玩家UI(完整物品);
           }
+            Debug.LogError(ItemSave.Count);
             //刷新商店和玩家UI();
-        ///存字典一个初始
-        if (空存档)
+            ///存字典一个初始
+            if (空存档)
             {///存到字典
                 save();
             }
@@ -207,8 +211,9 @@ namespace ItemMager
              
       
             var a = Load();
-            if (a != null)
-            {   
+            if (a != null&&a.Count!=0&& a.Count==所有.itemList.Count)
+            {
+                Debu.LogError(a.Count);
                 ///因为 执行顺序      存到了字典所以第一次运行   有可能 读不出来
                 玩家的.Clear();
                 商店的.Clear();
@@ -216,7 +221,7 @@ namespace ItemMager
 
                ///存档不看 ref 只看列表的数据  导致列表数据和实际数据不对齐 因此  需要覆盖列表
                //覆盖列表等于存档读取列表  所以必须要覆盖
-                itemSave = a;
+                ItemSave = a;
                 for (int i = 0; i< a.Count ; i++)
                 {
  
@@ -250,14 +255,14 @@ namespace ItemMager
             Debug.LogError("savesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesave");
 
             string c="";
-            for (int i = 0; i < itemSave.Count; i++)
+            for (int i = 0; i < ItemSave.Count; i++)
             {
-                var aa  = itemSave[i];
+                var aa  = ItemSave[i];
                 string ite=aa.key+"商店"+aa.商店持有+"玩家"+aa.玩家持有+"\n";
                 c += ite;
             }
-            Debug.LogError(itemSave.Count+c);
-            itemSaveClass a = new itemSaveClass(itemSave);
+            Debug.LogError(ItemSave.Count+c);
+            itemSaveClass a = new itemSaveClass(ItemSave);
             string s = JsonUtility.ToJson(a, true);
             Debug.LogError(s);
             Save_D.Add(SaveName, JsonUtility.ToJson(a, true));
@@ -268,13 +273,20 @@ namespace ItemMager
     public List<CompleteItem> 玩家的 = new List<CompleteItem>();
         string SaveName => "itemSave";
 
-      Itemvalue GetItemvalue(String s)
+        public List<Itemvalue> ItemSave { get { return itemSave; } set {
+                if (value!=null)
+                {  
+                Debu.LogError(value.Count+"   被改动");
+                }
+                itemSave = value; } }
+
+        Itemvalue GetItemvalue(String s)
     { 
-        for (int i = 0;i<itemSave.Count; i++)
+        for (int i = 0;i<ItemSave.Count; i++)
         {
-            if (itemSave[i].key == s)
+            if (ItemSave[i].key == s)
             {
-                return itemSave[i];
+                return ItemSave[i];
             }
         }
         return default;

@@ -73,7 +73,7 @@ public partial class Player3 : BiologyBase
             {
             return 站立box.bounds; 
             }
-            else if(站立box.enabled)
+            else if(蹲BOX.enabled)
             {
                 return 蹲BOX.bounds;
             }
@@ -88,7 +88,7 @@ public partial class Player3 : BiologyBase
 
     public static void SaveAll()
     {
-        Save_D.Add(SpeedMager.Public_Const_Speed_Name, Player3.Public_Const_Speed);
+        Save_D.Add(SpeedMager.Public_Const_Speed_Name, SpeedMager.I.Speed_Leve1);
         Save_D.Add(SpeedMager.Public_Const辅助_Speed_Name, SpeedMager.I.Last副Speed1Leve);
         Event_M.I.Invoke(Event_M.场景保存触发, Player3.I.gameObject);
         if (Player3.I.加速了)
@@ -392,7 +392,10 @@ public partial class Player3 : BiologyBase
     {
         变速 = Player_input.I.Get_key((Player_input.I.k.变速));
         LoadAll().Forget();
+    
         Initialize_Mono.I.重制触发 += (int i, int l) => {
+            ///速度门在房间边缘的话  会不正常的无法退出 
+            Player3.I.适应文字.开关(false);
             Initialize_Mono.I.Waite(() =>
             {
                 安全地点(true);
@@ -797,6 +800,8 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
                     Vector3 V = Player_input.I.输入;
                     Debu.LogError("X    Y" + V);
                     半灵.I.玩家目标点.transform.position += V * Time.deltaTime * 玩家数值.常态速度 * 3; 
+
+               //摄像机.I.当前碰撞框.bounds
             }
 
         }
@@ -986,7 +991,28 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
         开启 = false;
         yield break;
     }
+    public void 空中移动(int I)
+    {
+        if (Player_input.I.方向正零负 != 0)
+        {
 
+            //if (Player.前空_) Player.AddForce(new Vector2(a * Player.玩家数值.起步速度, 0));
+            if ( 前空_)
+            {
+                Velocity = new Vector2(I *  玩家数值.常态速度,  Velocity.y);
+            }
+        }
+        if (Player_input.I.方向正零负 == 0&& (Velocity.x * LocalScaleX_Set) > 0)
+        {
+            float 百分比 = (MathF.Abs(Velocity.x)+3) /  玩家数值.常态速度;
+
+            百分比 = Mathf.Clamp(百分比, 0, 1f);
+            //百分比 *= 百分比;
+            Debu.LogError(百分比);
+            AddForce(- LocalScaleX_Set * Vector2.right * 15f * 百分比);
+
+        }
+    }
     public void 水平限制()
     {
         if (MathF.Abs(Velocity.x) > 玩家数值.常态速度)
@@ -1472,11 +1498,11 @@ public     BoxCollider2D 最低点()
         //}
 
         //new Vector2(po.bounds.size.x - 0.5f, 1),
-        ((Vector2)蹲BOX.bounds.max).DraClirl();
+        ((Vector2)Bounds.max).DraClirl();
         var tou =
         Physics2D.BoxCast(
-       new Vector2(蹲BOX.bounds.center.x, 蹲BOX.bounds.max.y),
-        new Vector2(蹲BOX.bounds.size.x , 1),
+       new Vector2(Bounds.center.x, Bounds.max.y),
+        new Vector2(Bounds.size.x , 1),
         0f,
         Vector2.up,
          距离,
@@ -1528,7 +1554,17 @@ public     BoxCollider2D 最低点()
     }
     public int 返回方向()
     {
+
+
         var a键盘输入方向 = Player_input.I.方向正零负;
+        //Debu.LogError(禁止朝向1+"   "+ a键盘输入方向);
+
+        //if (禁止朝向1 == 0)
+        //{
+        //    return a键盘输入方向;
+        //}
+  
+        //return -禁止朝向1;
         if (a键盘输入方向 == 0)
         {
             ///无输入 啥都不干
@@ -1564,7 +1600,7 @@ public     BoxCollider2D 最低点()
         if (t==0)
         {
             禁止朝向1 = 0;
-            transform.position.DraClirl(1, Color.yellow, 1);
+            //transform.position.DraClirl(1, Color.yellow, 1);
         }
         else
         {
@@ -1733,7 +1769,8 @@ public partial class Player3 : I_生命, I_攻击
 
     public void SetSpeed(float f)
     {
-        SpeedMager.I.有变速(f,true ); 
+        SpeedMager.I.有变速(f,false);
+        //SpeedMager.I.有变速(f,true ); 
     } 
 
     public enum 防御   //最开始的小兵大量消耗格挡条  第二个消耗小  让各党，拿了第二个之后i第二个简单第一个难了

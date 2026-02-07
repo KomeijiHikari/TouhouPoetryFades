@@ -2577,7 +2577,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 138761517}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -356, y: -154, z: 0}
+  m_LocalPosition: {x: -295.3, y: -385.2, z: 0}
   m_LocalScale: {x: 1, y: 0.9772, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2650,6 +2650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaff1f2d0d9b3584ca4f18830fd27626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Deb: 0
   Box: {fileID: 2138553459}
   "\u7AD6\u5411\u5224\u5B9ABox": {fileID: 960655477}
 --- !u!114 &138761522
@@ -10266,7 +10267,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631139658}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -332.99002, y: -159.45831, z: -29.84}
+  m_LocalPosition: {x: -272.29, y: -390.65826, z: -29.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -24088,6 +24089,7 @@ MonoBehaviour:
   NozeB: 0
   speed_Lv: 1
   "\u6682\u505C1": 0
+  Deb: 0
 --- !u!212 &947328179
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -24354,7 +24356,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 960655475}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.29, y: 0, z: 0}
+  m_LocalPosition: {x: -0.71, y: 0, z: 0}
   m_LocalScale: {x: 0.89, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25858,7 +25860,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1067908288}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.2, y: -6.2, z: 0}
+  m_LocalPosition: {x: 14.2, y: -7.3972964, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42725,11 +42727,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   E: 0
-  "\u5F00\u53D1\u8005\u6A21\u5F0F1": 1
+  "\u5F00\u53D1\u8005\u6A21\u5F0F1": 0
   Debbbb:
     "\u5730\u56FE\u9053\u5177\u89E3\u95011": 0
     Dash: 1
-    "\u7A7A\u4E2DDash": 1
+    "\u7A7A\u4E2DDash": 0
     "\u5899\u51B2\u6D6A": 0
     "\u4E0A\u5347\u653B\u51FB": 1
     "\u60AC\u6D6E": 0
@@ -47886,7 +47888,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064576499}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -332.99002, y: -159.45831, z: -29.84}
+  m_LocalPosition: {x: -272.29, y: -390.65826, z: -29.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -49020,7 +49022,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2138553457}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.23, y: 0, z: 0}
+  m_LocalPosition: {x: 0.52, y: 0, z: 0}
   m_LocalScale: {x: 0.89, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -49051,7 +49053,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.0507884, y: 0.2418338}
+  m_Size: {x: 4.37, y: 0.2418338}
   m_EdgeRadius: 0
 --- !u!1 &2141441367
 GameObject:

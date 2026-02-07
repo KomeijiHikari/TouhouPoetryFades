@@ -168,7 +168,10 @@ public class wall : State_Base
         Debug.LogError("   Player.  wall_进入为正面  " + Player.wall_进入为正面);
         //return;
         is_wall_surfing = false;
-      var c=  Physics2D.Raycast(Player.Bounds.center,new Vector2(Player.LocalScaleX_Int,0),1f,1<<Initialize .L_M_Ground   ).collider;
+
+        Player.空中攻击过了 = false;
+        Player.圆形攻击过了 = false;
+        var c=  Physics2D.Raycast(Player.Bounds.center,new Vector2(Player.LocalScaleX_Int,0),1f,1<<Initialize .L_M_Ground   ).collider;
         if (c!=null)
         {
             Debug.LogError("挂在上面");
@@ -342,21 +345,21 @@ public class wall : State_Base
         switch (E)
         { 
          case E_方式.反向:
-                金庸(0.3f);
+                金庸(Initialize_Mono.I.删掉最长);
                 Player.方向更新();
                 ///又分成 方向已经改变和方向没有改变俩情况   关键字段进入为正面
                 Player.跳跃触发(new Vector2(-Player.wall_进入为正面 * 8f, Player.玩家数值.跳跃瞬间速度));
                 f.To_State(E_State.sky);
                 break;
         case E_方式.无操作:
-                金庸(0.2f);
+                金庸(Initialize_Mono.I.删掉 );
                 Player.StartCoroutine(土狼(缓冲时间Max_短, -1));
                 Player.跳跃触发(new Vector2(-Player.transform.localScale.x * 8f, Player.玩家数值.跳跃瞬间速度) *3/4);
                 Player.方向更新();
                 f.To_State(E_State.sky);
                 break;
             case E_方式.同向:
-                金庸(0.1f);
+                金庸(Initialize_Mono.I.删掉最短);
                 Player.StartCoroutine(土狼(缓冲时间Max_短, -1));
                 Player.跳跃触发(new Vector2(-Player.transform.localScale.x * 8f, Player.玩家数值.跳跃瞬间速度)/4);
                 Player.方向更新();

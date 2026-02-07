@@ -212,6 +212,7 @@ MonoBehaviour:
   Deb: 0
   "\u6709\u4EBA1": 0
   "\u6682\u505C1": 0
+  KeepAlive: 0
 --- !u!1 &6910734800791939308
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +232,7 @@ GameObject:
   - component: {fileID: 4126801232676520512}
   - component: {fileID: 3260194242246046407}
   - component: {fileID: 1094737284497142558}
+  - component: {fileID: 230848156739724942}
   m_Layer: 8
   m_Name: Square (2)
   m_TagString: Untagged
@@ -375,6 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb47179979e48e34fafad464f7ba318a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transformDeb: 0
   "\u5F53\u524D\u79FB\u52A8\u65B9\u5F0F": 0
   "\u7075\u9B421": 0
   Ground_: 0
@@ -447,7 +450,6 @@ MonoBehaviour:
   "\u6469\u64E6\u529B": 20
   ZZZZZZZ: 0
   Deb: 0
-  Sp: {fileID: 0}
   Speedd: 0
   "\u5173\u95ED1": 0
   "\u91CD\u529B\u589E\u5E451": 0
@@ -458,7 +460,7 @@ MonoBehaviour:
   current_Speed_LV: 0
   speed_Lv: 0
   "\u5730\u9762": {fileID: 0}
-  s: {fileID: 0}
+  Sp: {fileID: 0}
   bc: {fileID: 0}
 --- !u!96 &6910734800791940889
 TrailRenderer:
@@ -644,11 +646,15 @@ MonoBehaviour:
   E: {fileID: 0}
   tim: 0
   "\u4E0D\u53C2\u4E0E\u573A\u666F": 0
+  isReviveEnter:
+    m_PersistentCalls:
+      m_Calls: []
   isDeadEnter:
     m_PersistentCalls:
       m_Calls: []
   "\u7279\u6548\u5217\u8868": []
   "\u9700\u8981\u52A8\u753B": 1
+  PosKeyForm: {fileID: 0}
   mypo: {x: 0, y: 0}
   "\u91CD\u751F\u65F6\u95F4": 0
   "\u66F4\u5B89\u5168\u7684\u5730\u70B9": 0
@@ -671,6 +677,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d553b6a82ae07434085e55f417924601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &230848156739724942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910734800791939308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8b9c7fe019e4ed47b81007b95dad22e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  "\u5F53\u524D":
+    stateName: 
+    "\u6FC0\u6D3B": 0
+    "\u6D3B\u52A8": 0
+    time: 0
+    timeCount: 0
+    Deb: 0
+  DeBuG: 0
 --- !u!1 &6910734800897818239
 GameObject:
   m_ObjectHideFlags: 0
@@ -844,18 +879,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sp: {fileID: 0}
-  "\u8C03\u8BD5": 0
+  obj: {fileID: 0}
   I_Speed_Change: {fileID: 0}
   f: 0
   c: {r: 0, g: 0, b: 0, a: 0}
   "\u6FC0\u6D3B\u7684": 0
-  Current_Speed_: 0
-  Speed_: 0
-  "\u8D85\u901F\u7B49\u7EA7": 0
-  "\u900F\u660E\u5EA6": 0
-  "\u53BB\u8272": 0
-  "\u95EA\u70C1\u5F00\u5173": 0
-  "\u95F4\u9694": 0.2
+  Sb: {fileID: 0}
+  Deb: 0
+  SpeedInt: 0
 --- !u!1 &6910734800938999142
 GameObject:
   m_ObjectHideFlags: 0

@@ -59,7 +59,7 @@ public class 连续平台 : MonoBehaviour, I_碰撞状态
     Coroutine C;
 
     /// <summary> 触发延迟等待时间 </summary>
-    WaitForSeconds W = new WaitForSeconds(0.1f);
+    WaitForSeconds W = new WaitForSeconds(0.35f);
     private Action<int> OnPlatformCompletedByPlayer;
     private Action<int> OnPlatformInteractDelayed;
 
@@ -225,7 +225,8 @@ public class 连续平台 : MonoBehaviour, I_碰撞状态
 
                 // 扩展点：平台被玩家完成事件
                 OnPlatformCompletedByPlayer?.Invoke(我的索引);
-            } 
+            }
+        设置颜色(Color.blue);
     }
 
     /// <summary>

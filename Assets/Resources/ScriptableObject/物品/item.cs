@@ -28,6 +28,10 @@ public class item : ScriptableObject//数据本地化
         {
       Player3.I.玩家数值.攻击速度加成 =0.1f;
         }},
+        { "冲刺加速", ( ) =>
+        {
+            Player3.I.N_.Dash加速 = true;
+        }},
         { "灵活攻击", ( ) =>
         {
             Player3.I.N_.攻击打断 = true;

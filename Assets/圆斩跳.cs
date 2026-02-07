@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class 圆斩跳 : MonoBehaviour
 {
+    public bool Deb;
     [SerializeField]
     BoxCollider2D Box;
     [SerializeField]
@@ -21,6 +22,8 @@ public class 圆斩跳 : MonoBehaviour
                 if (I == 1)
                 {
                     ///没有顶到，命中  返回索引   0和正数
+                    ///
+                    if (Deb) Debug.LogError("A:      " + a);
                     return i;
                 }
                 else if (I == 0)
@@ -33,8 +36,15 @@ public class 圆斩跳 : MonoBehaviour
                     ///只有可能是  -1
                     ///头顶到那就立即返回  负数索引
                     ///如果是0             返回-99
-                    if (i == 0) return -99;
-                    else return -i;
+                    if (i == 0)
+                    {
+                        if (Deb) Debug.LogError("B:      " + -99);
+                        return -99;
+                    }
+                    else {
+                        if (Deb) Debug.LogError("C:      " + -i);
+                        return -i;
+                    }
                 }
                 else if (I == -2)
                 {
@@ -92,7 +102,7 @@ public class 圆斩跳 : MonoBehaviour
             StartPoins.Add(dan);
             Poins.Add(poin);
             距离x.Add(asd(poin));///记录距离
-            Deb横向(dan, 3);
+            //Deb横向(dan, 3);
             //results.Add(-2); 
             //startPoints.Add(dan);
             //hitColliders.Add(null);
@@ -152,12 +162,13 @@ public class 圆斩跳 : MonoBehaviour
         bool 方向 = Player3.I.transform.localScale.x == 1;
         var a = Vector2.zero;
 
-        a = GenerateRaycastResults(方向, Box.bounds, 9, Player3.I.碰撞检测层);
+        a = GenerateRaycastResults(方向, Box.bounds, 9, Player3.I.碰撞检测层); 
         if (cricleatk.容错原批判定)
             if (a.x == -1)
             {
                 float y = 竖向(方向, 竖向判定Box.bounds, 9, Player3.I.碰撞检测层).y;
                 a = GenerateRaycastResults(方向, Box.bounds, 9, Player3.I.碰撞检测层, y);
+                if (Deb) Debug.LogError("V22is:      " + a);
             }
         Player3.I.消弹( );
         return a;
@@ -241,6 +252,8 @@ public class 圆斩跳 : MonoBehaviour
                 }
                 else
                 {//头没有顶到  没有命中 
+
+
                     results[i] = 0;
                 }
             }
@@ -271,7 +284,7 @@ public class 圆斩跳 : MonoBehaviour
             }
 
             // 返回命中点的 y 值（保持原有返回语义）MaxPoins
-
+            if (Deb) Debu.LogError("这边B" + new Vector2(1, MaxPoins.y));
             //return new Vector2(1, startPoints[da].y); 
             return new Vector2(1, MaxPoins.y);
 
@@ -299,7 +312,8 @@ public class 圆斩跳 : MonoBehaviour
                     return new Vector2(-1, 0);
                 }
             }
-            return Vector2.left;
+            if (Deb) Debu.LogError("这边A" + Vector2.left);
+                return Vector2.left;
         }
         // 没打到 或者默认
         else return Vector2.zero;

@@ -11,7 +11,7 @@ public partial class 单方面通过 : I_Dead, I_Revive, I_Speed_Is
     public Action 销毁触发 { get; set; }
 
     [SerializeField] private bool re;
- private float re_Time=1;
+ private float re_Time=0.7f;
     [SerializeField] private float speed_Lv=1;
 
     public bool Re { get => re; set => re = value; }

@@ -108,12 +108,13 @@ public partial  class 重要道具 : MonoBehaviour
     public void 开启半灵()
     {
 
-        N.半灵 = true; 
+        N.半灵 = true;
+        所有物品管理.I.PlayerAdd(所有物品管理.I.GetCompleteItem("半灵"));
         消息.I.Come_on_Meesge("你的半灵回来了");
     }
     public void 物品(item item)
     {
-        
+
         所有物品管理.I.PlayerAdd(所有物品管理.I.GetCompleteItem(item.itemName));
     }
     public void 开启视野()
@@ -125,7 +126,7 @@ public partial  class 重要道具 : MonoBehaviour
     }
     public void 开启切换()
     {
-
+        SpeedMager.I.Last副Speed1Leve=5;
         N.速度切换 = true;
         所有物品管理.I.PlayerAdd(所有物品管理.I.GetCompleteItem("速度切换")); 
         消息.I.Come_on_Meesge("你获得了新的能力");

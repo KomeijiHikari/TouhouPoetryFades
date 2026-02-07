@@ -71,7 +71,7 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
     public float L_Acc线加速度;
     public float A_Acc角加速度;
     public float Max速度 = int.MaxValue;
-    public float 生命周期 = 5;
+    public float 生命周期 = 30;
 
     [SerializeField] Vector2 方向1;
     public Vector3 eulerAngles;
@@ -209,7 +209,7 @@ public class Bullet_base : MonoBehaviour, I_Speed_Change
             //if (Deb) Debug.LogError("");
         }
 
-        生命周期 -= Time.fixedDeltaTime * 真实移动速度;
+        生命周期 -= Time.fixedDeltaTime * I_S.固定等级差;
 
         字典刷新(); 
 

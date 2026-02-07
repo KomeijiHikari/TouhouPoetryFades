@@ -291,16 +291,17 @@ public class Phy : MonoBehaviour, I_暂停, I_Speed_Change, I_M_Ridbody2D, I_消
         //当前 = 碰撞预测(当前);    
         if (当前!=Vector2.zero)
         {
-            //float lent =Mathf.Max(1, 当前.sqrMagnitude)  ;
+            //float lent = Mathf.Max(1, 当前.sqrMagnitude);
             //if (lent>1) 
             float lent = 当前.magnitude;
-            Debug.LogError(lent+"   " + b.I_S.固定等级差);
-            current_Speed_LV = lent * b.I_S.固定等级差;
-            Vector2 way= 当前.normalized;
+            //Debug.LogError(lent+"   " + Speed_Lv+"  " + b.I_S.固定等级差);
+            current_Speed_LV = lent * Speed_Lv;
+            //current_Speed_LV = Mathf.Max(lent * b.I_S.固定等级差, Speed_Lv);
+            //Vector2 way= 当前.normalized;
 
 
-        ZZZZZZZ = Initialize_Mono.I.Mi.GetMin(b.I_S.固定等级差);
-        Vector3 单位位移 = 当前 * ZZZZZZZ;
+        //ZZZZZZZ = Initialize_Mono.I.Mi.GetMin(b.I_S.固定等级差);
+        Vector3 单位位移 = 当前 * b.I_S.固定等级差;
 
         if (Initialize_Mono.I.Updatee) 单位位移 *= Time.deltaTime;
              else 单位位移 *= Time.fixedDeltaTime;

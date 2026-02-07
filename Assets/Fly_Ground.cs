@@ -603,28 +603,39 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
             if (col == bc) continue;
             if ( col.CompareTag(Initialize.Player))
             {
-                if ( MathF.Abs(方向.x) ==1)
-                {///横向
-                    var BB = f方向可以(方向, Player3.I.Velocity);
-                    if (BB)
-                    {
-                        //同方
-                        continue;
-                    }
-                       else   if (Player3.I.Velocity.y < -2)
-                 {
-                        ///方向不一样
-                        是玩家噶的 = true;
-                        引线爆炸(col);
-                        break; 
-                    }
+                if (Player3.I.Ground)
+                {
+                    是玩家噶的 = true;
+                    引线爆炸(col);
+                    break;
                 }
                 else
                 {
-                    /////这边处理竖直情况
-                    continue;
+                    if (MathF.Abs(方向.x) == 1)
+                    {///横向
+                        var BB = f方向可以(方向, Player3.I.Velocity);
+                        if (BB)
+                        {
+                            //同方
+                            continue;
+                        }
+                        else if (Player3.I.Velocity.y < -2)
+                        {
+                            ///方向不一样
+                            是玩家噶的 = true;
+                            引线爆炸(col);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        /////这边处理竖直情况
+                        continue;
+                    }
+                    break;
                 }
-                break;
+
+
             }
             引线爆炸(col);
         }

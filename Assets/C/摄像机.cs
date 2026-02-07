@@ -372,27 +372,27 @@ public Vector2Int 相机框Int { get; private set; }
         //Debug.LogError(Value);
         当前场景真正最大FOV = Value;
 
-        Debug.LogError(当前场景真正最大FOV);
+        if (Deb) Debug.LogError(当前场景真正最大FOV);
 
 
 
         //Fov = 当前场景真正最大FOV;
         float Result_Fov = 碰撞框目标FOV;
 
-        Debug.LogError(Result_Fov);
+        if (Deb) Debug.LogError(Result_Fov);
 
         ///有没有目标
         if (Result_Fov == 0) 当前场景默认FOV = 全局默认Fov;
         else 当前场景默认FOV = Result_Fov;
 
-        Debug.LogError(当前场景默认FOV);
+    if(Deb)    Debug.LogError(当前场景默认FOV);
         ///允不允许
         if (当前场景真正最大FOV > 当前场景默认FOV) Result_Fov = 当前场景默认FOV;
         else Result_Fov = 当前场景真正最大FOV;
 
- 
 
-        Debug.LogError(Result_Fov);
+
+        if (Deb) Debug.LogError(Result_Fov);
         Fov = Result_Fov; 
         碰撞框目标FOV = 0;
 

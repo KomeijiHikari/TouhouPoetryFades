@@ -667,6 +667,10 @@ public class Initialize_Mono : MonoBehaviour
     public float 子弹引线时间=1.5f;
     public float 校准值=0.0089f;
 
+
+    public float 删掉最长 { get; set; } = 0.4f;
+    public float 删掉 { get; set; } = 0.3f;
+    public float 删掉最短 { get; set; } = 0.1f;
     public int GetSpeedInt(float Speed)
     {
  
@@ -1207,6 +1211,10 @@ public static class Initialize
             animator.Play(c);
         }
     }
+    public static string AnimatorNameIs(this Animator animator )
+    {
+        return animator.GetCurrentAnimatorClipInfo(0)[0].clip.name  ;
+    } 
     public static bool AnimatorHasState(this Animator animator, string stateName, int layerIndex = 0)
     {
         // 参数有效性检查

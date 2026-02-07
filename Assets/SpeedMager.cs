@@ -59,11 +59,10 @@ public class SpeedMager : MonoBehaviour
         return Speed_Leve;
         }
         set {
-            if (Speed_Leve!=value)
-            {
-                Event_M.I.Invoke(Event_M.刷新提示机关);
-            }
+            if (Speed_Leve!=value)    Event_M.I.Invoke(Event_M.刷新提示机关);
+ 
             Speed_Leve = value;
+         Public_Speed_?.Invoke();
         }
     }
 
@@ -92,7 +91,7 @@ public class SpeedMager : MonoBehaviour
 
     public bool 速度不一致开始;
     public float 间隔=3;
-    public float 渐变速度 = 1f;
+    public float 渐变速度 = 0.5f;
     float 进入时间;
     private void Update()
     {
@@ -102,8 +101,14 @@ public class SpeedMager : MonoBehaviour
                 if(进入时间+ 间隔 < Time.time)
                 if (Public_Const_Speed> Speed_Leve1)
                 {
-                    var a =( Public_Const_Speed / Speed_Leve1)  * Time.deltaTime* 渐变速度;
-                    Public_Const_Speed -= a;
+                    float 倍率 = Public_Const_Speed / Speed_Leve1;
+                    var a = 倍率* 渐变速度;
+
+                    Debu.LogError(a+
+                        " Public_Const_Speed : " + Public_Const_Speed +
+                        "  Speed_Leve1: " + Speed_Leve1 +
+                        "   Time.deltaTime* 渐变速度:" +  渐变速度);
+                    Public_Const_Speed -= a * Time.deltaTime;
 
                     if (Public_Const_Speed < Speed_Leve1|| Public_Const_Speed._is(Speed_Leve1,0.001f) )
                     {
@@ -116,18 +121,17 @@ public class SpeedMager : MonoBehaviour
                 } 
             }
             else
-            {
-                //Debug.LogError( Speed_Leve1+ "啊？？？" + Public_Const_Speed);
+            { 
             }
-        } 
-    // ========== 公共方法 ==========
+        }  
 
-
+ 
     /// <summary>
     /// 切换主速度与副速度
     /// </summary>
     public void 切换()
     {
+
         float temp = Speed_Leve1;
         Speed_Leve1 = Last副Speed1Leve;
         Last副Speed1Leve = temp;
