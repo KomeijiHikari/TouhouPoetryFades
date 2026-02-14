@@ -41,6 +41,7 @@ public class 上海玩家 : MonoBehaviour, I_攻击
         }
         else
         {
+            if(atkvalue!=0)
             Player3.I.被扣血(atkvalue, gameObject, 0);
 
             if (Player3.I.当前hp <= 0)

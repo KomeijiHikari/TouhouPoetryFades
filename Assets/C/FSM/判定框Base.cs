@@ -24,6 +24,8 @@ public class 判定框Base : MonoBehaviour
         bool 地面 = collision.gameObject.CompareTag(Initialize.Ground);
         var 有血 = collision.gameObject.GetComponent<I_生命>();
         var 敌人 = collision.gameObject.GetComponent<BiologyBase>();
+        var Only原批 = collision.gameObject.layer == Initialize.L_Enemy;
+
         I_Speed_Change 变速 = null;
         if (Player3.I.N_.时缓) 变速 = collision.gameObject.GetComponent<I_Speed_Change>();
         打到了 = true;

@@ -458,6 +458,7 @@ public partial class Move_P : I_Revive,I_假死
     平台动画效果 p;
     public bool 重制()
     {
+        next_ = 过滤(a);
         if (盒子!=null)
         {
             p.重置特效(盒子);

@@ -67,39 +67,46 @@ public class 传送导点 : MonoBehaviour
         StartCoroutine(等());
     }
     IEnumerator 等 ()
-    {
- 
+    { 
         for ( ;  ;  )
         {
             if (Initialize.所有的场景都加载完了嘛())
             { 
-                GameObject a = Initialize.获取已加载场景根节点的TAG是的("传送点");
-                if (a == null)
+             var lis=   Initialize.获取已加载场景根节点的TAG列表("传送点");
+                传送点 ADC=null;
+                for (int i = 0; i < lis.Count; i++)
                 {
+                    lis[i].TryGetComponent<传送点>(out   ADC);  
+                }
+                //GameObject a = Initialize.获取已加载场景根节点的TAG是的("传送点");
+                if (ADC == null)
+                { 
                     Debug.LogError("没有传送点");
                 }
                 else
                 { 
-                    传送点 = a.GetComponent<传送点>();
-                    Initialize.设置和当前活动场景为这个obj的场景(传送点.gameObject);
-                    //gameObject.transform.position = 传送点.传送点坐标;
+                    传送点 = ADC;
+ 
+                    Initialize.设置和当前活动场景为这个obj的场景(传送点.gameObject); 
 
                     Debug.LogError("传送点坐标"+最后点);
-
+               
                     if (最后点!=Vector2 .zero)
-                    {
-                       Player3.I.transform.position = 最后点+Vector2.up*4f; 
+                    { 
+                        Player3.I.transform.position = 最后点+Vector2.up*4f; 
                     }
                     else
                     {
                         if (默认出生点!=null)
                         { 
-                        Player3.I.transform.position = 默认出生点. position;
+                            Player3.I.transform.position = 默认出生点. position;
+                        }
+                        else
+                        { 
+                            Debug.LogError("传送点为？");
                         } 
-                        Debug.LogError("传送点为？");
-                    }
-
-      Event_M.I.Invoke(Event_M.切换场景触发_obj, this.gameObject);
+                    } 
+                   Event_M.I.Invoke(Event_M.切换场景触发_obj, this.gameObject);
                 }
                 yield break;
             }
@@ -115,6 +122,7 @@ public class 传送导点 : MonoBehaviour
  public   Vector2 最后点
     {
         get {
+            LogInFile.Log("     AAA"+ 开发者调试.I.自由起始点);
             if (开发者调试.I.自由起始点)
             {
                 return Player3.I.transform.position;

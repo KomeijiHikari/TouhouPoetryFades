@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
- using Sirenix.OdinInspector;
- using Sirenix.OdinInspector;
- using UnityEngine.PlayerLoop;
- using System;
- using System.Linq;
- using Schema.Internal.Types;
- using UnityEngine.Serialization;
- using MonoBehaviour = UnityEngine.MonoBehaviour;
- using Quaternion = UnityEngine.Quaternion;
- using Transform = UnityEngine.Transform;
- using Vector2 = UnityEngine.Vector2;
- using Vector3 = UnityEngine.Vector3;
- using Vector4 = UnityEngine.Vector4;
+using UnityEngine;
+using Sirenix.OdinInspector;
+using UnityEngine.PlayerLoop;
+using System;
+using System.Linq;
+using Schema.Internal.Types;
+using UnityEngine.Serialization;
+using MonoBehaviour = UnityEngine.MonoBehaviour;
+using Quaternion = UnityEngine.Quaternion;
+using Transform = UnityEngine.Transform;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
+using Vector4 = UnityEngine.Vector4;
 
- // [ExecuteAlways]
+// [ExecuteAlways]
 public class 我的光照2 : MonoBehaviour
 {
     [SerializeField]
@@ -78,179 +77,200 @@ public class 我的光照2 : MonoBehaviour
         SetLightIntensity(lightIntensity);
     }
     void SetLightIntensity(float speed)
-    { 
+    {
         for (int i = 0; i < LisTT.Count; i++)
-        { 
+        {
             LisTT[i].In = speed;
         }
     }
     public static 我的光照2 I { get; private set; }
-    public List<SpriteRenderer>  ForgSprites;
-    public List< Renderer> 受影响;
+    public List<SpriteRenderer> ForgSprites;
+    public List<Renderer> 受影响;
     public List<Material> 受影响M;
 
-    string DarkName="_DarkColor" ;
-    string BounsName= "_Bouns"; 
-    string SizeName= "_Size";
-     string  WayColorName = "_WayColor";
-     string WayName = "_Way";
-     // string FogName = "_FogColor";
-     [Space(10)]
-     [SerializeField]
+    string DarkName = "_DarkColor";
+    string BounsName = "_Bouns";
+    string SizeName = "_Size";
+    string WayColorName = "_WayColor";
+    string WayName = "_Way";
+    // string FogName = "_FogColor";
+    [Space(10)]
+    [SerializeField]
     private Transform Way;
     [SerializeField]
     private Transform Chlri;
     [Space(10)]
     [SerializeField]
-    private Vector3 NorWay; 
-    [Space(10)] 
-    
+    private Vector3 NorWay;
     [Space(10)]
-    [SerializeField]  float Fixtime;
-    [SerializeField]  private float Y_;
-    [SerializeField]  private float X_; 
-     
+
     [Space(10)]
-    public float speed=1;
+    [SerializeField] float Fixtime;
+    [SerializeField] private float Y_;
+    [SerializeField] private float X_;
+
+    [Space(10)]
+    public float speed = 1;
 
     public bool Stop;
     [Space(10)]
-    public Vector3  HourseVector;
-    public    Vector3  TimeVector ;
+    public Vector3 HourseVector;
+    public Vector3 TimeVector;
 
 
-public    Vector3  DodayVector ;
-
- 
-[Space(10)]
-[SerializeField]
-private Color Out_SunColor=Color.white;
-[SerializeField]
-private Color Out_ShaowColor=Color.white;
-[Space(10)]
-public Color 幕布Color;
-
-[Space(10)]
-public bool DebOutcolor;
-public bool 是白天;  
-
-Vector3 zeroTime=new Vector3(23,59,59.9999999f);
-
-private void Awake()
-{
-    if (I != null && I != this)    Destroy(this); 
-    else        I = this;
-    Y = GetComponent<一天色彩管理>();
-}
-
-void FixedUpdate()
-    {  // 获取枚举的所有值
-///当暂停得时候
-/// 时间增量停止
-///
-/// 按照houseV 变化
-        
-        if (speed != 0&& !Stop)
-        {
-          var A=  MathF.Min(speed * (1 / Player3.Public_Const_Speed)
-                , Initialize_Mono.I.光照最大速度);
-            Fixtime += Time.fixedDeltaTime* A;
-      
-            TimeVector=   Time_Tool. FixTimeToTimeVector3(Fixtime); 
-            
-            HourseVector  =new Vector3(TimeVector.x % 24,TimeVector.y,TimeVector.z) ;
-        }
+    public Vector3 DodayVector;
 
 
-        float       角度 = -200;;
-        // if (false)
-        {
-            Y_=  Time_Tool. TimeToAngle(HourseVector);
-             角度 = 0;
-            if (Y_<-90&&Y_>=-270)
-            {
-                //-90到-270;是白天
-                是白天 = true;
-                角度 = Y_; 
-            }
-            else
-            {
-                // -270到-90是黑夜
-                角度 = Y_-180 ;
-          
-                是白天 = false;
-            }   
-        }
-  
-         
-        Chlri.rotation = Quaternion.Euler(new Vector3(X_, 0, 角度) );
-   
-        
-        DodayVector = Time_Tool.ConvertTimeToDate(TimeVector);
+    [Space(10)]
+    [SerializeField]
+    private Color Out_SunColor = Color.white;
+    [SerializeField]
+    private Color Out_ShaowColor = Color.white;
+    [Space(10)]
+    public Color 幕布Color;
 
- 
- 
-        // Debug.LogError(Y.当前.E);
-        
-        if ( DebOutcolor) return;
-        float lerp = Y.Get_lerp(  Time_Tool.TimeVector3ToFixTime(HourseVector)   );
-        Out_SunColor=Color.Lerp(Y.当前.light, Y.下一个.light, lerp); 
-        Out_ShaowColor = Color.Lerp(Y.当前.shadow, Y.下一个.shadow, lerp);
-       
-    } 
- 
-    private void Update ()
+    [Space(10)]
+    public bool DebOutcolor;
+    public bool 是白天;
+
+    Vector3 zeroTime = new Vector3(23, 59, 59.9999999f);
+
+    private void Awake()
     {
-        幕布Color = Y.Get_FogColor(Time_Tool.TimeVector3ToFixTime(HourseVector));
-        NorWay =      Chlri.position - Way.position;
+        if (I != null && I != this) Destroy(this);
+        else I = this;
+        Y = GetComponent<一天色彩管理>();
+    }
 
-        SetLight(Time_Tool.TimeVector3ToFixTime(HourseVector) );
+    void FixedUpdate()
+    {  // 获取枚举的所有值
+        ///当暂停得时候
+        /// 时间增量停止
+        ///
+        /// 按照houseV 变化
+
+        if (天气粒子管理.I!= null)
+        {
+            if (!天气粒子管理.I.开关)
+            {
+                return;
+            }
+        }
+
+
+
+        if (!Stop)
+        {
+            if (speed != 0 && !Stop)
+            {
+                var A = MathF.Min(speed * (1 / Player3.Public_Const_Speed)
+                      , Initialize_Mono.I.光照最大速度);
+                Fixtime += Time.fixedDeltaTime * A;
+
+                TimeVector = Time_Tool.FixTimeToTimeVector3(Fixtime);
+
+                HourseVector = new Vector3(TimeVector.x % 24, TimeVector.y, TimeVector.z);
+            }
+
+
+            float 角度 = -200; ;
+            if (false)
+            {
+                Y_ = Time_Tool.TimeToAngle(HourseVector);
+                角度 = 0;
+                if (Y_ < -90 && Y_ >= -270)
+                {
+                    //-90到-270;是白天
+                    是白天 = true;
+                    角度 = Y_;
+                }
+                else
+                {
+                    // -270到-90是黑夜
+                    角度 = Y_ - 180;
+
+                    是白天 = false;
+                }
+            }
+
+
+            Chlri.rotation = Quaternion.Euler(new Vector3(X_, 0, 角度));
+
+
+            DodayVector = Time_Tool.ConvertTimeToDate(TimeVector);
+
+
+
+            // Debug.LogError(Y.当前.E);
+
+            if (DebOutcolor) return;
+            float lerp = Y.Get_lerp(Time_Tool.TimeVector3ToFixTime(HourseVector));
+            Out_SunColor = Color.Lerp(Y.当前.light, Y.下一个.light, lerp);
+            Out_ShaowColor = Color.Lerp(Y.当前.shadow, Y.下一个.shadow, lerp);
+
+        }
+    }
+
+    private void Update()
+    {
+        if (天气粒子管理.I!=null)
+        {
+            if (!天气粒子管理.I.开关)
+            {
+                return;
+            }
+        }
+
+        幕布Color = Y.Get_FogColor(Time_Tool.TimeVector3ToFixTime(HourseVector));
+        NorWay = Chlri.position - Way.position;
+
+        SetLight(Time_Tool.TimeVector3ToFixTime(HourseVector));
         for (int i = 0; i < 我的光照3.I.set.Count; i++)
         {
             var a = 我的光照3.I.set[i];
             a.SetVector(WayName, -NorWay);
             a.SetColor(WayColorName, Out_SunColor);
             a.SetColor(DarkName, CHHC.Flip(Out_ShaowColor));
-        } 
+        }
 
         return;
         if (受影响 != null)
         {
             for (int ML = 0; ML < 受影响.Count; ML++)
-            { 
+            {
                 var M精灵图材质 = 受影响[ML];
-              if(!M精灵图材质.enabled)return;
-              SpriteRenderer sp =  M精灵图材质 as      SpriteRenderer ;         ///何意喂
-              
-              Vector2 Ori = M精灵图材质.bounds.min;
-              Vector2 Size = (Vector2)(M精灵图材质.bounds.max) - Ori;
-              Vector4 Bouns = new Vector4(Ori.x, Ori.y, Size.x, Size.y); 
+                if (!M精灵图材质.enabled) return;
+                SpriteRenderer sp = M精灵图材质 as SpriteRenderer;         ///何意喂
 
-              M精灵图材质.material.SetVector(WayName,  -NorWay);                 
-              M精灵图材质.material.SetColor(WayColorName, Out_SunColor);        
-              M精灵图材质.material.SetColor(DarkName,CHHC.Flip(Out_ShaowColor) );   
-              
-              if (sp!=null)
-              {
-                  Vector4 Size__ = new Vector4(sp.sprite.rect.size.x, sp.sprite.rect.size.y, 0, 1);
-                  
-                  
-                  M精灵图材质.material.SetVector(BounsName, Bouns);///v2 rect位置和信息  世界坐标，精灵图左下角，坐标，精灵图尺寸
-                  M精灵图材质.material.SetVector(SizeName, Size__);///v2 rect像素尺寸  W分量是 开关
-              }
+                Vector2 Ori = M精灵图材质.bounds.min;
+                Vector2 Size = (Vector2)(M精灵图材质.bounds.max) - Ori;
+                Vector4 Bouns = new Vector4(Ori.x, Ori.y, Size.x, Size.y);
+
+                M精灵图材质.material.SetVector(WayName, -NorWay);
+                M精灵图材质.material.SetColor(WayColorName, Out_SunColor);
+                M精灵图材质.material.SetColor(DarkName, CHHC.Flip(Out_ShaowColor));
+
+                if (sp != null)
+                {
+                    Vector4 Size__ = new Vector4(sp.sprite.rect.size.x, sp.sprite.rect.size.y, 0, 1);
+
+
+                    M精灵图材质.material.SetVector(BounsName, Bouns);///v2 rect位置和信息  世界坐标，精灵图左下角，坐标，精灵图尺寸
+                    M精灵图材质.material.SetVector(SizeName, Size__);///v2 rect像素尺寸  W分量是 开关
+                }
                 for (int i = 0; i < 受影响M.Count; i++)
                 {
                     var a = 受影响M[i];
                     a.SetColor(DarkName, CHHC.Flip(Out_ShaowColor));
                 }
-            } 
+            }
         }
 
-        if (ForgSprites!=null)
+        if (ForgSprites != null)
         {
             for (int F = 0; F < ForgSprites.Count; F++)
             {
-                var a= ForgSprites[F] ;
+                var a = ForgSprites[F];
                 a.color = 幕布Color;
             }
         }
@@ -279,12 +299,12 @@ void FixedUpdate()
     //     } 
     //     return asd;
     // }
-    
-/// <summary>
-/// 返回第一个比我大的
-/// </summary>
-/// <param name="e"></param>
-/// <returns></returns>
+
+    /// <summary>
+    /// 返回第一个比我大的
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
     // Vector3 Ge_to_时间阶段toV3(   Time_Tool.时间阶段 e)
     // {
     //     for (int i = 0; i < Cs.Count; i++)
@@ -302,21 +322,21 @@ void FixedUpdate()
 public static class Time_Tool
 {
 
- 
+    
     /// <summary>
     /// 将时间单位的Vector3转换回浮点时间
     /// </summary>
     /// <param name="timeVector">Vector3(x=小时, y=分钟, z=秒)</param>
     /// <returns>总秒数</returns>
-    public static float TimeVector3ToFixTime( this Vector3 timeVector)
+    public static float TimeVector3ToFixTime(this Vector3 timeVector)
     {
         float hours = timeVector.x;
         float minutes = timeVector.y;
         float seconds = timeVector.z;
-        
+
         return (hours * 3600f) + (minutes * 60f) + seconds;
     }
- 
+
     /// <summary>
     /// 将浮点时间转换为时间单位的Vector3
     /// </summary>
@@ -326,25 +346,25 @@ public static class Time_Tool
     {
         // 计算总秒数
         float totalSeconds = fixtime;
-        
+
         // 计算小时数
         int hours = Mathf.FloorToInt(totalSeconds / 3600f);
-        
+
         // 计算剩余秒数（扣除小时部分）
         float remainingSeconds = totalSeconds - (hours * 3600f);
-        
+
         // 计算分钟数
         int minutes = Mathf.FloorToInt(remainingSeconds / 60f);
-        
+
         // 计算秒数（扣除分钟部分），保留5位小数
         float seconds = remainingSeconds - (minutes * 60f);
-        
+
         // 确保秒数保留5位小数
         seconds = (float)System.Math.Round(seconds, 5);
-        
+
         return new Vector3(hours, minutes, seconds);
     }
-    
+
     /// <summary>
     /// 将Vector3时间格式转换为昼夜循环角度
     /// </summary>
@@ -354,13 +374,13 @@ public static class Time_Tool
     {
         // 将Vector3时间转换为总秒数
         float totalSeconds = TimeVector3ToFixTime(time);
-        
+
         // 调用Fixtime版本的方法
         return TimeToAngle(totalSeconds);
     }
 
 
-        /// <summary>
+    /// <summary>
     /// 将Fixtime时间值转换为昼夜循环角度
     /// </summary>
     /// <param name="fixtime">时间值(秒)</param>
@@ -369,22 +389,22 @@ public static class Time_Tool
     {
         // 24小时对应的总秒数
         const float secondsInDay = 24f * 3600f;
-        
+
         // 确保时间在0到24小时范围内(处理超过24小时的情况)
         float normalizedTime = fixtime % secondsInDay;
         if (normalizedTime < 0)
             normalizedTime += secondsInDay;
-        
+
         // 计算时间在一天中的比例 (0到1)
         float timeRatio = normalizedTime / secondsInDay;
-        
+
         // 将比例转换为角度: 24小时 = -360度 (逆时针)
         // 0点对应角度0度，24点对应-360度
         float angle = -360f * timeRatio;
-        
+
         return angle;
     }
-    
+
     /// <summary>
     /// 将角度值转换回Vector3时间格式
     /// </summary>
@@ -396,17 +416,17 @@ public static class Time_Tool
         float normalizedAngle = angle % 360f;
         if (normalizedAngle > 0)
             normalizedAngle -= 360f;
-        
+
         // 将角度转换为时间比例
         float timeRatio = -normalizedAngle / 360f;
-        
+
         // 计算总秒数
         float totalSeconds = timeRatio * 24f * 3600f;
-        
+
         // 转换为Vector3时间格式
         return FixTimeToTimeVector3(totalSeconds);
     }
-    
+
     /// <summary>
     /// 将角度值转换回Fixtime时间值
     /// </summary>
@@ -418,16 +438,16 @@ public static class Time_Tool
         float normalizedAngle = angle % 360f;
         if (normalizedAngle > 0)
             normalizedAngle -= 360f;
-        
+
         // 将角度转换为时间比例
         float timeRatio = -normalizedAngle / 360f;
-        
+
         // 计算总秒数
         return timeRatio * 24f * 3600f;
-    } 
-    
- 
-        /// <summary>
+    }
+
+
+    /// <summary>
     /// 将时间向量转换为日期向量
     /// 规则：一年360天，12个月，每月30天
     /// 只要有1秒就算一天，日分量从1开始
@@ -438,29 +458,29 @@ public static class Time_Tool
     {
         // 将时间向量转换为总秒数
         float totalSeconds = time.x * 3600f + time.y * 60f + time.z;
-        
+
         // 计算总天数（向上取整，只要有1秒就算一天）
         float totalDays = Mathf.Ceil(totalSeconds / (24f * 3600f));
-        
+
         // 计算年数（一年360天）
         int years = Mathf.FloorToInt((totalDays - 1) / 360f);
-        
+
         // 计算剩余天数（扣除年份部分）
         float remainingDays = totalDays - years * 360f;
-        
+
         // 计算月数（一月30天）
         int months = Mathf.FloorToInt((remainingDays - 1) / 30f);
-        
+
         // 计算天数（从1开始）
         int days = Mathf.CeilToInt(remainingDays - months * 30f);
-        
+
         // 确保天数在有效范围内（1-30）
         if (days < 1) days = 1;
         if (days > 30) days = 30;
-        
+
         return new Vector3(years, months, days);
     }
-    
+
     /// <summary>
     /// 将日期向量转换为时间向量
     /// </summary>
@@ -471,27 +491,27 @@ public static class Time_Tool
         int years = Mathf.FloorToInt(date.x);
         int months = Mathf.FloorToInt(date.y);
         int days = Mathf.FloorToInt(date.z);
-        
+
         // 计算总天数（一年360天，一月30天）
         // 日从1开始，所以减1
         float totalDays = years * 360f + months * 30f + (days - 1);
-        
+
         // 转换为秒数（一天24小时）
         float totalSeconds = totalDays * 24f * 3600f;
-        
+
         // 转换为时间向量
         int hours = Mathf.FloorToInt(totalSeconds / 3600f);
         float remainingSeconds = totalSeconds - (hours * 3600f);
         int minutes = Mathf.FloorToInt(remainingSeconds / 60f);
         float seconds = remainingSeconds - (minutes * 60f);
-        
+
         // 确保秒数保留5位小数
         seconds = (float)System.Math.Round(seconds, 5);
-        
+
         return new Vector3(hours, minutes, seconds);
     }
 
- 
+
     // if (totalHours < 6f) return 时间阶段.深夜;
     // else if (totalHours < 7.2f) return 时间阶段.黎明前;
     // else if (totalHours < 8.4f) return 时间阶段.黎明;
@@ -507,25 +527,25 @@ public static class Time_Tool
     public enum 时间阶段
     {
 
-        深夜,  
+        深夜,
         黎明前前,
-        黎明前,    
-        黎明,          
-        清晨,   
+        黎明前,
+        黎明,
+        清晨,
         白天,
         下午,
-        傍晚,         
-        黄昏,          
-        夜晚  ,
+        傍晚,
+        黄昏,
+        夜晚,
         前半夜
-    } 
+    }
 }
 public static class CHHC
 {
     public static Color Flip(Color c)
     {
-        Vector3  Hc;
-        Hc=RGBToHSL(c);
+        Vector3 Hc;
+        Hc = RGBToHSL(c);
         Hc.z = 1 - Hc.z;
         return HSLToRGB(Hc);
     }
@@ -671,10 +691,10 @@ public static class CHHC
         hsl.z = Mathf.Clamp01(hsl.z * lightness);
         return HSLToRGB(hsl);
     }
-    
-    
-    
-    
+
+
+
+
 }
 
 

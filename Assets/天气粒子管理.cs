@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class 天气粒子管理 : MonoBehaviour
 {
+    public static 天气粒子管理 I;
+     private void Awake()
+    {
+        if (I != null && I != this) Destroy(this);
+        else I = this;
+    }
     public bool 开关;
     public List<GameObject> 天气粒子列表;
 

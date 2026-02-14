@@ -18,14 +18,7 @@ public  partial  class 传送点 : MonoBehaviour
 
         //玩家走到了外面 = true;
 
-    }
-    //public   Vector3 传送点坐标 { get { 
-    //        玩家走到了外面 = true;
-    //        return transform.position; 
-    //    } }
- 
-
- 
+    } 
     void Start()
     {
         编号= transform.Get_摄像框编号();
@@ -47,8 +40,7 @@ public  partial  class 传送点 : MonoBehaviour
         if (玩家走到了外面)
         {
             if (Vector3.Distance(Player3.I.transform.position,transform.position)<5   )
-            {///走到外面开关有时候关不掉
-
+            {///走到外面开关有时候关不掉 
 
                 if (Player_input.I.按键检测_按下(Player_input.I.k.交互))
                 {

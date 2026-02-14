@@ -173,8 +173,8 @@ public class 连续平台 : MonoBehaviour, I_碰撞状态
     void 开关(bool b)
     { 
         if (b)
-        {
-            if (Deb) Debug.LogError(我的索引 + "BBBBBBB" + b);
+        { 
+          Debug.LogError(我的索引 + "BBBBBBB" + b);
             // 开启状态
             transform.localScale = Yes;   // 应用激活缩放
             E_碰撞 = E_碰撞状态.碰撞;

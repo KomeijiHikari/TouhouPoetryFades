@@ -131,7 +131,7 @@ public class SpeedMager : MonoBehaviour
     /// </summary>
     public void 切换()
     {
-
+        视听体验(Last副Speed1Leve);
         float temp = Speed_Leve1;
         Speed_Leve1 = Last副Speed1Leve;
         Last副Speed1Leve = temp;

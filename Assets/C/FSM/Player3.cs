@@ -88,6 +88,7 @@ public partial class Player3 : BiologyBase
 
     public static void SaveAll()
     {
+        痕迹.I.Save();
         Save_D.Add(SpeedMager.Public_Const_Speed_Name, SpeedMager.I.Speed_Leve1);
         Save_D.Add(SpeedMager.Public_Const辅助_Speed_Name, SpeedMager.I.Last副Speed1Leve);
         Event_M.I.Invoke(Event_M.场景保存触发, Player3.I.gameObject);
@@ -96,6 +97,7 @@ public partial class Player3 : BiologyBase
             Player3.I.加速(false);
         }
         Save假tr实例(TsL_I); 
+
         Player3.I.冷却全部好();
         Player3.I.N_.保存();
         Player3.I.玩家数值.保存();
@@ -376,15 +378,19 @@ public partial class Player3 : BiologyBase
         };
 
         原速度 = 玩家数值.常态速度;
-        加速度 = 原速度 * 1.5f;
+        加速度 = 原速度 * 1.4f;
     }
     public async UniTask LoadAll()
     {
         Initialize_Mono.LoadPla_and_D();
         所有物品管理.I.从存档刷新();
         Player3.I.玩家数值.读取();
-        Player3.I.N_.读取(); 
+        Player3.I.N_.读取();
+        痕迹.I.Load();
         SpeedMager.I.Load(); ///玩家前，SM这会儿没有
+
+        DASH数据重制(dundash);
+        DASH数据重制(skydash);
     }
     float 原速度;
     float 加速度;
@@ -639,6 +645,7 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
             备用地面_Laset = 备用地面;
             // 有 接触   
         }
+ 
 
         var chaox = -(Player3.I.Bounds.center - Vector3.zero).normalized;
         Debug.DrawRay(Player3.I.Bounds.center, chaox * 10f, Color.blue);
@@ -796,14 +803,16 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
                     摄像机.I.设置相机跟随(焦点.I.gameObject);
 
                     半灵.I.玩家目标点.transform.localPosition = Vector3.zero;
+                }
+                Vector3 V = Player_input.I.输入;
+
+                Vector3 Next = 半灵.I.玩家目标点.transform.position + V * Time.deltaTime * 玩家数值.常态速度 * 3;
+                bool 在里面 = 摄像机.I.当前碰撞框.bounds.Contains(Next);
+                if ( 在里面)
+                { 
+                    半灵.I.玩家目标点.transform.position  = Next;
                 } 
-                    Vector3 V = Player_input.I.输入;
-                    Debu.LogError("X    Y" + V);
-                    半灵.I.玩家目标点.transform.position += V * Time.deltaTime * 玩家数值.常态速度 * 3; 
-
-               //摄像机.I.当前碰撞框.bounds
-            }
-
+            } 
         }
     }
     [SerializeField]
@@ -824,12 +833,12 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
         {
  
             ///短按
-            if (Player_input.I.按键检测_松开(Player_input.I.k.变速))
+            if (Player_input.I.按键检测_按下(Player_input.I.k.变速, 999))
             {
-                if (Player_input.I.Now_Time_- 变速.KeytimeDown < 0.2f)
-                {
+                //if (Player_input.I.Now_Time_- 变速.KeytimeDown < 0.2f)
+   
                     SpeedMager.I.切换();
-                }
+ 
             }
  
         }
@@ -837,7 +846,7 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
         半灵相关();
 
 
-         if(N_.速度视野)if (Player_input.I.按键检测_按下(Player_input.I.k.视野)) 切换Shader.I.isSpeed = !切换Shader.I.isSpeed;
+         if(N_.速度视野)if (Player_input.I.按键检测_按下(Player_input.I.k.视野,999)) 切换Shader.I.isSpeed = !切换Shader.I.isSpeed;
 
         if (Ground && !HPROCK && (FSM.f.I_State_C.state == E_State.run || FSM.f.I_State_C.state == E_State.idle))
         {
@@ -1008,7 +1017,7 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
 
             百分比 = Mathf.Clamp(百分比, 0, 1f);
             //百分比 *= 百分比;
-            Debu.LogError(百分比);
+            //Debu.LogError(百分比);
             AddForce(- LocalScaleX_Set * Vector2.right * 15f * 百分比);
 
         }
@@ -1082,7 +1091,7 @@ new Vector2(Bounds.size.x, 0.1f), 0, Vector2.down, 1f, 1 << Initialize.L_M_Groun
         强行退出DASH = false;
         当前dASH.冲刺显示 = false;
         Player_input.I.输入开关 = true;
-        //当前dASH.冷却好了 = true;
+        当前dASH.冷却好了 = true;
     }
     IEnumerator 某冲刺结束(DASH 当前dASH)
     {
@@ -1498,7 +1507,7 @@ public     BoxCollider2D 最低点()
         //}
 
         //new Vector2(po.bounds.size.x - 0.5f, 1),
-        ((Vector2)Bounds.max).DraClirl();
+        //((Vector2)Bounds.max).DraClirl();
         var tou =
         Physics2D.BoxCast(
        new Vector2(Bounds.center.x, Bounds.max.y),

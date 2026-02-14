@@ -377,6 +377,9 @@ public class sky : State_Base
             {
                 if (Time.frameCount - f.Getstate(E_State.wall).ExiteFramet > 6)
                 {
+                    if (!wall.距离地面很近(1.8f))
+                    {
+
                     if (false)
                     //if (Player.顶死)
                     {
@@ -422,6 +425,7 @@ public class sky : State_Base
 
                         }
                     } 
+                    }
                 }
             }
         }

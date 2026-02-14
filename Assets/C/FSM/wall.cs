@@ -106,9 +106,9 @@ public class wall : State_Base
            (Player.Bounds.center, new Vector2(Player.LocalScaleX_Int, 0), 3f
            , 1 << Initialize.L_M_Ground | 1 << Initialize.L_Ground);
     }
- bool 距离地面很近(float jul)
+  public static bool 距离地面很近(float jul)
     { 
-        var a = Player.地面检测(1 << Initialize.L_Ground | 1 << Initialize.L_M_Ground, jul);
+        var a = Player3.I.地面检测(1 << Initialize.L_Ground | 1 << Initialize.L_M_Ground, jul);
         return a .Length>0;
     }
     public override bool 可以切换嘛()

@@ -126,7 +126,11 @@ public partial  class 重要道具 : MonoBehaviour
     }
     public void 开启切换()
     {
-        SpeedMager.I.Last副Speed1Leve=5;
+        if (SpeedMager.I.Last副Speed1Leve==1)
+        {
+            SpeedMager.I.Last副Speed1Leve = 5;
+        }
+
         N.速度切换 = true;
         所有物品管理.I.PlayerAdd(所有物品管理.I.GetCompleteItem("速度切换")); 
         消息.I.Come_on_Meesge("你获得了新的能力");

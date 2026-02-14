@@ -571,6 +571,7 @@ MonoBehaviour:
   NozeB: 0
   speed_Lv: 1
   "\u6682\u505C1": 0
+  Deb: 0
 --- !u!61 &6096817802938062380
 BoxCollider2D:
   m_ObjectHideFlags: 0

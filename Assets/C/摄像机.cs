@@ -21,7 +21,7 @@ public class 摄像机 : MonoBehaviour
             //return wt.position.z-Camera.main.transform.position.z;
 
             //Debug.LogError(wt.position.z+"  " + Camera.main.transform.position.z+"  "+transform.position.z);
-            return wt.position.z - MainCamera.position.z;
+            return -MainCamera.position.z;
         }
     }
     //public bool is透视; 

@@ -34,7 +34,7 @@ public class 开发者调试 : MonoBehaviour
     {
     
         Player3.I.当前hp = Player3.I.hpMax; 
-        传送导点.I.最后点 = transform.position;
+        传送导点.I.最后点 = Player3.I. transform.position;
         Player3.I.录入安全地点(true); 
         Player3.SaveAll();
     }
@@ -60,7 +60,8 @@ public class 开发者调试 : MonoBehaviour
             return 能力覆盖1&& 开发者模式;
         }  set => 能力覆盖1 = value; }
 
-    public bool 开发者模式 { get {  
+    public bool 开发者模式 { get {
+            LogInFile. Log (Application.platform.ToString());
             if (Application.platform!=RuntimePlatform.WindowsEditor)
             {
                 return false;

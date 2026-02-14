@@ -124,8 +124,7 @@ public class 删除_速度门 : MonoBehaviour, I_Speed_Change, I_暂停
     private void Start()
     {
         SpeedMager.I.Public_Speed_ += () => {
-
-            Debu.LogError(SpeedMager.I.Speed_Leve1+ "   SpeedMager.I.Speed_Leve1 ");
+             
             Initialize_Mono.I.Waite(() => {
                 if (我比玩家快 || 我比玩家慢) Re();
             });
@@ -211,10 +210,12 @@ public class 删除_速度门 : MonoBehaviour, I_Speed_Change, I_暂停
         if (我比玩家快|| 我比玩家慢)
         {
             bc.isTrigger = false;
+            gameObject.layer= Initialize.L_M_Ground;
         }
         else
         {
             bc.isTrigger = true;
+            gameObject.layer = Initialize.L_Enemy;
         }
 
 

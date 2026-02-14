@@ -334,7 +334,7 @@ public class Initialize_Mono : MonoBehaviour
     private void Awake()
     { 
         // 锁定为60帧
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
         事件字典显示 = Event_M.I.事件列表;
         if (I != null && I != this)
         {
@@ -2272,7 +2272,7 @@ Debug.LogError( a.ToString());
         DraClirl((Vector2)o, 距离, C, time);
     }
     public static void DraClirl(this Vector2 o, float 距离 = 0.1f, Color C = default, float time = 0.1f)
-    {
+    { 
         if (C == Color.white * 0f) C = Color.red;
         if (Initialize_Mono.I.显示点位置) Debug.Log(o + " 一下");
         var 二一_ = new Vector2(2, 1);
@@ -3158,6 +3158,21 @@ Debug.LogError( a.ToString());
         { 
             return Mathf.Max(X, Y) - 0.0001f;
         }
+    }
+    public static List<GameObject> 获取已加载场景根节点的TAG列表(string tag)
+    {
+        List<GameObject> Out= new List<GameObject>();
+        var a = 获取已加载场景中所有根节点的obj();
+        foreach (var item in a)
+        {
+            if (item.CompareTag(tag))
+            {
+                Out.Add(item);
+ 
+            }
+        }
+        return Out;
+
     }
     public static GameObject 获取已加载场景根节点的TAG是的(string tag)
     {

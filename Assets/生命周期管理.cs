@@ -368,6 +368,7 @@ public state 死亡 = new state("死亡");
     float 重生时间 = 0f;
     public bool 更安全的地点 = false;
     public  bool 重生时不等待玩家 = true;
+    public bool 重生伤害 = true;
     public Action<bool> 效果_不复活 { get; set; }
     public Action 效果_死亡Enter;
     public  Action 效果_活动Enter;
@@ -418,15 +419,15 @@ public state 死亡 = new state("死亡");
                    {
                     if ( 重生时不等待玩家)
                     {
-                        if (!CanLive())
-
+                        if (重生伤害)
                         {
- 
-                            Player3.I.安全地点();
-                        }
-                
-                        Event_复活赛();
-                        杀();
+                            if (!CanLive()) 
+                            {
+                                Player3.I.安全地点();
+                                杀();
+                            }
+                        }  
+                        Event_复活赛(); 
                     }
                     else
                     {

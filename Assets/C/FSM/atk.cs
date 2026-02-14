@@ -344,7 +344,7 @@ public abstract  class  atkBase: State_Base
     }
     protected void 提一下_NoLerp(float Y, float xM = 1)
     {
- 
+        Debu.LogError(Y);
         if (Player.Velocity.y > Y)
         {
             Player.Velocity = new Vector2(Player.Velocity.x * xM, Player.Velocity.y * xM);
@@ -795,9 +795,9 @@ public class cricleatk : atkBase
             if (Player3.I.N_.速度切换)
             {
                 ///短按
-                if (Player_input.I.按键检测_按住(Player_input.I.k.变速))
+                //if (Player_input.I.按键检测_按住(Player_input.I.k.变速))
                 {
-                    SpeedMager.I.切换(); 
+                    //SpeedMager.I.切换(); 
                 }
 
             }
@@ -840,14 +840,15 @@ public class cricleatk : atkBase
     { 
         for (int ti = 0; ti < 判定框.所有碰撞体.Count; ti++)
         {
-            var col = 判定框.所有碰撞体[ti]; 
+            var col = 判定框.所有碰撞体[ti];
+            Debug.LogError(col.gameObject.name);
         }
         if (判定框.所有碰撞体 !=null&& 判定框.所有碰撞体.Count>=1)
         {
             判定框Base.打到的类型 asd;
             bool RRR = false;
             ///先判定是不是人 
-            if (判定框.敌人 != null && 判定框.敌人.Count >= 1) asd = 判定框Base.打到的类型.敌人;
+            if (false&&    判定框.敌人 != null && 判定框.敌人.Count >= 1) asd = 判定框Base.打到的类型.敌人;
             else
             {
                 ///  碰撞框框要是碰到了 能踩但是不是OneWay 那么OneWay不会被触发 主角起飞
@@ -880,9 +881,10 @@ public class cricleatk : atkBase
                     {
                         var col = targetList[ti];
 
-
+        
                         if (col == null) continue; 
-                         var e = col;
+ 
+                        var e = col;
 
                         bool 不空而且旋转 = false; 
                         var FF = e.GetComponent<Fly_Ground>();
@@ -967,20 +969,41 @@ public class cricleatk : atkBase
                         //    //升起来
                         //    return RRR;
                         //} 
-                    } 
+                    }
                     if (RRR)
                     {
-               
                         判定框.开启判定框判定框(false, 判定框.Cc); ///为何要继续？？
-                        //升起来
                         return RRR;
                     }
                     //if(false)
                     if (!RRR)
                     {///剔除之后的
+
+                        if (originalAll != null && originalAll.Count > 0)
+                        {
+                            Vector2 Rs = Player.圆斩判定.发射();
+                            RRR = Rs.x == 1;
+                            if (RRR)
+                            {
+                                var delta = Rs.y - Player.脚底中间.y;
+                                SetY(delta, 0.1f);
+               
+                            }
+                            if (RRR)
+                            {
+                                if (判定框.敌人 == null || 判定框.敌人.Count ==0)
+                                {
+                                    判定框.开启判定框判定框(false, 判定框.Cc); ///为何要继续？？
+                                    return RRR;
+                                }
+ 
+                            }
+                        }
+                        if(false)
                         for (int i = 0; i < originalAll.Count; i++)
                         {
                             var col = originalAll[i];
+                            Debug.LogError(col.gameObject.name);
                             if (col == null) continue;
                             Vector2 Rs = Player.圆斩判定.发射(); 
                             RRR = Rs.x == 1; 
@@ -992,19 +1015,16 @@ public class cricleatk : atkBase
                             }
                         }
                     }
-  
-                    //判定框.开启判定框判定框(false, 判定框.Cc);
+
+                    //if (RRR) 判定框.开启判定框判定框(false, 判定框.Cc);
                 }
 
                 //Debug.LogError(RRR);
-                if (RRR) 
-                { 
-                    判定框.开启判定框判定框(false, 判定框.Cc); ///为何要继续？？
-                return RRR;
-                }
+
                 //升起来
             }
-                if (判定框.敌人 != null && 判定框.敌人.Count >= 1)
+            //return false;
+            if (判定框.敌人 != null && 判定框.敌人.Count >= 1)
             {
                 if (Initialize_Mono.I.打包额外打印)
                 {
@@ -1021,29 +1041,39 @@ public class cricleatk : atkBase
 
                     var a = e.gameObject.GetComponent<Phy>();
                     Player.伤害(e);
-                    a.Goto_thisWay(new Vector2(Player.Bounds.center.x, Player.Bounds.center.y - 6f));
-                    击中生物 = true;
-                    bool b = e.当前hp <= 0;  //    是扣血之后判断
-                    if (b)
-                    {
-                        //嗝屁 
-                        Initialize_Mono.I.时缓(0.02f, 0.1f);
-                        Player.受伤.镜头晃动(1);
+                    //a.Goto_thisWay(new Vector2(Player.Bounds.center.x, Player.Bounds.center.y - 6f));
+                    //击中生物 = true;
+                    //bool b = e.当前hp <= 0;  //    是扣血之后判断
+                    //if (b)
+                    //{
+                    //    //嗝屁 
+                    //    Initialize_Mono.I.时缓(0.02f, 0.1f);
+                    //    Player.受伤.镜头晃动(1);
 
-                        摄像机.I.FOV_缩放并且还原(摄像机.I.当前场景默认FOV * 0.95f, 0.05f, 0.8f);
-                    }
-                    else
-                    {
-                        //没嗝屁
-                        Initialize_Mono.I.时缓(0.01f, 0.08f);
-                    }
+                    //    摄像机.I.FOV_缩放并且还原(摄像机.I.当前场景默认FOV * 0.95f, 0.05f, 0.8f);
+                    //}
+                    //else
+                    //{
+                    //    //没嗝屁
+                    //    Initialize_Mono.I.时缓(0.01f, 0.08f);
+                    //}
                     判定框.敌人[i] = null;
-
+                    if (RRR)
+                    {
+                        判定框.开启判定框判定框(false, 判定框.Cc); ///为何要继续？？
+                        return RRR;
+                    }
                     return true;
                 }
-                return false;
+                if (RRR)
+                {
+                    判定框.开启判定框判定框(false, 判定框.Cc); ///为何要继续？？
+                    return RRR;
+                }
                 #endregion
-            } 
+            }
+
+
         }
         return false ; 
     } 

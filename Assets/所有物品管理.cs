@@ -167,7 +167,7 @@ namespace ItemMager
             }
                 Debug.LogError(key + "   名字");
                 ///这边初始自定义
-                //if (动态数据.key == "原劈") 动态数据.玩家持有 = 1;
+                if (动态数据.key == "原劈") 动态数据.玩家持有 = 1;
 
                 ItemSave.Add(动态数据);
 
@@ -240,8 +240,7 @@ namespace ItemMager
             }
         }
         List<Itemvalue>  Load()
-        {
-            Debug.LogError("LoadLoadLoadLoadLoadLoadLoadLoadLoadLoadLoadLoadLoadLoadLoadLoadLoadLoadLoad");
+        { 
             string s = Save_D.Load_Value_D<string>(SaveName, false); 
             var data = JsonUtility.FromJson<itemSaveClass>(s);
             if (data==null)
@@ -251,8 +250,7 @@ namespace ItemMager
             return data.itemSave;
         }
      public    void save()
-        {
-            Debug.LogError("savesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesavesave");
+        { 
 
             string c="";
             for (int i = 0; i < ItemSave.Count; i++)

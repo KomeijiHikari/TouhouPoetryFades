@@ -179,6 +179,7 @@ public class 圆斩跳 : MonoBehaviour
     // 1 碰到了
     public Vector2 GenerateRaycastResults(bool FX, Bounds B, int I, LayerMask LM, float Y = 0)
     {
+        LM |= 1 << Initialize.L_Enemy;
         List<int> results = new List<int>();
         List<Vector2> startPoints = new List<Vector2>();
         var Sp = Player3.I.transform.position;
@@ -212,7 +213,7 @@ public class 圆斩跳 : MonoBehaviour
         {
             var point = startPoints[i];
 
-            var a = Physics2D.OverlapCircle(point, 0.01f, LM);
+            var a = Physics2D.OverlapCircle(point, 0.01f, LM );
 
             ///默认为-2
             if (a != null && !a.isTrigger)
@@ -231,8 +232,23 @@ public class 圆斩跳 : MonoBehaviour
                 RaycastHit2D R = Physics2D.Raycast(point, Vector2.down, FF, LM);
                 Debug.DrawRay(point, Vector2.down * FF, Color.red, 3f);
 
+                bool OK= false;
+
                 if (R.collider != null)
-                {           ///头没有顶到  命中 1
+                {
+                    if (R.collider.TryGetComponent<Fly_Ground>(out var f))
+                    {
+                        ///飞行地面不算碰撞
+                        OK = f.CanYUanpi;  
+                    }
+                    else
+                    {
+                        OK = true;
+                    }
+                }
+                if (OK)
+                {
+                    ///头没有顶到  命中 1
                     R.point.DraClirl(0.1f, Color.red, 3f);
                     // 特效位置记录为射线命中的点 
                     if (R.point.y > MaxPoins.y)
@@ -242,20 +258,42 @@ public class 圆斩跳 : MonoBehaviour
                     startPoints[i] = R.point;
                     results[i] = 1;
                     hitColliders[i] = R.collider;
-
-                    //if (R.collider != null)
-                    //{
-                    //    Debug.LogError(R.collider.gameObject.name + "   Player3.I.圆斩对象  ");
-                    //    Player3.I.圆斩对象?.Invoke(R.collider.gameObject.GetInstanceID());
-                    //    // 示例：如果命中对象上有 单方面通过 组件，则触发它   
-                    //}
                 }
                 else
                 {//头没有顶到  没有命中 
-
-
                     results[i] = 0;
                 }
+                //if (R.collider != null)
+                //{
+
+                //    if (R.collider.TryGetComponent<Fly_Ground>(out var f))
+                //    {
+                //        ///飞行地面不算碰撞
+                //        if (R.collider.isTrigger)
+                //        {
+                //            R = default;
+                //        }
+
+                //    }
+
+
+                //    ///头没有顶到  命中 1
+                //    R.point.DraClirl(0.1f, Color.red, 3f);
+                //    // 特效位置记录为射线命中的点 
+                //    if (R.point.y > MaxPoins.y)
+                //    {
+                //        MaxPoins = R.point;
+                //    }
+                //    startPoints[i] = R.point;
+                //    results[i] = 1;
+                //    hitColliders[i] = R.collider; 
+                //}
+                //else
+                //{//头没有顶到  没有命中 
+
+
+                //    results[i] = 0;
+                //}
             }
         }
         // 处理方向参数

@@ -94,6 +94,7 @@ public class J_Dictionary
             Key.Add(item.Key);
             Value_ .Add(  Value .Set (item.Value )  );
         }
+       
     }
     public   Dictionary<String, object> To_D( )
     {
@@ -109,6 +110,8 @@ public class J_Dictionary
         return Out;
     } 
 }
+
+  
 
 /// <summary>
 /// 开始游戏后载入一次load 到内存  
@@ -225,9 +228,11 @@ public static class Save_D
     /// </summary>
     /// <param name="name"></param>
     /// <param name="o"></param>
-    public static  void  Add(string name,object o )
+    public static  void  Add(string name,object o,bool Jeson=false )
     {
         Initialize_Mono.I?.Key_Action?.Invoke(name );
+        if ( Jeson ) o= JsonUtility.ToJson(o);
+
         if (存档字典_.ContainsKey(name))
         {
             存档字典_[name] = o;

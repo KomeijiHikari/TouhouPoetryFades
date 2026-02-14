@@ -21,9 +21,18 @@ public     GameObject 开关_;
     }
    
     public void 开关(bool b)
-    { 
-        if (开关_ != null)
-        开关_.SetActive(b);
+    {
+        //if (b==false)
+        //{
+        //    return;
+        //}
+            开关_.SetActive(b);
+        //if (开关_ != null)
+        //{
+        //    Debu.LogError(开关_.activeInHierarchy+"AAAAAAAAAAAAAAAAAAAAA" + 开关_.activeSelf);
+        //    Initialize_Mono.I.Waite(() => { Debu.LogError(开关_.activeInHierarchy + "CCCC" + 开关_.activeSelf+" "); },0.5f);
+        //}
+
     }
     private void Start()
     {

@@ -36,7 +36,7 @@ public class 线管理 : MonoBehaviour
         if (LR == null) return;
         LR.enabled = true;
 
-      LR.startWidth = 宽度;
+        LR.startWidth = 宽度;
         LR.endWidth = 宽度;
         // 获取所有子物体
         int 子物体数量 = transform.childCount;

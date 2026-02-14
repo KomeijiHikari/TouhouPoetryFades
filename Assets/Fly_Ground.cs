@@ -530,6 +530,7 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
 
         }
     }
+    public bool CanYUanpi;
     private void Update()
     {
         if (I_S.固定等级差 >= Initialize_Mono.I.Sz.YesPowers[2] 
@@ -537,10 +538,12 @@ public class Fly_Ground : MonoBehaviour, I_Speed_Change, I_攻击, I_ReturnPool,
         {
             /// 大于2 不碰撞 
             //Enter旋转时间
-            gameObject.layer = Initialize.L_Enemy;
+            gameObject.layer = Initialize.L_Enemy; 
+            CanYUanpi = false;
         }
         else
         {
+            CanYUanpi = true;
             //bc.isTrigger = false;
             gameObject.layer = Initialize.L_M_Ground;
         }

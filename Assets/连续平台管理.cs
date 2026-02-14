@@ -59,7 +59,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead, I_Speed_Is, I_暂停, I
     public GameObject 游标;
 
     /// <summary> 游标检测平台激活的统一范围半径 </summary>
-    [SerializeField][DisplayOnly] private float 检测范围1;
+    [SerializeField] private float 额外检测范围;
 
     /// <summary> 游标移动速度（单位/秒） </summary>
     public float Speed = 1;
@@ -130,7 +130,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead, I_Speed_Is, I_暂停, I
     public Bounds 盒子 => default;
 
     public float Speed_Lv { get => speed_Lv; set => speed_Lv = value; }
-    public float 检测范围 { get => 检测范围1; set => 检测范围1 = value; }
+ [DisplayOnly]   public float 检测范围;
 
     // ========== Unity生命周期方法 ==========
     Color C;
@@ -259,6 +259,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead, I_Speed_Is, I_暂停, I
     /// </summary>
     void 重置()
     {
+        Debu .LogError("重置了"+Time.frameCount);
         if (前置条件)
         {
             // 重置所有平台状态
@@ -331,7 +332,7 @@ public class 连续平台管理 : MonoBehaviour, I_Dead, I_Speed_Is, I_暂停, I
         // 获取下一个目标平台的位置
         Vector3 检测点 = Ls[未完成进度].transform.position;
         bool Is = Ls[未完成进度].transform.position == Vs[路径索引 + 1];
-        //bool usLast = Ls[未完成进度].transform.position == Vs[路径索引  ];
+   
         // 调试绘制（仅在编辑器或调试时显示）
         Ls[未完成进度].transform.position.DraClirl(检测范围, Color.white);
 
@@ -366,8 +367,12 @@ public class 连续平台管理 : MonoBehaviour, I_Dead, I_Speed_Is, I_暂停, I
         }
         else
         {
+
             //if (usLast)
             {
+                /// 除了退出  还有就是速度改变后的范围修改
+                /// 退出范围
+
                 // 游标在平台范围外
                 if (已激活 == 未完成进度)
                 {
@@ -375,7 +380,11 @@ public class 连续平台管理 : MonoBehaviour, I_Dead, I_Speed_Is, I_暂停, I
                     Ls[未完成进度].关上();
 
                     // 重置挑战（玩家未及时交互）
-                    重置();
+                    //if (Vs[路径索引] == Ls[未完成进度].transform.position)
+                    {
+                    }
+                        重置();
+
 
                     // 扩展点：平台取消激活事件
                     OnPlatformDeactivated?.Invoke(未完成进度);
@@ -383,13 +392,15 @@ public class 连续平台管理 : MonoBehaviour, I_Dead, I_Speed_Is, I_暂停, I
             }
         }
     }
-    bool Last前置条件;
+  [SerializeField][DisplayOnly]  bool Last前置条件;
     [SerializeField] float 固定等级差;
     void Update()
     {
         if (暂停) return;
-
-        检测范围1 = ((I_Speed_Is)this).固定等级差 + 2;
+ 
+        检测范围 = 
+            //((I_Speed_Is)this).固定等级差 +
+            2+ 额外检测范围;
 
         if (激活与否.isVisible)
         {
@@ -467,6 +478,8 @@ public class 连续平台管理 : MonoBehaviour, I_Dead, I_Speed_Is, I_暂停, I
             }
             else
             {///不满足
+
+                重置();
                 Ls[0].关上();
                 OnPreconditionFailed?.Invoke();
             }

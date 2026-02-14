@@ -46,7 +46,7 @@ public class 悬挂检测 : MonoBehaviour
     }
     void 那个啥()
     {
-        ((Vector2)双向平台检测位置.position).DraClirl(双向平台遮挡检测距离);
+        //((Vector2)双向平台检测位置.position).DraClirl(双向平台遮挡检测距离);
         var a = Physics2D.OverlapCircle(双向平台检测位置.position, 双向平台遮挡检测距离, 1 << Initialize.L_Ground);
         if (a != null)
         { 
